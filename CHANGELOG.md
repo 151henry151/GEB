@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.12.0] — 2026-03-16
+
+### Fixed
+
+- Chapter XI neuron companion: Step button now applies the rule on every click (rule changed from “2+ neighbors” to “at least one neighbor on” so activation spreads over multiple steps).
+
+### Changed
+
+- Chapter XI neuron companion: expand from 8 to 20 cells; add “How it works” explainer and step counter; add Reset button; switch full-text iframe to per-chapter PDF (chapter-11.pdf).
+
 ## [0.11.0] — 2026-03-16
 
 ### Fixed
