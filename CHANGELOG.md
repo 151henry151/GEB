@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-03-16
+
+### Changed
+
+- Chapter III Rubin vase companion: redraw contour so the shape reads clearly as a vase (narrow neck, wide body, base) and the dark regions read as two faces in profile; add drop-shadow filter when “See figure (vase)” is active and thick gold stroke on contour when “See ground (faces)” is active so the buttons have an obvious visual effect.
+
+### Fixed
+
+- Chapter III figure/ground buttons now update the display (filter and stroke) and guard against missing elements so the script does not fail silently.
+
 ## [0.4.0] — 2026-03-15
 
 ### Fixed
