@@ -20,33 +20,32 @@
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
         <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+            <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>In some pictures you can look at the “thing” in the middle—that’s the figure. Or you can look at the “stuff around it”—that’s the ground. Same picture, two ways to see it.</p>
-          <p>In the game of theorems, the “figure” is the list of strings we can make with the rules. The “ground” is everything else. Sometimes the figure is easy to list, but the ground is hard to pin down—you can’t always tell in a simple way what’s “not a theorem.” So the ground can hide information the figure doesn’t show.</p>
+          <p>In a picture you can focus on the "thing" (the figure) or the "stuff around it" (the ground). Same picture, two ways to see. In a rule game, the "figure" is what we can make with the rules; the "ground" is everything we can't. Sometimes the ground is much harder to describe than the figure.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
           <h2>Figure and ground in art</h2>
-          <p>In art, “figure” is what we focus on (e.g. a vase); “ground” is the rest (e.g. the background, or the space around the vase). Some images flip: you can see either two faces or a vase. The same marks on the page support two different “readings.”</p>
+          <p>In art, the "figure" is what we focus on—for example a vase in the middle. The "ground" is the rest—the background, or the space around it. Some pictures can "flip": you might see either a vase or two faces, depending on what you focus on. The same marks on the page support two different ways of seeing. So figure and ground are two ways of reading the same image.</p>
           <h2>Figure and ground in formal systems</h2>
-          <p>In a formal system, the “figure” is the set of theorems (strings we can derive). The “ground” is the set of non-theorems. The figure is “recursively enumerable”: we can list all theorems one by one. But can we list all non-theorems? Sometimes we can (then the set is “recursive”); sometimes we can’t. So the ground doesn’t always have the same kind of structure as the figure.</p>
+          <p>In a formal system we have strings we can derive with the rules—those are the "figure," the theorems. Everything else is the "ground," the non-theorems. We can list all theorems one by one (start from axioms, apply rules, list everything we get). So the figure is "listable." But can we list all non-theorems? Sometimes yes: if we have a way to decide "is this string a theorem or not?" then we can separate the two. Sometimes no: there may be no simple procedure to tell what's in the ground. So the figure and the ground can have different "shapes" from the point of view of computation.</p>
           <h2>Why it matters</h2>
-          <p>That difference—between “listable” theorems and “maybe not listable” non-theorems—will matter for Gödel. It’s like asking: does the figure contain all the information that the ground has? Not necessarily.</p>
+          <p>That difference will matter for Gödel. In a rich system like arithmetic, the set of theorems might be listable, but the set of "true but not provable" sentences might not be listable in the same way. So the "ground" can contain information that the "figure" doesn't fully reveal.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
           <h2>Figure and ground in perception and in logic</h2>
-          <p>Hofstadter compares the figure–ground distinction in visual perception (and in Escher’s art) to the distinction between theorems and non-theorems in a formal system. In both cases we have a “positive” set (what we see as figure; what we can derive) and a “negative” set (ground; non-theorems). The question is whether the two sets carry the same information—whether the ground is determined by the figure in a computable way.</p>
+          <p>Hofstadter compares the figure–ground distinction in visual perception (and in art like the Rubin vase) to the distinction between theorems and non-theorems in a formal system. In both cases we have a "positive" set (what we attend to as figure; what we can derive) and a "negative" set (ground; non-theorems). The question is whether the two sets carry the same information—whether the ground is determined by the figure in a computable way. In perception, flipping figure and ground gives two readings of the same stimulus. In logic, the question is whether "not a theorem" is as well-behaved as "theorem."</p>
           <h2>Recursively enumerable vs recursive sets</h2>
-          <p>The set of theorems of a formal system is recursively enumerable: there is a procedure that lists exactly the theorems (e.g. enumerate all proofs). The set of non-theorems is the complement. If there is a procedure that decides, for any string, whether it is a theorem, then both the set of theorems and the set of non-theorems are “recursive” (decidable). But if there is no decision procedure for theoremhood, then the set of non-theorems is not recursively enumerable in the same simple way. So “figure” (theorems) and “ground” (non-theorems) can have different computational structure.</p>
+          <p>The set of theorems of a formal system is recursively enumerable: there is a procedure that lists exactly the theorems (e.g. enumerate all proofs in a systematic way). The set of non-theorems is the complement. If there is a procedure that decides, for any string, whether it is a theorem, then both sets are "recursive" (decidable): we can list theorems and we can list non-theorems. But if there is no decision procedure for theoremhood, then the set of non-theorems is not recursively enumerable in the same simple way—we can't list "all true non-theorems" by a procedure that only generates strings. So "figure" (theorems) and "ground" (non-theorems) can have different computational structure.</p>
           <h2>Setting up incompleteness</h2>
-          <p>This prepares the reader for the idea that in rich systems like TNT, the “ground” (true but unprovable sentences) may not be listable by the system’s own means—so the figure (theorems) does not fully determine the ground.</p>
+          <p>This prepares the reader for Gödel. In a system strong enough for arithmetic, the theorems are recursively enumerable, but there will be true sentences that are not theorems. So the "ground" (including those true unprovable sentences) is not fully captured by any procedure that only lists theorems. The figure does not determine the ground in a computable way.</p>
         </div>
       </div>
-      <div data-reading-panel="full" class="reading-content on">
+<div data-reading-panel="full" class="reading-content on">
         <div class="content-inner">
           <p>The full chapter appears in the book. Read it in the PDF below.</p>
           <iframe class="fulltext-embed" title="Chapter III — full text (PDF)" src="../pdfs/chapter-03.pdf"></iframe>

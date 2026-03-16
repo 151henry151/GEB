@@ -22,24 +22,25 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>You can play a game with "and," "or," and "not." If I say "it's rainy AND cold," the whole thing is only true when both parts are true. "Rainy OR sunny" is true when at least one is true. "NOT rainy" is true when it's not rainy.</p>
-          <p>People made strict rules for this game so that you never get a wrong answer if you follow the rules. The rules are the propositional calculus. The same idea as the pq-system: follow the shapes, and truth comes out.</p>
+          <p>There’s a game with “and,” “or,” and “not.” “A and B” is true only when both are true. “A or B” when at least one is true. “Not A” when A is false. People wrote strict rules for this game so truth follows from the shapes. That’s the propositional calculus.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
-          <h2>Propositional logic</h2>
-          <p>The propositional calculus is a formal system for combining statements with and, or, not, if-then. Each letter (P, Q) can be true or false. The rules tell you which combined formulas are theorems (always true, i.e. tautologies).</p>
+          <h2>The propositional calculus</h2>
+          <p>The chapter introduces a formal system for combining simple statements. You have letters (P, Q, …) that can be true or false, and connectives: and (∧), or (∨), not (¬), and if–then (⊃). There are rules for how to build formulas and how to derive new ones from old ones (e.g. modus ponens: from P and “P⊃Q” you get Q). Theorems are formulas that you can derive from the axioms—and they turn out to be exactly the “tautologies,” the formulas that are true no matter what truth values you give to P and Q.</p>
           <h2>Form and meaning again</h2>
-          <p>When we interpret P, Q as statements and the connectives as and, or, not, the theorems turn out to be exactly the logical truths. So meaning emerges from form.</p>
+          <p>At first the symbols are just marks. When we interpret P and Q as statements and the connectives as and, or, not, if–then, the theorems line up with logical truths: statements that are true by virtue of their structure. So once again, meaning emerges from form. The rules only care about shape; the shape encodes truth.</p>
+          <h2>Why it matters</h2>
+          <p>This is another step toward systems that can express arithmetic. Propositional logic is simple (no “for all” or “there exists” yet), but it shows how a formal game can match logical reasoning. Modus ponens—if P is true and “if P then Q” is true, then Q is true—will appear again when we talk about proof and incompleteness.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
           <h2>The propositional calculus as a formal system</h2>
-          <p>Hofstadter presents the propositional calculus: a formal language with proposition letters and connectives (and, or, not, if-then), axioms (e.g. tautologies), and rules of inference (e.g. modus ponens). Theorems are exactly the tautologies.</p>
+          <p>Hofstadter presents the propositional calculus: a formal language with proposition letters (P, Q, …), connectives (and, or, not, if–then), axioms (e.g. formulas that are tautologies), and rules of inference such as modus ponens (from A and A⊃B infer B). Theorems are exactly the tautologies—formulas that are true under every assignment of truth values to the proposition letters. So the system is sound (every theorem is true) and complete (every tautology is a theorem).</p>
           <h2>Isomorphism with truth values</h2>
-          <p>Under the standard interpretation, the theorems correspond to logical truths. So once again, meaningless symbols acquire meaning by virtue of the form of the theorems.</p>
+          <p>Under the standard interpretation—proposition letters as statements, connectives as and, or, not, if–then—the theorems correspond to logical truths. So once again, meaningless symbols acquire meaning by virtue of the form of what is derivable. The formal manipulation and the semantic content align. This reinforces the pq-system lesson and prepares for TNT, where we will have a richer language (including quantifiers) and where truth and provability will eventually come apart.</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">

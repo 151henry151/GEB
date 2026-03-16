@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.14.0] — 2026-03-16
+
+### Changed
+
+- Standardize and expand ELI5, ELI10, and ELI20 explanations across Introduction and all twenty chapters. ELI5: single short paragraph, age-5 accessible, core idea only. ELI10: roughly 3–4× length of ELI5, age-10 accessible, accurate core meaning with 2–4 subsections. ELI20: roughly 3–4× length of ELI10, in-depth and accurate, slightly simplified from full chapter, age-20 accessible. Rewrote all panels for consistency, clarity, and correct length ratios; added script scripts/update_eli_texts.py for batch updates (used for Chapter V).
+
 ## [0.13.1] — 2026-03-16
 
 ### Fixed

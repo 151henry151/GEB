@@ -22,26 +22,27 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>Some rules never fight each other: you can't prove something and also prove the opposite. That's called being consistent. Other rules are complete if whenever something is true, you can prove it with the rules.</p>
-          <p>People used to think there was only one way to do geometry. Then they found other geometries that also don't fight themselves but look different (curved space). So the same words (line, point) can mean different things in different worlds.</p>
+          <p>Good rules never say something and the opposite. That’s consistency. Completeness means every true thing can be proved with the rules. People once thought there was only one geometry; then they found other “worlds” where the same words (line, point) mean something different and the rules still don’t fight. So the same rules can live in different worlds.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
           <h2>Consistency and completeness</h2>
-          <p>A formal system is consistent if you never can prove both a statement and its opposite. It's complete if every true statement (in the intended interpretation) is provable.</p>
+          <p>A formal system is <strong>consistent</strong> if you can never prove both a statement and its opposite. If you could, the rules would “fight” and the system would be broken. A system is <strong>complete</strong> (for a given interpretation) if every true statement—every fact that holds in that world—can be proved with the rules. So consistency means “no contradiction”; completeness means “every truth is reachable by proof.” We’d like both. For rich systems like arithmetic, we’ll see we can’t have both.</p>
           <h2>Geometry and undefined terms</h2>
-          <p>Euclidean geometry uses point, line, plane without defining them. Non-Euclidean geometry uses the same kind of axioms but with a different interpretation (e.g. line as a great circle on a sphere), and it's still consistent.</p>
+          <p>Euclidean geometry uses “point,” “line,” “plane” without defining them in other terms. Their meaning is fixed by the axioms: the axioms say how points and lines behave. In the 19th century mathematicians discovered non-Euclidean geometries: same style of axioms, but “line” might mean something different (e.g. a great circle on a sphere). Those systems are still consistent—they don’t prove a contradiction—but they describe a different “world.” So the same formal setup can have different interpretations.</p>
           <h2>Why it matters for Gödel</h2>
-          <p>Later we'll see that rich systems like arithmetic can't be both consistent and complete: some true statements won't be provable.</p>
+          <p>That sets up the idea that truth (what holds in the intended world) and provability (what the rules produce) might come apart. For arithmetic, Gödel will show that any consistent system strong enough to capture arithmetic is incomplete: some true statements cannot be proved. So we have to give up completeness if we want consistency.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
-          <h2>Consistency, completeness, and undefined terms</h2>
-          <p>Hofstadter explicates the Contracrostipunctus dialogue: consistency (no contradiction) and completeness (every truth provable). He ties this to the history of Euclidean and non-Euclidean geometry. Terms like point and line are undefined; their meaning is fixed by the axioms and the intended interpretation.</p>
-          <h2>Formal systems and interpretation</h2>
-          <p>Multiple interpretations can satisfy the same axioms; consistency is a property of the system under an interpretation. This sets up the idea that truth and provability might come apart when the system is rich enough.</p>
+          <h2>Consistency, completeness, and the Contracrostipunctus</h2>
+          <p>Hofstadter explicates the dialogue (Contracrostipunctus): <strong>consistency</strong> means the system never proves both A and not-A—no contradiction. <strong>Completeness</strong> (for an interpretation) means every true statement in that interpretation is a theorem. We want both; for sufficiently rich systems we cannot have both. The dialogue ties this to a “record player” metaphor and to the possibility that a system might be consistent but not capture all truths.</p>
+          <h2>Geometry, undefined terms, and interpretation</h2>
+          <p>Euclidean geometry takes “point,” “line,” “plane” as undefined; their meaning is fixed by the axioms and the intended model (e.g. the Euclidean plane). Non-Euclidean geometry uses the same axiomatic style but different interpretations—e.g. “line” as geodesic on a sphere or in a hyperbolic plane. Those systems are consistent and have models; so “geometry” is not uniquely determined by the form of the axioms. Multiple interpretations can satisfy the same or similar axioms. That illustrates that truth is relative to an interpretation, and that the same formal system can describe different “worlds.”</p>
+          <h2>Setting up incompleteness</h2>
+          <p>This prepares the reader for Gödel: in any consistent formal system that is strong enough to express arithmetic, there will be true statements that are not provable. So truth and provability come apart. Consistency we can keep; completeness we must give up. The geometry example shows that “same axioms, different worlds” is already familiar; Gödel’s result will show that in the world of arithmetic, no single formal system can prove all arithmetic truths.</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">

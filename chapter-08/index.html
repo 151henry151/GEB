@@ -22,24 +22,23 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>We can write numbers and "plus" and "times" using only a few symbols: zero, "next" (one more), and signs for add and multiply. So "next next zero" is two, and "next next zero + next next next zero" is 2+3. All of math with numbers can be turned into a game of symbols.</p>
-          <p>That game is called TNT—Typographical Number Theory. Every rule is just "replace this shape with that shape." But the shapes turn out to be number facts. So the book is writing number math with symbols.</p>
+          <p>We can do number math with just a few shapes: zero, “one more,” plus, and times. “One more one more zero” is two. The whole game is shapes; the shapes turn out to be number facts. That’s TNT.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
           <h2>TNT: arithmetic as symbol manipulation</h2>
-          <p>TNT uses symbols: 0 (zero), S (successor: "the next number"), +, ·, =, and variables (a, b, c, …). Terms like S0, SS0 stand for 1, 2. Equations like SS0+SSS0=SSSSS0 say 2+3=5. Axioms and rules let you derive true number facts by symbol pushing alone.</p>
+          <p>TNT (Typographical Number Theory) uses symbols: 0 for zero, S for “the next number” (so S0 is 1, SS0 is 2), plus + and times · and equals =. Terms like S0, SS0 stand for 1, 2. Equations like SS0+SSS0=SSSSS0 say 2+3=5. There are axioms (basic truths) and rules for how to get new lines from old ones. Every theorem you can derive turns out to be a true fact about numbers. So you never need to “think about” numbers—you just push symbols, and truth comes out.</p>
           <h2>Why it matters for Gödel</h2>
-          <p>Gödel's trick is to assign a number to every formula and proof. So "this formula is not provable" becomes a number fact that a formula of TNT can express. TNT then "talks about" its own formulas—that's the key to the incompleteness theorem.</p>
+          <p>Gödel’s trick is to assign a number to every formula and every proof. Then “this formula has no proof” becomes a statement about numbers—and a formula of TNT can express it. So TNT can “talk about” its own formulas. That’s the key to building a sentence that says “I am not provable.”</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
           <h2>Typographical Number Theory</h2>
-          <p>Hofstadter presents TNT: a formal system whose language includes 0, S (successor), +, ·, =, variables, and logical connectives and quantifiers. Terms represent natural numbers (S…S0 = n); formulas represent statements about numbers. Axioms and rules (e.g. induction) allow derivation of number-theoretic truths. Every theorem, when interpreted, is a true statement of arithmetic.</p>
+          <p>Hofstadter presents TNT: a formal system whose language includes 0, S (successor), +, ·, =, variables (a, b, c, …), logical connectives (and, or, not, if–then), and quantifiers (for all, there exists). Terms are built from 0 and S and + and · and represent natural numbers (S…S0 = n). Formulas are equations or logical combinations of equations and represent statements about numbers. Axioms include basic arithmetic (e.g. commutativity of addition) and an induction schema. Rules of inference allow derivation of new formulas. Every theorem, when interpreted, is a true statement of arithmetic; the system is sound. And every true statement of a certain kind is derivable—the system is complete for that fragment. So TNT is a formal game that exactly mirrors number theory.</p>
           <h2>Arithmetization of syntax</h2>
-          <p>The stage is set for Gödel numbering: assigning a unique number to each symbol, formula, and proof. Then "being a proof of formula X" becomes a number-theoretic relation. So TNT can encode statements about its own formulas—the precondition for self-reference and incompleteness.</p>
+          <p>The stage is set for Gödel numbering: assign a unique number to each symbol, then to each formula (as a sequence of symbols), then to each proof (as a sequence of formulas). Then “n is the Gödel number of a proof of the formula with number m” becomes a relation between natural numbers. That relation can be expressed inside TNT. So TNT can encode “formula X is provable” and “formula X is not provable” as number-theoretic statements. That is the precondition for self-reference: a formula that talks about its own number and says “I am not provable.”</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">

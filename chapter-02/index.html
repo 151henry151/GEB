@@ -22,28 +22,27 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>Imagine a game where you only move blocks: one kind of block, another kind, and a dash. The rules say: if you have "dash-dash block1 dash-dash-dash block2" then that's a good move. Nobody tells you what the blocks mean.</p>
-          <p>Then someone says: "That good move is the same as 2 + 3 = 5." Suddenly the blocks have meaning—the first group is 2, the second is 3, the last is 5. The meaning came from the <em>shape</em> of the game. So meaning can sneak in through form.</p>
+          <p>There’s a game with p, q, and dashes. The rules only care about shapes. When you look at which shapes “win,” they match adding numbers. So meaning can come from the shape of the game, not from someone telling you what the symbols mean.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
           <h2>The pq-system</h2>
-          <p>The chapter introduces the pq-system: strings made of p, q, and hyphens. There are axioms (like --p---q-----) and one rule: if xp-qx- is a theorem (where x is a string of hyphens), then xp-qx- is a theorem too—with one more hyphen in each of two places. So theorems look like "something-p-something-q-something," and the number of hyphens before q equals the sum of the hyphens before p and between p and q.</p>
-          <h2>Meaning emerges</h2>
-          <p>If we interpret "hyphens before p" as one number, "hyphens between p and q" as another, and "hyphens after q" as a third, then every theorem says "number1 + number2 = number3." So the symbols had no meaning at first—but the <em>form</em> of the theorems matches addition. Meaning comes from the structure of what can be derived.</p>
-          <h2>Form and truth</h2>
-          <p>That leads to the idea that in such a system, "form" and "meaning" (and truth) are tied together. The rules only care about shape; the interpretation (addition) fits the shape. So meaning is not arbitrary—it's discovered by seeing what the form encodes.</p>
+          <p>The chapter introduces the pq-system: strings made of p, q, and hyphens. You have a few starting strings (axioms), like --p---q-----, and one rule: if a string of a certain shape is allowed, then another string with one more hyphen in two places is also allowed. So you build longer and longer strings. The rules don’t say what p or q “mean”—they only say which shapes are OK.</p>
+          <h2>Meaning from form</h2>
+          <p>If you count hyphens—how many before p, how many between p and q, how many after q—you notice something. Every allowed string has “hyphens before p” + “hyphens between p and q” = “hyphens after q.” So the allowed strings exactly match addition. For example --p---q----- has 2, 3, and 5: 2+3=5. So the symbols had no meaning at first, but the <em>form</em> of what the rules produce is addition. Meaning emerged from the structure.</p>
+          <h2>Why it matters</h2>
+          <p>That ties “form” and “meaning” together. The rules only push symbols around. But what they produce can be interpreted as true facts about numbers. So meaning isn’t arbitrary—it’s discovered by seeing what the form encodes. That idea will matter when we get to systems that are supposed to capture all arithmetic: form and truth will turn out to come apart in a surprising way.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
           <h2>The pq-system and the emergence of meaning</h2>
-          <p>Hofstadter presents a formal system (the pq-system) whose symbols are p, q, and the hyphen. Axioms have the form --p---q----- (and similar patterns); the single rule allows adding one hyphen in each of two specified positions. The set of theorems is exactly those strings that, when interpreted as "m hyphens, then p, then n hyphens, then q, then m+n hyphens," encode true addition facts m+n=m+n (and the axiom form gives 2+3=5).</p>
-          <h2>Isomorphism and meaning</h2>
-          <p>The key point is that the system is initially presented without interpretation. The symbols are meaningless. Only when we map theorem-strings to arithmetic (hyphen count to number) do we see that every theorem "says" a true addition fact. So meaning is not put in by hand—it emerges from an isomorphism between the formal structure and a familiar domain (natural numbers and addition). This supports the idea that meaning is tied to form.</p>
-          <h2>Broader implications</h2>
-          <p>The chapter discusses truth, proof, and the "elusive concept of form." It sets up the idea that formal systems can carry meaning by virtue of their structure, and that "working inside" the system (symbol manipulation) can correspond to "working outside" (reasoning about numbers). This prepares the ground for later chapters on incompleteness.</p>
+          <p>Hofstadter presents the pq-system: symbols p, q, and hyphen; axioms of the form m hyphens, p, n hyphens, q, m+n hyphens (e.g. --p---q----- for 2+3=5); and a single rule that adds one hyphen in each of two positions. The set of theorems is exactly those strings that, under the interpretation “hyphens before p = first number, between p and q = second number, after q = sum,” encode true addition facts. The system is given first without interpretation—the symbols are meaningless marks.</p>
+          <h2>Isomorphism and the tie between form and meaning</h2>
+          <p>Only when we map theorem-strings to arithmetic do we see that every theorem “says” a true addition fact. So meaning is not stipulated; it emerges from an isomorphism between the formal structure (the set of derivable strings) and a familiar domain (natural numbers and addition). The rules only care about shape; the interpretation fits the shape. This supports the idea that meaning can be tied to form—that formal manipulation and semantic content can align—and sets up the later theme that in richer systems (TNT) they can also come apart.</p>
+          <h2>Truth, proof, and the elusive concept of form</h2>
+          <p>The chapter discusses truth, proof, and what “form” means. It prepares the reader for the idea that formal systems can carry meaning by virtue of their structure, and that “working inside” (symbol manipulation) can correspond to “working outside” (reasoning about numbers). When we move to systems strong enough for arithmetic, we will see that truth and provability can diverge: some true statements will not be derivable. The pq-system is a first, clean example where form and meaning line up perfectly.</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">
