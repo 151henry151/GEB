@@ -22,32 +22,33 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>Can you write a recipe that, for any program someone gives you, tells you whether that program will eventually stop or run forever?</p>
-          <p>No. It's impossible. If such a recipe existed, you could use it to build a program that does the opposite of what the recipe says—and then you'd have a contradiction. So some questions about programs have no recipe for answering them.</p>
-          <p>Math has the same problem. Some questions cannot be decided by any set of rules. Some truths cannot be named "true" inside the language they're described in. There are hard walls at the edge of what logic and computation can do.</p>
+          <p>Some programs stop; some run forever. Can we always tell which? No. There’s no perfect recipe that, for every program, says “it will stop” or “it won’t.” So some questions about programs have no answer we can get by one fixed rule. Logic and computers both have limits.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
-          <p>Three major impossibility results, all from the 1930s, all related:</p>
-          <p><em>Church and Turing</em> proved that the halting problem is undecidable: there is no program H that, given any program P and input x, always correctly says whether P halts on x. The proof is by diagonalization—assume H exists, use it to build a program D that does the opposite of what H predicts for D itself. That leads to contradiction. So H can't exist.</p>
-          <p><em>Tarski</em> proved that truth (for a language rich enough to express arithmetic) cannot be defined inside that same language. If you could define a predicate True(x) that held exactly when x was the code of a true sentence, you could construct a liar sentence: "True(this sentence's code) is false." Contradiction. So no such predicate exists. Truth transcends any single formal language.</p>
-          <p>These results are all cousins of Gödel's. They all use the same core trick: self-reference via diagonalization. A thing refers to itself in a way that generates a contradiction if you try to make it too neat. The moral: rich enough systems contain inherent gaps—things they cannot compute, cannot decide, cannot say.</p>
+          <h2>Church and Turing</h2>
+          <p>Church and Turing showed that some problems are undecidable: there is no algorithm that always gives the right yes/no answer. The halting problem is the most famous: given a program and an input, does the program eventually stop? No general algorithm can decide that for every program and input.</p>
+          <h2>Tarski</h2>
+          <p>Tarski showed that truth (in a rich enough language) cannot be defined inside the same language. So "this sentence is true" cannot be consistently defined in the object language. That connects to the liar paradox and to Gödel.</p>
+          <h2>Why it matters</h2>
+          <p>Undecidability, uncomputability, and the indefinability of truth are three limits: on what we can compute, what we can decide, and what we can say about truth from inside a system.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
-          <p>The chapter surveys three foundational limitations, all proven in the 1930s and all connected by diagonalization.</p>
-          <p>Church and Turing independently showed that the class of computable functions is robustly characterizable (Church's thesis) and that the halting problem lies outside it. The proof: assume a total computable H(p, x) that returns 1 if program p halts on input x and 0 otherwise. Define D(p) = loop forever if H(p, p) = 1, else halt. Then D is computable. Ask: does D(⌈D⌉) halt? If H says yes, D loops; if H says no, D halts. Both lead to contradiction. So H doesn't exist. The halting problem is not decidable.</p>
-          <p>Tarski's undefinability theorem: given a sufficiently expressive formal language L, there is no formula Tr(x) of L such that for every sentence φ of L, Tr(⌈φ⌉) ↔ φ is provable. If such Tr existed, a liar sentence—a sentence equivalent to ¬Tr of its own code—would be both true and not-true. So truth for L is not definable in L; it requires a meta-language. This parallels Gödel: provability is definable within the system; truth is not.</p>
-          <p>These results form a tight cluster. Gödel's incompleteness, Turing's undecidability of the halting problem, and Tarski's undefinability of truth are all instances of the same diagonal argument: assume a predicate that lets a system fully describe itself, construct a self-referential sentence that defeats the predicate, derive contradiction. The limits of formal systems, of computation, and of semantic self-description are not three separate phenomena—they are one phenomenon seen from three angles.</p>
-          <p>---</p>
+          <h2>Church, Turing, and the halting problem</h2>
+          <p>Hofstadter discusses Church's thesis (the identification of "computable" with lambda-definable / recursive) and Turing's characterization of computation by machines. The halting problem is undecidable: there is no Turing machine that, given a description of a machine M and an input x, always correctly determines whether M halts on x. The proof is by diagonalization: assume such a machine H exists, then build a machine that does the opposite of what H says, leading to contradiction.</p>
+          <h2>Tarski and the indefinability of truth</h2>
+          <p>Tarski showed that a sufficiently rich formal language cannot contain its own truth predicate: if we could define "true" in the language, we could construct a liar sentence. So truth (for that language) is definable only in a richer meta-language. This parallels Gödel's incompleteness: provability can be expressed inside the system, but truth (for all sentences) cannot.</p>
+          <h2>Connections</h2>
+          <p>Gödel's theorem, the undecidability of the halting problem, and Tarski's indefinability result are all linked by diagonalization and self-reference. They mark fundamental limits on formal systems and computation.</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">
         <div class="content-inner">
           <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <iframe class="fulltext-embed" title="Chapter XVII — full text (PDF)" src="../pdfs/chapter-17.pdf"></iframe>
+          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-17.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -65,7 +66,9 @@
       </div>
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
+  <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function(){
       var maxSteps = 500;

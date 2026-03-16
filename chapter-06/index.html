@@ -22,31 +22,33 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>Imagine you find a note in a bottle. It has squiggles on it. Are the squiggles a message? You can't tell until you know what language they're in—or if they're a language at all. The squiggles alone don't carry meaning. Meaning arrives only when <em>someone</em> tries to read them with a key that fits.</p>
-          <p>The same sound coming out of a phone speaker means one thing to you and nothing at all to your dog. The sound didn't change. The decoder did.</p>
-          <p>So meaning isn't stored inside a message like a treasure in a box. It lives in the <em>space between</em> the message and whoever reads it.</p>
+          <p>The same marks or sounds don’t have one fixed meaning. Meaning comes from who reads them and how. Change the “decoder” and the meaning changes.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
-          <p>Where does meaning live? Not inside the message alone—we know that from the pq-system, where marks with no meaning turned out to mean addition once we looked at them the right way. And not inside the receiver alone either. Meaning lives in the <em>relationship</em> between a message, the system that interprets it, and the context they share.</p>
-          <p>A phonograph record's grooves don't "contain" music. They contain patterns. A phonograph turns those patterns into sound. A listener's brain turns that sound into music. Disrupt any link and the meaning disappears. Play the record to someone from a culture with no exposure to Western music: the patterns are the same; the meaning is entirely different.</p>
-          <p>DNA is the same: the same molecule is "read" by the cell's machinery according to one code. With a different decoding rule, the same sequence would specify something entirely different. The meaning isn't in the molecule; it's in the pairing of molecule and machinery.</p>
-          <p>This principle will come back when Hofstadter reaches Gödel. The Gödel sentence means what it means—"I am unprovable"—only under a very specific interpretation of TNT. Under a different interpretation, the same string of symbols would mean something entirely different, and would be provable. The meaning is in the match between system and interpretation, not in the string itself.</p>
+          <h2>Where is meaning?</h2>
+          <p>Meaning isn’t “inside” the message alone. It’s in the relation between the message, the thing that reads it (the decoder), and the context. Like a phonograph record: the grooves don’t “mean” music until a player turns them into sound. The same record could be “decoded” differently by a different machine. Or like DNA: the same molecule is “read” by the cell in one way; if we read it with a different rule book, we’d get something else.</p>
+          <h2>Undeciphered scripts and formal systems</h2>
+          <p>If we find marks we can’t read, we don’t know if they’re a language, a code, or nonsense—until we have a decoder that fits. In formal systems, the symbols (like p, q, or P, Q) have no meaning until we give an interpretation. So “meaning” is always relative to who’s decoding and how.</p>
+          <h2>Why it matters</h2>
+          <p>That idea—that meaning is in the relation, not in the marks alone—will come back when we talk about the Gödel sentence. The sentence “says” something only relative to how we interpret it. And it will matter for minds and machines: what a symbol “means” depends on the system that uses it.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
-          <p>Hofstadter argues that meaning is neither intrinsic to the medium (the marks, the grooves, the molecule) nor to the receiver alone. It arises from a three-way relationship: message, decoder, and context. He illustrates with undeciphered scripts (Linear A), DNA and cellular machinery, phonograph records, and the pq-system. In each case, removing or altering the decoder changes or eliminates the meaning, even if the message is physically unchanged.</p>
-          <p>For formal systems, this means: a system's symbols have no meaning until an interpretation is assigned—a mapping from symbols to objects and relations in some domain. The same system can sustain multiple interpretations, with different truths in each. The pq-system "means" addition under one interpretation and could, conceivably, mean something else under another.</p>
-          <p>The deeper point is about levels of interpretation. Gödel's key insight is to build a system that has a <em>second,</em> unintended interpretation layered on top of its intended one. The intended interpretation of TNT reads its formulas as arithmetic statements. The Gödelian interpretation reads certain formulas as claims about provability within TNT itself. Both interpretations are valid; both are "real" meanings of the same string. The strange loop arises because the system, interpreted at the meta-level, can say things about its own behavior at the object level—and those things turn out to be true but unprovable. Meaning, here, is not one thing but two things at once, and that doubleness is exactly what creates the loop.</p>
-          <p>---</p>
+          <h2>The location of meaning</h2>
+          <p>Hofstadter argues that meaning is not intrinsic to the message. It arises from the relation between the message, the decoder (the mechanism or convention that “reads” it), and the receiver or context. Examples: a phonograph record’s grooves don’t “contain” music in any absolute sense; they produce sound when played by the right device. DNA is “read” by the cell according to one set of rules; with a different mapping, the same sequence would “mean” something else. An undeciphered script has no determinate meaning until we have a candidate decoder that fits the data.</p>
+          <h2>Formal systems and interpretation</h2>
+          <p>In formal systems, the symbols have no built-in meaning. We assign meaning by giving an interpretation—mapping symbols to objects, truth values, or operations. So the same formal system can be interpreted in different ways. The pq-system “meant” addition only once we chose to count hyphens and map them to numbers. That reinforces the theme: meaning is not in the marks but in the relation between marks, rules, and interpreter.</p>
+          <h2>Setting up Gödel and minds</h2>
+          <p>This prepares the reader for the Gödel sentence (which “says” it is unprovable—but only under a specific interpretation of the formal system) and for later discussions of meaning in minds and machines. The location of meaning will be central when we ask whether a machine can “understand” or whether symbols in the brain have content in the same way.</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">
         <div class="content-inner">
           <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <iframe class="fulltext-embed" title="Chapter VI — full text (PDF)" src="../pdfs/chapter-06.pdf"></iframe>
+          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-06.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -80,7 +82,9 @@
       </div>
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
+  <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function(){
       var inputEl = document.getElementById('msg-input');

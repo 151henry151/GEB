@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.3] — 2026-03-16
+
+### Changed
+
+- Replace PDF iframe with PDF.js-based canvas viewer for Full Text on all chapter pages and intro. Add shared/pdf-viewer.js (loads PDF via Mozilla PDF.js from CDN, renders current page to canvas with Prev/Next and page indicator). Ensures reliable display on all devices including Chrome on Android where iframe PDF often fails. Remove iframe fallback link from nav.js; viewer shows fallback link if PDF fails to load.
+
 ## [0.15.2] — 2026-03-16
 
 ### Changed

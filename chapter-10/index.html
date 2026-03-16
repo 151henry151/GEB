@@ -25,31 +25,29 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>Imagine a machine that adds numbers. You could describe it three different ways.</p>
-          <p>The first way: "It's adding 3 and 5 to get 8." That's the high level—what it's <em>doing.</em> The second way: "It's running a program with instructions like LOAD, ADD, STORE." That's the middle level—how it's doing it. The third way: "Electricity is flowing through these switches, making some of them flip." That's the low level—what's physically happening.</p>
-          <p>All three descriptions are correct. They're just different floors of the same building. And the floors can <em>talk to each other:</em> the top floor depends on the middle floor, and the middle floor depends on the bottom floor, and sometimes the top floor reaches all the way down and changes things at the bottom. When the floors get tangled up like that, something interesting starts to happen.</p>
+          <p>The same machine can be described in different ways: “it’s adding numbers,” “it’s running these instructions,” “it’s flipping switches.” Same thing, different levels. Sometimes one level describes or runs another.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
-          <p>A computer can be described at many levels at once. At the hardware level: circuits and signals. At the machine code level: specific binary instructions. At the programming language level: human-readable code. At the user level: what the program does for you. Each level is real. None is "the real one."</p>
-          <p>These levels interact. The high-level program is compiled into machine code, which runs on hardware. The hardware doesn't "know" it's running a word processor. The programmer doesn't "know" how electrons are flowing. And yet—the word processor would not exist without both.</p>
-          <p>The chapter introduces the "Ant Fugue" dialogue, which imagines a colony of ants that is somehow "intelligent" at the colony level, even though no individual ant is. You'd never see the intelligence by studying one ant. It only shows up when you look at the whole pattern of ant behavior together. Different level, different properties.</p>
-          <p>Hofstadter's suggestion: minds might work this way too. Individual neurons fire signals—low level. But at a higher level, <em>patterns</em> of neurons might be thoughts and feelings. The thought isn't in any one neuron. It's in the arrangement. And maybe, if the levels loop back on each other—if the high-level thoughts can reach down and influence the low-level neurons—you get the strange loop that makes a self.</p>
+          <h2>Multiple levels of description</h2>
+          <p>A computer doing “add 3 and 5” can be described at a high level (the program says “add”), at a lower level (the processor runs instructions like LOAD, ADD, STORE), and at an even lower level (electrical signals in the hardware). Same process, three descriptions. Each level can “see” or “implement” another: the program is a list of instructions that the hardware carries out; the hardware “runs” the program. So levels are tangled—one level describes another, and that level might describe yet another.</p>
+          <h2>Ant Fugue and Aunt Hillary</h2>
+          <p>The dialogue in the chapter (Ant Fugue) introduces the idea of levels of thought: neurons, symbols, and the “colony” as a whole. Aunt Hillary is a character that might be “conscious” at the colony level even though no single ant is. So consciousness might be something that appears at one level of description when we look at a system from outside—like the “meaning” of a program appearing at the level of the programmer, not at the level of the individual instruction.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
-          <p>Hofstadter examines the multi-level structure of computer systems: machine code, assembly, compiled languages, high-level programs, and user-facing behavior are all valid descriptions of the same physical process. Each level has its own vocabulary, its own laws, and its own blindnesses. The programmer doesn't need to know transistor physics; the electrical engineer doesn't need to know the sorting algorithm. And yet they are the same system.</p>
-          <p>The important notion here is <em>emergence:</em> properties that appear at one level of description may be entirely absent from lower levels. Intelligence, intent, meaning—these are terms that fit at the high level and apply only awkwardly, if at all, to the transistors. This is not mysticism. It is the observation that different levels of description carve nature's joints differently, and some joints only appear at high levels.</p>
-          <p>The "Ant Fugue" dialogue dramatizes this with a colony-level intelligence (Aunt Hillary) that no single ant participates in consciously. The point generalizes: a "tangled hierarchy" arises when levels that should be strictly ordered instead loop back on each other. A system that represents itself—that has a high-level description of its own low-level processes—is tangled. Brains may be tangled in precisely this way: the symbolic, representational activity at one level shapes and is shaped by the neural activity at another. The resulting loop, Hofstadter argues, is what produces the sense of "I."</p>
-          <p>---</p>
+          <h2>Levels of description and computer systems</h2>
+          <p>Hofstadter discusses how the same process can be described at multiple levels: hardware (circuits, signals), machine code (instructions the CPU executes), assembly, and high-level language (what the programmer writes). Each level has its own vocabulary and its own “view” of what’s happening. Levels can “see” or “implement” other levels: the compiler translates high-level code to machine code; the CPU “runs” the machine code. So there is no single “real” description—the same physical process supports many valid descriptions. This prepares the reader for self-reference (a system that can represent or reason about itself) and for the idea that minds might be multi-level systems where “thought” is a high-level description of lower-level processes.</p>
+          <h2>Tangled hierarchies</h2>
+          <p>When one level describes or controls another, and that level in turn describes or influences the first, we get a “tangled hierarchy”—not a strict ladder. The chapter suggests that such tangling might be essential for meaning and for the sense of “I”: the brain might have levels that loop back on each other, creating the kind of strange loop that ties the book together.</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">
         <div class="content-inner">
           <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <iframe class="fulltext-embed" title="Chapter X — full text (PDF)" src="../pdfs/chapter-10.pdf"></iframe>
+          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-10.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -92,7 +90,9 @@
       </div>
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
+  <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
       function toBin(n) {
