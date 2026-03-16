@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.12.3] — 2026-03-16
+
+### Changed
+
+- Chapter XI neuron companion: reduce chain from 20 to 12 cells.
+
 ## [0.12.2] — 2026-03-16
 
 ### Changed
