@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+### Added
+
+- Per-chapter PDFs in `pdfs/` (intro.pdf, chapter-01.pdf … chapter-20.pdf) so the Full Text viewer shows only the current chapter.
+- `scripts/split_geb_pdf.py` to regenerate `pdfs/` from `Hofstadter-GEB.pdf` (pypdf required).
+
+### Changed
+
+- Full Text iframe now embeds the segment PDF for that page (e.g. `../pdfs/chapter-01.pdf`) instead of the full book with `#page=N`.
+- Correct PDF start pages in `shared/nav.js` so chapter boundaries align with the first page of each chapter (fixes “starting a page after” when using full PDF elsewhere).
+
 ### Fixed (audit pass)
 
 - Fix footer "All chapters" link on Introduction page (use ../index.html when on any chapter, including intro).

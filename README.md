@@ -20,12 +20,14 @@ Live at [hromp.com/geb](https://hromp.com/geb).
 - `chapter-01/` … `chapter-20/` — One folder per chapter, each with `index.html`.
 - `shared/style.css` — Global styles.
 - `shared/nav.js` — Footer, prev/next chapter links, reading-level switcher logic.
-- `Hofstadter-GEB.pdf` — Book PDF (used for Full Text iframe).
+- `pdfs/` — One PDF per chapter (intro.pdf, chapter-01.pdf … chapter-20.pdf), used by the Full Text iframe on each page so only that chapter is shown.
+- `Hofstadter-GEB.pdf` — Full book PDF (source for generating `pdfs/`).
+- `scripts/split_geb_pdf.py` — Script to regenerate `pdfs/` from the full PDF (requires Python 3 and pypdf: `pip install pypdf`). Run from repo root: `python3 scripts/split_geb_pdf.py`.
 - `PLAN.md` — Chapter plan (central ideas and companion concepts).
 
 ## Build
 
-No build step. Serve the directory as static files (e.g. from `/geb/` on the server). PDF and chapter pages use relative paths.
+No build step. Serve the directory as static files (e.g. from `/geb/` on the server). Each chapter page embeds only its segment from `pdfs/`, so the viewer cannot scroll into other chapters.
 
 ## License / Credits
 
