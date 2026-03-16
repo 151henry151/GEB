@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.7.1] — 2026-03-16
+
+### Fixed
+
+- Chapter III Rubin vase: use same off-white/beige (#e9ddaf) for ground-mode background instead of pure white so it matches the vase color between the two faces.
+
 ## [0.7.0] — 2026-03-16
 
 ### Changed

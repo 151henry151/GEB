@@ -88,13 +88,13 @@
       function setMode(figure) {
         if (figure) {
           bg.setAttribute('fill', '#000');
-          if (label) label.textContent = 'Figure: the vase.';
+          if (label) label.textContent = 'Figure: the vase. (The “theorems” of the picture.)';
           btnFigure.classList.add('btn-primary');
           btnFigure.classList.remove('btn-secondary');
           btnGround.classList.remove('btn-primary');
           btnGround.classList.add('btn-secondary');
         } else {
-          bg.setAttribute('fill', '#fff');
+          bg.setAttribute('fill', '#e9ddaf');
           if (label) label.textContent = 'Ground: the faces.';
           btnGround.classList.add('btn-primary');
           btnGround.classList.remove('btn-secondary');
