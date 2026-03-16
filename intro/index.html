@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction: A Musico-Logical Offering — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Introduction: A Musico-Logical Offering</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>Imagine a song that goes up and up but then sneaks back to where it started—so it’s like it never really left. That’s a “strange loop.”</p>
+          <p>Bach wrote music like that: one tune that goes higher and higher, and when you think it’s gone away, it’s actually back at the beginning. A man named Escher drew pictures where stairs go up and up and still end up at the bottom. And a man named Gödel found something like that inside numbers: a sentence that says “you can’t prove me” and turns out to be true exactly because you can’t prove it.</p>
+          <p>This book is about how the same kind of twist shows up in music, pictures, and math—and how that twist might be part of why we can think and say “I” at all.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>What’s a strange loop?</h2>
+          <p>Sometimes things go in a circle in a surprising way. In music, Bach wrote a canon where the melody seems to rise forever—but after a while you realize it’s back where it started. In art, Escher drew stairs that always go up yet bring you back down. In both cases, you “go up” and yet end up in the same place. That’s a strange loop.</p>
+          <h2>What does math have to do with it?</h2>
+          <p>Gödel discovered that inside certain systems of math there can be a sentence that says, in effect, “I am not provable in this system.” If the system is consistent, that sentence can’t be proved—but then it’s true. So truth and provability don’t match: something can be true even though the system can’t prove it. That’s a strange loop in logic.</p>
+          <h2>What’s the book about?</h2>
+          <p>The book ties together Bach, Escher, and Gödel. It starts with the story of Bach’s Musical Offering (music based on a king’s theme) and uses that as a theme to “improvise” on—so the book itself is a kind of offering. It also introduces the idea of formal systems, rules, and later the debate about whether machines can think. The introduction sets up all of that and explains why the author uses dialogues (conversations between characters) to present many of the ideas.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Strange loops and the book’s project</h2>
+          <p>Hofstadter’s introduction presents the central motif of the book: the “strange loop,” a structure that seems to rise through levels (of melody, of stairs, of reasoning) but bends back so that the “top” level loops down to the “bottom.” In Bach’s Musical Offering, the “Canon per Tonos” gives the illusion of endless ascent while returning to the starting key. In Escher’s lithographs (e.g. <em>Ascending and Descending</em>, <em>Waterfall</em>), the same paradox appears visually. Gödel’s incompleteness result is then introduced as a logical analogue: a sentence that refers to its own unprovability, creating a loop between the formal system and its own semantics.</p>
+          <h2>Bach, the King’s theme, and the Metamusical Offering</h2>
+          <p>The introduction recounts the (possibly embellished) story of Bach’s visit to Frederick the Great and the improvisation that led to the Musical Offering. The King’s theme is austere and chromatic; Bach builds canons and fugues on it. Hofstadter uses this as a metaphor for his own project: the book is a “Metamusical Offering” that improvises on themes of self-reference, formal systems, and the nature of meaning.</p>
+          <h2>From logic to machines and minds</h2>
+          <p>The introduction briefly sketches the history of logic and paradox (e.g. the liar paradox) and connects it to mechanical reasoning and computers. It raises the question of whether artificial intelligence is possible and suggests that strange loops—including rules that modify rules—may lie at the core of intelligence. The origin of the Dialogues (Achilles, the Tortoise, etc., from Zeno and Lewis Carroll) is explained as a way to present ideas first in concrete, metaphorical form before treating them formally in the chapters.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full introduction appears in the book. You can read it in the PDF below (starting at the first page of the introduction).</p>
+          <iframe class="fulltext-embed" title="Introduction — full text (PDF)" src="../Hofstadter-GEB.pdf#page=10"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Pick a figure: Bach, Escher, or Gödel. Each one illustrates a strange loop—something that folds back on itself so that “going up” or “going forward” brings you back to the start.</p>
+      <div class="companion-box" id="intro-companion">
+        <div id="intro-choices">
+          <button type="button" class="btn btn-secondary" data-pick="bach">Bach</button>
+          <button type="button" class="btn btn-secondary" data-pick="escher">Escher</button>
+          <button type="button" class="btn btn-secondary" data-pick="godel">Gödel</button>
+        </div>
+        <div id="intro-result" style="margin-top:1rem; min-height:4rem;"></div>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function () {
+      var result = document.getElementById('intro-result');
+      var choices = document.getElementById('intro-choices');
+      if (!result || !choices) return;
+      var content = {
+        bach: {
+          title: 'Bach: Canon per Tonos',
+          text: 'In the Musical Offering, one canon has three voices. The melody seems to rise by steps through the keys—but after six “steps up” it has returned to the same key it started in. So the music goes “up” and yet loops back. That’s a strange loop in sound.'
+        },
+        escher: {
+          title: 'Escher: Drawing Hands',
+          text: 'Two hands, each drawing the other. The left hand draws the right, and the right draws the left. There’s no “first” hand; each depends on the other. So the picture loops: A draws B, and B draws A.'
+        },
+        godel: {
+          title: 'Gödel: “I am not provable”',
+          text: 'Gödel built a sentence that (when interpreted) says: “I am not a theorem of this system.” If the system could prove it, the system would be inconsistent. So if the system is consistent, it can’t prove that sentence—which means the sentence is true. So something is true but not provable: a loop between truth and proof.'
+        }
+      };
+      choices.querySelectorAll('[data-pick]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var key = btn.getAttribute('data-pick');
+          var c = content[key];
+          if (!c) return;
+          choices.querySelectorAll('.btn').forEach(function (b) { b.classList.remove('btn-primary'); b.classList.add('btn-secondary'); });
+          btn.classList.remove('btn-secondary'); btn.classList.add('btn-primary');
+          result.innerHTML = '<h3 class="font-heading" style="margin-top:0;">' + c.title + '</h3><p>' + c.text + '</p>';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

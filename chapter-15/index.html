@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter XV: Jumping out of the System — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter XV: Jumping out of the System</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>Inside the game, the rules never prove that special sentence G. So inside the game we never see "G is true." But we are outside the game. We can see that G says "you cannot prove me," and we already know the rules do not prove it, so what G says is right. So we know G is true even though the game never gets there.</p>
+          <p>That is jumping out: we use what we know outside the rules to see something the rules themselves cannot show.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Inside TNT</h2>
+          <p>From inside TNT, we only have proofs. G has no proof. So inside the system we cannot establish that G is true; we only see that we have not (and by the construction never will) derive G. So from inside, G is "undecidable."</p>
+          <h2>Outside: we see the truth</h2>
+          <p>We are not inside TNT. We understand what G means: "I am not provable in TNT." And we have shown that TNT does not prove G. So the claim G makes is correct. So we know G is true. We have "jumped out" of the system to see a truth the system cannot prove.</p>
+          <h2>Essential incompleteness and Lucas</h2>
+          <p>The same trick can be repeated: add G as an axiom, and the new system has its own unprovable sentence. So there is no finite way to make TNT complete. The chapter also discusses Lucas's argument (that Gödel shows minds are not mechanical) and why many philosophers reject it: the machine could "jump out" too, or the comparison is flawed.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Seeing the truth of G from outside</h2>
+          <p>Hofstadter emphasizes that although TNT does not prove G, we can recognize that G is true. We do so by understanding the construction: G is equivalent to "G is not provable in TNT," and we have established that TNT does not prove G, so the proposition expressed by G holds. Our reasoning is not carried out inside TNT; it is meta-theoretic. So "jumping out" is moving to a richer perspective (the meta-system) from which we can see the truth of a sentence the object system cannot prove.</p>
+          <h2>Essential incompleteness</h2>
+          <p>If we add G as an axiom to TNT, we get a new system TNT+G. That system also has a Gödel sentence G'. So incompleteness is not fixed by adding one axiom; it is essential. No consistent, sufficiently strong formal system of arithmetic can prove all arithmetic truths.</p>
+          <h2>Lucas and the anti-mechanist argument</h2>
+          <p>The chapter presents and criticizes J. R. Lucas's argument that Gödel's theorem shows the mind cannot be a machine: the idea that we can always "see" the truth of the Gödel sentence, while the machine cannot. Hofstadter (and many others) point out that the machine could be equipped to output its own Gödel sentence as true, or that the comparison between "what we see" and "what the machine does" is not straightforward. So Gödel's theorem does not refute mechanism.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter XV — full text (PDF)" src="../Hofstadter-GEB.pdf#page=471"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Inside TNT there is no proof of G. From outside we can see that G is true. Click "Jump out" to switch to the outside view.</p>
+      <div class="companion-box" id="jump-companion">
+        <p><strong>G:</strong> "This sentence is not provable in TNT."</p>
+        <p id="jump-view-label" style="font-size:0.9rem; margin:0.5rem 0;">View: <strong>Inside TNT</strong> — we only have proofs; G has no proof.</p>
+        <p id="jump-status" style="padding:0.5rem; border-radius:6px; background:var(--panel); margin:0.5rem 0;">Status: ? (no proof of G inside the system)</p>
+        <button type="button" class="btn btn-primary" id="jump-btn">Jump out of the system</button>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      var label = document.getElementById('jump-view-label');
+      var status = document.getElementById('jump-status');
+      var btn = document.getElementById('jump-btn');
+      var outside = false;
+      function update(){
+        if (outside) {
+          label.innerHTML = 'View: <strong>Outside</strong> — we see that G says "I am not provable" and TNT does not prove G, so G is true.';
+          status.textContent = 'Status: G is TRUE. (We see it from outside; TNT cannot prove it.)';
+          status.className = 'truth-true';
+          status.style.background = 'rgba(58, 125, 68, 0.15)';
+          status.style.border = '1px solid var(--true)';
+          btn.textContent = 'Back inside';
+        } else {
+          label.innerHTML = 'View: <strong>Inside TNT</strong> — we only have proofs; G has no proof.';
+          status.textContent = 'Status: ? (no proof of G inside the system)';
+          status.className = '';
+          status.style.background = '';
+          status.style.border = '';
+          btn.textContent = 'Jump out of the system';
+        }
+      }
+      btn.addEventListener('click', function(){
+        outside = !outside;
+        update();
+      });
+    })();
+  </script>
+</body>
+</html>

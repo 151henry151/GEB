@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter XVIII: Artificial Intelligence Retrospects — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter XVIII: Artificial Intelligence: Retrospects</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>People once thought that if we could give a machine enough rules, it would think like us. So they tried to write down rules for games, for words, for how to see things. Sometimes it worked a little; often it was too hard. So the history of "robot brains" is full of big hopes and then "we need more rules."</p>
+          <p>That does not mean machines cannot be smart. It means being smart might need many levels of rules, and maybe rules that change themselves, like in the book.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Early AI</h2>
+          <p>Symbolic AI tried to capture intelligence as rules and symbols: logic, search, expert systems. Successes (e.g. chess, simple reasoning) and limits (brittleness, the frame problem, common sense). The dream was that enough rules would add up to mind.</p>
+          <h2>Levels of description again</h2>
+          <p>The same behavior can be described in many ways: "she sorted the numbers," "she followed the sort algorithm," "these neurons fired." AI often aimed at one level (the rule or program level) and hoped it would match the others. The chapter looks back at how that played out.</p>
+          <h2>Can machines think?</h2>
+          <p>The debate is not settled. Gödel does not prove machines cannot think; the book suggests that strange loops and many-level rules may be what we need to understand both minds and machines.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Artificial intelligence: retrospect</h2>
+          <p>Hofstadter reviews the history of AI: the early optimism (1950s–60s), symbolic AI and its successes (game playing, theorem proving, expert systems) and failures (brittleness, lack of common sense, the frame problem). The idea that intelligence could be captured in formal rules is both powerful and limited.</p>
+          <h2>Levels and the description of intelligence</h2>
+          <p>The same intelligent behavior admits multiple descriptions: high-level (goals, intentions), algorithmic (steps, procedures), and physical (neurons, circuits). AI has often worked at the middle level. Whether that is sufficient, or whether "understanding" and "meaning" require something more (or just more of the same at many levels), is left open.</p>
+          <h2>Connection to the book's themes</h2>
+          <p>Formal systems, meaning, and self-reference recur. The question "can a machine think?" is reframed in terms of whether mechanical processes can realize the same multi-level, self-referential structures that the book argues are central to mind.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter XVIII — full text (PDF)" src="../Hofstadter-GEB.pdf#page=601"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">One task (sort three numbers) described at three levels: human instructions, a rule list, and code. Same outcome; different description. Enter three numbers and run to see the result at every level.</p>
+      <div class="companion-box" id="ai-levels-companion">
+        <p><strong>Task:</strong> Sort three numbers from smallest to largest.</p>
+        <p style="font-size:0.85rem; margin:0.5rem 0 0.25rem 0;"><strong>Level 0 (human):</strong> "Put the smallest first, then the middle one, then the biggest."</p>
+        <p style="font-size:0.85rem; margin:0 0 0.25rem 0;"><strong>Level 1 (rules):</strong> "Compare A,B; if A&gt;B swap. Compare B,C; if B&gt;C swap. Compare A,B again; if A&gt;B swap."</p>
+        <p style="font-size:0.85rem; margin:0 0 0.5rem 0;"><strong>Level 2 (code):</strong> Sort the list in place with comparisons and swaps.</p>
+        <label>Three numbers: <input type="text" id="ai-nums" value="3, 1, 2" style="width:6rem; padding:0.3rem;"></label>
+        <button type="button" class="btn btn-primary" id="ai-run" style="margin-left:0.5rem;">Run</button>
+        <p id="ai-result" style="margin-top:0.75rem; font-weight:600;"></p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      document.getElementById('ai-run').addEventListener('click', function(){
+        var raw = document.getElementById('ai-nums').value;
+        var parts = raw.split(/[,\s]+/).map(function(s){ return parseInt(s, 10); }).filter(function(n){ return !isNaN(n); });
+        if (parts.length < 3) { document.getElementById('ai-result').textContent = 'Enter at least 3 numbers (e.g. 3, 1, 2).'; return; }
+        var a = parts[0], b = parts[1], c = parts[2];
+        if (a > b) { var t = a; a = b; b = t; }
+        if (b > c) { var t = b; b = c; c = t; }
+        if (a > b) { var t = a; a = b; b = t; }
+        document.getElementById('ai-result').textContent = 'Result (same at every level): ' + a + ', ' + b + ', ' + c;
+        document.getElementById('ai-result').className = 'truth-true';
+      });
+    })();
+  </script>
+</body>
+</html>

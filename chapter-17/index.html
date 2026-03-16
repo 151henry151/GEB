@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter XVII: Church, Turing, Tarski — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter XVII: Church, Turing, Tarski, and Others</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>Some programs run forever and never stop. Others stop after a while. A big question is: can we always tell which? It turns out we cannot. There is no perfect rule that, for every program, says "it will stop" or "it will not stop." So some questions about programs have no answer we can get by a single recipe.</p>
+          <p>That is like Gödel: some things are true but we cannot prove them with one fixed set of rules. So logic and computers both have limits.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Church and Turing</h2>
+          <p>Church and Turing showed that some problems are undecidable: there is no algorithm that always gives the right yes/no answer. The halting problem is the most famous: given a program and an input, does the program eventually stop? No general algorithm can decide that for every program and input.</p>
+          <h2>Tarski</h2>
+          <p>Tarski showed that truth (in a rich enough language) cannot be defined inside the same language. So "this sentence is true" cannot be consistently defined in the object language. That connects to the liar paradox and to Gödel.</p>
+          <h2>Why it matters</h2>
+          <p>Undecidability, uncomputability, and the indefinability of truth are three limits: on what we can compute, what we can decide, and what we can say about truth from inside a system.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Church, Turing, and the halting problem</h2>
+          <p>Hofstadter discusses Church's thesis (the identification of "computable" with lambda-definable / recursive) and Turing's characterization of computation by machines. The halting problem is undecidable: there is no Turing machine that, given a description of a machine M and an input x, always correctly determines whether M halts on x. The proof is by diagonalization: assume such a machine H exists, then build a machine that does the opposite of what H says, leading to contradiction.</p>
+          <h2>Tarski and the indefinability of truth</h2>
+          <p>Tarski showed that a sufficiently rich formal language cannot contain its own truth predicate: if we could define "true" in the language, we could construct a liar sentence. So truth (for that language) is definable only in a richer meta-language. This parallels Gödel's incompleteness: provability can be expressed inside the system, but truth (for all sentences) cannot.</p>
+          <h2>Connections</h2>
+          <p>Gödel's theorem, the undecidability of the halting problem, and Tarski's indefinability result are all linked by diagonalization and self-reference. They mark fundamental limits on formal systems and computation.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter XVII — full text (PDF)" src="../Hofstadter-GEB.pdf#page=566"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">A simple "program": if n is even, halve it; if odd, do 3n+1. Repeat until n = 1. Will it always stop? Pick a starting n and run (we cap at 500 steps). No one has found an n that runs forever, but no one has proved they all stop.</p>
+      <div class="companion-box" id="halting-companion">
+        <p><strong>Rule:</strong> while n ≠ 1: if n is even then n = n/2, else n = 3n+1.</p>
+        <label>Start n: <input type="number" id="halting-n" value="7" min="1" max="999999" style="width:5rem; padding:0.3rem;"></label>
+        <button type="button" class="btn btn-primary" id="halting-run" style="margin-left:0.5rem;">Run</button>
+        <p style="font-size:0.85rem; margin-top:0.5rem;"><strong>Sequence (last 15 values):</strong></p>
+        <p id="halting-seq" class="logic" style="font-size:0.85rem; word-break:break-all; margin:0.25rem 0;"></p>
+        <p id="halting-verdict" style="margin-top:0.5rem; font-weight:600;"></p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      var maxSteps = 500;
+      function run(){
+        var n = parseInt(document.getElementById('halting-n').value, 10) || 7;
+        if (n < 1) n = 7;
+        var seq = [];
+        var x = n;
+        var steps = 0;
+        while (x !== 1 && steps < maxSteps) {
+          seq.push(x);
+          x = (x % 2 === 0) ? x / 2 : 3 * x + 1;
+          steps++;
+        }
+        if (x === 1) seq.push(1);
+        var last = seq.slice(-15);
+        document.getElementById('halting-seq').textContent = last.join(' → ');
+        var v = document.getElementById('halting-verdict');
+        if (x === 1) {
+          v.textContent = 'Halted at 1 after ' + steps + ' steps.';
+          v.className = 'truth-true';
+        } else {
+          v.textContent = 'Stopped after ' + maxSteps + ' steps (limit). We do not know if it would eventually reach 1.';
+          v.className = 'truth-undefined';
+        }
+      }
+      document.getElementById('halting-run').addEventListener('click', run);
+    })();
+  </script>
+</body>
+</html>

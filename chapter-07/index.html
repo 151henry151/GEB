@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter VII: The Propositional Calculus — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter VII: The Propositional Calculus</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>You can play a game with "and," "or," and "not." If I say "it's rainy AND cold," the whole thing is only true when both parts are true. "Rainy OR sunny" is true when at least one is true. "NOT rainy" is true when it's not rainy.</p>
+          <p>People made strict rules for this game so that you never get a wrong answer if you follow the rules. The rules are the propositional calculus. The same idea as the pq-system: follow the shapes, and truth comes out.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Propositional logic</h2>
+          <p>The propositional calculus is a formal system for combining statements with and, or, not, if-then. Each letter (P, Q) can be true or false. The rules tell you which combined formulas are theorems (always true, i.e. tautologies).</p>
+          <h2>Form and meaning again</h2>
+          <p>When we interpret P, Q as statements and the connectives as and, or, not, the theorems turn out to be exactly the logical truths. So meaning emerges from form.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>The propositional calculus as a formal system</h2>
+          <p>Hofstadter presents the propositional calculus: a formal language with proposition letters and connectives (and, or, not, if-then), axioms (e.g. tautologies), and rules of inference (e.g. modus ponens). Theorems are exactly the tautologies.</p>
+          <h2>Isomorphism with truth values</h2>
+          <p>Under the standard interpretation, the theorems correspond to logical truths. So once again, meaningless symbols acquire meaning by virtue of the form of the theorems.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter VII — full text (PDF)" src="../Hofstadter-GEB.pdf#page=189"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Set P and Q true or false. The formula updates; green means true, red means false.</p>
+      <div class="companion-box" id="prop-companion">
+        <p><strong>Formula:</strong> <code class="logic">P and Q</code></p>
+        <div style="margin:0.75rem 0;">
+          <label><input type="checkbox" id="prop-p"> P</label>
+          <label style="margin-left:1rem;"><input type="checkbox" id="prop-q"> Q</label>
+        </div>
+        <p id="prop-result" style="font-weight:600;"></p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function () {
+      var p = document.getElementById('prop-p');
+      var q = document.getElementById('prop-q');
+      var res = document.getElementById('prop-result');
+      function update() {
+        var pv = p && p.checked;
+        var qv = q && q.checked;
+        var val = pv && qv;
+        if (res) {
+          res.textContent = 'P and Q = ' + (val ? 'TRUE' : 'FALSE');
+          res.className = val ? 'truth-true' : 'truth-false';
+        }
+      }
+      if (p) p.addEventListener('change', update);
+      if (q) q.addEventListener('change', update);
+      update();
+    })();
+  </script>
+</body>
+</html>

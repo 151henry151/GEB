@@ -1,0 +1,58 @@
+# Changelog
+
+All notable changes to the GEB Interactive Companion project are documented here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Fixed (audit pass)
+
+- Fix footer "All chapters" link on Introduction page (use ../index.html when on any chapter, including intro).
+- Fix MIU rule labels in Chapter I (Rule I: Mx to Mxx, Rule II: xI to xIU).
+- Fix recursive tree stroke color in Chapter V (use hex #2e6b8a; canvas 2D context does not resolve CSS variables).
+- Add pointer-events="none" to Chapter XX diagram text so circle clicks register.
+- Add aria-label="Reading level" to reading switcher on chapters 6, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20.
+- Remove unused homeHref from shared/nav.js.
+- Fix Chapter X iframe title (was "Chapter VIII", now "Chapter X").
+- Use correct spelling "Gödel" (with umlaut) throughout the project (chapters 9, 13–20, CHANGELOG).
+- Add "The full chapter appears in the book. Read it in the PDF below." to Full Text panels on Chapters VI, IX, XI, XII (was missing).
+- Standardize all chapter iframe titles to "Chapter N — full text (PDF)" (Chapters IX, XI–XX).
+- Add aria-selected="false" to inactive reading-level tabs on chapters 6, 11–20 for accessibility.
+- Add EB Garamond italic variant (1,400) to font preload on chapters 6, 11–20 for consistent typography.
+- Add "Built with care." to site footer (shared/nav.js) per project spec.
+
+## [0.2.0] — 2025-03-15
+
+### Added
+
+- Complete chapter-specific ELI5, ELI10, and ELI20 summaries for Chapters XIII through XX (replacing placeholder content).
+- Unique interactive companions for Chapters XIII–XX: BlooP vs FlooP (bounded/unbounded search), Gödel sentence step-through, Inside/Outside jump, quine toy, 3n+1 halting demo, same-task three levels, Birthday party frame slots, Bach–Escher–Gödel loop diagram.
+
+## [0.1.0] — 2025-03-15
+
+### Added
+
+- Add landing page (`index.html`) with book title, short description, ELI reading-level note, and chapter grid linking to intro and chapters I–XX.
+- Add shared design system: `shared/style.css` (colors, typography, two-pane layout, reading switcher, chapter nav, footer) and `shared/nav.js` (CHAPTERS data, footer injection, prev/next links, reading-level switcher with localStorage).
+- Add Introduction page (`intro/index.html`) with ELI5/ELI10/ELI20 summaries and Full Text (PDF iframe), and Strange-loop explorer companion (Bach / Escher / Gödel).
+- Add Chapter I (MU-puzzle) page with ELI5/ELI10/ELI20, Full Text PDF, and MIU-system interactive companion (rules I–IV, reset, derivation log).
+- Add Chapter II (Meaning and Form) page with pq-system checker companion (input pq-string, check theorem, show interpretation).
+- Add Chapter III (Figure and Ground) page with figure–ground companion (vase vs two faces toggle).
+- Add Chapter IV (Consistency, Completeness, and Geometry) page with geometry curvature slider (flat vs curved triangle).
+- Add Chapter V (Recursive Structures) page with recursive tree canvas (depth slider).
+- Add Chapter VI (Location of Meaning) page with message–decoder companion (same binary string, ASCII vs number decoder).
+- Add Chapter VII (Propositional Calculus) page with P-and-Q truth toggles.
+- Add Chapter VIII (TNT) page with TNT formula example (S0+S0=SS0).
+- Add Chapter IX (Mumon and Gödel) page with Gödel sentence companion (Try to prove G / Assume G false).
+- Add Chapter X (Levels of Description) page with level 0 / level 1 add-machine companion.
+- Add Chapter XI (Brains and Thoughts) page with neuron-row companion (toggle cells, Step rule).
+- Add Chapter XII (Minds and Thoughts) page with symbol-in-context companion (arrow vs fifth item).
+- Add Chapter XIII (BlooP and FlooP and GlooP) with chapter-specific ELI5/ELI10/ELI20 and BlooP vs FlooP companion (bounded vs unbounded search, same predicate).
+- Add Chapter XIV (On Formally Undecidable Propositions) with ELI text and Gödel sentence step-through companion (three steps plus TRUE but not PROVABLE verdict).
+- Add Chapter XV (Jumping out of the System) with ELI text and Inside vs Outside companion (toggle view, jump out to see G is true).
+- Add Chapter XVI (Self-Ref and Self-Rep) with ELI text and quine companion (editable source, run outputs self; change one character to break reproduction).
+- Add Chapter XVII (Church, Turing, Tarski) with ELI text and halting companion (3n+1 rule, pick n, run with step cap, show sequence and verdict).
+- Add Chapter XVIII (AI Retrospects) with ELI text and same-task-different-level companion (sort three numbers: human / rules / code, run to see result).
+- Add Chapter XIX (AI Prospects) with ELI text and frame-slots companion (Birthday party: who, when, where, cake?; Infer defaults).
+- Add Chapter XX (Strange Loops) with ELI text and Bach–Escher–Gödel loop diagram (click node to highlight loop and caption).
+- Add `PLAN.md` with chapter list, central ideas, companion concepts, and implementation order.
+- Add `VERSION` and `CHANGELOG.md`.

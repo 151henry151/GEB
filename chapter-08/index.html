@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter VIII: Typographical Number Theory — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter VIII: Typographical Number Theory</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>We can write numbers and "plus" and "times" using only a few symbols: zero, "next" (one more), and signs for add and multiply. So "next next zero" is two, and "next next zero + next next next zero" is 2+3. All of math with numbers can be turned into a game of symbols.</p>
+          <p>That game is called TNT—Typographical Number Theory. Every rule is just "replace this shape with that shape." But the shapes turn out to be number facts. So the book is writing number math with symbols.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>TNT: arithmetic as symbol manipulation</h2>
+          <p>TNT uses symbols: 0 (zero), S (successor: "the next number"), +, ·, =, and variables (a, b, c, …). Terms like S0, SS0 stand for 1, 2. Equations like SS0+SSS0=SSSSS0 say 2+3=5. Axioms and rules let you derive true number facts by symbol pushing alone.</p>
+          <h2>Why it matters for Gödel</h2>
+          <p>Gödel's trick is to assign a number to every formula and proof. So "this formula is not provable" becomes a number fact that a formula of TNT can express. TNT then "talks about" its own formulas—that's the key to the incompleteness theorem.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Typographical Number Theory</h2>
+          <p>Hofstadter presents TNT: a formal system whose language includes 0, S (successor), +, ·, =, variables, and logical connectives and quantifiers. Terms represent natural numbers (S…S0 = n); formulas represent statements about numbers. Axioms and rules (e.g. induction) allow derivation of number-theoretic truths. Every theorem, when interpreted, is a true statement of arithmetic.</p>
+          <h2>Arithmetization of syntax</h2>
+          <p>The stage is set for Gödel numbering: assigning a unique number to each symbol, formula, and proof. Then "being a proof of formula X" becomes a number-theoretic relation. So TNT can encode statements about its own formulas—the precondition for self-reference and incompleteness.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter VIII — full text (PDF)" src="../Hofstadter-GEB.pdf#page=212"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Build a TNT term or equation. S means "successor"; SS0 is 2. The interpreter shows the number fact.</p>
+      <div class="companion-box" id="tnt-companion">
+        <p><strong>Example:</strong> <code class="logic">S0 + S0 = SS0</code></p>
+        <p style="margin:0.5rem 0 0.25rem 0;">Interpretation: 1 + 1 = 2</p>
+        <p style="font-size:0.9rem; color:var(--muted);">TNT encodes arithmetic as typography: the same fact (1+1=2) is expressed purely by symbol shape.</p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter VI: The Location of Meaning — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter VI: The Location of Meaning</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>Meaning lives in the message, the decoder, and the receiver together. The same marks can mean different things with a different decoder.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Message, decoder, receiver</h2>
+          <p>Meaning is split among the message, the decoder, and the receiver. Change the decoder and the meaning of the message can change.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>The location of meaning</h2>
+          <p>Hofstadter discusses how meaning is distributed among message, decoder, and context. Symbols in a formal system have no intrinsic meaning until we provide an interpretation.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter VI — full text (PDF)" src="../Hofstadter-GEB.pdf#page=166"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Same message, different decoder: choose a decoder to see how the interpretation changes.</p>
+      <div class="companion-box">
+        <p><strong>Message:</strong> <code class="logic">01000001</code></p>
+        <label>Decoder: <select id="decoder"><option value="ascii">ASCII</option><option value="num">Number</option></select></label>
+        <p id="out" style="margin-top:0.5rem;"></p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      var s=document.getElementById('decoder');
+      var o=document.getElementById('out');
+      function run(){
+        if(s.value==='ascii') o.textContent='Interpretation: letter A (code 65)';
+        else o.textContent='Interpretation: number 65';
+      }
+      s.addEventListener('change',run);
+      run();
+    })();
+  </script>
+</body>
+</html>

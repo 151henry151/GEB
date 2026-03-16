@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter XIX: Artificial Intelligence Prospects — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter XIX: Artificial Intelligence: Prospects</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>When we think about a birthday party we think: who is it for? when? where? is there cake? So one idea (birthday party) has little boxes we can fill. If you say "at the park" we might guess there will be cake and balloons. So knowledge can be like a form with slots, and we fill in or guess from context.</p>
+          <p>AI can use the same idea: a "frame" with slots. Fill some; the program suggests the rest from what usually goes with that kind of situation.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Frames and representation</h2>
+          <p>Minsky and others proposed "frames": structures for a situation type (e.g. birthday party) with slots (who, when, where, cake?, presents?). Defaults fill in typical values; we only override when we have new information. So reasoning uses context and typical expectations.</p>
+          <h2>Prospects for AI</h2>
+          <p>The chapter looks forward: how might AI represent meaning, handle context, and integrate many levels? Frames are one way to capture "what usually happens" and "what goes with what." The book suggests that layered, self-referential structures may be needed for real understanding.</p>
+          <h2>Integration</h2>
+          <p>Combining symbols, frames, and the themes of the book (strange loops, levels, meaning) points toward systems that can hold context and reflect on their own representations.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Artificial intelligence: prospects</h2>
+          <p>Hofstadter discusses how knowledge might be represented in AI: frames (Minsky), scripts, and context-dependent structures. A frame is a schema for a situation type, with slots that can be filled or defaulted. So "birthday party" brings with it typical slots (host, date, location, cake, presents) and default expectations. Reasoning then involves filling slots, propagating defaults, and handling exceptions.</p>
+          <h2>Meaning and context</h2>
+          <p>The challenge for AI is to capture the way human thought relies on context, typicality, and layers of interpretation. Frames are one step toward that. The chapter connects to the book's themes: meaning emerges in context; multiple levels of description interact; self-reference and strange loops may be essential to mind.</p>
+          <h2>Looking ahead</h2>
+          <p>The prospects for AI are left open: the book suggests that the same ideas that explain formal systems, incompleteness, and the location of meaning may also guide the design of systems that can understand and reason in a human-like way.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter XIX — full text (PDF)" src="../Hofstadter-GEB.pdf#page=648"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">A "Birthday party" frame with slots. Fill in some; click Infer to fill defaults (typical values) for the rest. Shows how knowledge can be structured by context.</p>
+      <div class="companion-box" id="frame-companion">
+        <p><strong>Frame: Birthday party</strong></p>
+        <div style="display:grid; gap:0.35rem; margin:0.5rem 0;">
+          <label>who: <input type="text" id="frame-who" placeholder="e.g. Emma" style="width:10rem; padding:0.25rem;"></label>
+          <label>when: <input type="text" id="frame-when" placeholder="e.g. Saturday" style="width:10rem; padding:0.25rem;"></label>
+          <label>where: <input type="text" id="frame-where" placeholder="e.g. park" style="width:10rem; padding:0.25rem;"></label>
+          <label>cake?: <input type="text" id="frame-cake" placeholder="yes / no / ?" style="width:10rem; padding:0.25rem;"></label>
+        </div>
+        <button type="button" class="btn btn-primary" id="frame-infer">Infer defaults</button>
+        <p id="frame-result" style="margin-top:0.75rem; font-size:0.9rem;"></p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      var who = document.getElementById('frame-who');
+      var when = document.getElementById('frame-when');
+      var where = document.getElementById('frame-where');
+      var cake = document.getElementById('frame-cake');
+      var result = document.getElementById('frame-result');
+      document.getElementById('frame-infer').addEventListener('click', function(){
+        var w = who.value.trim();
+        var t = when.value.trim();
+        var wh = where.value.trim();
+        var c = cake.value.trim().toLowerCase();
+        var suggestions = [];
+        if (!w) suggestions.push('who: (default) the birthday person');
+        else suggestions.push('who: ' + w);
+        if (!t) suggestions.push('when: (default) afternoon');
+        else suggestions.push('when: ' + t);
+        if (!wh) suggestions.push('where: (default) home or party venue');
+        else suggestions.push('where: ' + wh);
+        if (!c || c === '?') suggestions.push('cake?: (default) yes');
+        else suggestions.push('cake?: ' + cake.value);
+        result.textContent = 'Filled frame: ' + suggestions.join('; ');
+        result.className = 'truth-true';
+      });
+    })();
+  </script>
+</body>
+</html>

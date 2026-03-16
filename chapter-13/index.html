@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter XIII: BlooP and FlooP and GlooP — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter XIII: BlooP and FlooP and GlooP</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>Some searches have a lid. You look for something only up to a certain number, and then you stop. That way you always finish. Other searches have no lid: you keep looking until you find it. If the thing is never there, you never stop.</p>
+          <p>BlooP is the kind that always has a lid. FlooP can search without a lid. So BlooP can only do the "safe" searches that are guaranteed to end. FlooP can try the risky ones. Some problems need the risky kind; that is why we need both.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>BlooP: bounded loops</h2>
+          <p>BlooP is a made-up language where every loop has a fixed upper bound before you start. So "for n from 0 to N" is allowed; "keep going until you find n such that ..." with no bound is not. Every BlooP program is guaranteed to halt. The functions it can compute are called primitive recursive.</p>
+          <h2>FlooP: unbounded search</h2>
+          <p>FlooP adds unbounded search: "find the smallest n such that P(n) is true." If no such n exists, the program runs forever. So FlooP can compute more functions than BlooP, but we lose the guarantee that the program always stops.</p>
+          <h2>Why it matters</h2>
+          <p>This sets up Gödel: to say "there is no proof of G" we need to search through all possible proofs. That search is unbounded. So the "proof predicate" is FlooP but not BlooP. Incomplete systems are tied to the power of unbounded search.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Primitive recursive and general recursive functions</h2>
+          <p>Hofstadter introduces BlooP (bounded loop language), in which every loop runs a predetermined number of times or is bounded by a value computed before the loop. All BlooP programs terminate. The class of functions computable in BlooP is the primitive recursive functions.</p>
+          <h2>FlooP and unbounded search</h2>
+          <p>FlooP adds a single unbounded search operation: find the smallest n such that some (BlooP-computable) predicate holds. If no such n exists, the program does not halt. FlooP captures the general recursive (mu-recursive) functions. There are number-theoretic functions that are FlooP-computable but not BlooP-computable.</p>
+          <h2>GlooP and the link to incompleteness</h2>
+          <p>GlooP is the "universal" language that can simulate any FlooP program. The key point is that the property "n is the Gödel number of a proof in TNT" is primitive recursive (BlooP); but "there exists a proof of the formula with Gödel number x" requires unbounded search. So the incompleteness argument hinges on predicates that go beyond BlooP.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter XIII — full text (PDF)" src="../Hofstadter-GEB.pdf#page=413"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">BlooP searches only up to a bound N; FlooP searches without a bound. Same question: "smallest n where n is even and n &gt; 2?" Run both and see how BlooP always stops; FlooP keeps going until it finds one (or we cap steps).</p>
+      <div class="companion-box" id="bloop-companion">
+        <p><strong>Question:</strong> Find smallest n such that n is even and n &gt; 2. (Answer: 4.)</p>
+        <p style="font-size:0.85rem; margin-bottom:0.5rem;">BlooP: search only n from 0 to <input type="number" id="bloop-bound" value="10" min="1" max="100" style="width:4rem; padding:0.25rem;">.</p>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <button type="button" class="btn btn-primary" id="bloop-run">Run BlooP</button>
+          <button type="button" class="btn btn-secondary" id="floop-run">Run FlooP</button>
+        </div>
+        <div id="bloop-result" style="margin-top:0.75rem; min-height:2.5rem; font-size:0.9rem;"></div>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      var boundInput = document.getElementById('bloop-bound');
+      var resultDiv = document.getElementById('bloop-result');
+      function runBlooP(){
+        var N = parseInt(boundInput.value, 10) || 10;
+        resultDiv.textContent = '';
+        resultDiv.className = '';
+        for (var n = 0; n <= N; n++) {
+          if (n > 2 && n % 2 === 0) {
+            resultDiv.textContent = 'BlooP (bound ' + N + '): found n = ' + n + '. Stopped.';
+            resultDiv.className = 'truth-true';
+            return;
+          }
+        }
+        resultDiv.textContent = 'BlooP (bound ' + N + '): no such n in range. Stopped.';
+        resultDiv.className = 'truth-undefined';
+      }
+      function runFlooP(){
+        resultDiv.textContent = 'FlooP: searching...';
+        resultDiv.className = '';
+        var n = 0;
+        var steps = 0;
+        var maxSteps = 1000;
+        function search() {
+          while (steps < maxSteps) {
+            if (n > 2 && n % 2 === 0) {
+              resultDiv.textContent = 'FlooP: found n = ' + n + ' (after unbounded search).';
+              resultDiv.className = 'truth-true';
+              return;
+            }
+            n++; steps++;
+          }
+          resultDiv.textContent = 'FlooP: stopped after ' + maxSteps + ' steps (no bound in real FlooP).';
+          resultDiv.className = 'truth-undefined';
+        }
+        search();
+      }
+      document.getElementById('bloop-run').addEventListener('click', runBlooP);
+      document.getElementById('floop-run').addEventListener('click', runFlooP);
+    })();
+  </script>
+</body>
+</html>

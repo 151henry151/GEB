@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter X: Levels of Description — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter X: Levels of Description, and Computer Systems</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>A computer can be described in many ways: it is adding numbers, or it is moving little switches, or it is running a program. Same machine, different levels. Sometimes one level describes another level.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Multiple levels</h2>
+          <p>Hardware, machine code, high-level program: each is a level of description of the same process. Systems can describe or run other systems.</p>
+          <h2>Ant Fugue and Aunt Hillary</h2>
+          <p>The dialogue introduces levels of thought and the idea that consciousness might involve tangled levels of description.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Levels of description</h2>
+          <p>Hofstadter discusses how the same process can be described at multiple levels: hardware, instruction set, high-level language. Levels can see or implement other levels. This prepares the reader for self-reference and for the idea that minds might be multi-level systems.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter X — full text (PDF)" src="../Hofstadter-GEB.pdf#page=291"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">One simple machine: add two numbers. See the same operation at a high level (add) and a low level (steps).</p>
+      <div class="companion-box">
+        <p><strong>Level 0:</strong> Add A and B.</p>
+        <p><strong>Level 1:</strong> LOAD A; ADD B; STORE C.</p>
+        <p style="font-size:0.9rem; color:var(--muted);">Same process, different description.</p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+</body>
+</html>

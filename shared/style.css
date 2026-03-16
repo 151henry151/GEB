@@ -1,0 +1,330 @@
+/* GEB Interactive Companion — shared design system */
+
+:root {
+  --bg: #f7f4ef;
+  --text: #1a1a2e;
+  --accent: #b5873b;
+  --accent-secondary: #2e6b8a;
+  --panel: #eeeae3;
+  --border: #d4cfc7;
+  --true: #3a7d44;
+  --false: #8b3a3a;
+  --undefined: #7a6b3a;
+  --muted: #5c5c6a;
+  --left-pane: 60%;
+  --right-pane: 40%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Typography */
+h1, h2, h3, .font-heading {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 600;
+}
+
+h1 { font-size: 1.75rem; margin: 0 0 0.5rem 0; }
+h2 { font-size: 1.35rem; margin: 1.25rem 0 0.5rem 0; }
+h3 { font-size: 1.15rem; margin: 1rem 0 0.35rem 0; }
+h2:first-child, h3:first-child { margin-top: 0; }
+
+p { margin: 0 0 1rem 0; }
+p:last-child { margin-bottom: 0; }
+
+.logic, code, .mono {
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+  font-size: 0.9em;
+}
+
+a {
+  color: var(--accent-secondary);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Layout: two-pane chapter pages */
+.chapter-layout {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100vh;
+}
+
+.chapter-left {
+  width: var(--left-pane);
+  min-width: 280px;
+  padding: 1.5rem 2rem 2rem;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+}
+
+.chapter-right {
+  width: var(--right-pane);
+  min-width: 260px;
+  padding: 1.5rem 1.5rem 2rem;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+}
+
+@media (max-width: 900px) {
+  .chapter-left,
+  .chapter-right {
+    width: 100%;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+/* Reading level switcher */
+.reading-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+
+.reading-switcher [role="tab"],
+.reading-switcher .reading-tab {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.reading-switcher [role="tab"]:hover,
+.reading-switcher .reading-tab:hover {
+  background: var(--border);
+  border-color: var(--accent);
+}
+
+.reading-switcher [role="tab"][aria-selected="true"],
+.reading-switcher .reading-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.reading-switcher [role="tab"]:focus-visible,
+.reading-switcher .reading-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Content panels — only one visible */
+.reading-content { display: none; }
+.reading-content.on { display: block; animation: fadeIn 0.25s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.reading-content .content-inner {
+  max-width: 65ch;
+}
+
+/* Full text: PDF embed */
+.fulltext-embed {
+  width: 100%;
+  min-height: 70vh;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+}
+
+/* Chapter nav (prev/next) */
+.chapter-nav {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.chapter-nav a {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-weight: 500;
+}
+.chapter-nav a:hover {
+  background: var(--border);
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* Companion pane */
+.companion-caption {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.companion-box {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  min-height: 200px;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn:hover { transform: translateY(-1px); }
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover { background: #9a7232; }
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-secondary:hover { background: var(--panel); border-color: var(--accent); }
+
+/* Landing page */
+.landing {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.landing .book-title {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.landing .book-subtitle {
+  font-size: 1rem;
+  color: var(--muted);
+  margin: 0 0 1.5rem 0;
+}
+
+.landing .intro {
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+.landing .eli-note {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  padding: 1rem 1.25rem;
+  background: var(--panel);
+  border-radius: 8px;
+  border-left: 4px solid var(--accent);
+}
+
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.chapter-card {
+  display: block;
+  padding: 1.25rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.chapter-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  text-decoration: none;
+  color: var(--text);
+}
+
+.chapter-card .card-num {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
+}
+
+.chapter-card .card-title {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.chapter-card .card-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Footer */
+.site-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.site-footer a { color: var(--accent-secondary); }
+
+/* Utility */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+/* Truth colors for companions */
+.truth-true { color: var(--true); }
+.truth-false { color: var(--false); }
+.truth-undefined { color: var(--undefined); }

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter XI: Brains and Thoughts — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter XI: Brains and Thoughts</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>Your brain is made of tiny cells that turn on and off and pass signals. Thoughts might be like patterns of those signals. So thinking could be something that happens when lots of little parts follow rules together.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Brains as physical systems</h2>
+          <p>Neurons, symbols, and levels of description. Can mental states be understood as physical states? The chapter explores how brain activity might realize thought.</p>
+          <h2>Reductionism and holism</h2>
+          <p>The Ant Fugue raises the question: is the colony conscious or only the ants? Levels of description apply to brains too.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Brains and thoughts</h2>
+          <p>Hofstadter discusses the relationship between neural activity and symbolic thought. Brains can be described at multiple levels; the question of whether thought is reducible to physics or emerges at a higher level is framed in terms of the book themes.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter XI — full text (PDF)" src="../Hofstadter-GEB.pdf#page=343"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">A row of neurons. Turn a few on; click Step to apply a simple rule. Watch activation spread.</p>
+      <div class="companion-box" id="neuron-companion">
+        <div id="neurons" style="display:flex; gap:4px; margin-bottom:0.5rem; flex-wrap:wrap;"></div>
+        <button type="button" class="btn btn-primary" id="neuro-step">Step</button>
+        <p style="font-size:0.85rem; margin-top:0.5rem;">Rule: a cell turns ON if it had 2 or more ON neighbors. Click cells to toggle.</p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      var n=8;
+      var state=[0,0,1,0,0,1,0,0];
+      var div=document.getElementById('neurons');
+      function render(){
+        div.innerHTML='';
+        for(var i=0;i<n;i++){
+          var b=document.createElement('button');
+          b.type='button';
+          b.className='btn '+(state[i]?'btn-primary':'btn-secondary');
+          b.textContent=state[i]?'1':'0';
+          b.style.width='28px'; b.style.height='28px'; b.style.padding='0';
+          (function(j){ b.onclick=function(){ state[j]=1-state[j]; render(); }; })(i);
+          div.appendChild(b);
+        }
+      }
+      document.getElementById('neuro-step').onclick=function(){
+        var next=state.slice();
+        for(var i=0;i<n;i++){
+          var left=i>0?state[i-1]:0;
+          var right=i<n-1?state[i+1]:0;
+          if(left+right>=2) next[i]=1;
+        }
+        state=next;
+        render();
+      };
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter IV: Consistency, Completeness, and Geometry — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter IV: Consistency, Completeness, and Geometry</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>Some rules never fight each other: you can't prove something and also prove the opposite. That's called being consistent. Other rules are complete if whenever something is true, you can prove it with the rules.</p>
+          <p>People used to think there was only one way to do geometry. Then they found other geometries that also don't fight themselves but look different (curved space). So the same words (line, point) can mean different things in different worlds.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Consistency and completeness</h2>
+          <p>A formal system is consistent if you never can prove both a statement and its opposite. It's complete if every true statement (in the intended interpretation) is provable.</p>
+          <h2>Geometry and undefined terms</h2>
+          <p>Euclidean geometry uses point, line, plane without defining them. Non-Euclidean geometry uses the same kind of axioms but with a different interpretation (e.g. line as a great circle on a sphere), and it's still consistent.</p>
+          <h2>Why it matters for Gödel</h2>
+          <p>Later we'll see that rich systems like arithmetic can't be both consistent and complete: some true statements won't be provable.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Consistency, completeness, and undefined terms</h2>
+          <p>Hofstadter explicates the Contracrostipunctus dialogue: consistency (no contradiction) and completeness (every truth provable). He ties this to the history of Euclidean and non-Euclidean geometry. Terms like point and line are undefined; their meaning is fixed by the axioms and the intended interpretation.</p>
+          <h2>Formal systems and interpretation</h2>
+          <p>Multiple interpretations can satisfy the same axioms; consistency is a property of the system under an interpretation. This sets up the idea that truth and provability might come apart when the system is rich enough.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter IV — full text (PDF)" src="../Hofstadter-GEB.pdf#page=90"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Same triangle in two worlds: flat (Euclidean) and curved. Use the slider to see how the triangle bends when the space curves.</p>
+      <div class="companion-box" id="geo-companion">
+        <p style="font-size:0.9rem; margin-bottom:0.5rem;"><strong>Curvature:</strong> <span id="geo-label">Flat</span></p>
+        <input type="range" id="geo-slider" min="0" max="100" value="0" style="width:100%; margin-bottom:1rem;">
+        <div id="geo-vis" style="min-height:140px; display:flex; align-items:center; justify-content:center; background:var(--bg); border-radius:6px;">
+          <svg id="geo-svg" width="180" height="120" viewBox="0 0 180 120"></svg>
+        </div>
+        <p style="font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">In curved space, straight lines (geodesics) bend; angles of a triangle don't add to 180.</p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function () {
+      var slider = document.getElementById('geo-slider');
+      var label = document.getElementById('geo-label');
+      var svg = document.getElementById('geo-svg');
+      function draw(k) {
+        if (!svg) return;
+        var flat = k < 50;
+        var curvature = (k - 50) / 50;
+        label.textContent = flat ? 'Flat (Euclidean)' : 'Curved (sphere-like)';
+        var pts;
+        if (flat) {
+          pts = [{x:40,y:90},{x:140,y:90},{x:90,y:20}];
+        } else {
+          var bend = 15 * curvature;
+          pts = [{x:50,y:85},{x:130,y:85+bend},{x:90,y:25+bend}];
+        }
+        var path = 'M' + pts[0].x + ',' + pts[0].y + ' L' + pts[1].x + ',' + pts[1].y + ' L' + pts[2].x + ',' + pts[2].y + ' Z';
+        svg.innerHTML = '<path d="' + path + '" fill="none" stroke="var(--accent-secondary)" stroke-width="2"/>';
+      }
+      slider.addEventListener('input', function () { draw(parseInt(slider.value, 10)); });
+      draw(0);
+    })();
+  </script>
+</body>
+</html>

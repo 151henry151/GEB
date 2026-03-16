@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter I: The MU-puzzle — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter I: The MU-puzzle</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>You have a little game. You start with the letters <strong>MI</strong>. You are allowed to change them only by a few rules: you can add a copy of the end after the M, you can turn I into IU, you can turn III into U, or you can take UU away.</p>
+          <p>Your job is to get to <strong>MU</strong>. You can push the rules as much as you like. But no matter how you play, you will never get from MI to MU. The rules never let you make that word. So some things are just not reachable—even when the rules are simple.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>The MIU-system</h2>
+          <p>The chapter introduces a formal system called the MIU-system. You start with the string <strong>MI</strong> (that’s the only axiom). There are four rules: (I) add a copy of everything after M to the end; (II) replace I by IU; (III) replace III by U; (IV) remove UU. A “theorem” is any string you can get by applying these rules, starting from MI.</p>
+          <h2>The puzzle</h2>
+          <p>The puzzle is: can you ever derive <strong>MU</strong>? You might try for a while and not get there. It turns out you can’t—ever. The reason has to do with the number of I’s in the string. Rule I doubles the number of I’s after the M; rules II and III change that number in a way that keeps it not divisible by 3 when you started from 1; and MU has zero I’s. So no sequence of steps leads from MI to MU.</p>
+          <h2>Why it matters</h2>
+          <p>This shows the difference between “working inside the system” (just applying rules) and “working outside” (thinking about the system to see what’s possible). It also introduces the idea of a decision procedure: a way to tell, for any string, whether it’s a theorem or not. For the MIU-system such a procedure exists—and it tells us that MU is not a theorem.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Formal systems and the MIU-system</h2>
+          <p>Hofstadter presents a minimal formal system: a finite alphabet (M, I, U), a single axiom (the string MI), and four rules of inference. Theorems are exactly those strings derivable from the axiom by finitely many applications of the rules. The system is “meaning-free” in the sense that the symbols have no prescribed interpretation; meaning will be addressed in later chapters.</p>
+          <h2>The MU-puzzle and working outside the system</h2>
+          <p>The central puzzle is whether MU is a theorem. Experimentation suggests that it is not. The key is to step outside the system and reason about it: e.g. by observing that the axiom has one I, that rule I doubles the number of I’s after M, and that rules II–IV preserve or alter that count in ways that keep it not divisible by 3 (when starting from 1). MU has no I’s (i.e. “zero I’s”), and no sequence of rule applications can yield zero I’s from one. So MU is not derivable.</p>
+          <h2>Decision procedures and implicit characterization</h2>
+          <p>The chapter distinguishes implicit characterization (the rules “characterize” the set of theorems in the sense that they generate exactly that set) from a decision procedure: an algorithm that, given any string, determines in finite time whether it is a theorem. For the MIU-system, a decision procedure exists (e.g. based on the I-count). Discovering that a decision procedure exists is a substantive result—it means theoremhood is concretely testable.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter I — full text (PDF)" src="../Hofstadter-GEB.pdf#page=42"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Play with the MIU-system. Start from <strong>MI</strong>. Apply one rule at a time. Try to reach <strong>MU</strong>—and discover that the rules never get you there.</p>
+      <div class="companion-box" id="miu-companion">
+        <p><strong>Current string:</strong> <code class="logic" id="miu-current">MI</code></p>
+        <p style="font-size:0.85rem; color:var(--muted); margin-bottom:0.75rem;">Rules: (I) Mx → Mxx (II) xI → xIU (III) III → U (IV) UU → remove</p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
+          <button type="button" class="btn btn-secondary" id="miu-rule1" title="Double the string after M">Rule I</button>
+          <button type="button" class="btn btn-secondary" id="miu-rule2" title="Add U after I">Rule II</button>
+          <button type="button" class="btn btn-secondary" id="miu-rule3" title="Replace III by U">Rule III</button>
+          <button type="button" class="btn btn-secondary" id="miu-rule4" title="Remove UU">Rule IV</button>
+        </div>
+        <button type="button" class="btn btn-secondary" id="miu-reset">Reset to MI</button>
+        <div id="miu-log" style="margin-top:1rem; font-size:0.85rem; max-height:120px; overflow-y:auto;"></div>
+        <p id="miu-goal" style="margin-top:0.75rem; font-size:0.9rem;"></p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function () {
+      var current = document.getElementById('miu-current');
+      var log = document.getElementById('miu-log');
+      var goal = document.getElementById('miu-goal');
+      var state = 'MI';
+
+      function update() {
+        current.textContent = state;
+        if (state === 'MU') {
+          goal.innerHTML = 'You reached <strong>MU</strong>! (In the real MIU-system this is impossible—here we only simulate the rules; the book proves MU is not derivable.)';
+          goal.style.color = 'var(--true)';
+        } else {
+          goal.textContent = 'Goal: MU';
+          goal.style.color = 'var(--muted)';
+        }
+      }
+
+      function addLog(msg) {
+        if (!log) return;
+        var p = document.createElement('p');
+        p.textContent = msg;
+        p.style.margin = '0.2rem 0';
+        log.appendChild(p);
+        log.scrollTop = log.scrollHeight;
+      }
+
+      function rule1() {
+        if (!state.startsWith('M')) return;
+        var after = state.slice(1);
+        if (!after) return;
+        state = 'M' + after + after;
+        addLog('Rule I (double after M): ' + state);
+        update();
+      }
+      function rule2() {
+        if (!state.endsWith('I')) return;
+        state = state + 'U';
+        addLog('Rule II (I→IU at end): ' + state);
+        update();
+      }
+      function rule3() {
+        var idx = state.indexOf('III');
+        if (idx === -1) return;
+        state = state.slice(0, idx) + 'U' + state.slice(idx + 3);
+        addLog('Rule III: ' + state);
+        update();
+      }
+      function rule4() {
+        var idx = state.indexOf('UU');
+        if (idx === -1) return;
+        state = state.slice(0, idx) + state.slice(idx + 2);
+        addLog('Rule IV: ' + state);
+        update();
+      }
+
+      document.getElementById('miu-rule1').addEventListener('click', rule1);
+      document.getElementById('miu-rule2').addEventListener('click', rule2);
+      document.getElementById('miu-rule3').addEventListener('click', rule3);
+      document.getElementById('miu-rule4').addEventListener('click', rule4);
+      document.getElementById('miu-reset').addEventListener('click', function () {
+        state = 'MI';
+        if (log) log.innerHTML = '';
+        addLog('Reset to MI');
+        update();
+      });
+      update();
+    })();
+  </script>
+</body>
+</html>

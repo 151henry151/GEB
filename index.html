@@ -1,28 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEB | hromp.com</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root { --bg: #f8f6f1; --text: #1a1a1a; --muted: #5c5c5c; --link: #2d5a4a; }
-        * { box-sizing: border-box; }
-        body { font-family: 'Source Sans 3', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 2rem; line-height: 1.6; }
-        a { color: var(--link); font-weight: 600; }
-        a:hover { text-decoration: underline; }
-        .wrap { max-width: 640px; margin: 0 auto; }
-        h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
-        p { color: var(--muted); margin: 0; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gödel, Escher, Bach — Interactive Companion | hromp.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared/style.css">
 </head>
 <body>
-    <div class="wrap">
-        <p><a href="https://hromp.com/">← hromp.com</a></p>
-        <h1>GEB</h1>
-        <p>Placeholder. Content coming soon.</p>
+  <div class="landing">
+    <p><a href="https://hromp.com/">← hromp.com</a></p>
+    <h1 class="book-title">Gödel, Escher, Bach: An Eternal Golden Braid</h1>
+    <p class="book-subtitle">Douglas R. Hofstadter — An interactive companion</p>
+    <p class="intro">
+      This site is a chapter-by-chapter companion to Hofstadter’s classic. Each chapter page offers the original text (via the book PDF), simplified explanations at three reading levels, and a unique interactive module that brings the chapter’s main idea to life. No quizzes—just tools and toys that let you experience the ideas.
+    </p>
+    <div class="eli-note">
+      <strong>Reading levels.</strong> On each chapter page you can switch between <strong>ELI5</strong> (explain like I’m 5), <strong>ELI10</strong> (like I’m 10), <strong>ELI20</strong> (like I’m 20), and <strong>Full Text</strong> (the original chapter from the book). Pick the level that fits you; you can change it anytime.
     </div>
+    <h2>Chapters</h2>
+    <div class="chapter-grid" id="chapter-grid">
+      <!-- Filled by JS from GEBNav.CHAPTERS + descriptions -->
+    </div>
+    <div id="geb-footer-root"></div>
+  </div>
+  <script src="shared/nav.js"></script>
+  <script>
+    (function () {
+      var descriptions = {
+        intro: 'Self-reference and strange loops in Bach, Escher, and Gödel—and how the book itself is a “Metamusical Offering.”',
+        ch01: 'A simple formal system (MIU) and the puzzle of whether you can ever derive MU from MI.',
+        ch02: 'How meaningless symbols (the pq-system) suddenly get meaning—addition—by the shape of their theorems.',
+        ch03: 'Figure vs. ground in art and in logic: theorems and non-theorems, and what can be listed vs. decided.',
+        ch04: 'Consistency and completeness, undefined terms, and the story of non-Euclidean geometry.',
+        ch05: 'Recursion everywhere: in definitions, music, language, and programs.',
+        ch06: 'Where does meaning live? In the message, the decoder, or the receiver?',
+        ch07: 'Propositional logic as a formal game: and, or, not, and the emergence of truth.',
+        ch08: 'Arithmetic as typography: building number theory from symbols and rules (TNT).',
+        ch09: 'Gödel’s trick: a sentence that says “I am not provable,” and what that means.',
+        ch10: 'Levels of description in computers and in minds—and how they tangle.',
+        ch11: 'Brains as physical systems: neurons, symbols, and the levels of thought.',
+        ch12: 'Minds, meaning, and intentionality—can they be captured in a system?',
+        ch13: 'BlooP, FlooP, and GlooP: bounded vs. unbounded search and why it matters.',
+        ch14: 'The formal heart of Gödel’s theorem: undecidable propositions of TNT.',
+        ch15: 'Seeing the truth of the Gödel sentence from outside the system—and what that implies.',
+        ch16: 'Self-reference and self-reproduction: quines, DNA, and self-copying programs.',
+        ch17: 'Church, Turing, Tarski: undecidability, uncomputability, and the indefinability of truth.',
+        ch18: 'The history of AI and the debate over whether machines can think.',
+        ch19: 'Frames, representation, and how AI might capture context and meaning.',
+        ch20: 'Strange loops and tangled hierarchies—and how they tie the book (and the self) together.'
+      };
+      var grid = document.getElementById('chapter-grid');
+      if (!grid || !window.GEBNav) return;
+      var chaps = window.GEBNav.CHAPTERS;
+      chaps.forEach(function (c) {
+        var desc = descriptions[c.id] || 'Explore this chapter.';
+        var href = c.path.replace(/^\//, '');
+        var label = c.num ? 'Chapter ' + c.num : 'Introduction';
+        var card = document.createElement('a');
+        card.className = 'chapter-card';
+        card.href = href;
+        card.innerHTML = '<span class="card-num">' + label + '</span><h3 class="card-title">' + c.title + '</h3><p class="card-desc">' + desc + '</p>';
+        grid.appendChild(card);
+      });
+    })();
+  </script>
 </body>
 </html>

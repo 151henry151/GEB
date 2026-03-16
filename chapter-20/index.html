@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter XX: Strange Loops — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter XX: Strange Loops, Or Tangled Hierarchies</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>A strange loop is when you go "up" or "forward" and end up back where you started. Bach's music does it: the tune seems to go higher and higher but it loops back. Escher's pictures do it: stairs go up and still bring you down. Gödel's sentence does it: it says "you cannot prove me" and that turns out to be true exactly because you cannot prove it.</p>
+          <p>The book says the same loop shows up in music, art, and math. And maybe that loop is part of why we can say "I" and mean ourselves. So the three of them — Bach, Escher, Gödel — are tied in one braid.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Strange loops</h2>
+          <p>A strange loop is a cycle that crosses levels: you move "up" (to a higher level) but end up back at the start. Bach's canons (melody that rises and returns), Escher's impossible drawings (stairs that go up yet down), and Gödel's sentence (a formula that refers to its own unprovability) all instantiate the same pattern in different domains.</p>
+          <h2>Tangled hierarchies</h2>
+          <p>Normally we think of levels as strict: level 0, level 1, level 2. In a strange loop the levels get tangled: the "top" bends back to the "bottom." So there is no clear top or bottom. That tangling may be what allows self and meaning to emerge.</p>
+          <h2>The eternal golden braid</h2>
+          <p>The book's title ties Bach, Escher, and Gödel into one braid. The chapter closes the loop: from music and art and logic to the possibility of mind and "I" as a self-referential pattern.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Strange loops and tangled hierarchies</h2>
+          <p>Hofstadter defines strange loops as structure that rises through levels (of description, of control, of meaning) but bends back so that the "highest" level reconnects to the "lowest." There is no well-defined top or bottom; the hierarchy is tangled. Bach's canons (e.g. Canon per Tonos), Escher's impossible figures (Waterfall, Drawing Hands), and Gödel's incompleteness construction each exhibit this pattern: self-reference that creates a loop.</p>
+          <h2>The emergence of "I"</h2>
+          <p>The chapter argues that the sense of self — the "I" that is aware of itself — may arise from strange loops in the brain: symbol systems that refer to themselves, levels of description that loop back. So consciousness is not a single level but a tangled hierarchy that creates the illusion of a unified self.</p>
+          <h2>Conclusion of the book</h2>
+          <p>Strange Loops ties the book together: formal systems, meaning, incompleteness, and the prospects for understanding mind and machine all connect through the theme of self-reference and the braid of Bach, Escher, and Gödel.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter XX — full text (PDF)" src="../Hofstadter-GEB.pdf#page=691"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Click a node to highlight the strange loop: Bach (canons), Escher (impossible figures), Gödel (incompleteness). The same pattern in music, art, and logic.</p>
+      <div class="companion-box" id="loop-companion">
+        <div id="loop-diagram" style="min-height:200px; display:flex; align-items:center; justify-content:center; position:relative;">
+          <svg width="220" height="180" viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="var(--accent-secondary)"/>
+              </marker>
+            </defs>
+            <path id="loop-path" d="M 110 30 L 60 95 L 160 95 Z" fill="none" stroke="var(--border)" stroke-width="2" stroke-dasharray="4 3"/>
+            <circle id="node-bach" cx="110" cy="30" r="28" fill="var(--panel)" stroke="var(--border)" stroke-width="2" style="cursor:pointer;"/>
+            <circle id="node-escher" cx="60" cy="95" r="28" fill="var(--panel)" stroke="var(--border)" stroke-width="2" style="cursor:pointer;"/>
+            <circle id="node-godel" cx="160" cy="95" r="28" fill="var(--panel)" stroke="var(--border)" stroke-width="2" style="cursor:pointer;"/>
+            <text x="110" y="35" text-anchor="middle" font-size="12" font-weight="600" pointer-events="none">Bach</text>
+            <text x="60" y="100" text-anchor="middle" font-size="12" font-weight="600" pointer-events="none">Escher</text>
+            <text x="160" y="100" text-anchor="middle" font-size="12" font-weight="600" pointer-events="none">Gödel</text>
+          </svg>
+        </div>
+        <p id="loop-caption" style="text-align:center; font-size:0.9rem; margin-top:0.5rem; color:var(--muted);">Click a node to highlight the loop.</p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      var path = document.getElementById('loop-path');
+      var bach = document.getElementById('node-bach');
+      var escher = document.getElementById('node-escher');
+      var godel = document.getElementById('node-godel');
+      var caption = document.getElementById('loop-caption');
+      var active = false;
+      function highlight(){
+        path.setAttribute('stroke', 'var(--accent)');
+        path.setAttribute('stroke-width', '3');
+        path.setAttribute('stroke-dasharray', 'none');
+        bach.setAttribute('stroke', 'var(--accent)');
+        escher.setAttribute('stroke', 'var(--accent)');
+        godel.setAttribute('stroke', 'var(--accent)');
+        caption.textContent = 'Strange loop: canons (Bach) — impossible figures (Escher) — incompleteness (Gödel). The same pattern in music, art, and logic.';
+        caption.style.color = 'var(--text)';
+        active = true;
+      }
+      function unhighlight(){
+        path.setAttribute('stroke', 'var(--border)');
+        path.setAttribute('stroke-width', '2');
+        path.setAttribute('stroke-dasharray', '4 3');
+        bach.setAttribute('stroke', 'var(--border)');
+        escher.setAttribute('stroke', 'var(--border)');
+        godel.setAttribute('stroke', 'var(--border)');
+        caption.textContent = 'Click a node to highlight the loop.';
+        caption.style.color = '';
+        active = false;
+      }
+      function toggle(){
+        if (active) unhighlight(); else highlight();
+      }
+      bach.addEventListener('click', toggle);
+      escher.addEventListener('click', toggle);
+      godel.addEventListener('click', toggle);
+    })();
+  </script>
+</body>
+</html>

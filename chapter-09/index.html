@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter IX: Mumon and Gödel — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter IX: Mumon and Gödel</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>A sentence says: You cannot prove this sentence with the rules. If you could prove it, the game would break. So the game cannot prove it. But then the sentence is true. So something is true even though the game cannot prove it.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Gödel's trick</h2>
+          <p>Gödel built a sentence of TNT that says I am not a theorem of TNT. If TNT could prove it, TNT would be inconsistent. So if TNT is consistent, it cannot prove that sentence. So the sentence is true but unprovable.</p>
+          <h2>Mumon and Zen</h2>
+          <p>The chapter links this to Zen and mu. The paradox is avoided by distinguishing proof-in-the-system from truth.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Self-reference and incompleteness</h2>
+          <p>Hofstadter presents Gödel's construction: a formula G that expresses I am not provable in TNT. If TNT is consistent, G is not provable; and G is true. So truth and provability come apart. The chapter connects this to the liar paradox and to Zen (Mumon).</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter IX — full text (PDF)" src="../Hofstadter-GEB.pdf#page=254"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">The Gödel sentence says I am not provable. Try to prove it; assume it is false. So it is true but unprovable.</p>
+      <div class="companion-box">
+        <p><strong>G:</strong> This sentence is not provable in TNT.</p>
+        <button type="button" class="btn btn-secondary" id="try-prove">Try to prove G</button>
+        <button type="button" class="btn btn-secondary" id="try-false">Assume G is false</button>
+        <p id="g-result" style="margin-top:0.75rem;"></p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      document.getElementById('try-prove').onclick=function(){
+        document.getElementById('g-result').innerHTML='No proof exists. So G is not provable.';
+        document.getElementById('g-result').className='truth-undefined';
+      };
+      document.getElementById('try-false').onclick=function(){
+        document.getElementById('g-result').innerHTML='If G is false, then G is provable. Contradiction. So G is TRUE but not PROVABLE.';
+        document.getElementById('g-result').className='truth-true';
+      };
+    })();
+  </script>
+</body>
+</html>

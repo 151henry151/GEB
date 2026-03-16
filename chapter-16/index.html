@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter XVI: Self-Ref and Self-Rep — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter XVI: Self-Ref and Self-Rep</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>Some things can make a copy of themselves. A program can say "print this sentence," and the sentence it prints is exactly the same as the instructions. So the instructions and the output are the same. That is self-copying.</p>
+          <p>In life, cells and DNA copy themselves too. The book connects that idea to logic: something that refers to itself or reproduces itself. Self-reference and self-reproduction are two sides of the same twist.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Quines and self-reproduction</h2>
+          <p>A quine is a program whose output is exactly its own source code. So when you run it, it "reproduces" itself. No tricks with reading the file from disk: the program contains a description of itself and prints it. That is self-reference in code.</p>
+          <h2>Self-reference in logic and biology</h2>
+          <p>Gödel's sentence referred to itself (its own unprovability). Quines refer to themselves by containing a copy of their own text. DNA and viruses replicate by encoding instructions that produce copies. So self-reference and self-reproduction appear in logic, programs, and life.</p>
+          <h2>Why it matters</h2>
+          <p>Hofstadter ties the theme of the book together: strange loops, self-reference, and the possibility of "I" or consciousness as a self-referential pattern.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Self-reference and self-reproduction</h2>
+          <p>Hofstadter discusses programs that output their own source code (quines), fixed-point constructions in logic, and biological self-reproduction (DNA, viruses). In each case, the system contains a representation of itself and can produce or refer to that representation. Quines are possible in any Turing-complete language; the construction typically uses a function that takes a string and embeds it in a larger string that, when executed, prints the original.</p>
+          <h2>Connection to Gödel and the book's themes</h2>
+          <p>The Gödel sentence is a form of self-reference: it "says" something about its own proof-theoretic status. Quines are a form of self-reproduction. Both rely on a system's ability to encode and manipulate descriptions of its own structure. Hofstadter links this to the emergence of meaning and the possibility of self-aware systems.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter XVI — full text (PDF)" src="../Hofstadter-GEB.pdf#page=502"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">A quine outputs its own source. Here the "program" is the text in the box; Run sets the output to that text. So when source is unchanged, output equals source (quine). Change one character in the source and run again: output updates to the new source, so the original is no longer reproduced.</p>
+      <div class="companion-box" id="quine-companion">
+        <p style="font-size:0.85rem; margin-bottom:0.25rem;"><strong>Source (editable):</strong></p>
+        <input type="text" id="quine-source" value="I am a quine." class="logic" style="width:100%; padding:0.4rem; border:1px solid var(--border); border-radius:4px;">
+        <button type="button" class="btn btn-primary" id="quine-run" style="margin-top:0.5rem;">Run</button>
+        <p style="font-size:0.85rem; margin-top:0.75rem;"><strong>Output:</strong></p>
+        <p id="quine-output" class="logic" style="padding:0.4rem; background:var(--panel); border-radius:4px; margin:0.25rem 0 0.5rem 0;">—</p>
+        <p id="quine-match" style="font-size:0.9rem;"></p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      var source = document.getElementById('quine-source');
+      var output = document.getElementById('quine-output');
+      var match = document.getElementById('quine-match');
+      var original = 'I am a quine.';
+      document.getElementById('quine-run').addEventListener('click', function(){
+        var s = source.value;
+        output.textContent = s;
+        if (s === original) {
+          match.innerHTML = 'Output equals source. This is a quine: it reproduces itself.';
+          match.className = 'truth-true';
+        } else {
+          match.innerHTML = 'Output equals the current source. You changed the source, so the program no longer reproduces the original; it now reproduces the new text.';
+          match.className = 'truth-undefined';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

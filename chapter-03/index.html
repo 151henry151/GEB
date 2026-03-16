@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter III: Figure and Ground — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter III: Figure and Ground</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>In some pictures you can look at the “thing” in the middle—that’s the figure. Or you can look at the “stuff around it”—that’s the ground. Same picture, two ways to see it.</p>
+          <p>In the game of theorems, the “figure” is the list of strings we can make with the rules. The “ground” is everything else. Sometimes the figure is easy to list, but the ground is hard to pin down—you can’t always tell in a simple way what’s “not a theorem.” So the ground can hide information the figure doesn’t show.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Figure and ground in art</h2>
+          <p>In art, “figure” is what we focus on (e.g. a vase); “ground” is the rest (e.g. the background, or the space around the vase). Some images flip: you can see either two faces or a vase. The same marks on the page support two different “readings.”</p>
+          <h2>Figure and ground in formal systems</h2>
+          <p>In a formal system, the “figure” is the set of theorems (strings we can derive). The “ground” is the set of non-theorems. The figure is “recursively enumerable”: we can list all theorems one by one. But can we list all non-theorems? Sometimes we can (then the set is “recursive”); sometimes we can’t. So the ground doesn’t always have the same kind of structure as the figure.</p>
+          <h2>Why it matters</h2>
+          <p>That difference—between “listable” theorems and “maybe not listable” non-theorems—will matter for Gödel. It’s like asking: does the figure contain all the information that the ground has? Not necessarily.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Figure and ground in perception and in logic</h2>
+          <p>Hofstadter compares the figure–ground distinction in visual perception (and in Escher’s art) to the distinction between theorems and non-theorems in a formal system. In both cases we have a “positive” set (what we see as figure; what we can derive) and a “negative” set (ground; non-theorems). The question is whether the two sets carry the same information—whether the ground is determined by the figure in a computable way.</p>
+          <h2>Recursively enumerable vs recursive sets</h2>
+          <p>The set of theorems of a formal system is recursively enumerable: there is a procedure that lists exactly the theorems (e.g. enumerate all proofs). The set of non-theorems is the complement. If there is a procedure that decides, for any string, whether it is a theorem, then both the set of theorems and the set of non-theorems are “recursive” (decidable). But if there is no decision procedure for theoremhood, then the set of non-theorems is not recursively enumerable in the same simple way. So “figure” (theorems) and “ground” (non-theorems) can have different computational structure.</p>
+          <h2>Setting up incompleteness</h2>
+          <p>This prepares the reader for the idea that in rich systems like TNT, the “ground” (true but unprovable sentences) may not be listable by the system’s own means—so the figure (theorems) does not fully determine the ground.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter III — full text (PDF)" src="../Hofstadter-GEB.pdf#page=72"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Toggle between “figure” and “ground.” The same shape can be read as a vase (figure) or two faces (ground)—like theorems vs non-theorems in a formal system.</p>
+      <div class="companion-box" id="figure-ground-companion">
+        <div style="text-align:center; margin-bottom:0.75rem;">
+          <button type="button" class="btn btn-secondary" id="fg-figure">See figure (vase)</button>
+          <button type="button" class="btn btn-secondary" id="fg-ground">See ground (faces)</button>
+        </div>
+        <div id="fg-canvas" style="min-height:180px; display:flex; align-items:center; justify-content:center; background:var(--panel); border-radius:6px; position:relative;">
+          <svg width="200" height="180" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+            <path id="fg-vase" d="M70 40 L70 140 Q70 160 100 160 Q130 160 130 140 L130 40 Q130 20 100 20 Q70 20 70 40" fill="#2e6b8a" stroke="#1a1a2e" stroke-width="2"/>
+            <path id="fg-face1" d="M30 80 Q50 60 70 80 Q50 100 30 80 M40 85 Q50 90 60 85" fill="none" stroke="#1a1a2e" stroke-width="2" opacity="0"/>
+            <path id="fg-face2" d="M130 80 Q150 60 170 80 Q150 100 130 80 M140 85 Q150 90 160 85" fill="none" stroke="#1a1a2e" stroke-width="2" opacity="0"/>
+          </svg>
+        </div>
+        <p id="fg-label" style="text-align:center; margin-top:0.5rem; font-size:0.9rem; color:var(--muted);">Click a button to switch what you “see.”</p>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function () {
+      var vase = document.getElementById('fg-vase');
+      var face1 = document.getElementById('fg-face1');
+      var face2 = document.getElementById('fg-face2');
+      var label = document.getElementById('fg-label');
+      function showFigure() {
+        if (vase) vase.setAttribute('opacity', '1');
+        if (face1) face1.setAttribute('opacity', '0');
+        if (face2) face2.setAttribute('opacity', '0');
+        if (label) label.textContent = 'Figure: the vase. (The “theorems” of the picture.)';
+        document.getElementById('fg-figure').classList.add('btn-primary');
+        document.getElementById('fg-figure').classList.remove('btn-secondary');
+        document.getElementById('fg-ground').classList.remove('btn-primary');
+        document.getElementById('fg-ground').classList.add('btn-secondary');
+      }
+      function showGround() {
+        if (vase) vase.setAttribute('opacity', '0.25');
+        if (face1) face1.setAttribute('opacity', '1');
+        if (face2) face2.setAttribute('opacity', '1');
+        if (label) label.textContent = 'Ground: two faces. (The “non-theorems”—what’s left when you don’t see the vase.)';
+        document.getElementById('fg-ground').classList.add('btn-primary');
+        document.getElementById('fg-ground').classList.remove('btn-secondary');
+        document.getElementById('fg-figure').classList.remove('btn-primary');
+        document.getElementById('fg-figure').classList.add('btn-secondary');
+      }
+      document.getElementById('fg-figure').addEventListener('click', showFigure);
+      document.getElementById('fg-ground').addEventListener('click', showGround);
+      showFigure();
+    })();
+  </script>
+</body>
+</html>

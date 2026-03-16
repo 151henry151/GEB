@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter XIV: On Formally Undecidable Propositions — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter XIV: On Formally Undecidable Propositions of TNT</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>We gave every formula in the number game a secret number. So every sentence has a code. Then we built one special sentence that talks about its own code. It says: "The sentence with my code cannot be proved by the rules."</p>
+          <p>If the rules could prove it, the rules would be broken (they would prove something that says "do not prove me"). So the rules cannot prove it. But then what the sentence says is right: it really cannot be proved. So it is true, and the rules never get there. So some true things are left out.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>Gödel numbering</h2>
+          <p>Every symbol, formula, and proof in TNT is assigned a unique number (a Gödel number). So "being a proof of formula X" becomes a number fact. TNT can then express that fact inside its own language: there is a formula that says "there is no proof of the formula with Gödel number g" for a certain g.</p>
+          <h2>The Gödel sentence G</h2>
+          <p>We build g so that the formula with number g is exactly that one: "there is no proof of the formula with number g." So G says "I am not provable." If TNT proved G, then TNT would prove "G has no proof," which is false. So if TNT is consistent, G is not provable. And then G is true. So G is true but unprovable.</p>
+          <h2>Formally undecidable</h2>
+          <p>So there is a sentence of TNT that is neither provable nor disprovable (its negation is not provable either, if TNT is consistent). Such a sentence is undecidable. So TNT is incomplete: some truths of arithmetic are not theorems of TNT.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Arithmetization and the undecidable sentence</h2>
+          <p>Hofstadter presents the full construction: Gödel numbering maps syntax (symbols, formulas, sequences of formulas) to natural numbers. The relation "x is the Gödel number of a proof of the formula with Gödel number y" is primitive recursive, hence expressible in TNT. By the diagonal lemma (or fixed-point construction), there is a formula G such that TNT proves G if and only if there is a proof of the formula with a certain number n, and that formula is G itself. So G is equivalent to "G is not provable in TNT."</p>
+          <h2>Proof of incompleteness</h2>
+          <p>If TNT is consistent and proves G, then (by the construction) there is no proof of G, contradiction. So TNT does not prove G. So the statement "there is no proof of G" holds; but that statement is what G expresses (under the interpretation). So G is true in the standard model. Hence TNT is incomplete: there is a true sentence it does not prove. Similarly, if TNT is consistent, it does not prove not-G either; so G is undecidable.</p>
+          <h2>Significance</h2>
+          <p>Any consistent formal system that contains enough arithmetic has such an undecidable sentence. Truth and provability do not coincide. This is Gödel's first incompleteness theorem.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter XIV — full text (PDF)" src="../Hofstadter-GEB.pdf#page=444"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Step through the construction: we assign numbers to formulas, build a formula that refers to its own number, and see that it says "I am not a theorem" and is TRUE but not PROVABLE.</p>
+      <div class="companion-box" id="godel-companion">
+        <div id="godel-steps">
+          <p><strong>Step 1.</strong> Every formula gets a number (its Gödel number). So we can talk about "the formula with number 12345" inside TNT.</p>
+          <p><strong>Step 2.</strong> We build a formula that talks about proofs. "There is no proof of the formula with number g." We choose g so that the formula with number g is exactly that sentence.</p>
+          <p><strong>Step 3.</strong> So G says: "I am not a theorem of TNT." If TNT could prove G, then "G has no proof" would be false, but we just proved G — contradiction. So TNT cannot prove G. So what G says is true: G has no proof. So G is <strong>TRUE but not PROVABLE</strong>.</p>
+        </div>
+        <div id="godel-verdict" style="margin-top:1rem; padding:0.75rem; border-radius:6px; background:var(--panel); border:1px solid var(--border);">
+          <p style="margin:0; font-weight:600;" class="truth-true">G is TRUE.</p>
+          <p style="margin:0.25rem 0 0 0; font-size:0.9rem;">G is not PROVABLE in TNT. So TNT is incomplete.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+</body>
+</html>

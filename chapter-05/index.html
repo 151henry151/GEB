@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter V: Recursive Structures and Processes — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter V: Recursive Structures and Processes</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>Sometimes a thing is made of smaller copies of itself. A tree has branches, and each branch can have smaller branches that look like the big one. A story can have a story inside it. That’s recursion: the same pattern again and again, smaller each time.</p>
+          <p>When you “do the same thing again” but to a smaller piece, you’re doing a recursive process. It’s like a rule that says “to do X, first do a little X, then finish.” Recursion is everywhere—in shapes, in language, in computer programs.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>What is recursion?</h2>
+          <p>Recursion is when something is defined or built in terms of itself (usually a “smaller” version). A recursive definition has a base case (when to stop) and a rule that refers back to the definition. Example: a list is either empty, or one item plus a list.</p>
+          <h2>Recursion in many places</h2>
+          <p>Music: a theme that repeats inside itself. Language: “the cat that the dog chased” has a clause inside a clause. Fractals: shapes that look the same at every scale. Programs: a function that calls itself. In all of these, the same pattern appears at different levels.</p>
+          <h2>Why it matters</h2>
+          <p>Recursion lets a finite set of rules describe or generate infinite complexity. It will be central when we build up arithmetic (TNT) and when we talk about Gödel’s construction—which is deeply recursive.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>Recursive structures and processes</h2>
+          <p>Hofstadter presents recursion in multiple contexts: musical patterns (canons, themes that embed themselves), linguistic structures (embedded clauses), geometric fractals, mathematical definitions (e.g. factorial, Fibonacci), and computer programs. In each case, the same structure or process appears at multiple levels, with a base case that terminates the recursion.</p>
+          <h2>Self-similarity and generative power</h2>
+          <p>Recursion provides a way to generate arbitrarily complex structures from a finite specification. This is essential for formal systems: a small set of axioms and rules can generate infinitely many theorems. The chapter prepares the reader for recursive definitions in TNT and for the self-referential constructions that Gödel will use.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter V — full text (PDF)" src="../Hofstadter-GEB.pdf#page=135"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Grow a recursive tree. Each branch splits into two smaller branches; the same rule repeats at every level. Change the depth to see how recursion builds complexity.</p>
+      <div class="companion-box" id="tree-companion">
+        <label style="font-size:0.9rem;">Depth: <span id="tree-depth-val">3</span></label>
+        <input type="range" id="tree-depth" min="1" max="6" value="3" style="width:100%; margin:0.5rem 0 1rem 0;">
+        <div style="display:flex; justify-content:center;">
+          <canvas id="tree-canvas" width="220" height="160" style="border:1px solid var(--border); border-radius:6px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function () {
+      var depthSlider = document.getElementById('tree-depth');
+      var depthVal = document.getElementById('tree-depth-val');
+      var canvas = document.getElementById('tree-canvas');
+      function drawTree(ctx, x, y, angle, len, d) {
+        if (d <= 0 || len < 2) return;
+        var x2 = x + len * Math.cos(angle);
+        var y2 = y - len * Math.sin(angle);
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = '#2e6b8a';
+        ctx.lineWidth = Math.max(1, d);
+        ctx.stroke();
+        drawTree(ctx, x2, y2, angle - 0.5, len * 0.7, d - 1);
+        drawTree(ctx, x2, y2, angle + 0.5, len * 0.7, d - 1);
+      }
+      function redraw() {
+        var d = parseInt(depthSlider.value, 10);
+        depthVal.textContent = d;
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawTree(ctx, 110, 150, Math.PI / 2, 45, d);
+      }
+      depthSlider.addEventListener('input', redraw);
+      redraw();
+    })();
+  </script>
+</body>
+</html>

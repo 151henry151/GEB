@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter II: Meaning and Form in Mathematics — GEB Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared/style.css">
+</head>
+<body>
+  <div class="chapter-layout">
+    <div class="chapter-left">
+      <p><a href="../index.html">← All chapters</a></p>
+      <h1>Chapter II: Meaning and Form in Mathematics</h1>
+      <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+      </div>
+      <div data-reading-panel="eli5" class="reading-content on">
+        <div class="content-inner">
+          <p>Imagine a game where you only move blocks: one kind of block, another kind, and a dash. The rules say: if you have "dash-dash block1 dash-dash-dash block2" then that's a good move. Nobody tells you what the blocks mean.</p>
+          <p>Then someone says: "That good move is the same as 2 + 3 = 5." Suddenly the blocks have meaning—the first group is 2, the second is 3, the last is 5. The meaning came from the <em>shape</em> of the game. So meaning can sneak in through form.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli10" class="reading-content">
+        <div class="content-inner">
+          <h2>The pq-system</h2>
+          <p>The chapter introduces the pq-system: strings made of p, q, and hyphens. There are axioms (like --p---q-----) and one rule: if xp-qx- is a theorem (where x is a string of hyphens), then xp-qx- is a theorem too—with one more hyphen in each of two places. So theorems look like "something-p-something-q-something," and the number of hyphens before q equals the sum of the hyphens before p and between p and q.</p>
+          <h2>Meaning emerges</h2>
+          <p>If we interpret "hyphens before p" as one number, "hyphens between p and q" as another, and "hyphens after q" as a third, then every theorem says "number1 + number2 = number3." So the symbols had no meaning at first—but the <em>form</em> of the theorems matches addition. Meaning comes from the structure of what can be derived.</p>
+          <h2>Form and truth</h2>
+          <p>That leads to the idea that in such a system, "form" and "meaning" (and truth) are tied together. The rules only care about shape; the interpretation (addition) fits the shape. So meaning is not arbitrary—it's discovered by seeing what the form encodes.</p>
+        </div>
+      </div>
+      <div data-reading-panel="eli20" class="reading-content">
+        <div class="content-inner">
+          <h2>The pq-system and the emergence of meaning</h2>
+          <p>Hofstadter presents a formal system (the pq-system) whose symbols are p, q, and the hyphen. Axioms have the form --p---q----- (and similar patterns); the single rule allows adding one hyphen in each of two specified positions. The set of theorems is exactly those strings that, when interpreted as "m hyphens, then p, then n hyphens, then q, then m+n hyphens," encode true addition facts m+n=m+n (and the axiom form gives 2+3=5).</p>
+          <h2>Isomorphism and meaning</h2>
+          <p>The key point is that the system is initially presented without interpretation. The symbols are meaningless. Only when we map theorem-strings to arithmetic (hyphen count to number) do we see that every theorem "says" a true addition fact. So meaning is not put in by hand—it emerges from an isomorphism between the formal structure and a familiar domain (natural numbers and addition). This supports the idea that meaning is tied to form.</p>
+          <h2>Broader implications</h2>
+          <p>The chapter discusses truth, proof, and the "elusive concept of form." It sets up the idea that formal systems can carry meaning by virtue of their structure, and that "working inside" the system (symbol manipulation) can correspond to "working outside" (reasoning about numbers). This prepares the ground for later chapters on incompleteness.</p>
+        </div>
+      </div>
+      <div data-reading-panel="full" class="reading-content">
+        <div class="content-inner">
+          <p>The full chapter appears in the book. Read it in the PDF below.</p>
+          <iframe class="fulltext-embed" title="Chapter II — full text (PDF)" src="../Hofstadter-GEB.pdf#page=55"></iframe>
+        </div>
+      </div>
+      <div id="geb-prev-next" class="chapter-nav"></div>
+      <div id="geb-footer-root"></div>
+    </div>
+    <div class="chapter-right">
+      <p class="companion-caption">Enter a pq-string (e.g. <code>--p---q-----</code>). The checker tests whether it has the form of a theorem; the interpreter shows the addition fact it encodes.</p>
+      <div class="companion-box" id="pq-companion">
+        <label for="pq-input" style="display:block; margin-bottom:0.35rem; font-weight:600;">pq-string</label>
+        <input type="text" id="pq-input" class="logic" value="--p---q-----" style="width:100%; padding:0.5rem; border:1px solid var(--border); border-radius:6px; font-family:inherit;" placeholder="e.g. --p---q-----">
+        <button type="button" class="btn btn-primary" id="pq-check" style="margin-top:0.5rem;">Check theorem</button>
+        <div id="pq-result" style="margin-top:1rem; min-height:2.5rem;"></div>
+      </div>
+    </div>
+  </div>
+  <script src="../shared/nav.js"></script>
+  <script>
+    (function () {
+      var input = document.getElementById('pq-input');
+      var result = document.getElementById('pq-result');
+      var checkBtn = document.getElementById('pq-check');
+      function parse(s) {
+        s = (s || '').trim();
+        var a = s.indexOf('p');
+        var b = s.indexOf('q');
+        if (a === -1 || b === -1 || b <= a) return null;
+        var beforeP = s.slice(0, a);
+        var between = s.slice(a + 1, b);
+        var afterQ = s.slice(b + 1);
+        if (/^-*$/.test(beforeP) && /^-*$/.test(between) && /^-*$/.test(afterQ)) {
+          return { m: beforeP.length, n: between.length, sum: afterQ.length };
+        }
+        return null;
+      }
+      function isTheorem(m, n, sum) {
+        if (m < 1 || n < 1) return false;
+        return sum === m + n;
+      }
+      function check() {
+        var s = (input && input.value) || '';
+        var p = parse(s);
+        if (!p) {
+          result.innerHTML = '<p style="color:var(--false);">Not a valid pq-string (only hyphens, one p, one q).</p>';
+          return;
+        }
+        var th = isTheorem(p.m, p.n, p.sum);
+        if (th) {
+          result.innerHTML = '<p class="truth-true">Yes — it has the form of a theorem.</p><p><strong>Interpretation:</strong> ' + p.m + ' + ' + p.n + ' = ' + p.sum + '</p>';
+        } else {
+          result.innerHTML = '<p class="truth-false">No — the hyphen counts don\'t match addition (need ' + p.m + ' + ' + p.n + ' = ' + (p.m + p.n) + ').</p><p><strong>Interpretation:</strong> ' + p.m + ' + ' + p.n + ' = ' + p.sum + '</p>';
+        }
+      }
+      if (checkBtn) checkBtn.addEventListener('click', check);
+      if (input) input.addEventListener('keydown', function (e) { if (e.key === 'Enter') check(); });
+    })();
+  </script>
+</body>
+</html>
