@@ -22,25 +22,26 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>Some things can make a copy of themselves. A program can print the very instructions it’s made of—so the output and the program are the same. That’s self-copying. DNA and cells do it too. Self-reference and self-copying are two sides of the same twist.</p>
+          <p>Can a machine make a copy of itself? It seems hard—to copy yourself, you need a plan of yourself. But the plan has to be inside you. Can you carry around a complete picture of yourself and use it to make another you?</p>
+          <p>Yes. The trick is that the description and the thing it describes can be the same object. A program can print its own code. DNA contains instructions for making a body that contains the same DNA. A sentence can be written to exactly reproduce itself.</p>
+          <p>That twisty idea—a thing that describes itself and uses the description to reproduce—is called self-reference and self-reproduction. And it's the same loop that Gödel used, in a different costume.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
-          <h2>Quines and self-reproduction</h2>
-          <p>A quine is a program whose output is exactly its own source code. So when you run it, it "reproduces" itself. No tricks with reading the file from disk: the program contains a description of itself and prints it. That is self-reference in code.</p>
-          <h2>Self-reference in logic and biology</h2>
-          <p>Gödel's sentence referred to itself (its own unprovability). Quines refer to themselves by containing a copy of their own text. DNA and viruses replicate by encoding instructions that produce copies. So self-reference and self-reproduction appear in logic, programs, and life.</p>
-          <h2>Why it matters</h2>
-          <p>Hofstadter ties the theme of the book together: strange loops, self-reference, and the possibility of "I" or consciousness as a self-referential pattern.</p>
+          <p>A <em>quine</em> is a computer program whose only output is its own source code. Not "it reads itself from disk"—it actually constructs and prints its own text from scratch. Quines are possible in any sufficiently powerful programming language, though writing one is tricky. The key trick: the program has two parts—one that contains a description of the other, and one that uses that description to print out both parts.</p>
+          <p>This is the same structure as the Gödel sentence. Gödel's sentence contained, encoded in its own number, a description of itself—and used that description to make a claim about itself. The diagonal construction in logic and the quine construction in programming are the same trick in different clothes.</p>
+          <p>Biological self-reproduction has the same structure. DNA is both the plan for the organism and a thing the organism carries. The cell reads the DNA to build proteins, including the proteins that copy the DNA. The message and the machine are the same stuff.</p>
+          <p>Hofstadter argues that this capacity—for a system to encode and use a description of itself—is what's needed for genuine self-reference, and perhaps what's needed for genuine selfhood. The "I" might be, at its core, a self-referential loop: a pattern that represents itself and uses that representation to maintain itself.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
-          <h2>Self-reference and self-reproduction</h2>
-          <p>Hofstadter discusses programs that output their own source code (quines), fixed-point constructions in logic, and biological self-reproduction (DNA, viruses). In each case, the system contains a representation of itself and can produce or refer to that representation. Quines are possible in any Turing-complete language; the construction typically uses a function that takes a string and embeds it in a larger string that, when executed, prints the original.</p>
-          <h2>Connection to Gödel and the book's themes</h2>
-          <p>The Gödel sentence is a form of self-reference: it "says" something about its own proof-theoretic status. Quines are a form of self-reproduction. Both rely on a system's ability to encode and manipulate descriptions of its own structure. Hofstadter links this to the emergence of meaning and the possibility of self-aware systems.</p>
+          <p>Quines—programs that output their own source code—are constructible in any Turing-complete language. The canonical construction uses a template-filling idiom: one part of the program is a data structure (a string) representing the other part; the second part formats and prints both the data and itself, using the data to reconstruct the first part. Quines are fixed points of the "print" function: if you feed the program to the function, you get the program back.</p>
+          <p>This fixed-point structure is exactly the diagonal lemma of Gödel's construction. In logic, the diagonal lemma produces formulas that are fixed points of substitution: a formula G such that G ↔ F(⌈G⌉). In programming, a quine is a string Q such that run(Q) = Q. The mathematical machinery is identical; the domain (logic vs. computation vs. strings) is different.</p>
+          <p>Biological self-reproduction adds a third instantiation. DNA encodes the instructions for building the machinery (ribosomes, polymerases) that reads DNA and copies it. The replication machinery is a product of the very information it copies. The message and the replicating apparatus are mutually bootstrapped—a physical quine, wetware edition.</p>
+          <p>Hofstadter ties all three to the book's central theme. Self-reference—a system that contains a representation of itself and acts on that representation—is the structural prerequisite for strange loops. And strange loops, he argues, may be the structural prerequisite for selfhood: the "I" as a pattern that models itself, refers to itself, and perpetuates itself through that self-reference.</p>
+          <p>---</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">

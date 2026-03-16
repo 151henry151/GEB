@@ -22,27 +22,25 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>There’s a game with p, q, and dashes. The rules only care about shapes. When you look at which shapes “win,” they match adding numbers. So meaning can come from the shape of the game, not from someone telling you what the symbols mean.</p>
+          <p>Here's another letter game—this one uses little dashes and two letters, p and q. You start with allowed strings like: <strong>--p---q-----</strong> (two dashes, then p, then three dashes, then q, then five dashes).</p>
+          <p>Nobody told you what p or q or the dashes "mean." They're just shapes on a page. But look! Count the dashes on each side of the p and q. Two and three make five. The shapes are secretly doing <em>addition!</em></p>
+          <p>Meaning didn't get put into the game. It grew out of the shapes all by itself. That's magic—and it's an important kind of magic that the book keeps exploring.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
-          <h2>The pq-system</h2>
-          <p>The chapter introduces the pq-system: strings made of p, q, and hyphens. You have a few starting strings (axioms), like --p---q-----, and one rule: if a string of a certain shape is allowed, then another string with one more hyphen in two places is also allowed. So you build longer and longer strings. The rules don’t say what p or q “mean”—they only say which shapes are OK.</p>
-          <h2>Meaning from form</h2>
-          <p>If you count hyphens—how many before p, how many between p and q, how many after q—you notice something. Every allowed string has “hyphens before p” + “hyphens between p and q” = “hyphens after q.” So the allowed strings exactly match addition. For example --p---q----- has 2, 3, and 5: 2+3=5. So the symbols had no meaning at first, but the <em>form</em> of what the rules produce is addition. Meaning emerged from the structure.</p>
-          <h2>Why it matters</h2>
-          <p>That ties “form” and “meaning” together. The rules only push symbols around. But what they produce can be interpreted as true facts about numbers. So meaning isn’t arbitrary—it’s discovered by seeing what the form encodes. That idea will matter when we get to systems that are supposed to capture all arithmetic: form and truth will turn out to come apart in a surprising way.</p>
+          <p>The pq-system uses only three symbols: p, q, and hyphen. Its rules are purely about shapes—you can extend certain strings by adding a hyphen in two places at once. You never say what p or q "mean." You just shuffle marks.</p>
+          <p>And yet: if you list all the strings the system can produce and look at how many hyphens appear before p, between p and q, and after q—you always find the same thing. The first number plus the second equals the third. <strong>--p---q-----</strong> gives you 2 + 3 = 5. Every theorem in the system encodes a true addition fact.</p>
+          <p>No one designed this in consciously. The rules only care about shapes. But the shapes that the rules select are exactly the shapes that express arithmetic truths.</p>
+          <p>This is the idea of an <em>isomorphism</em>—a perfect match between two different-looking things. The formal system and arithmetic are structured identically, even though one is just symbols and the other is numbers. Meaning, in this sense, isn't invented. It's <em>discovered</em> when you find the right match between a pattern and a world.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
-          <h2>The pq-system and the emergence of meaning</h2>
-          <p>Hofstadter presents the pq-system: symbols p, q, and hyphen; axioms of the form m hyphens, p, n hyphens, q, m+n hyphens (e.g. --p---q----- for 2+3=5); and a single rule that adds one hyphen in each of two positions. The set of theorems is exactly those strings that, under the interpretation “hyphens before p = first number, between p and q = second number, after q = sum,” encode true addition facts. The system is given first without interpretation—the symbols are meaningless marks.</p>
-          <h2>Isomorphism and the tie between form and meaning</h2>
-          <p>Only when we map theorem-strings to arithmetic do we see that every theorem “says” a true addition fact. So meaning is not stipulated; it emerges from an isomorphism between the formal structure (the set of derivable strings) and a familiar domain (natural numbers and addition). The rules only care about shape; the interpretation fits the shape. This supports the idea that meaning can be tied to form—that formal manipulation and semantic content can align—and sets up the later theme that in richer systems (TNT) they can also come apart.</p>
-          <h2>Truth, proof, and the elusive concept of form</h2>
-          <p>The chapter discusses truth, proof, and what “form” means. It prepares the reader for the idea that formal systems can carry meaning by virtue of their structure, and that “working inside” (symbol manipulation) can correspond to “working outside” (reasoning about numbers). When we move to systems strong enough for arithmetic, we will see that truth and provability can diverge: some true statements will not be derivable. The pq-system is a first, clean example where form and meaning line up perfectly.</p>
+          <p>The pq-system is introduced as a formal counterpart to the MIU-system, but with a crucial difference: its theorems, once interpreted, are meaningful. The axiom schema generates strings of the form <em>m</em> hyphens + p + <em>n</em> hyphens + q + <em>(m+n)</em> hyphens. A single inference rule extends both flanking groups by one hyphen. The system is given first without interpretation—symbols mean nothing.</p>
+          <p>The move comes when we notice the structure of the theorem-set. Every theorem, under the reading "hyphens = numbers, p = plus, q = equals," encodes a true equation of the form <em>m + n = m+n.</em> And conversely, every true addition fact corresponds to a theorem. The formal system and addition are <em>isomorphic:</em> there is a structure-preserving map between them.</p>
+          <p>Hofstadter's point is subtle: meaning is not stipulated—it is discovered as the relationship between a formal structure and something it mirrors. The marks themselves are inert; the meaning lives in the correspondence. This matters enormously for what comes later. When TNT is introduced as a formal system for arithmetic, it will carry meaning in the same way—not by fiat, but by isomorphism with the natural numbers. And Gödel's construction will exploit a <em>second</em> interpretation, one the system's designers didn't intend: arithmetic statements that simultaneously encode claims about provability. The double-meaning of a single formal string is where the strange loop enters.</p>
+          <p>---</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">

@@ -22,21 +22,27 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>A sentence says: “You cannot prove this sentence with the rules.” If the rules could prove it, they’d be broken. So they can’t prove it. But then what the sentence says is true. So something is true even though the rules never prove it.</p>
+          <p>A sentence says: "You can't prove this sentence is true."</p>
+          <p>Suppose the rules could prove it. Then they'd be proving "you can't prove me"—but they just did. That's a contradiction. So the rules can't prove it.</p>
+          <p>But now we know: the rules can't prove it. And that's <em>exactly what the sentence says!</em> So the sentence is true. And the rules never prove it. Something true lives outside the system forever.</p>
+          <p>The chapter also talks about Zen Buddhism, which has its own tradition of sentences that break your brain—riddles with no logical answer, meant to shake you loose from ordinary thinking. Gödel's sentence isn't quite a brain-breaker, but it lives in the same neighborhood.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
-          <h2>Gödel’s trick</h2>
-          <p>Gödel built a sentence G inside TNT that (when we interpret it) says “I am not a theorem of TNT.” So G says “you cannot prove me.” If TNT could prove G, then G would be a theorem—but G says it isn’t. So TNT would be inconsistent (proving something false). So if TNT is consistent, it cannot prove G. So G is not provable. But then what G says—“I am not provable”—is true. So G is true and not provable. Truth and provability come apart.</p>
-          <h2>Mumon and Zen</h2>
-          <p>The chapter links this to Zen and “mu” (a kind of “no” that refuses the question). The liar paradox (“This sentence is false”) seems to break logic. Gödel’s sentence avoids that by saying “I am not provable”—which is not the same as “I am false.” We avoid paradox by distinguishing “true in the real world” from “provable inside the game.”</p>
+          <p>Gödel built a sentence G inside TNT that, when interpreted, says: <em>"G has no proof in TNT."</em></p>
+          <p>Now ask: what if TNT proves G? Then TNT would be proving a sentence that says it has no proof. That's a contradiction. So if TNT is consistent (free of contradictions), it cannot prove G.</p>
+          <p>But now we've just established—outside TNT, in our own reasoning—that G has no proof. And that's what G claims. So G is <em>true.</em> G says something correct. TNT just can't reach it.</p>
+          <p>Truth and provability are not the same thing. There are true statements that no consistent formal system for arithmetic can ever prove. That's Gödel's first incompleteness theorem.</p>
+          <p>The chapter pairs this with Zen. Zen kōans are paradox-sentences meant to stop the ordinary reasoning mind—"What is the sound of one hand clapping?" The connection isn't just poetic. Both involve the limits of systems, the places where following rules all the way leads you to something the rules can't handle. But Gödel's sentence is careful to avoid outright paradox: it says "unprovable," not "false." The loop is strange, but it doesn't destroy itself. It just escapes the system.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
-          <h2>Self-reference and incompleteness</h2>
-          <p>Hofstadter presents Gödel’s construction in detail. By Gödel numbering, every formula of TNT has a number. We can build a formula that (under the numbering) says “the formula with number n is not provable.” By a clever trick, we choose n to be the number of that very formula. So we get a formula G that says “I am not provable in TNT.” If TNT is consistent, G cannot be proved (otherwise we’d have proved something that says it has no proof—inconsistency). So G is not provable. So the claim G makes is correct. So G is true. So there is a true sentence that TNT does not prove. Truth and provability come apart. The chapter connects this to the liar paradox and to Zen (Mumon), and stresses that the “loop” is not vicious because we distinguish levels: proof-in-the-system vs. truth seen from outside.</p>
+          <p>The Gödel sentence G is a formula of TNT. Under the Gödel numbering of the previous chapter, G is equivalent—provably within TNT—to the arithmetic statement "the formula with Gödel number g has no proof in TNT," where g is the Gödel number of G itself. So G says of itself that it is unprovable.</p>
+          <p>The incompleteness argument: suppose TNT is consistent and proves G. Then G is a theorem, so (by the construction) the formula with number g has a proof, so G has a proof—but G says it doesn't. Contradiction. So if TNT is consistent, it does not prove G. So the arithmetic claim G expresses—"G has no proof in TNT"—holds. So G is true in the standard model of arithmetic. So TNT is incomplete: there is a true sentence it cannot prove. Moreover, if TNT is also ω-consistent, it cannot prove ¬G either. G is formally undecidable in TNT.</p>
+          <p>Hofstadter places this alongside Zen and the Mumon collection of kōans. The connection is real but asymmetric: kōans aim to shatter reasoning entirely; Gödel's sentence escapes a particular system without destroying rationality. The key distinction is between the Liar paradox ("This sentence is false"—self-defeating) and the Gödel sentence ("This sentence is unprovable"—self-confirming, given consistency). The latter avoids paradox by operating at two levels: it is unprovable inside TNT, but true outside it. The strange loop is not vicious. It just requires you to step outside the system to see it—which, Hofstadter will argue, is exactly what minds can do and formal systems, by definition, cannot.</p>
+          <p>---</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">

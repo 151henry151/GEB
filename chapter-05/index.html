@@ -22,25 +22,25 @@
       </div>
             <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>Something is recursive when it has smaller copies of itself inside it. A tree has branches that look like little trees. The same pattern repeats, smaller and smaller. That's recursion.</p>
+          <p>Have you ever stood between two mirrors, facing each other? You see a copy of yourself holding a copy of yourself holding a copy of yourself, going on and on forever. Each copy contains a smaller copy of the same scene.</p>
+          <p>That's what <em>recursion</em> is: something that contains a smaller version of itself.</p>
+          <p>A tree has branches. Each branch looks like a little tree, with its own smaller branches. A story can have a story inside it. A rule can refer to itself. Recursion is how a tiny, simple rule can grow into something enormous and complex—just by containing itself, again and again.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
-          <h2>What is recursion?</h2>
-          <p>Recursion is when something is defined or built using a "smaller" version of itself. You need a base case—when to stop—and a rule that says how to build the next step from the previous one. For example: a list is either empty, or one item plus a list. So "list" is defined in terms of "list."</p>
-          <h2>Recursion everywhere</h2>
-          <p>You see it in music: a theme that repeats inside itself, like a tune that contains a smaller copy of the tune. In language: "the cat that the dog chased" has a clause inside a clause. In pictures: fractals are shapes that look the same when you zoom in. In computer programs: a function that calls itself. In every case, the same pattern appears at different levels or sizes.</p>
-          <h2>Why it matters for this book</h2>
-          <p>Recursion lets a small set of rules describe or generate huge—even infinite—complexity. The formal systems we use (like the one for arithmetic, TNT) rely on recursive definitions. So does Gödel's construction: a sentence that talks about itself. So recursion isn't just a curiosity; it's at the heart of how form and meaning work in the book.</p>
+          <p>Recursion is when you define something by referring back to itself—with a base case to stop the loop. A classic example: what's a list? A list is either empty, or it's one item followed by a list. That's a recursive definition. "List" appears in its own definition.</p>
+          <p>You see this everywhere once you know to look. Fractal images look the same at every zoom level. Grammatical sentences can contain other sentences. Bach wrote canons where a melody chases itself, offset by one beat. A function in a computer program can call itself with a smaller input.</p>
+          <p>Recursion matters for this book because it's how formal systems work at every level. Terms in arithmetic are built from smaller terms. Formulas are built from smaller formulas. Proofs are built from smaller steps. And, most importantly, Gödel's construction will use recursion in a spectacular way: he builds a sentence that refers to itself—a sentence that contains, in encoded form, a description of itself—and uses that self-reference to say something unprovable.</p>
+          <p>So recursion isn't just a trick programmers use. It's the mechanism that makes self-reference—and therefore the strange loop—possible at all.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
-          <h2>Recursive structures and processes</h2>
-          <p>Hofstadter presents recursion in multiple contexts: musical patterns (canons, themes that embed themselves at different pitches or times), linguistic structures (embedded clauses, so that a sentence can contain another sentence), geometric fractals (shapes that look the same at every scale), mathematical definitions (e.g. factorial, Fibonacci, defined in terms of smaller cases), and computer programs (functions that call themselves). In each case, the same structure or process appears at multiple levels, with a base case that terminates the recursion so we don't go on forever.</p>
-          <h2>Self-similarity and generative power</h2>
-          <p>Recursion provides a way to generate arbitrarily complex structures from a finite specification. A small set of rules can produce infinitely many results. That's essential for formal systems: a few axioms and inference rules generate infinitely many theorems. The chapter shows that recursion is not just a technical trick but a pervasive pattern in music, language, and logic. It prepares the reader for recursive definitions in TNT (terms and formulas built from smaller terms and formulas) and for the self-referential constructions that Gödel will use—where a formula effectively refers to itself by encoding its own structure.</p>
+          <p>Hofstadter surveys recursion across domains: musical canons and fugues (a theme that chases itself at different pitch or time offsets), embedded clauses in language, mathematical induction and recursive definitions (factorial, Fibonacci), fractal geometry (self-similar structures at every scale), and recursive programs (functions that call themselves, with termination guaranteed by a decreasing argument).</p>
+          <p>The structural insight is that recursion provides <em>finite specification of infinite complexity.</em> A handful of axioms and inference rules generate infinitely many theorems. A grammar with recursive rules generates infinitely many grammatical sentences. This generative power is essential: formal systems derive their expressiveness from recursive structure.</p>
+          <p>For the book's purposes, the crucial instance is self-referential recursion: a formula that encodes facts about itself. In TNT, the recursive structure of terms and formulas will allow Gödel numbering—mapping every syntactic object to a number—and then, by encoding the numbering inside arithmetic, allow formulas to "talk about" formulas. The fixed-point construction that produces the Gödel sentence is a precise mathematical form of recursion folded back on itself: a formula whose number is the very number about which it makes a claim. Recursion, in this deepest case, becomes self-reference, and self-reference becomes the strange loop.</p>
+          <p>---</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">

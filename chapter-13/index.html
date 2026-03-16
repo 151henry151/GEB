@@ -22,27 +22,26 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>Some searches have a lid: you only look up to a number, then stop, so you always finish. Other searches have no lid: you look until you find it, and if it’s never there you never stop. BlooP has lids; FlooP doesn’t. So some problems need the risky, no-lid kind.</p>
+          <p>Imagine two kinds of treasure hunts. The first kind says: "You have 10 minutes. Search as many rooms as you want—but when the timer goes off, you stop." That hunt is safe. You always finish.</p>
+          <p>The second kind says: "Keep searching until you find the treasure." What if the treasure isn't there? Then you search forever. You never stop.</p>
+          <p>BlooP is the first kind of search—always safe, always finishes. FlooP is the second kind—might go on forever if what you're looking for doesn't exist. Some problems need the risky, open-ended kind of search to even be asked properly. And some questions—like "is G provable?"—turn out to be exactly that kind.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
-          <h2>BlooP: bounded loops</h2>
-          <p>BlooP is a made-up language where every loop has a fixed upper bound before you start. So "for n from 0 to N" is allowed; "keep going until you find n such that ..." with no bound is not. Every BlooP program is guaranteed to halt. The functions it can compute are called primitive recursive.</p>
-          <h2>FlooP: unbounded search</h2>
-          <p>FlooP adds unbounded search: "find the smallest n such that P(n) is true." If no such n exists, the program runs forever. So FlooP can compute more functions than BlooP, but we lose the guarantee that the program always stops.</p>
-          <h2>Why it matters</h2>
-          <p>This sets up Gödel: to say "there is no proof of G" we need to search through all possible proofs. That search is unbounded. So the "proof predicate" is FlooP but not BlooP. Incomplete systems are tied to the power of unbounded search.</p>
+          <p>Hofstadter invents three imaginary programming languages to clarify levels of computational power. <em>BlooP</em> allows loops, but every loop must have a fixed maximum number of steps before it starts. So every BlooP program is guaranteed to halt. The functions it can compute are called primitive recursive—they include most of the functions you'd encounter in basic arithmetic.</p>
+          <p><em>FlooP</em> adds one new thing: an unbounded search. "Find the smallest n such that…" with no guaranteed endpoint. If no such n exists, the program runs forever. FlooP can compute everything BlooP can, plus more. But you lose the guarantee of termination.</p>
+          <p><em>GlooP</em> is everything—every computation any imaginable machine could do. (It turns out to be equivalent to Turing machines and everything else we call "computable.")</p>
+          <p>Why does this matter for Gödel? Because to say "there is no proof of G" you have to search through all possible proofs. That search is unbounded—it requires FlooP, not BlooP. The statement "x is a proof of y" is checkable quickly (BlooP), but "there exists a proof of y" requires an unbounded search. And the negation—"there is no proof"—requires confirming that the search never terminates. That's outside the power of any bounded computation. The incompleteness of arithmetic is tied directly to the power of unbounded search.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
-          <h2>Primitive recursive and general recursive functions</h2>
-          <p>Hofstadter introduces BlooP (bounded loop language), in which every loop runs a predetermined number of times or is bounded by a value computed before the loop. All BlooP programs terminate. The class of functions computable in BlooP is the primitive recursive functions.</p>
-          <h2>FlooP and unbounded search</h2>
-          <p>FlooP adds a single unbounded search operation: find the smallest n such that some (BlooP-computable) predicate holds. If no such n exists, the program does not halt. FlooP captures the general recursive (mu-recursive) functions. There are number-theoretic functions that are FlooP-computable but not BlooP-computable.</p>
-          <h2>GlooP and the link to incompleteness</h2>
-          <p>GlooP is the "universal" language that can simulate any FlooP program. The key point is that the property "n is the Gödel number of a proof in TNT" is primitive recursive (BlooP); but "there exists a proof of the formula with Gödel number x" requires unbounded search. So the incompleteness argument hinges on predicates that go beyond BlooP.</p>
+          <p>Hofstadter introduces three artificial programming languages as a way of stratifying computational power. BlooP (Bounded Loop language) permits only loops with a predetermined upper bound on iterations. All BlooP programs terminate. The class of functions computable in BlooP is exactly the primitive recursive functions: a rich class that includes all functions definable by simple induction, but not all computable functions.</p>
+          <p>FlooP (Free Loop language) adds a single "MU-loop"—unbounded minimization. Find the smallest n satisfying a predicate; if no such n exists, diverge. FlooP captures the general recursive (μ-recursive) functions. By Church's thesis, these coincide with the Turing-computable functions. FlooP gains expressiveness at the cost of guaranteed termination.</p>
+          <p>GlooP is the hypothetical "all of computation" language, equivalent to a universal Turing machine.</p>
+          <p>The significance for incompleteness: the proof predicate—"x is a valid proof of y"—is decidable (BlooP computable) because proof-checking is a bounded, mechanical process. But the provability predicate—"there exists a proof of y"—requires unbounded search: FlooP. And the <em>non-provability</em> predicate—"there is no proof of y"—requires confirming that an unbounded search fails to terminate, which is neither BlooP nor, in general, FlooP. This is the halting problem in another guise. The incompleteness theorem is, at its core, about the gap between what can be mechanically checked and what requires genuine open-ended search—a gap that no formal system can close from the inside.</p>
+          <p>---</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">
@@ -59,11 +58,19 @@
       <div class="companion-box" id="bloop-companion">
         <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
           <p style="margin:0 0 0.35rem 0;"><strong>What you’re seeing</strong></p>
-          <p style="margin:0;">We search for the <strong>smallest n</strong> such that <strong>n &gt; 2 and n is even</strong> (answer: 4). <strong>BlooP</strong> checks n = 0, 1, 2, … only up to a bound you set—then it must stop. <strong>FlooP</strong> has no bound: it keeps checking until it finds one (in a real machine it might never stop if none exists).</p>
+          <p style="margin:0;">Pick a search below. <strong>BlooP</strong> checks n = 0, 1, 2, … only up to <strong>bound N</strong> (you set N)—then it must stop. <strong>FlooP</strong> has no bound: it keeps checking until it finds one, or in real FlooP would run forever if no match exists.</p>
         </div>
-        <p style="margin-bottom:0.35rem;"><strong>Bound N</strong> (BlooP searches only 0…N)</p>
-        <p style="margin:0 0 0.5rem 0; font-size:0.9rem;">Set N small (e.g. 3) to see BlooP stop with “not in range”; FlooP still finds 4.</p>
-        <input type="number" id="bloop-bound" value="10" min="1" max="50" style="width:4rem; padding:0.35rem; margin-bottom:0.75rem;">
+        <p style="margin-bottom:0.35rem;"><strong>Choose search</strong></p>
+        <select id="bloop-problem" style="width:100%; max-width:24rem; padding:0.35rem; margin-bottom:0.5rem; font-size:0.9rem;" aria-label="Search problem">
+          <option value="has-solution">Has solution: smallest n &gt; 2 and n even (answer: 4)</option>
+          <option value="no-solution">No solution: smallest n with n &gt; 0 and n &lt; 0 (FlooP never halts)</option>
+        </select>
+        <p style="margin-bottom:0.35rem;"><strong>Bound N</strong> (BlooP only searches 0…N)</p>
+        <p style="margin:0 0 0.5rem 0; font-size:0.9rem;">Set N to control how far BlooP looks. With “no solution,” BlooP stops at N; FlooP would run forever (we stop the demo after 20 steps).</p>
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+          <label for="bloop-bound">N =</label>
+          <input type="number" id="bloop-bound" value="10" min="1" max="50" style="width:4.5rem; padding:0.35rem;" aria-label="Bound N">
+        </div>
         <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.75rem;">
           <button type="button" class="btn btn-primary" id="bloop-run">Run BlooP</button>
           <button type="button" class="btn btn-secondary" id="floop-run">Run FlooP</button>
@@ -87,10 +94,12 @@
   <script>
     (function(){
       var boundInput = document.getElementById('bloop-bound');
+      var problemSelect = document.getElementById('bloop-problem');
       var resultDiv = document.getElementById('bloop-result');
       var bloopVis = document.getElementById('bloop-vis');
       var floopVis = document.getElementById('floop-vis');
       var delayMs = 280;
+      var floopMaxSteps = 20;
       function makeStrip(label, maxCells) {
         var wrap = document.createElement('div');
         wrap.innerHTML = '<div class="bloop-label">' + label + '</div><div class="bloop-strip"></div>';
@@ -116,7 +125,10 @@
           if (n === N) strip.cells[i].classList.add('bound');
         }
       }
-      function predicate(n) { return n > 2 && n % 2 === 0; }
+      function predicate(n) {
+        if (problemSelect && problemSelect.value === 'no-solution') return false;
+        return n > 2 && n % 2 === 0;
+      }
       function runBlooP() {
         var N = Math.min(50, Math.max(1, parseInt(boundInput.value, 10) || 10));
         boundInput.value = N;
@@ -158,30 +170,43 @@
       }
       function runFlooP() {
         floopVis.innerHTML = '';
-        var maxCells = 16;
+        var maxCells = Math.max(16, floopMaxSteps);
         var floopStrip = makeStrip('FlooP: search 0, 1, 2, … (no bound)', maxCells);
         floopVis.appendChild(floopStrip.wrap);
         resultDiv.textContent = 'FlooP: searching (no bound) …';
         resultDiv.className = '';
         var n = 0;
+        var steps = 0;
+        var noSolution = problemSelect && problemSelect.value === 'no-solution';
         function next() {
-          if (n < floopStrip.cells.length) {
-            floopStrip.cells[n].classList.add('checked');
-            if (predicate(n)) {
+          if (n < floopStrip.cells.length) floopStrip.cells[n].classList.add('checked');
+          if (predicate(n)) {
+            if (n < floopStrip.cells.length) {
               floopStrip.cells[n].classList.remove('checked');
               floopStrip.cells[n].classList.add('found');
-              resultDiv.textContent = 'FlooP: found n = ' + n + '. Stopped (would run forever if no match).';
-              resultDiv.className = 'truth-true';
-              return;
             }
+            resultDiv.textContent = 'FlooP: found n = ' + n + '. Stopped (would run forever if no match).';
+            resultDiv.className = 'truth-true';
+            return;
           }
+          steps++;
           n++;
-          if (n <= maxCells) {
+          if (noSolution && steps >= floopMaxSteps) {
+            resultDiv.textContent = 'FlooP: no match after ' + floopMaxSteps + ' steps. In real FlooP this would run forever (never halt).';
+            resultDiv.className = 'truth-undefined';
+            return;
+          }
+          if (n <= maxCells && (!noSolution || steps < floopMaxSteps)) {
             resultDiv.textContent = 'FlooP: checked n = ' + (n - 1) + ' … no. Next (no bound).';
             setTimeout(next, delayMs);
           } else {
-            resultDiv.textContent = 'FlooP: found n = 4 (demo limited to ' + maxCells + ' cells).';
-            resultDiv.className = 'truth-true';
+            if (noSolution) {
+              resultDiv.textContent = 'FlooP: no match. In real FlooP this would run forever (never halt).';
+              resultDiv.className = 'truth-undefined';
+            } else {
+              resultDiv.textContent = 'FlooP: found n = 4 (demo limited to ' + maxCells + ' cells).';
+              resultDiv.className = 'truth-true';
+            }
           }
         }
         next();

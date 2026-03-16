@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.2] — 2026-03-16
+
+### Changed
+
+- Replace all ELI5, ELI10, and ELI20 chapter summaries with rewritten copy (intro and chapters I–XX). Update ELI-summaries.md in repo to the same rewritten text. Add scripts/import_eli_summaries.py to import from a markdown file into chapter HTML.
+
 ## [0.15.1] — 2026-03-16
 
 ### Changed

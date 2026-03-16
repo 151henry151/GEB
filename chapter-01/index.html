@@ -22,27 +22,26 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>You start with <strong>MI</strong> and follow a few rules to change the letters. Your goal is to get <strong>MU</strong>. No matter how many times you use the rules, you never can. Some things are impossible even with simple rules.</p>
+          <p>Pretend you're playing a letter game. You start with two letters: <strong>MI</strong>. There are rules for changing the letters—like "if you see an I, you can add a U after it." Your goal is to end up with just <strong>MU</strong>.</p>
+          <p>You try and try. You get longer and longer strings of letters. But you never, ever get MU.</p>
+          <p>Here's the funny thing: the <em>only</em> way to figure out <em>why</em> you can never get MU is to step <em>outside</em> the game and think about it from above. If you just keep playing by the rules, you'll never know if it's impossible—you'll just keep failing. You have to become a kind of referee, watching the game from the outside, to see the reason.</p>
+          <p>That idea—being inside a system versus stepping outside it—is something the whole book keeps coming back to.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
-          <h2>The MIU-system</h2>
-          <p>The chapter introduces a tiny “game” called the MIU-system. You have the letters M, I, and U. You start with the string <strong>MI</strong> (that’s the only starting string). There are four rules: (I) copy everything after the M and add it to the end; (II) turn I into IU; (III) turn III into U; (IV) remove UU. A “theorem” is any string you can get by applying these rules, starting from MI. The symbols don’t mean anything yet—they’re just marks you push around.</p>
-          <h2>The MU-puzzle</h2>
-          <p>The puzzle is: can you ever get <strong>MU</strong>? You can try for a long time. It turns out you cannot. The reason is about the number of I’s. MI has one I. Rule I doubles the number of I’s after the M. Rules II and III change that number in ways that never make it divisible by 3 when you started from 1. Rule IV doesn’t add I’s. So the number of I’s (after M) is never divisible by 3. MU has zero I’s, and zero is divisible by 3. So you can never reach MU from MI.</p>
-          <h2>Inside vs outside, and decision procedures</h2>
-          <p>To see that MU is impossible, you had to “step outside” the game and think about it—for example, by counting I’s. That’s different from just playing inside the game by applying rules. The chapter also introduces a “decision procedure”: a way to tell, for any string, whether it’s a theorem or not. For the MIU-system we can do that (e.g. using the I-count). So we can know for sure that MU is not a theorem.</p>
+          <p>The MIU-system is a tiny formal game. You start with the string <strong>MI</strong> and have four rules for transforming it. For instance: you can double everything after the M; or replace three I's in a row with a U; or remove a pair of U's. A "theorem" is any string you can reach by applying these rules, starting from MI.</p>
+          <p>The puzzle: can you ever reach <strong>MU</strong>?</p>
+          <p>You can experiment for a long time. You'll get strings like MIIU, MIUIU, MUUII… but never MU. Here's why. Look at the number of I's. MI has one I. Every rule either doubles the I's, changes three I's into one U, changes a U into two I's, or removes U's entirely. If you work it out carefully, you'll see that the number of I's is <em>never</em> divisible by three—because you started with one, and none of the rules can make it divisible by three from there. MU has <em>zero</em> I's. Zero is divisible by three. So you can never get there.</p>
+          <p>But notice: to see this, you had to <em>step outside</em> the game and count. You couldn't see it just by playing. That's the lesson—and it's the first hint of something Gödel will do much later: prove something <em>about</em> a system by reasoning from outside it.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
-          <h2>Formal systems and the MIU-system</h2>
-          <p>Hofstadter presents a minimal formal system: a finite alphabet (M, I, U), a single axiom (the string MI), and four rules of inference. Theorems are exactly those strings derivable from the axiom by finitely many applications of the rules. The system is “meaning-free”: the symbols have no prescribed interpretation. That sets up the later theme that meaning can arise from form (e.g. in the pq-system) rather than from the symbols alone.</p>
-          <h2>The MU-puzzle and working outside the system</h2>
-          <p>The central puzzle is whether MU is a theorem. Experimentation suggests it is not. The key is to step outside the system and reason about it. The axiom has one I after the M. Rule I doubles the number of I’s after M. Rules II and III replace I’s with U’s in ways that preserve the fact that the I-count (mod 3) is never 0 when you start from 1. Rule IV removes UU and doesn’t add I’s. So the number of I’s after M is never divisible by 3. MU has zero I’s; zero is divisible by 3. So no sequence of rule applications can take you from MI to MU. Proving that requires meta-reasoning about the system, not just rule application inside it.</p>
-          <h2>Decision procedures and implicit characterization</h2>
-          <p>The chapter distinguishes two ways to characterize the set of theorems. Implicitly: the rules generate exactly that set (every theorem is derivable, and every derivable string is a theorem). A decision procedure is stronger: an algorithm that, given any string, decides in finite time whether it is a theorem. For the MIU-system, a decision procedure exists (e.g. based on the I-count and the position of M). So theoremhood is not only well-defined but testable. That contrast—between generating theorems and deciding whether a given string is a theorem—will matter later for more powerful systems where no decision procedure exists.</p>
+          <p>The MIU-system is a minimal formal system: alphabet {M, I, U}, single axiom MI, four inference rules that manipulate strings. Theorems are strings derivable from MI by finitely many rule applications. The symbols carry no meaning; they are pure marks.</p>
+          <p>The central puzzle—is MU a theorem?—cannot be resolved by playing the game. No amount of trial and error reveals whether the goal is unreachable or merely far away. To <em>prove</em> it's unreachable, you must step outside and reason about the system. The key is the invariant: the number of I's in any theorem, starting from MI, is never divisible by three. MI has one I; rule I doubles the I-count; rules II and III change it in ways that preserve non-divisibility-by-three; rule IV removes U's. MU has zero I's; zero is divisible by three. So MU is not a theorem.</p>
+          <p>This illustrates the distinction between two kinds of knowledge about a formal system: theoremhood (derivability, what you get by playing) and meta-theoretic reasoning (what you can prove <em>about</em> the system from outside). The chapter also introduces the concept of a decision procedure—an algorithm that, for any input string, correctly determines in finite time whether it's a theorem. The MIU-system <em>has</em> a decision procedure (check the I-count and the M-position). For more powerful systems—those strong enough to express arithmetic—no such decision procedure exists. The contrast between systems that are decidable and those that are not is what the rest of the book unfolds.</p>
+          <p>---</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">

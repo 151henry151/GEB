@@ -22,27 +22,27 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>We gave every formula a secret number. Then we built one sentence that talks about its own number. It says: “The sentence with my number cannot be proved.” The rules can’t prove it (or they’d be broken), so what it says is true—and the rules never get there. So some true things are left out.</p>
+          <p>Gödel had a clever idea: give every formula a secret number. Not random numbers—numbers you can calculate from the formula itself. So a formula about numbers secretly <em>has</em> a number. It's a number that talks about numbers.</p>
+          <p>Then Gödel built one special formula. Its secret number was <em>its own</em> secret number. So the formula was talking about <em>itself.</em> And what it said was: "You cannot prove me with the rules."</p>
+          <p>If the rules proved it, they'd be lying. So they can't prove it. But then what it says is true. And the rules can never get there. Some true things are forever out of reach.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
-          <h2>Gödel numbering</h2>
-          <p>Every symbol, formula, and proof in TNT is assigned a unique number (a Gödel number). So "being a proof of formula X" becomes a number fact. TNT can then express that fact inside its own language: there is a formula that says "there is no proof of the formula with Gödel number g" for a certain g.</p>
-          <h2>The Gödel sentence G</h2>
-          <p>We build g so that the formula with number g is exactly that one: "there is no proof of the formula with number g." So G says "I am not provable." If TNT proved G, then TNT would prove "G has no proof," which is false. So if TNT is consistent, G is not provable. And then G is true. So G is true but unprovable.</p>
-          <h2>Formally undecidable</h2>
-          <p>So there is a sentence of TNT that is neither provable nor disprovable (its negation is not provable either, if TNT is consistent). Such a sentence is undecidable. So TNT is incomplete: some truths of arithmetic are not theorems of TNT.</p>
+          <p>Every symbol in TNT gets a number. From that, every formula gets a number (you encode the string of symbols). From that, every proof gets a number (you encode the sequence of formulas). The process is mechanical and reversible.</p>
+          <p>This is Gödel numbering. Once it's done, "x is a proof of the formula with number y" becomes a statement about natural numbers. And statements about natural numbers can be expressed inside TNT. So TNT can talk about its own proofs—in code.</p>
+          <p>Now the diagonal trick. Suppose you write the formula "the formula with number n has no proof in TNT." That's a formula of TNT. It has its own Gödel number—call it g. Now substitute g for n. You get: "the formula with number g has no proof in TNT." But that formula <em>is</em> the formula with number g. So you have a formula G that says <em>about itself:</em> "I have no proof in TNT."</p>
+          <p>If TNT proves G, then G is false—contradiction. So TNT doesn't prove G. So G is true. Incompleteness: a true sentence with no proof.</p>
+          <p>Moreover, since G is true (in arithmetic), ¬G is false. If TNT could prove ¬G, it would be proving a false statement—which a consistent system cannot do. So TNT proves neither G nor ¬G. G is formally undecidable.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
-          <h2>Arithmetization and the undecidable sentence</h2>
-          <p>Hofstadter presents the full construction: Gödel numbering maps syntax (symbols, formulas, sequences of formulas) to natural numbers. The relation "x is the Gödel number of a proof of the formula with Gödel number y" is primitive recursive, hence expressible in TNT. By the diagonal lemma (or fixed-point construction), there is a formula G such that TNT proves G if and only if there is a proof of the formula with a certain number n, and that formula is G itself. So G is equivalent to "G is not provable in TNT."</p>
-          <h2>Proof of incompleteness</h2>
-          <p>If TNT is consistent and proves G, then (by the construction) there is no proof of G, contradiction. So TNT does not prove G. So the statement "there is no proof of G" holds; but that statement is what G expresses (under the interpretation). So G is true in the standard model. Hence TNT is incomplete: there is a true sentence it does not prove. Similarly, if TNT is consistent, it does not prove not-G either; so G is undecidable.</p>
-          <h2>Significance</h2>
-          <p>Any consistent formal system that contains enough arithmetic has such an undecidable sentence. Truth and provability do not coincide. This is Gödel's first incompleteness theorem.</p>
+          <p>The chapter presents the full technical construction of the Gödel sentence. Gödel numbering is a computable bijection from syntactic objects (symbols, formulas, sequences of formulas) to natural numbers. Crucially, the relation "x codes a valid proof of the formula coded by y" is decidable—in fact, primitive recursive—because proof-checking only requires mechanical verification of a bounded combinatorial structure.</p>
+          <p>The provability predicate Prov(y) = ∃x Proof(x, y) is then expressible in TNT (since TNT can express bounded and unbounded quantification over natural numbers). Similarly, ¬Prov(y)—"the formula coded by y has no proof"—is expressible.</p>
+          <p>The diagonal lemma (fixed-point theorem): for any formula F(y) of TNT with one free variable, there exists a sentence G such that TNT proves G ↔ F(⌈G⌉), where ⌈G⌉ is the Gödel number of G. Apply this to F(y) = ¬Prov(y). The result is the Gödel sentence G ↔ ¬Prov(⌈G⌉)—a sentence equivalent, within TNT, to its own unprovability.</p>
+          <p>Incompleteness: if TNT is consistent and proves G, then Prov(⌈G⌉) is true, so G is equivalent to a falsehood—contradiction. So TNT does not prove G. Hence ¬Prov(⌈G⌉) holds in the standard model. Hence G is true in the standard model. So there is a true sentence of arithmetic (in the standard model) that TNT cannot prove. TNT is incomplete. By a parallel argument using ω-consistency (or Rosser's strengthening using plain consistency), TNT does not prove ¬G either. G is undecidable in TNT.</p>
+          <p>---</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">
