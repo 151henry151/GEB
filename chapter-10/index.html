@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    .level-line-current { background: rgba(46, 107, 138, 0.2); padding: 0.1rem 0.25rem; border-radius: 3px; }
+  </style>
 </head>
 <body>
   <div class="chapter-layout">
@@ -49,14 +52,121 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">One simple machine: add two numbers. See the same operation at a high level (add) and a low level (steps).</p>
-      <div class="companion-box">
-        <p><strong>Level 0:</strong> Add A and B.</p>
-        <p><strong>Level 1:</strong> LOAD A; ADD B; STORE C.</p>
-        <p style="font-size:0.9rem; color:var(--muted);">Same process, different description.</p>
+      <p class="companion-caption">The same process—adding two numbers—described at three levels. Set A and B, then click Step to run one instruction at a time and watch all levels update together.</p>
+      <div class="companion-box" id="levels-companion">
+        <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
+          <p style="margin:0 0 0.35rem 0;"><strong>Levels of description</strong></p>
+          <p style="margin:0;">Level 0: what we want (add two numbers). Level 1: machine steps (LOAD, ADD, STORE). Level 2: same values in binary. One process, three views.</p>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center; margin-bottom:0.75rem;">
+          <label>A: <input type="number" id="levels-a" min="0" max="15" value="3" style="width:3.5rem; padding:0.25rem;" aria-label="Value A"></label>
+          <label>B: <input type="number" id="levels-b" min="0" max="15" value="5" style="width:3.5rem; padding:0.25rem;" aria-label="Value B"></label>
+          <button type="button" class="btn btn-primary" id="levels-step">Step</button>
+          <button type="button" class="btn btn-secondary" id="levels-reset">Reset</button>
+        </div>
+        <p style="margin-bottom:0.35rem; font-size:0.9rem; color:var(--muted);" id="levels-step-label">Step 0: initial state. Click Step to run LOAD A → ADD B → STORE C.</p>
+        <div style="display:grid; gap:0.6rem; margin-bottom:0.5rem;">
+          <div class="level-block" style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px;">
+            <p style="margin:0 0 0.25rem 0; font-size:0.85rem; color:var(--muted);"><strong>Level 0</strong> (goal)</p>
+            <p id="level0-text" style="margin:0; font-family:var(--font-mono);">Add A and B → C</p>
+            <p id="level0-vals" style="margin:0.25rem 0 0 0; font-size:0.9rem;">A = <span id="v-a">3</span>, B = <span id="v-b">5</span>, C = <span id="v-c">—</span></p>
+          </div>
+          <div class="level-block" style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px;">
+            <p style="margin:0 0 0.25rem 0; font-size:0.85rem; color:var(--muted);"><strong>Level 1</strong> (instructions)</p>
+            <p id="level1-lines" style="margin:0; font-family:var(--font-mono); font-size:0.9rem;">
+              <span id="line-load" class="level-line">LOAD A</span><br>
+              <span id="line-add" class="level-line">ADD B</span><br>
+              <span id="line-store" class="level-line">STORE C</span>
+            </p>
+            <p id="level1-regs" style="margin:0.35rem 0 0 0; font-size:0.85rem;">Accumulator = <span id="v-acc">—</span>, C = <span id="v-c1">—</span></p>
+          </div>
+          <div class="level-block" style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px;">
+            <p style="margin:0 0 0.25rem 0; font-size:0.85rem; color:var(--muted);"><strong>Level 2</strong> (binary)</p>
+            <p id="level2-text" style="margin:0; font-family:var(--font-mono); font-size:0.85rem;">A = <span id="bin-a">0011</span>, B = <span id="bin-b">0101</span>, Acc = <span id="bin-acc">—</span>, C = <span id="bin-c">—</span></p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <script src="../shared/nav.js"></script>
+  <script>
+    (function () {
+      function toBin(n) {
+        if (n === null || n === undefined) return '\u2014';
+        var s = (n >>> 0).toString(2);
+        return '0000'.slice(s.length) + s;
+      }
+      var stepCount = 0;
+      var aIn = document.getElementById('levels-a');
+      var bIn = document.getElementById('levels-b');
+      var stepBtn = document.getElementById('levels-step');
+      var resetBtn = document.getElementById('levels-reset');
+      var stepLabel = document.getElementById('levels-step-label');
+      var vA = document.getElementById('v-a');
+      var vB = document.getElementById('v-b');
+      var vC = document.getElementById('v-c');
+      var vAcc = document.getElementById('v-acc');
+      var vC1 = document.getElementById('v-c1');
+      var binA = document.getElementById('bin-a');
+      var binB = document.getElementById('bin-b');
+      var binAcc = document.getElementById('bin-acc');
+      var binC = document.getElementById('bin-c');
+      var lineLoad = document.getElementById('line-load');
+      var lineAdd = document.getElementById('line-add');
+      var lineStore = document.getElementById('line-store');
+      var highlightClass = 'level-line-current';
+      function getAB() {
+        var a = parseInt(aIn.value, 10);
+        var b = parseInt(bIn.value, 10);
+        if (isNaN(a)) a = 0;
+        if (isNaN(b)) b = 0;
+        a = Math.max(0, Math.min(15, a));
+        b = Math.max(0, Math.min(15, b));
+        return { a: a, b: b };
+      }
+      function render() {
+        var ab = getAB();
+        var a = ab.a, b = ab.b;
+        var acc = null, c = null;
+        if (stepCount >= 1) acc = a;
+        if (stepCount >= 2) acc = a + b;
+        if (stepCount >= 3) c = a + b;
+        if (vA) vA.textContent = a;
+        if (vB) vB.textContent = b;
+        if (vC) vC.textContent = c !== null ? c : '\u2014';
+        if (vAcc) vAcc.textContent = acc !== null ? acc : '\u2014';
+        if (vC1) vC1.textContent = c !== null ? c : '\u2014';
+        if (binA) binA.textContent = toBin(a);
+        if (binB) binB.textContent = toBin(b);
+        if (binAcc) binAcc.textContent = toBin(acc);
+        if (binC) binC.textContent = toBin(c);
+        [lineLoad, lineAdd, lineStore].forEach(function (el, i) {
+          if (!el) return;
+          el.classList.remove(highlightClass);
+          if (i === 0 && stepCount >= 1) el.classList.add(highlightClass);
+          if (i === 1 && stepCount >= 2) el.classList.add(highlightClass);
+          if (i === 2 && stepCount >= 3) el.classList.add(highlightClass);
+        });
+        var labels = [
+          'Step 0: initial state. Click Step to run LOAD A \u2192 ADD B \u2192 STORE C.',
+          'Step 1: LOAD A. Accumulator now holds A. Click Step again for ADD B.',
+          'Step 2: ADD B. Accumulator now holds A+B. Click Step for STORE C.',
+          'Step 3: STORE C. C = A+B. Same result at every level. Click Reset to run again.'
+        ];
+        if (stepLabel) stepLabel.textContent = labels[Math.min(stepCount, 3)];
+      }
+      if (stepBtn) stepBtn.addEventListener('click', function () {
+        if (stepCount < 3) stepCount++;
+        render();
+      });
+      if (resetBtn) resetBtn.addEventListener('click', function () {
+        stepCount = 0;
+        render();
+      });
+      if (aIn) aIn.addEventListener('input', function () { if (stepCount === 0) render(); });
+      if (bIn) bIn.addEventListener('input', function () { if (stepCount === 0) render(); });
+      render();
+    })();
+  </script>
 </body>
 </html>

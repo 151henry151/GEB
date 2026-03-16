@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.11.0] — 2026-03-16
+
+### Fixed
+
+- Chapter X PDF now starts on first page of chapter (was including last page of Chapter IX); update split script and regenerate pdfs/chapter-09.pdf and chapter-10.pdf.
+
+### Changed
+
+- Chapter X levels companion: replace static text with interactive level-stack; add “Levels of description” explainer; number inputs for A and B (0–15); Step button to run LOAD A → ADD B → STORE C one instruction at a time; Reset button; Level 0 shows goal and live values (A, B, C); Level 1 shows three instructions with current step highlighted and accumulator/C; Level 2 shows same values in binary; step label describes each phase.
+
 ## [0.10.0] — 2026-03-16
 
 ### Fixed
