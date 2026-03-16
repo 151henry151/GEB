@@ -4,6 +4,18 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.14.3] — 2026-03-16
+
+### Changed
+
+- Chapter XVI (Self-Ref and Self-Rep): replace quine companion with ENIUQ-based interactive. Show two-part structure (instructions vs template) from the chapter; program source displays definition plus template in brackets with template highlighted; editable template with “Run ENIUQ” (output = template + " ['" + template + "]."), “Reset to quine”, and “Try: DOUBLE-BUBBLE” preset; verdict explains self-reproduction when template is quine and output ≠ source when template is changed; explainer describes Quine construction (instructions + data) and one string as program and data.
+
+## [0.14.2] — 2026-03-16
+
+### Changed
+
+- Chapter XIII BlooP/FlooP companion: add problem selector—“Has solution” (n &gt; 2 and n even, answer 4) vs “No solution” (n &gt; 0 and n &lt; 0; FlooP never halts); make bound N a labeled control (N = input); when “No solution” is selected, FlooP animates 20 steps then shows “no match … would run forever (never halt).”
+
 ## [0.14.1] — 2026-03-16
 
 ### Changed
