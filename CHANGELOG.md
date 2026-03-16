@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.7.2] — 2026-03-16
+
+### Changed
+
+- Chapter VI encoding companion: default input mode to Binary, default message to 01000001, decoder remains ASCII (binary in, ASCII out).
+
 ## [0.7.1] — 2026-03-16
 
 ### Fixed

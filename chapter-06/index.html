@@ -50,11 +50,11 @@
       <p class="companion-caption">Same message, different decoder: enter a message, choose how you’re entering it (input mode) and how to interpret it (decoder). Meaning changes with the decoder.</p>
       <div class="companion-box" id="encoding-companion">
         <label style="display:block; margin-bottom:0.25rem;">Message</label>
-        <textarea id="msg-input" class="logic" rows="2" placeholder="e.g. A or 01000001" style="width:100%; max-width:24rem; font-family:var(--font-mono); padding:0.4rem; margin-bottom:0.5rem;">A</textarea>
+        <textarea id="msg-input" class="logic" rows="2" placeholder="e.g. A or 01000001" style="width:100%; max-width:24rem; font-family:var(--font-mono); padding:0.4rem; margin-bottom:0.5rem;">01000001</textarea>
         <div style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center; margin-bottom:0.5rem;">
           <label>Input mode: <select id="input-mode" aria-label="Input format">
             <option value="ascii">ASCII / text</option>
-            <option value="binary">Binary</option>
+            <option value="binary" selected>Binary</option>
             <option value="hex">Hex</option>
             <option value="decimal">Decimal (bytes)</option>
             <option value="octal">Octal</option>
