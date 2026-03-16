@@ -9,7 +9,7 @@
     { id: 'intro', num: '', title: 'Introduction: A Musico-Logical Offering', path: '/intro/', pdfPage: 10 },
     { id: 'ch01', num: 'I', title: 'The MU-puzzle', path: '/chapter-01/', pdfPage: 41 },
     { id: 'ch02', num: 'II', title: 'Meaning and Form in Mathematics', path: '/chapter-02/', pdfPage: 54 },
-    { id: 'ch03', num: 'III', title: 'Figure and Ground', path: '/chapter-03/', pdfPage: 71 },
+    { id: 'ch03', num: 'III', title: 'Figure and Ground', path: '/chapter-03/', pdfPage: 72 },
     { id: 'ch04', num: 'IV', title: 'Consistency, Completeness, and Geometry', path: '/chapter-04/', pdfPage: 90 },
     { id: 'ch05', num: 'V', title: 'Recursive Structures and Processes', path: '/chapter-05/', pdfPage: 135 },
     { id: 'ch06', num: 'VI', title: 'The Location of Meaning', path: '/chapter-06/', pdfPage: 165 },

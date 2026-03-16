@@ -4,6 +4,10 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+### Fixed
+
+- Chapter III PDF now starts on first page of chapter (was including last page of Chapter II); adjust split script and regenerate pdfs/chapter-02.pdf and chapter-03.pdf.
+
 ## [0.3.0] — 2025-03-15
 
 ### Changed
