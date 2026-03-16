@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.14.6] — 2026-03-16
+
+### Fixed
+
+- Chapter XVII, XVIII, XX PDFs: correct start pages so each opens on the first page of the chapter. XVII +1 (566), XVIII +2 (602), XX +2 (692). Updated STARTS in scripts/split_geb_pdf.py and pdfPage in shared/nav.js; regenerated chapter-17, 18, 19, 20 PDFs.
+
+### Changed
+
+- Chapter XX (Strange Loops): replace static diagram with two interactive sections. (1) <strong>Eternal Golden Braid</strong>: click Bach / Escher / Gödel to see the strange loop in each domain—Bach canon animation (rise and return), Escher Drawing Hands sketch, Gödel sentence with “Try to prove it” and explanation. (2) <strong>Tangled Hierarchy</strong>: 3×3 board with one token; on your turn you may move the token (rule determines valid moves) or change the rule (cycle through five rules). Illustrates the chapter’s “rules that change themselves” and collapse of game vs metarules.
+
 ## [0.14.5] — 2026-03-16
 
 ### Fixed
