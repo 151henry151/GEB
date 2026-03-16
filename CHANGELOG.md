@@ -4,12 +4,20 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.3.0] — 2025-03-15
+
+### Changed
+
+- Default reading view on intro and all chapter pages to Full Text (was ELI5); ELI5/10/20 still available via tabs; saved preference in localStorage still applied when set.
+- Chapter III figure/ground companion: replace separate vase and face shapes with a single Rubin vase illusion (one contour read as vase or two faces); toggle highlights which interpretation to see.
+
 ### Added
 
+- Landing page link to complete book PDF (Hofstadter-GEB.pdf).
 - Per-chapter PDFs in `pdfs/` (intro.pdf, chapter-01.pdf … chapter-20.pdf) so the Full Text viewer shows only the current chapter.
 - `scripts/split_geb_pdf.py` to regenerate `pdfs/` from `Hofstadter-GEB.pdf` (pypdf required).
 
-### Changed
+### Changed (0.2.x)
 
 - Full Text iframe now embeds the segment PDF for that page (e.g. `../pdfs/chapter-01.pdf`) instead of the full book with `#page=N`.
 - Correct PDF start pages in `shared/nav.js` so chapter boundaries align with the first page of each chapter (fixes “starting a page after” when using full PDF elsewhere).
