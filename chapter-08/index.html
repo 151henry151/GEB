@@ -52,8 +52,13 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Build a TNT term or equation with the symbols below. S is successor (SS0 = 2). Click Interpret to see the number fact—form becomes number.</p>
+      <p class="companion-caption">TNT (Typographical Number Theory) encodes arithmetic as symbol-shapes. Build a term or equation below, then click Interpret to see the number fact.</p>
       <div class="companion-box" id="tnt-companion">
+        <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
+          <p style="margin:0 0 0.4rem 0;"><strong>How it works</strong></p>
+          <p style="margin:0 0 0.25rem 0;"><strong>Symbols:</strong> <code class="logic">0</code> is zero. <code class="logic">S</code> means “successor” (one more): so <code class="logic">S0</code> = 1, <code class="logic">SS0</code> = 2, <code class="logic">SSS0</code> = 3. <code class="logic">+</code> and <code class="logic">·</code> are addition and multiplication. <code class="logic">=</code> makes an equation (one per formula).</p>
+          <p style="margin:0;"><strong>Use:</strong> Click the symbol buttons to build a term (e.g. <code class="logic">SSS0</code>) or an equation (e.g. <code class="logic">S0+S0=SS0</code>). Use Back to delete one symbol, Clear to start over. Click <strong>Interpret</strong> to see the numeric value or whether the equation is true.</p>
+        </div>
         <p style="margin-bottom:0.35rem;"><strong>Formula</strong></p>
         <div id="tnt-display" class="logic" style="min-height:2rem; padding:0.5rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; word-break:break-all;">S0+S0=SS0</div>
         <p style="margin-bottom:0.35rem;"><strong>Insert symbol</strong></p>

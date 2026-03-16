@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.9.1] — 2026-03-16
+
+### Changed
+
+- Chapter VIII TNT companion: add “How it works” legend explaining symbols (0, S, +, ·, =) and how to use the builder and Interpret button.
+
 ## [0.9.0] — 2026-03-16
 
 ### Fixed
