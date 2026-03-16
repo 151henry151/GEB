@@ -49,26 +49,66 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">The Gödel sentence says I am not provable. Try to prove it; assume it is false. So it is true but unprovable.</p>
-      <div class="companion-box">
-        <p><strong>G:</strong> This sentence is not provable in TNT.</p>
-        <button type="button" class="btn btn-secondary" id="try-prove">Try to prove G</button>
-        <button type="button" class="btn btn-secondary" id="try-false">Assume G is false</button>
-        <p id="g-result" style="margin-top:0.75rem;"></p>
+      <p class="companion-caption">Gödel built a sentence G that says “I am not provable in this system.” Explore both paths below: try to prove it, then assume it’s false. The result is that G is true but unprovable—truth and provability come apart.</p>
+      <div class="companion-box" id="godel-companion">
+        <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
+          <p style="margin:0 0 0.35rem 0;"><strong>Setup</strong></p>
+          <p style="margin:0;">G is a formula of TNT that, via Gödel numbering, refers to itself and says: “The formula with my number is not a theorem.” So G asserts its own unprovability. What follows?</p>
+        </div>
+        <p style="margin-bottom:0.35rem;"><strong>The sentence G</strong></p>
+        <blockquote id="g-sentence" style="margin:0 0 0.75rem 0; padding:0.5rem 0.75rem; background:var(--panel); border-radius:4px; font-style:italic;">“This sentence is not provable in TNT.”</blockquote>
+        <p style="margin-bottom:0.5rem; font-size:0.9rem; color:var(--muted);">Choose a path. Each reveals part of the argument.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">
+          <button type="button" class="btn btn-secondary" id="try-prove">1. Try to prove G</button>
+          <button type="button" class="btn btn-secondary" id="try-false">2. Assume G is false</button>
+        </div>
+        <div id="path-prove" style="display:none; padding:0.6rem; margin-bottom:0.5rem; background:rgba(46,107,138,0.1); border-radius:4px; border-left:4px solid var(--accent-secondary); font-size:0.9rem;">
+          <p style="margin:0 0 0.35rem 0;"><strong>Path 1: Suppose we could prove G.</strong></p>
+          <p style="margin:0;">Then G would be a theorem. But G says “I am not provable.” So we would have proved a sentence that says it has no proof—the system would be proving something that claims it isn’t provable. In a consistent system, that can’t happen. So <strong>no proof of G exists</strong>. G is not provable.</p>
+        </div>
+        <div id="path-false" style="display:none; padding:0.6rem; margin-bottom:0.5rem; background:rgba(58,125,68,0.1); border-radius:4px; border-left:4px solid var(--true); font-size:0.9rem;">
+          <p style="margin:0 0 0.35rem 0;"><strong>Path 2: Suppose G is false.</strong></p>
+          <p style="margin:0;">If G is false, then what G says is false. G says “I am not provable,” so if that’s false, then G <em>is</em> provable. So there would be a proof of G. But Path 1 showed there is no proof of G. So we get a contradiction. So G cannot be false. Therefore <strong>G is true</strong>. And we already know G is not provable. So: <strong>G is true but not provable in TNT.</strong></p>
+        </div>
+        <div id="g-conclusion" style="padding:0.6rem; margin-top:0.5rem; background:var(--panel); border-radius:4px; font-size:0.95rem;">
+          <p style="margin:0 0 0.35rem 0;"><strong>Conclusion</strong></p>
+          <p id="g-conclusion-text" style="margin:0; color:var(--muted);">Explore both paths above to see the full argument.</p>
+        </div>
       </div>
     </div>
   </div>
   <script src="../shared/nav.js"></script>
   <script>
-    (function(){
-      document.getElementById('try-prove').onclick=function(){
-        document.getElementById('g-result').innerHTML='No proof exists. So G is not provable.';
-        document.getElementById('g-result').className='truth-undefined';
-      };
-      document.getElementById('try-false').onclick=function(){
-        document.getElementById('g-result').innerHTML='If G is false, then G is provable. Contradiction. So G is TRUE but not PROVABLE.';
-        document.getElementById('g-result').className='truth-true';
-      };
+    (function () {
+      var pathProve = document.getElementById('path-prove');
+      var pathFalse = document.getElementById('path-false');
+      var conclusionText = document.getElementById('g-conclusion-text');
+      var btnProve = document.getElementById('try-prove');
+      var btnFalse = document.getElementById('try-false');
+      var sawProve = false;
+      var sawFalse = false;
+      function updateConclusion() {
+        if (sawProve && sawFalse) {
+          conclusionText.innerHTML = 'G is <strong class="truth-true">true</strong> (Path 2) and <strong>not provable</strong> (Path 1). So in any consistent system strong enough for arithmetic, there is a true sentence it cannot prove. That is Gödel\u2019s first incompleteness theorem.';
+          conclusionText.style.color = '';
+        } else if (sawProve) {
+          conclusionText.textContent = 'You\u2019ve seen that G has no proof. Now try \u201cAssume G is false\u201d to complete the argument.';
+        } else if (sawFalse) {
+          conclusionText.textContent = 'You\u2019ve seen that G can\u2019t be false. Try \u201cTry to prove G\u201d to see why G has no proof.';
+        } else {
+          conclusionText.textContent = 'Explore both paths above to see the full argument.';
+        }
+      }
+      if (btnProve) btnProve.addEventListener('click', function () {
+        if (pathProve) pathProve.style.display = 'block';
+        sawProve = true;
+        updateConclusion();
+      });
+      if (btnFalse) btnFalse.addEventListener('click', function () {
+        if (pathFalse) pathFalse.style.display = 'block';
+        sawFalse = true;
+        updateConclusion();
+      });
     })();
   </script>
 </body>

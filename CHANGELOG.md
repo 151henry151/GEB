@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.10.0] — 2026-03-16
+
+### Fixed
+
+- Chapter IX PDF now starts on first page of chapter (was including last page of Chapter VIII); update split script and regenerate pdfs/chapter-08.pdf and chapter-09.pdf.
+
+### Changed
+
+- Chapter IX Gödel companion: add Setup box explaining G and self-reference; display sentence G in a blockquote; replace single-result buttons with two paths—Path 1 “Try to prove G” reveals why no proof exists, Path 2 “Assume G is false” reveals contradiction and that G is true; conclusion box updates as paths are explored and states Gödel’s first incompleteness theorem when both paths are seen.
+
 ## [0.9.1] — 2026-03-16
 
 ### Changed
