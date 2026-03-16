@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.4] — 2026-03-16
+
+### Changed
+
+- Scale PDF viewer to fit viewport so the full page is visible without scrolling; add ResizeObserver to re-fit on resize. Commit pdfs/chapter-16.pdf.
+
 ## [0.15.3] — 2026-03-16
 
 ### Changed
