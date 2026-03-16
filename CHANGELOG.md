@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.12.1] — 2026-03-16
+
+### Fixed
+
+- Chapter XI PDF now starts on first page of chapter (was including last page of Chapter X); update split script and regenerate pdfs/chapter-10.pdf and chapter-11.pdf.
+
 ## [0.12.0] — 2026-03-16
 
 ### Fixed

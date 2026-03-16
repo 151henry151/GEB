@@ -8,7 +8,7 @@ from pypdf import PdfReader, PdfWriter
 
 # 1-based start page of each segment (verified against PDF)
 STARTS = [
-    10, 41, 54, 72, 90, 135, 166, 189, 212, 254, 291, 342, 374, 412,
+    10, 41, 54, 72, 90, 135, 166, 189, 212, 254, 291, 343, 374, 412,
     443, 470, 501, 565, 600, 647, 690
 ]
 OUTPUT_NAMES = [
