@@ -59,12 +59,12 @@
           <p><strong>Two parts</strong>: (1) <strong>Instructions</strong> — ENIUQ prints: template, then <code> ['</code>, template again, <code>'].</code> So output = template + <code> " ['"</code> + template + <code> "]."</code>. (2) <strong>Template</strong> — the data in brackets. For self-reproduction the template is chosen so that this output equals the whole program (instructions + <code>['</code> + template + <code>'].</code>). One string then acts as both program and data.</p>
         </div>
         <div class="quine-program-wrap">
-          <p class="quine-label"><strong>Program (source)</strong></p>
-          <div id="quine-source-display" class="quine-source-display"></div>
+          <p class="quine-label"><strong>Program (source)</strong> — editable</p>
+          <textarea id="quine-source" class="quine-source" rows="6" placeholder="Full program source…"></textarea>
         </div>
         <p class="quine-label"><strong>Template (the data passed to ENIUQ)</strong></p>
         <textarea id="quine-template" class="quine-template" rows="4" placeholder="Edit to break the quine…"></textarea>
-        <p class="quine-hint">Default template is the quine (definition + " ENIUQ"). Change it and run to see output ≠ program source.</p>
+        <p class="quine-hint">Edit either program source or template; Run uses the template and compares output to the program source.</p>
         <div style="display:flex; gap:0.35rem; flex-wrap:wrap; align-items:center; margin:0.35rem 0 0.5rem 0;">
           <span style="font-size:0.8rem; color:var(--muted);">Try:</span>
           <button type="button" class="btn btn-secondary" id="quine-double" style="font-size:0.85rem; padding:0.25rem 0.5rem;">DOUBLE-BUBBLE</button>
@@ -83,9 +83,7 @@
     .quine-explainer { padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.88rem; border-left:4px solid var(--accent); }
     .quine-explainer code { font-size:0.85em; }
     .quine-label { font-size:0.85rem; margin:0.5rem 0 0.25rem 0; }
-    .quine-source-display { font-family:ui-monospace, monospace; font-size:0.75rem; line-height:1.4; padding:0.5rem; background:var(--bg); border:1px solid var(--border); border-radius:4px; margin-bottom:0.5rem; white-space:pre-wrap; word-break:break-all; }
-    .quine-source-display .instr { color:var(--accent-secondary); }
-    .quine-source-display .template { background:rgba(181,135,59,0.15); padding:0 2px; border-radius:2px; }
+    .quine-source { width:100%; padding:0.5rem; border:1px solid var(--border); border-radius:4px; font-family:ui-monospace, monospace; font-size:0.75rem; line-height:1.4; background:var(--bg); resize:vertical; }
     .quine-template { width:100%; padding:0.4rem; border:1px solid var(--border); border-radius:4px; font-family:ui-monospace, monospace; font-size:0.8rem; resize:vertical; }
     .quine-hint { font-size:0.8rem; color:var(--muted); margin:0.25rem 0 0 0; }
     .quine-output { font-family:ui-monospace, monospace; font-size:0.8rem; padding:0.5rem; background:var(--bg); border:1px solid var(--border); border-radius:4px; margin:0.25rem 0 0.5rem 0; white-space:pre-wrap; word-break:break-all; min-height:2.5rem; }
@@ -101,55 +99,44 @@
       function programSource(template) { return DEF + '\n\nENIUQ\n[\'' + template + '\'].'; }
       function eniuqOutput(template) { return template + " ['" + template + "']."; }
 
-      var sourceDisplay = document.getElementById('quine-source-display');
+      var sourceInput = document.getElementById('quine-source');
       var templateInput = document.getElementById('quine-template');
       var outputEl = document.getElementById('quine-output');
       var verdictEl = document.getElementById('quine-verdict');
 
-      function renderSource(template) {
-        var instrPart = DEF + '\n\nENIUQ\n[\'';
-        sourceDisplay.innerHTML = '<span class="instr">' + escapeHtml(instrPart) + '</span><span class="template">' + escapeHtml(template) + '</span><span class="instr">\'].</span>';
-      }
-      function escapeHtml(s) {
-        var div = document.createElement('div');
-        div.textContent = s;
-        return div.innerHTML;
-      }
-
       function run() {
         var template = templateInput.value;
+        var source = sourceInput.value;
         var out = eniuqOutput(template);
         outputEl.textContent = out;
-        if (template === QUINE_TEMPLATE) {
+        if (out === source) {
           verdictEl.textContent = 'Output equals program source. Self-reproduction: the same string is both instructions and data.';
           verdictEl.className = 'quine-verdict truth-true';
         } else if (template.trim() === '') {
           verdictEl.textContent = 'Template is empty; output is just " [\'\']."';
           verdictEl.className = 'quine-verdict truth-undefined';
         } else {
-          verdictEl.textContent = 'Output ≠ program source (template was changed). Only the quine template reproduces the program.';
+          verdictEl.textContent = 'Output ≠ program source. Edit template or source so they match for self-reproduction.';
           verdictEl.className = 'quine-verdict truth-undefined';
         }
-        renderSource(template);
       }
 
       function reset() {
         templateInput.value = QUINE_TEMPLATE;
-        renderSource(QUINE_TEMPLATE);
+        sourceInput.value = programSource(QUINE_TEMPLATE);
         outputEl.textContent = '—';
         verdictEl.textContent = '';
         verdictEl.className = 'quine-verdict';
       }
 
+      sourceInput.value = programSource(QUINE_TEMPLATE);
       templateInput.value = QUINE_TEMPLATE;
-      renderSource(QUINE_TEMPLATE);
-      templateInput.addEventListener('input', function(){ renderSource(templateInput.value); });
 
       document.getElementById('quine-run').addEventListener('click', run);
       document.getElementById('quine-reset').addEventListener('click', reset);
       document.getElementById('quine-double').addEventListener('click', function(){
         templateInput.value = 'DOUBLE-BUBBLE';
-        renderSource('DOUBLE-BUBBLE');
+        sourceInput.value = programSource('DOUBLE-BUBBLE');
       });
     })();
   </script>

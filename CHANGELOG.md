@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.14.4] — 2026-03-16
+
+### Changed
+
+- Chapter XVI quine companion: make program source editable (textarea); Run compares output to current program source; Reset and DOUBLE-BUBBLE set both source and template; hint updated so user can edit either.
+
 ## [0.14.3] — 2026-03-16
 
 ### Changed
