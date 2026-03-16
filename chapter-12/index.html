@@ -42,22 +42,135 @@
       <div data-reading-panel="full" class="reading-content on">
         <div class="content-inner">
           <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <iframe class="fulltext-embed" title="Chapter XII — full text (PDF)" src="../Hofstadter-GEB.pdf#page=375"></iframe>
+          <iframe class="fulltext-embed" title="Chapter XII — full text (PDF)" src="../pdfs/chapter-12.pdf"></iframe>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">The same symbol in two contexts: as "arrow" or as "five." Meaning depends on context (receiver/decoder).</p>
-      <div class="companion-box">
-        <p><strong>Symbol:</strong> ↑</p>
-        <p><strong>Context 1 (arrows):</strong> "Go up."</p>
-        <p><strong>Context 2 (sequence):</strong> "The fifth item."</p>
-        <p style="font-size:0.9rem; color:var(--muted);">Same shape, different meaning. The location of meaning is in the relation between symbol and context.</p>
+      <p class="companion-caption">The same symbols mean different things in different contexts. Build a message with the arrow buttons, then see how it is interpreted as directions (path on a grid) vs as sequence positions (numbers).</p>
+      <div class="companion-box" id="symbol-companion">
+        <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
+          <p style="margin:0 0 0.35rem 0;"><strong>Symbol grounding</strong></p>
+          <p style="margin:0;">Meaning isn’t in the marks—it’s in how the receiver decodes them. Same message, two contexts: arrows (directions on a grid) and sequence (each symbol = a position 1–5).</p>
+        </div>
+        <p style="margin-bottom:0.35rem; font-size:0.9rem;"><strong>Build your message</strong></p>
+        <p style="margin:0 0 0.35rem 0; font-size:0.85rem; color:var(--muted);">Click to append; same symbols will be decoded two ways below.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.35rem; align-items:center; margin-bottom:0.5rem;">
+          <button type="button" class="btn btn-secondary symbol-btn" data-sym="↑" title="Up">↑</button>
+          <button type="button" class="btn btn-secondary symbol-btn" data-sym="↓" title="Down">↓</button>
+          <button type="button" class="btn btn-secondary symbol-btn" data-sym="→" title="Right">→</button>
+          <button type="button" class="btn btn-secondary symbol-btn" data-sym="←" title="Left">←</button>
+          <button type="button" class="btn btn-secondary" id="sym-clear" style="margin-left:0.5rem;">Clear</button>
+        </div>
+        <div id="sym-message" class="logic" style="min-height:1.5rem; padding:0.4rem; background:var(--bg); border-radius:4px; margin-bottom:0.75rem;">↑ ↑ →</div>
+        <div style="display:grid; gap:0.75rem;">
+          <div style="padding:0.6rem; background:var(--bg); border-radius:6px; border:1px solid var(--border);">
+            <p style="margin:0 0 0.35rem 0; font-size:0.9rem;"><strong>Context 1: Arrows</strong> — each symbol is a direction.</p>
+            <p id="sym-arrow-text" style="margin:0 0 0.35rem 0; font-size:0.85rem; color:var(--muted);">Up, Up, Right</p>
+            <div id="sym-grid-wrap" style="display:inline-block; padding:0.25rem; background:#fff; border-radius:4px;"></div>
+          </div>
+          <div style="padding:0.6rem; background:var(--bg); border-radius:6px; border:1px solid var(--border);">
+            <p style="margin:0 0 0.35rem 0; font-size:0.9rem;"><strong>Context 2: Sequence</strong> — ↑=5, ↓=2, →=3, ←=4.</p>
+            <p id="sym-seq-text" style="margin:0 0 0.35rem 0; font-size:0.85rem; color:var(--muted);">5, 5, 3</p>
+            <div id="sym-seq-vis" style="display:flex; flex-wrap:wrap; gap:0.25rem; align-items:center; margin-top:0.35rem;"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  <style>
+    .sym-cell { width:22px; height:22px; border:1px solid var(--border); background:var(--panel); border-radius:2px; display:inline-flex; align-items:center; justify-content:center; font-size:0.65rem; }
+    .sym-cell.path { background:rgba(46,107,138,0.25); }
+    .sym-cell.start { background:rgba(58,125,68,0.35); font-weight:700; }
+    .sym-cell.end { background:var(--accent-secondary); color:#fff; font-weight:700; }
+    .sym-pos { width:28px; height:28px; border:1px solid var(--border); border-radius:4px; display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:600; }
+    .sym-pos.highlight { background:var(--accent-secondary); color:#fff; border-color:var(--accent-secondary); }
+  </style>
   <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      var ARROW_MAP = { '↑':'Up', '↓':'Down', '→':'Right', '←':'Left' };
+      var SEQ_MAP = { '↑':5, '↓':2, '→':3, '←':4 };
+      var message = ['↑','↑','→'];
+      var msgEl = document.getElementById('sym-message');
+      var arrowText = document.getElementById('sym-arrow-text');
+      var seqText = document.getElementById('sym-seq-text');
+      var gridWrap = document.getElementById('sym-grid-wrap');
+      var seqVis = document.getElementById('sym-seq-vis');
+      function getArrows(){ return message.map(function(s){ return ARROW_MAP[s] || '?'; }); }
+      function getSeq(){ return message.map(function(s){ return SEQ_MAP[s]; }).filter(function(n){ return n != null; }); }
+      function renderMessage(){
+        msgEl.textContent = message.length ? message.join(' ') : '(empty)';
+      }
+      function renderArrows(){
+        var labels = getArrows();
+        arrowText.textContent = labels.length ? labels.join(', ') : '(no symbols)';
+        var g = 5;
+        var cx = 2, cy = 2;
+        var path = [[cx,cy]];
+        for (var i = 0; i < message.length; i++) {
+          var s = message[i];
+          if (s === '↑') cy--; else if (s === '↓') cy++; else if (s === '→') cx++; else if (s === '←') cx--;
+          cx = Math.max(0, Math.min(g - 1, cx));
+          cy = Math.max(0, Math.min(g - 1, cy));
+          path.push([cx, cy]);
+        }
+        gridWrap.innerHTML = '';
+        var table = document.createElement('div');
+        table.style.display = 'grid';
+        table.style.gridTemplateColumns = 'repeat(' + g + ', 22px)';
+        table.style.gap = '0';
+        for (var row = 0; row < g; row++) {
+          for (var col = 0; col < g; col++) {
+            var cell = document.createElement('div');
+            cell.className = 'sym-cell';
+            var isPath = path.some(function(p){ return p[0] === col && p[1] === row; });
+            var isStart = path.length && path[0][0] === col && path[0][1] === row;
+            var isEnd = path.length && path[path.length-1][0] === col && path[path.length-1][1] === row;
+            if (isEnd) cell.className += ' end';
+            else if (isStart) cell.className += ' start';
+            else if (isPath) cell.className += ' path';
+            if (isStart) cell.textContent = 'S';
+            else if (isEnd) cell.textContent = 'E';
+            table.appendChild(cell);
+          }
+        }
+        gridWrap.appendChild(table);
+      }
+      function renderSeq(){
+        var nums = getSeq();
+        seqText.textContent = nums.length ? nums.join(', ') : '(no symbols)';
+        seqVis.innerHTML = '';
+        if (nums.length) {
+          nums.forEach(function(n){
+            var box = document.createElement('div');
+            box.className = 'sym-pos highlight';
+            box.textContent = n;
+            seqVis.appendChild(box);
+          });
+        } else {
+          seqVis.textContent = '';
+        }
+      }
+      function update(){
+        renderMessage();
+        renderArrows();
+        renderSeq();
+      }
+      document.querySelectorAll('.symbol-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          message.push(btn.getAttribute('data-sym'));
+          update();
+        });
+      });
+      document.getElementById('sym-clear').addEventListener('click', function(){
+        message = [];
+        update();
+      });
+      update();
+    })();
+  </script>
 </body>
 </html>

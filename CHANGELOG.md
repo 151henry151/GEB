@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.13.0] — 2026-03-16
+
+### Changed
+
+- Chapter XII symbol-grounding companion: replace static text with interactive companion; add “Symbol grounding” explainer; message builder with ↑ ↓ → ← buttons and Clear; same message decoded in two contexts—Context 1 (arrows) shows direction names and a 5×5 grid with path from start to end, Context 2 (sequence) maps symbols to positions 1–5 and shows decoded sequence; switch full-text iframe to per-chapter PDF (chapter-12.pdf).
+
 ## [0.12.3] — 2026-03-16
 
 ### Changed
