@@ -49,322 +49,67 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">The chapter: an <strong>isomorphism</strong> between two brains is a correspondence that maps <strong>symbols</strong> and also <strong>triggering patterns</strong>—"corresponding symbols in the two brains are linked in corresponding ways." Full isomorphism between two people doesn't exist; <strong>partial</strong> isomorphism (shared core + links) is what lets us understand each other.</p>
-      <div class="companion-box" id="iso-companion">
-        <div class="iso-explainer">
-          <p><strong>Edit the networks.</strong> Click two nodes in the same network to add a link (triggering pattern). Shift+click a link to remove it. The chapter: links are "triggering relationships"—which symbols activate which. Two networks are <strong>isomorphic</strong> when you can pair nodes so that every link in one has a matching link in the other.</p>
-        </div>
-        <div class="iso-toolbar">
-          <span class="iso-hint" style="margin:0;">Click two nodes in the same network to add a link. Shift+click a link to remove it.</span>
-          <button type="button" class="btn btn-secondary" id="iso-reset">Reset to isomorphic</button>
-        </div>
-        <div class="iso-networks">
-          <div class="iso-panel">
-            <p class="iso-label">Network A</p>
-            <svg id="iso-svg-a" class="iso-svg" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"></svg>
+      <p class="companion-caption">Two minds, same words. Click a concept to think it — activation spreads through each mind's connections. Where both minds light up together (gold), that's <strong>resonance</strong>: partial isomorphism, the mechanism of understanding.</p>
+      <div class="companion-box" id="two-minds-companion">
+        <div class="two-minds-canvas-wrap">
+          <div class="two-minds-panel mind-a" id="mind-a-panel">
+            <p class="two-minds-label">Mind A</p>
+            <svg id="mind-a-svg" class="two-minds-svg" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg"></svg>
           </div>
-          <div class="iso-panel">
-            <p class="iso-label">Network B</p>
-            <svg id="iso-svg-b" class="iso-svg" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"></svg>
+          <div class="two-minds-center" id="two-minds-center">
+            <div class="two-minds-resonance" id="resonance-display">—</div>
+            <p class="two-minds-resonance-label">Resonance</p>
+          </div>
+          <div class="two-minds-panel mind-b" id="mind-b-panel">
+            <p class="two-minds-label">Mind B</p>
+            <svg id="mind-b-svg" class="two-minds-svg" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg"></svg>
           </div>
         </div>
-        <div id="iso-status" class="iso-status" aria-live="polite"></div>
-        <div id="iso-mapping" class="iso-mapping" aria-live="polite"></div>
-        <div class="iso-propose">
-          <p><strong>Propose your mapping.</strong> For each node in A, choose which node in B it corresponds to (one-to-one). Then check whether that pairing preserves every link.</p>
-          <div class="iso-propose-grid" id="iso-propose-grid"></div>
-          <button type="button" class="btn btn-secondary" id="iso-check-mapping">Check this mapping</button>
-          <div id="iso-check-result" class="iso-check-result" aria-live="polite"></div>
+        <div class="two-minds-legend">
+          <span class="two-minds-legend-dot mind-a-dot"></span> Mind A
+          <span class="two-minds-legend-dot mind-b-dot"></span> Mind B
+          <span class="two-minds-legend-dot resonance-dot"></span> Both (resonance)
         </div>
+        <div class="two-minds-presets">
+          <button type="button" class="btn btn-secondary two-minds-preset" data-preset="default">Default</button>
+          <button type="button" class="btn btn-secondary two-minds-preset" data-preset="strangers">Strangers</button>
+          <button type="button" class="btn btn-secondary two-minds-preset" data-preset="oldfriends">Old Friends</button>
+          <button type="button" class="btn btn-secondary two-minds-preset" data-preset="translation">Lost in Translation</button>
+          <button type="button" class="btn btn-secondary two-minds-preset" data-preset="becoming">Becoming Similar</button>
+          <button type="button" class="btn btn-secondary" id="two-minds-reset">Reset</button>
+        </div>
+        <p class="two-minds-message" id="two-minds-message" aria-live="polite">Click any concept to think it. Watch meaning ripple.</p>
       </div>
     </div>
   </div>
   <style>
-    .iso-explainer { padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.5rem; font-size:0.88rem; border-left:4px solid var(--accent); }
-    .iso-toolbar { display:flex; flex-wrap:wrap; gap:0.35rem; align-items:center; margin-bottom:0.5rem; }
-    .iso-networks { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin:0.5rem 0; }
-    .iso-panel { padding:0.5rem; background:var(--bg); border:1px solid var(--border); border-radius:6px; }
-    .iso-label { margin:0 0 0.35rem 0; font-size:0.9rem; font-weight:600; }
-    .iso-svg { width:100%; height:auto; display:block; }
-    .iso-node { cursor:pointer; }
-    .iso-node.selected { stroke-width:3; stroke:var(--accent); }
-    .iso-edge { cursor:pointer; stroke-width:8; stroke:transparent; fill:none; }
-    .iso-edge:hover { stroke:rgba(181,135,59,0.4); }
-    .iso-edge.broken { stroke:var(--false); stroke-width:3; }
-    .iso-status { margin-top:0.5rem; padding:0.5rem; border-radius:4px; font-size:0.9rem; font-weight:600; }
-    .iso-status.yes { background:rgba(58,125,68,0.15); border:1px solid var(--true); color:var(--true); }
-    .iso-status.no { background:rgba(139,58,58,0.1); border:1px solid var(--false); color:var(--false); }
-    .iso-mapping { margin-top:0.5rem; padding:0.5rem; background:var(--panel); border-radius:4px; font-size:0.88rem; min-height:1.5rem; }
-    .iso-mapping ul { margin:0; padding-left:1.25rem; }
-    .iso-hint { margin:0.35rem 0 0 0; font-size:0.82rem; color:var(--muted); }
-    .iso-propose { margin-top:1rem; padding:0.75rem; background:var(--panel); border-radius:6px; border:1px solid var(--border); }
-    .iso-propose p { margin:0 0 0.5rem 0; font-size:0.88rem; }
-    .iso-propose-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:0.35rem; margin-bottom:0.5rem; }
-    .iso-propose-row { display:flex; align-items:center; gap:0.35rem; font-size:0.85rem; }
-    .iso-propose-row span { min-width:3rem; }
-    .iso-propose-row select { flex:1; min-width:0; padding:0.2rem 0.35rem; font-size:0.85rem; }
-    .iso-check-result { margin-top:0.5rem; padding:0.5rem; border-radius:4px; font-size:0.88rem; min-height:1em; }
-    .iso-check-result.ok { background:rgba(58,125,68,0.15); border:1px solid var(--true); color:var(--true); }
-    .iso-check-result.fail { background:rgba(139,58,58,0.1); border:1px solid var(--false); color:var(--false); }
+    .two-minds-companion { background:#1a1a2e; color:#e8e6e3; border-radius:8px; padding:0.75rem; }
+    .two-minds-canvas-wrap { display:flex; align-items:stretch; gap:0; min-height:320px; }
+    .two-minds-panel { flex:1; min-width:0; background:rgba(30,50,70,0.4); border-radius:6px; padding:0.5rem; }
+    .two-minds-panel.mind-b { background:rgba(60,30,45,0.4); }
+    .two-minds-label { margin:0 0 0.35rem 0; font-size:0.85rem; font-weight:600; opacity:0.9; }
+    .two-minds-svg { width:100%; height:auto; display:block; }
+    .two-minds-center { width:80px; flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.5rem; }
+    .two-minds-resonance { font-size:1.5rem; font-weight:700; color:#e8c547; text-shadow:0 0 12px rgba(232,197,71,0.6); transition:opacity 0.3s; }
+    .two-minds-resonance-label { margin:0.25rem 0 0 0; font-size:0.75rem; opacity:0.8; }
+    .two-minds-legend { font-size:0.8rem; opacity:0.85; margin-top:0.5rem; display:flex; gap:1rem; flex-wrap:wrap; }
+    .two-minds-legend-dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:0.25rem; vertical-align:middle; }
+    .mind-a-dot { background:#5b8fb9; box-shadow:0 0 8px #5b8fb9; }
+    .mind-b-dot { background:#b96b8f; box-shadow:0 0 8px #b96b8f; }
+    .resonance-dot { background:#e8c547; box-shadow:0 0 8px #e8c547; }
+    .two-minds-presets { display:flex; flex-wrap:wrap; gap:0.35rem; margin-top:0.5rem; }
+    .two-minds-presets .btn { font-size:0.8rem; }
+    .two-minds-message { margin:0.5rem 0 0 0; font-size:0.88rem; font-style:italic; min-height:1.4em; opacity:0.95; }
+    .two-minds-node { cursor:pointer; }
+    .two-minds-edge { cursor:pointer; stroke-width:6; stroke:transparent; }
+    .two-minds-edge:hover { stroke:rgba(232,197,71,0.4); }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script>
-    (function(){
-      var LABELS_A = ['cat', 'dog', 'run', 'animal', 'move'];
-      var LABELS_B = ['chat', 'chien', 'courir', 'animal', 'bouger'];
-      var POS = [{x:60,y:18},{x:25,y:55},{x:95,y:55},{x:95,y:82},{x:60,y:82}];
-      var colors = ['#b5873b','#2e6b8a','#3a7d44','#8b3a3a','#5c5c6a'];
-      function edgeKey(a,b){ return a < b ? a+','+b : b+','+a; }
-      function copyEdges(edges){ return edges.map(function(e){ return [e[0],e[1]]; }); }
-      var INIT_EDGES = [[0,1],[1,2],[0,2],[2,3],[3,4]];
-      var edgesA = copyEdges(INIT_EDGES);
-      var edgesB = copyEdges(INIT_EDGES);
-      var selected = { graph: null, node: null };
-      var statusEl = document.getElementById('iso-status');
-      var mappingEl = document.getElementById('iso-mapping');
+  <script src="two-minds.js"></script>
 
-      function tryPerm(perm, ea, eb) {
-        var setB = {};
-        eb.forEach(function(e){ setB[edgeKey(e[0],e[1])] = true; });
-        for (var i = 0; i < ea.length; i++) {
-          var u = perm[ea[i][0]], v = perm[ea[i][1]];
-          if (!setB[edgeKey(u,v)]) return null;
-        }
-        var setA = {};
-        ea.forEach(function(e){ setA[edgeKey(e[0],e[1])] = true; });
-        for (var j = 0; j < eb.length; j++) {
-          var u = eb[j][0], v = eb[j][1];
-          var pu = perm.indexOf(u), pv = perm.indexOf(v);
-          if (pu < 0 || pv < 0) return null;
-          if (!setA[edgeKey(pu, pv)]) return null;
-        }
-        return perm;
-      }
-      function findIso() {
-        var n = 5;
-        var perms = [];
-        function permute(arr, idx) {
-          if (idx === n) { perms.push(arr.slice()); return; }
-          for (var i = idx; i < n; i++) {
-            var t = arr[idx]; arr[idx] = arr[i]; arr[i] = t;
-            permute(arr, idx + 1);
-            t = arr[idx]; arr[idx] = arr[i]; arr[i] = t;
-          }
-        }
-        permute([0,1,2,3,4], 0);
-        for (var p = 0; p < perms.length; p++) {
-          var r = tryPerm(perms[p], edgesA, edgesB);
-          if (r) return r;
-        }
-        return null;
-      }
 
-      function render(svgId, labels, edges, graphId) {
-        var svg = document.getElementById(svgId);
-        svg.innerHTML = '';
-        var edgeSet = {};
-        edges.forEach(function(e){ edgeSet[edgeKey(e[0],e[1])] = true; });
-        edges.forEach(function(e){
-          var line = document.createElementNS('http://www.w3.org/2000/svg','line');
-          line.setAttribute('x1', POS[e[0]].x);
-          line.setAttribute('y1', POS[e[0]].y);
-          line.setAttribute('x2', POS[e[1]].x);
-          line.setAttribute('y2', POS[e[1]].y);
-          line.setAttribute('stroke', 'var(--border)');
-          line.setAttribute('stroke-width', '2');
-          line.setAttribute('class', 'iso-edge');
-          line.setAttribute('data-graph', graphId);
-          line.setAttribute('data-i', e[0]);
-          line.setAttribute('data-j', e[1]);
-          svg.appendChild(line);
-        });
-        labels.forEach(function(lbl, i){
-          var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-          g.setAttribute('data-node', i);
-          g.setAttribute('data-graph', graphId);
-          var circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
-          circle.setAttribute('cx', POS[i].x);
-          circle.setAttribute('cy', POS[i].y);
-          circle.setAttribute('r', 14);
-          circle.setAttribute('fill', 'var(--panel)');
-          circle.setAttribute('stroke', 'var(--border)');
-          circle.setAttribute('stroke-width', '1.5');
-          circle.setAttribute('class', 'iso-node');
-          g.appendChild(circle);
-          var text = document.createElementNS('http://www.w3.org/2000/svg','text');
-          text.setAttribute('x', POS[i].x);
-          text.setAttribute('y', POS[i].y + 4);
-          text.setAttribute('text-anchor', 'middle');
-          text.setAttribute('font-size', '9');
-          text.setAttribute('fill', 'var(--text)');
-          text.textContent = lbl;
-          g.appendChild(text);
-          svg.appendChild(g);
-        });
-      }
 
-      function updateStatus(perm) {
-        if (perm) {
-          statusEl.textContent = 'Isomorphic: yes — "corresponding symbols are linked in corresponding ways."';
-          statusEl.className = 'iso-status yes';
-          var html = '<p><strong>Structure-preserving mapping (triggering patterns match):</strong></p><ul>';
-          for (var i = 0; i < 5; i++) {
-            html += '<li><span style="color:' + colors[i] + ';">●</span> ' + LABELS_A[i] + ' ↔ ' + LABELS_B[perm[i]] + '</li>';
-          }
-          html += '</ul><p class="iso-hint">The chapter: full isomorphism between two people doesn\'t exist (we\'d need the same life). Partial isomorphism—shared core symbols and links—is what makes understanding possible.</p>';
-          mappingEl.innerHTML = html;
-        } else {
-          statusEl.textContent = 'Not isomorphic — structure differs. Add or remove a link in one network only to see this.';
-          statusEl.className = 'iso-status no';
-          mappingEl.innerHTML = '<p class="iso-hint">Partial isomorphism: even when the full networks don\'t match, a subset of nodes and their links might still correspond (like "core" cities in the ASU analogy). The chapter: full isomorphism "does not exist between any pair of human beings"; "some people think more alike than others" — rough isomorphism, partly global, partly local.</p>';
-        }
-      }
-
-      function redraw() {
-        var perm = findIso();
-        render('iso-svg-a', LABELS_A, edgesA, 'a');
-        render('iso-svg-b', LABELS_B, edgesB, 'b');
-        updateStatus(perm);
-        attachListeners();
-      }
-
-      function addEdge(graphId, i, j) {
-        if (i === j) return;
-        var e = i < j ? [i,j] : [j,i];
-        var key = edgeKey(e[0],e[1]);
-        var edges = graphId === 'a' ? edgesA : edgesB;
-        if (!edges.some(function(x){ return edgeKey(x[0],x[1]) === key; })) {
-          edges.push(e);
-          redraw();
-        }
-      }
-      function removeEdge(graphId, i, j) {
-        var edges = graphId === 'a' ? edgesA : edgesB;
-        var key = edgeKey(i,j);
-        for (var k = 0; k < edges.length; k++) {
-          if (edgeKey(edges[k][0], edges[k][1]) === key) {
-            edges.splice(k, 1);
-            redraw();
-            return;
-          }
-        }
-      }
-
-      function attachListeners() {
-        document.querySelectorAll('#iso-svg-a .iso-node, #iso-svg-b .iso-node').forEach(function(g){
-          g.onclick = function(e){
-            var graph = g.getAttribute('data-graph');
-            var node = parseInt(g.getAttribute('data-node'), 10);
-            if (selected.graph === graph && selected.node !== null) {
-              if (selected.node !== node) addEdge(graph, selected.node, node);
-              selected.graph = null;
-              selected.node = null;
-            } else {
-              selected.graph = graph;
-              selected.node = node;
-            }
-            document.querySelectorAll('.iso-node').forEach(function(n){ n.classList.remove('selected'); });
-            if (selected.node !== null) {
-              document.querySelectorAll('#iso-svg-' + graph + ' .iso-node[data-node="' + selected.node + '"]').forEach(function(n){ n.classList.add('selected'); });
-            }
-          };
-        });
-        document.querySelectorAll('.iso-edge').forEach(function(line){
-          line.onclick = function(e){
-            if (e.shiftKey) {
-              var g = line.getAttribute('data-graph');
-              var i = parseInt(line.getAttribute('data-i'), 10);
-              var j = parseInt(line.getAttribute('data-j'), 10);
-              removeEdge(g, i, j);
-            }
-          };
-        });
-      }
-
-      document.getElementById('iso-reset').addEventListener('click', function(){
-        edgesA = copyEdges(INIT_EDGES);
-        edgesB = copyEdges(INIT_EDGES);
-        selected = { graph: null, node: null };
-        redraw();
-      });
-
-      (function buildProposeGrid() {
-        var grid = document.getElementById('iso-propose-grid');
-        grid.innerHTML = '';
-        for (var i = 0; i < 5; i++) {
-          var row = document.createElement('div');
-          row.className = 'iso-propose-row';
-          row.innerHTML = '<span style="color:' + colors[i] + ';">●</span> ' + LABELS_A[i] + ' → ';
-          var sel = document.createElement('select');
-          sel.setAttribute('data-a', i);
-          for (var j = 0; j < 5; j++) {
-            var opt = document.createElement('option');
-            opt.value = j;
-            opt.textContent = LABELS_B[j];
-            if (j === i) opt.selected = true;
-            sel.appendChild(opt);
-          }
-          row.appendChild(sel);
-          grid.appendChild(row);
-        }
-      })();
-
-      document.getElementById('iso-check-mapping').addEventListener('click', function(){
-        var perm = [];
-        var grid = document.getElementById('iso-propose-grid');
-        var resultEl = document.getElementById('iso-check-result');
-        for (var i = 0; i < 5; i++) {
-          var sel = grid.querySelector('select[data-a="' + i + '"]');
-          perm[i] = parseInt(sel.value, 10);
-        }
-        var seen = {};
-        var bijection = true;
-        for (var k = 0; k < 5; k++) {
-          if (seen[perm[k]]) { bijection = false; break; }
-          seen[perm[k]] = true;
-        }
-        if (!bijection) {
-          resultEl.className = 'iso-check-result fail';
-          resultEl.textContent = 'Choose a one-to-one mapping: each node in B must be used exactly once.';
-          return;
-        }
-        var ok = tryPerm(perm, edgesA, edgesB);
-        if (ok) {
-          resultEl.className = 'iso-check-result ok';
-          resultEl.textContent = 'Yes — this mapping is an isomorphism. Every link in A has a matching link in B under your pairing.';
-        } else {
-          var setB = {};
-          edgesB.forEach(function(e){ setB[edgeKey(e[0],e[1])] = true; });
-          for (var idx = 0; idx < edgesA.length; idx++) {
-            var u = perm[edgesA[idx][0]], v = perm[edgesA[idx][1]];
-            if (!setB[edgeKey(u,v)]) {
-              resultEl.className = 'iso-check-result fail';
-              resultEl.textContent = 'No. Link ' + LABELS_A[edgesA[idx][0]] + '–' + LABELS_A[edgesA[idx][1]] + ' in A has no counterpart in B under your mapping (you mapped them to ' + LABELS_B[u] + ' and ' + LABELS_B[v] + ', but that pair is not linked in B).';
-              return;
-            }
-          }
-          var setA = {};
-          edgesA.forEach(function(e){ setA[edgeKey(e[0],e[1])] = true; });
-          var inv = [];
-          for (var a = 0; a < 5; a++) inv[perm[a]] = a;
-          for (var b = 0; b < edgesB.length; b++) {
-            var u = edgesB[b][0], v = edgesB[b][1];
-            var au = inv[u], av = inv[v];
-            if (!setA[edgeKey(au, av)]) {
-              resultEl.className = 'iso-check-result fail';
-              resultEl.textContent = 'No. Link ' + LABELS_B[u] + '–' + LABELS_B[v] + ' in B has no counterpart in A under your mapping (you mapped ' + LABELS_A[au] + ' and ' + LABELS_A[av] + ' to them, but that pair is not linked in A).';
-              return;
-            }
-          }
-          resultEl.className = 'iso-check-result fail';
-          resultEl.textContent = 'No — structure is not preserved.';
-        }
-      });
-
-      redraw();
-    })();
-  </script>
 </body>
 </html>
