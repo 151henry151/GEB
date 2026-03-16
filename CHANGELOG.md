@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-03-16
+
+### Changed
+
+- Chapter III Rubin vase companion: replace inline path with Inkscape-derived SVG (background rect, rounded vase rect, two face-profile paths); keep figure/ground toggle by swapping only background fill (black ↔ white); script updates background only.
+
 ## [0.6.0] — 2026-03-16
 
 ### Changed
