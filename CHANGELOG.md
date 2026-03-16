@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.12.2] — 2026-03-16
+
+### Changed
+
+- Chapter XI neuron companion: restore rule to “a cell turns ON if it has at least two neighbors that are ON” (was temporarily “at least one”); update caption, How it works, and step label; set default pattern so a first Step fills in gaps (e.g. 1,0,1 → 1,1,1).
+
 ## [0.12.1] — 2026-03-16
 
 ### Fixed

@@ -49,11 +49,11 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">A 1D chain of cells: a minimal model of activation spreading. Turn some on (click to toggle), then click Step repeatedly to see the rule apply. Each step, a cell turns ON if it has at least one ON neighbor.</p>
+      <p class="companion-caption">A 1D chain of cells: a minimal model of activation spreading. Turn some on (click to toggle); a cell turns ON if it has at least two ON neighbors. Click Step to apply the rule—e.g. a single 0 between two 1s fills in.</p>
       <div class="companion-box" id="neuron-companion">
         <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
           <p style="margin:0 0 0.35rem 0;"><strong>How it works</strong></p>
-          <p style="margin:0;">Each cell is either ON (1) or OFF (0). <strong>Rule:</strong> a cell turns <strong>ON</strong> if it has <strong>at least one</strong> neighbor that is ON. (Cells at the ends have only one neighbor.) So activation spreads step by step along the chain—a simple parallel, local process, like excitation passing between neighboring neurons.</p>
+          <p style="margin:0;">Each cell is either ON (1) or OFF (0). <strong>Rule:</strong> a cell turns <strong>ON</strong> if it has <strong>at least two</strong> neighbors that are ON. (In this 1D chain, each cell has a left and right neighbor; ends have only one, so they never turn on by the rule.) So a 0 between two 1s becomes 1 on the next step—activation fills in the gaps.</p>
         </div>
         <p style="margin-bottom:0.35rem; font-size:0.9rem;"><strong>Chain</strong> — click a cell to toggle it, then click Step to run one round of the rule.</p>
         <div id="neurons" style="display:flex; gap:3px; margin-bottom:0.75rem; flex-wrap:wrap; justify-content:center;"></div>
@@ -61,7 +61,7 @@
           <button type="button" class="btn btn-primary" id="neuro-step">Step</button>
           <button type="button" class="btn btn-secondary" id="neuro-reset">Reset</button>
         </div>
-        <p id="neuro-step-count" style="font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">Step: 0. Turn on one or more cells, then click Step to spread activation.</p>
+        <p id="neuro-step-count" style="font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">Step: 0. Turn on two or more cells (e.g. two with a gap between), then click Step to apply the rule.</p>
       </div>
     </div>
   </div>
@@ -69,7 +69,7 @@
   <script>
     (function(){
       var n = 20;
-      var initialState = [0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0];
+      var initialState = [0,0,0,1,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0];
       var state = initialState.slice();
       var stepCount = 0;
       var div = document.getElementById('neurons');
@@ -98,7 +98,7 @@
         for (var i = 0; i < n; i++) {
           var left = i > 0 ? state[i - 1] : 0;
           var right = i < n - 1 ? state[i + 1] : 0;
-          if (left + right >= 1) next[i] = 1;
+          if (left + right >= 2) next[i] = 1;
         }
         state = next;
         stepCount++;
