@@ -164,8 +164,12 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   color: var(--muted);
 }
 .pdf-viewer-canvas-wrap {
-  overflow: auto;
-  max-height: 75vh;
+  width: 100%;
+  height: 70vh;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   background: #fafafa;
   border-radius: 4px;
@@ -174,7 +178,8 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   display: block;
   margin: 0 auto;
   max-width: 100%;
-  height: auto;
+  max-height: 100%;
+  object-fit: contain;
 }
 .pdf-viewer-fallback {
   font-size: 0.9rem;

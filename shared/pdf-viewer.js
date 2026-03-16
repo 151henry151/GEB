@@ -83,20 +83,33 @@
       wrap.style.display = 'none';
     }
 
+    function getWrapSize() {
+      var w = wrap.clientWidth;
+      var h = wrap.clientHeight;
+      if (w <= 0 || h <= 0) {
+        var leftCol = document.querySelector('.chapter-left');
+        w = (leftCol && leftCol.clientWidth) ? leftCol.clientWidth : Math.min(800, window.innerWidth - 40);
+        h = Math.floor((window.innerHeight || 600) * 0.7);
+      }
+      return { w: w, h: h };
+    }
+
     function renderPage(pageNum) {
       if (!state.doc || pageNum < 1 || pageNum > state.numPages) return;
       state.currentPage = pageNum;
       state.doc.getPage(pageNum).then(function (page) {
         var baseViewport = page.getViewport({ scale: 1 });
-        var containerWidth = wrap.clientWidth || Math.min(800, window.innerWidth - 40);
-        var scaleToFit = containerWidth / baseViewport.width;
+        var size = getWrapSize();
+        var scaleToFitW = size.w / baseViewport.width;
+        var scaleToFitH = size.h / baseViewport.height;
+        var scaleForFit = Math.min(scaleToFitW, scaleToFitH, 2);
         var dpr = window.devicePixelRatio || 1;
-        var scale = Math.min(2, Math.max(scaleToFit, 0.5) * dpr);
+        var scale = scaleForFit * dpr;
         var viewport = page.getViewport({ scale: scale });
         canvas.width = viewport.width;
         canvas.height = viewport.height;
-        canvas.style.width = '100%';
-        canvas.style.height = 'auto';
+        canvas.style.width = (viewport.width / dpr) + 'px';
+        canvas.style.height = (viewport.height / dpr) + 'px';
         canvas.style.maxWidth = '100%';
         var ctx = canvas.getContext('2d');
         var renderCtx = { canvasContext: ctx, viewport: viewport };
@@ -116,6 +129,11 @@
     nextBtn.addEventListener('click', function () {
       if (state.currentPage < state.numPages) renderPage(state.currentPage + 1);
     });
+
+    var resizeObserver = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(function () {
+      if (state.doc && state.currentPage >= 1) renderPage(state.currentPage);
+    }) : null;
+    if (resizeObserver) resizeObserver.observe(wrap);
 
     pdfjsLib.getDocument({ url: pdfUrl }).promise
       .then(function (doc) {
