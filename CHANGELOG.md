@@ -4,6 +4,13 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.14.8] — 2026-03-16
+
+### Fixed
+
+- Chapter XVIII PDF: start one page earlier (601) so the first page of the chapter is included; was missing the first page.
+- Chapter XIX PDF: start two pages later (649) so the first two pages of the previous chapter are trimmed off.
+
 ## [0.14.7] — 2026-03-16
 
 ### Changed

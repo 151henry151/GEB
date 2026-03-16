@@ -24,8 +24,8 @@
     { id: 'ch15', num: 'XV', title: 'Jumping out of the System', path: '/chapter-15/', pdfPage: 471 },
     { id: 'ch16', num: 'XVI', title: 'Self-Ref and Self-Rep', path: '/chapter-16/', pdfPage: 502 },
     { id: 'ch17', num: 'XVII', title: 'Church, Turing, Tarski, and Others', path: '/chapter-17/', pdfPage: 566 },
-    { id: 'ch18', num: 'XVIII', title: 'Artificial Intelligence: Retrospects', path: '/chapter-18/', pdfPage: 602 },
-    { id: 'ch19', num: 'XIX', title: 'Artificial Intelligence: Prospects', path: '/chapter-19/', pdfPage: 647 },
+    { id: 'ch18', num: 'XVIII', title: 'Artificial Intelligence: Retrospects', path: '/chapter-18/', pdfPage: 601 },
+    { id: 'ch19', num: 'XIX', title: 'Artificial Intelligence: Prospects', path: '/chapter-19/', pdfPage: 649 },
     { id: 'ch20', num: 'XX', title: 'Strange Loops, Or Tangled Hierarchies', path: '/chapter-20/', pdfPage: 692 }
   ];
 
