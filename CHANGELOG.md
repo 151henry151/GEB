@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-03-16
+
+### Changed
+
+- Chapter III Rubin vase companion: rebuild from scratch using a single SVG path (300×420 viewBox) that reads as vase or two face profiles; “See figure (vase)” shows white shape on black background, “See ground (faces)” shows black shape on white background (same path, only fill and background colors swap); buttons update state and invert the SVG colors; add 0.3s ease transition on fill; label below shows “Figure: the vase.” or “Ground: the faces.”.
+
 ## [0.5.0] — 2026-03-16
 
 ### Changed

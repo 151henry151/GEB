@@ -62,55 +62,48 @@
           <button type="button" class="btn btn-secondary" id="fg-figure">See figure (vase)</button>
           <button type="button" class="btn btn-secondary" id="fg-ground">See ground (faces)</button>
         </div>
-        <div id="fg-canvas" style="min-height:220px; display:flex; align-items:center; justify-content:center; background:#1a1a24; border-radius:6px; position:relative;">
-          <!-- Classic Rubin vase: one contour read as vase (centre) or two faces in profile (dark sides). -->
-          <svg id="fg-svg" width="220" height="220" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rubin vase illusion: vase or two faces in profile">
-            <defs>
-              <filter id="fg-vase-shadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
-              </filter>
-            </defs>
-            <rect width="220" height="220" fill="#0d0d12"/>
-            <!-- Vase contour: left edge = inner profile of left face (nose, lips, chin); right = mirror. -->
-            <path id="fg-vase" d="M110 8 L94 18 C78 44 82 72 78 100 C82 130 80 164 90 200 L110 214 L130 200 C140 164 138 130 142 100 C138 72 142 44 126 18 Z" fill="#e8e4dc"/>
+        <div id="fg-canvas" style="display:flex; justify-content:center; border-radius:6px; overflow:hidden;">
+          <svg id="fg-svg" viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rubin vase illusion: vase or two faces in profile" style="width:100%; max-width:280px; height:auto; aspect-ratio:300/420;">
+            <rect id="fg-bg" width="300" height="420" style="transition: fill 0.3s ease;" fill="#000"/>
+            <path id="fg-vase" d="M 150,20 C 150,20 130,60 120,100 C 110,140 105,160 110,200 C 115,240 90,270 70,300 C 50,330 30,360 30,400 L 270,400 C 270,360 250,330 230,300 C 210,270 185,240 190,200 C 195,160 190,140 180,100 C 170,60 150,20 150,20 Z" style="transition: fill 0.3s ease;" fill="#fff"/>
           </svg>
         </div>
-        <p id="fg-label" style="text-align:center; margin-top:0.5rem; font-size:0.9rem; color:var(--muted);">Click a button to switch what you “see.”</p>
+        <p id="fg-label" style="text-align:center; margin-top:0.5rem; font-size:0.9rem; color:var(--muted);">Figure: the vase.</p>
       </div>
     </div>
   </div>
   <script src="../shared/nav.js"></script>
   <script>
     (function () {
-      var vase = document.getElementById('fg-vase');
+      var bg = document.getElementById('fg-bg');
+      var path = document.getElementById('fg-vase');
       var label = document.getElementById('fg-label');
       var btnFigure = document.getElementById('fg-figure');
       var btnGround = document.getElementById('fg-ground');
-      if (!vase || !btnFigure || !btnGround) return;
+      if (!bg || !path || !btnFigure || !btnGround) return;
 
-      function showFigure() {
-        vase.setAttribute('filter', 'url(#fg-vase-shadow)');
-        vase.removeAttribute('stroke');
-        vase.removeAttribute('stroke-width');
-        if (label) label.textContent = 'Figure: the vase. (The “theorems” of the picture.)';
-        btnFigure.classList.add('btn-primary');
-        btnFigure.classList.remove('btn-secondary');
-        btnGround.classList.remove('btn-primary');
-        btnGround.classList.add('btn-secondary');
+      function setMode(figure) {
+        if (figure) {
+          bg.setAttribute('fill', '#000');
+          path.setAttribute('fill', '#fff');
+          if (label) label.textContent = 'Figure: the vase. (The “theorems” of the picture.)';
+          btnFigure.classList.add('btn-primary');
+          btnFigure.classList.remove('btn-secondary');
+          btnGround.classList.remove('btn-primary');
+          btnGround.classList.add('btn-secondary');
+        } else {
+          bg.setAttribute('fill', '#fff');
+          path.setAttribute('fill', '#000');
+          if (label) label.textContent = 'Ground: the faces.';
+          btnGround.classList.add('btn-primary');
+          btnGround.classList.remove('btn-secondary');
+          btnFigure.classList.remove('btn-primary');
+          btnFigure.classList.add('btn-secondary');
+        }
       }
-      function showGround() {
-        vase.removeAttribute('filter');
-        vase.setAttribute('stroke', '#c9a227');
-        vase.setAttribute('stroke-width', '2.5');
-        if (label) label.textContent = 'Ground: two faces in profile. Look at the dark areas on either side—each is a face (nose, lips, chin).';
-        btnGround.classList.add('btn-primary');
-        btnGround.classList.remove('btn-secondary');
-        btnFigure.classList.remove('btn-primary');
-        btnFigure.classList.add('btn-secondary');
-      }
-      btnFigure.addEventListener('click', showFigure);
-      btnGround.addEventListener('click', showGround);
-      showFigure();
+      btnFigure.addEventListener('click', function () { setMode(true); });
+      btnGround.addEventListener('click', function () { setMode(false); });
+      setMode(true);
     })();
   </script>
 </body>
