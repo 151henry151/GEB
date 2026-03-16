@@ -55,17 +55,9 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Two ideas from the chapter: the <strong>Eternal Golden Braid</strong> (Bach, Escher, Gödel—one loop in music, art, logic) and a <strong>tangled hierarchy</strong> where “game” and “rules” collapse so that moving the piece can change the rules.</p>
+      <p class="companion-caption">A <strong>tangled hierarchy</strong> from the chapter: “game” and “rules” collapse so that on your turn you can move the piece or change the rule—levels tangle.</p>
       <div class="companion-box" id="loop-companion">
-        <h3 class="loop-heading">1. The Eternal Golden Braid</h3>
-        <p class="loop-hint">Click a name to see the strange loop in that domain.</p>
-        <div class="braid-row">
-          <button type="button" class="braid-btn" id="braid-bach" aria-expanded="false">Bach</button>
-          <button type="button" class="braid-btn" id="braid-escher" aria-expanded="false">Escher</button>
-          <button type="button" class="braid-btn" id="braid-godel" aria-expanded="false">Gödel</button>
-        </div>
-        <div id="braid-demo" class="braid-demo" aria-live="polite"></div>
-        <h3 class="loop-heading">2. Tangled Hierarchy</h3>
+        <h3 class="loop-heading">Tangled Hierarchy</h3>
         <p class="loop-hint">On your turn you may <strong>move the token</strong> or <strong>change the rule</strong>. The rule controls the game—but you control the rule. Levels tangle.</p>
         <div class="tangle-board-wrap">
           <div id="tangle-grid" class="tangle-grid" role="grid" aria-label="3 by 3 board"></div>
@@ -81,24 +73,8 @@
     </div>
   </div>
   <style>
-    .loop-heading { font-size:1rem; margin:1rem 0 0.35rem 0; color:var(--text); }
-    .loop-heading:first-child { margin-top:0; }
+    .loop-heading { font-size:1rem; margin:0 0 0.35rem 0; color:var(--text); }
     .loop-hint { font-size:0.82rem; color:var(--muted); margin:0 0 0.5rem 0; }
-    .braid-row { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.5rem; }
-    .braid-btn { padding:0.4rem 0.75rem; border:1px solid var(--border); border-radius:6px; background:var(--panel); color:var(--text); font-weight:600; cursor:pointer; }
-    .braid-btn:hover { background:var(--bg); border-color:var(--accent); }
-    .braid-btn[aria-expanded="true"] { background:var(--accent); color:var(--bg); border-color:var(--accent); }
-    .braid-demo { min-height:3rem; padding:0.6rem; background:var(--bg); border:1px solid var(--border); border-radius:6px; margin-bottom:0.5rem; font-size:0.88rem; }
-    .braid-demo:empty::before { content: 'Choose Bach, Escher, or Gödel above.'; color:var(--muted); }
-    .canon-track { display:flex; align-items:center; gap:4px; height:36px; margin:0.5rem 0; }
-    .canon-note { width:12px; height:24px; background:var(--accent); border-radius:2px; animation: canon-rise 3s ease-in-out infinite; }
-    .canon-note:nth-child(2){ animation-delay:0.2s; }
-    .canon-note:nth-child(3){ animation-delay:0.4s; }
-    .canon-note:nth-child(4){ animation-delay:0.6s; }
-    .canon-note:nth-child(5){ animation-delay:0.8s; }
-    @keyframes canon-rise { 0%,100%{ transform:translateY(0); opacity:1; } 50%{ transform:translateY(-12px); opacity:0.85; } }
-    .hands-svg { width:100%; max-width:200px; height:80px; margin:0.5rem auto; display:block; }
-    .godel-try { margin-top:0.5rem; }
     .tangle-board-wrap { margin-top:0.5rem; }
     .tangle-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; max-width:120px; margin-bottom:0.5rem; }
     .tangle-cell { width:36px; height:36px; border:2px solid var(--border); border-radius:4px; background:var(--panel); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
@@ -111,32 +87,6 @@
     .tangle-msg { font-size:0.85rem; color:var(--muted); margin:0.25rem 0 0 0; }
   </style>
   <script src="../shared/nav.js"></script>
-  <script>
-    (function(){
-      var demoEl = document.getElementById('braid-demo');
-      var bachBtn = document.getElementById('braid-bach');
-      var escherBtn = document.getElementById('braid-escher');
-      var godelBtn = document.getElementById('braid-godel');
-      function setExpanded(btn, on) { btn.setAttribute('aria-expanded', on ? 'true' : 'false'); }
-      function showBach() {
-        demoEl.innerHTML = '<p><strong>Canon (e.g. rising and returning):</strong> a melody that goes “up” in pitch (or time) and comes back to where it started—a loop in music.</p><div class="canon-track"><span class="canon-note"></span><span class="canon-note"></span><span class="canon-note"></span><span class="canon-note"></span><span class="canon-note"></span></div><p class="loop-hint">The same pattern: no top, no bottom; the levels bend back.</p>';
-      }
-      function showEscher() {
-        demoEl.innerHTML = '<p><strong>Drawing Hands:</strong> each hand draws the other. There is no “first” hand—a loop in art.</p><svg class="hands-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><path d="M 30 60 Q 50 20 70 40 L 90 30 L 95 45 L 75 55 Q 55 70 30 60" fill="none" stroke="var(--text)" stroke-width="2"/><path d="M 130 20 Q 150 50 170 60 L 190 55 L 185 70 L 165 72 Q 140 65 130 20" fill="none" stroke="var(--text)" stroke-width="2"/><text x="55" y="50" font-size="10" fill="var(--muted)">draws</text><text x="145" y="45" font-size="10" fill="var(--muted)">draws</text></svg><p class="loop-hint">No inviolate “level zero”—each level depends on the other.</p>';
-      }
-      function showGodel() {
-        demoEl.innerHTML = '<p><strong>Gödel sentence:</strong> “This sentence is not provable in this system.”</p><button type="button" class="btn btn-secondary godel-try" id="godel-try-btn">Try to prove it</button><p id="godel-result" style="margin-top:0.35rem;"></p>';
-        document.getElementById('godel-try-btn').onclick = function(){
-          var r = document.getElementById('godel-result');
-          r.textContent = 'A proof would require the system to prove its own consistency. The system cannot do that. So the sentence is true but unprovable—a loop in logic.';
-          r.style.color = 'var(--text)';
-        };
-      }
-      bachBtn.addEventListener('click', function(){ setExpanded(escherBtn,false); setExpanded(godelBtn,false); setExpanded(bachBtn,true); showBach(); });
-      escherBtn.addEventListener('click', function(){ setExpanded(bachBtn,false); setExpanded(godelBtn,false); setExpanded(escherBtn,true); showEscher(); });
-      godelBtn.addEventListener('click', function(){ setExpanded(bachBtn,false); setExpanded(escherBtn,false); setExpanded(godelBtn,true); showGodel(); });
-    })();
-  </script>
   <script>
     (function(){
       var RULES = [

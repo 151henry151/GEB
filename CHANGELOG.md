@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.14.7] — 2026-03-16
+
+### Changed
+
+- Chapter XX companion: remove “Eternal Golden Braid” (Bach/Escher/Gödel) section; keep only Tangled Hierarchy interactive (board, token, move/change rule).
+
 ## [0.14.6] — 2026-03-16
 
 ### Fixed
