@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.1] — 2026-03-16
+
+### Changed
+
+- Chapter XII (Minds and Thoughts) isomorphism companion: make networks editable (click two nodes to add a link, Shift+click a link to remove); add live isomorphism check and structure-preserving mapping display; add chapter quotes on partial isomorphism and "does not exist between any pair of human beings"; add "Propose your mapping" section with dropdowns and "Check this mapping" with feedback for invalid or non-structure-preserving pairings.
+
 ## [0.15.0] — 2026-03-16
 
 ### Changed
