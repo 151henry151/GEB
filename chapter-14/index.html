@@ -55,20 +55,105 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Step through the construction: we assign numbers to formulas, build a formula that refers to its own number, and see that it says "I am not a theorem" and is TRUE but not PROVABLE.</p>
+      <p class="companion-caption">Two ideas from the chapter: (1) <strong>Proof-pairs</strong> — a derivation gets a Gödel number; “m is a proof of n” becomes a number fact. (2) <strong>The Gödel sentence G</strong> — “I am not a theorem”; try to prove it, then see from outside that it’s true.</p>
       <div class="companion-box" id="godel-companion">
-        <div id="godel-steps">
-          <p><strong>Step 1.</strong> Every formula gets a number (its Gödel number). So we can talk about "the formula with number 12345" inside TNT.</p>
-          <p><strong>Step 2.</strong> We build a formula that talks about proofs. "There is no proof of the formula with number g." We choose g so that the formula with number g is exactly that sentence.</p>
-          <p><strong>Step 3.</strong> So G says: "I am not a theorem of TNT." If TNT could prove G, then "G has no proof" would be false, but we just proved G — contradiction. So TNT cannot prove G. So what G says is true: G has no proof. So G is <strong>TRUE but not PROVABLE</strong>.</p>
+        <h3 class="godel-heading">1. MIU proof-pair (from the chapter)</h3>
+        <p class="godel-hint">A derivation is a list of lines. Each line has a Gödel number (M→3, I→1, U→0). Two numbers m, n form a <strong>proof-pair</strong> if m codes a valid derivation whose last line has number n.</p>
+        <p class="godel-label">Enter a 4-line MIU derivation (one line per box). Axiom: MI. Rules: I→II after M; Mx→Mxx; III→U; UU→remove.</p>
+        <div class="miu-inputs">
+          <input type="text" id="miu-l1" placeholder="MI" value="MI" class="miu-in" maxlength="20">
+          <input type="text" id="miu-l2" placeholder="MII" value="MII" class="miu-in" maxlength="20">
+          <input type="text" id="miu-l3" placeholder="MIIII" value="MIIII" class="miu-in" maxlength="20">
+          <input type="text" id="miu-l4" placeholder="MUI" value="MUI" class="miu-in" maxlength="20">
         </div>
-        <div id="godel-verdict" style="margin-top:1rem; padding:0.75rem; border-radius:6px; background:var(--panel); border:1px solid var(--border);">
-          <p style="margin:0; font-weight:600;" class="truth-true">G is TRUE.</p>
-          <p style="margin:0.25rem 0 0 0; font-size:0.9rem;">G is not PROVABLE in TNT. So TNT is incomplete.</p>
+        <button type="button" class="btn btn-primary" id="miu-check">Check proof-pair</button>
+        <div id="miu-result" class="godel-result" aria-live="polite"></div>
+
+        <h3 class="godel-heading">2. The Gödel sentence G</h3>
+        <p class="godel-hint">G is built by “arithmoquining”: a formula that talks about proofs and its own number. G says: <strong>“I am not a theorem of TNT.”</strong></p>
+        <div class="godel-g-box">
+          <p id="godel-sentence" class="godel-sentence">G: “There is no proof (in TNT) of the formula with Gödel number g.” — and that formula is G itself. So G says “I am not provable.”</p>
         </div>
+        <div class="godel-actions">
+          <button type="button" class="btn btn-primary" id="godel-try-prove">Try to prove G</button>
+          <button type="button" class="btn btn-secondary" id="godel-see-true">So G is true (from outside)</button>
+        </div>
+        <div id="godel-verdict" class="godel-result" aria-live="polite"></div>
       </div>
     </div>
   </div>
+  <style>
+    .godel-heading { font-size:1rem; margin:1rem 0 0.35rem 0; color:var(--text); }
+    .godel-heading:first-child { margin-top:0; }
+    .godel-hint, .godel-label { font-size:0.82rem; color:var(--muted); margin:0 0 0.35rem 0; }
+    .miu-inputs { display:grid; grid-template-columns:1fr 1fr; gap:0.35rem; margin:0.5rem 0; max-width:16rem; }
+    .miu-in { padding:0.35rem; border:1px solid var(--border); border-radius:4px; font-family:ui-monospace,monospace; }
+    .godel-result { margin-top:0.5rem; padding:0.5rem; border-radius:4px; background:var(--panel); border:1px solid var(--border); font-size:0.88rem; min-height:1rem; }
+    .godel-g-box { margin:0.5rem 0; padding:0.5rem; background:var(--bg); border-left:4px solid var(--accent); border-radius:4px; }
+    .godel-sentence { margin:0; font-size:0.9rem; }
+    .godel-actions { display:flex; gap:0.5rem; flex-wrap:wrap; margin:0.5rem 0; }
+    .godel-result.truth-true { border-color:var(--true); background:rgba(58,125,68,0.1); }
+    .godel-result.truth-false { border-color:var(--false); background:rgba(139,58,58,0.1); }
+  </style>
   <script src="../shared/nav.js"></script>
+  <script>
+    (function(){
+      function gn(line) {
+        var s = (line || '').toUpperCase().replace(/[^MIU]/g, '');
+        var n = '';
+        for (var i = 0; i < s.length; i++) { n += (s[i] === 'M' ? '3' : s[i] === 'I' ? '1' : '0'); }
+        return n ? parseInt(n, 10) : 0;
+      }
+      function validMiuStep(prev, next) {
+        if (!prev || !next) return false;
+        if (prev !== 'MI' && prev.indexOf('M') !== 0) return false;
+        if (next.indexOf('M') !== 0) return false;
+        var p = prev, n = next;
+        if (next === prev + 'I') return true;
+        if (prev.length >= 2 && prev[0] === 'M' && next === 'M' + prev.slice(1) + prev.slice(1)) return true;
+        if (prev.indexOf('III') >= 0) { var q = prev.replace('III', 'U'); if (q === next) return true; }
+        if (prev.indexOf('UU') >= 0) { var r = prev.replace('UU', ''); if (r === next) return true; }
+        return false;
+      }
+      var l1 = document.getElementById('miu-l1');
+      var l2 = document.getElementById('miu-l2');
+      var l3 = document.getElementById('miu-l3');
+      var l4 = document.getElementById('miu-l4');
+      var miuResult = document.getElementById('miu-result');
+      document.getElementById('miu-check').addEventListener('click', function(){
+        var lines = [l1.value.trim(), l2.value.trim(), l3.value.trim(), l4.value.trim()];
+        if (lines[0] !== 'MI') { miuResult.innerHTML = 'Line 1 must be the axiom <strong>MI</strong>.'; miuResult.className = 'godel-result truth-false'; return; }
+        var err = '';
+        if (!validMiuStep(lines[0], lines[1])) err = 'Line 2 does not follow from line 1 by any MIU rule.';
+        else if (!validMiuStep(lines[1], lines[2])) err = 'Line 3 does not follow from line 2 by any MIU rule.';
+        else if (!validMiuStep(lines[2], lines[3])) err = 'Line 4 does not follow from line 3 by any MIU rule.';
+        if (err) { miuResult.innerHTML = err; miuResult.className = 'godel-result truth-false'; return; }
+        var n4 = gn(lines[3]);
+        var mStr = String(gn(lines[0])) + '3' + String(gn(lines[1])) + '3' + String(gn(lines[2])) + '3' + String(n4);
+        var m = parseInt(mStr, 10);
+        miuResult.innerHTML = 'Valid derivation. <strong>m</strong> = ' + m + ' (Gödel number of the derivation), <strong>n</strong> = ' + n4 + ' (last line). So <em>m</em> and <em>n</em> form a <strong>MIU-proof-pair</strong>: the system can “speak about” proofs using numbers.';
+        miuResult.className = 'godel-result truth-true';
+      });
+    })();
+  </script>
+  <script>
+    (function(){
+      var verdictEl = document.getElementById('godel-verdict');
+      var tryBtn = document.getElementById('godel-try-prove');
+      var seeBtn = document.getElementById('godel-see-true');
+      tryBtn.addEventListener('click', function(){
+        verdictEl.innerHTML = 'Searching for a proof of G in TNT…';
+        verdictEl.className = 'godel-result';
+        setTimeout(function(){
+          verdictEl.innerHTML = 'No proof exists. If TNT could prove G, then G would be a theorem—but G says “I am not a theorem.” So we would have proved that G has no proof: contradiction. So TNT cannot prove G.';
+          verdictEl.className = 'godel-result truth-false';
+        }, 1200);
+      });
+      seeBtn.addEventListener('click', function(){
+        verdictEl.innerHTML = 'From outside the system: we just saw that G has no proof. And G says “I am not a theorem.” So what G says is <strong>true</strong>. Hence G is <strong>TRUE but not PROVABLE</strong> in TNT. So TNT is incomplete—there is a true sentence it cannot prove.';
+        verdictEl.className = 'godel-result truth-true';
+      });
+    })();
+  </script>
 </body>
 </html>

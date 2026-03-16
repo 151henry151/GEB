@@ -4,6 +4,13 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.14.9] — 2026-03-16
+
+### Changed
+
+- Chapter XIV companion: replace static step-through with interactive demo. (1) MIU proof-pair: user enters 4-line MIU derivation; Check validates rules and shows Gödel numbers m, n and “proof-pair.” (2) Gödel sentence G: “Try to prove G” runs a short proof-search then explains why no proof exists; “So G is true (from outside)” explains TRUE but not PROVABLE and incompleteness.
+- Chapter XIX companion: make frame slots work as intended. Infer now fills empty slots with default values in the inputs; result shows bullet list with “(default)” beside inferred slots; add “presents?” slot and Reset button; improve labels and layout.
+
 ## [0.14.8] — 2026-03-16
 
 ### Fixed

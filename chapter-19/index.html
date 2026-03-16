@@ -55,20 +55,34 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">A "Birthday party" frame with slots. Fill in some; click Infer to fill defaults (typical values) for the rest. Shows how knowledge can be structured by context.</p>
+      <p class="companion-caption">A “Birthday party” frame with slots (Minsky-style). Fill some slots; click <strong>Infer defaults</strong> to fill the rest with typical values. The frame shows how knowledge is structured by context and defaults.</p>
       <div class="companion-box" id="frame-companion">
         <p><strong>Frame: Birthday party</strong></p>
-        <div style="display:grid; gap:0.35rem; margin:0.5rem 0;">
-          <label>who: <input type="text" id="frame-who" placeholder="e.g. Emma" style="width:10rem; padding:0.25rem;"></label>
-          <label>when: <input type="text" id="frame-when" placeholder="e.g. Saturday" style="width:10rem; padding:0.25rem;"></label>
-          <label>where: <input type="text" id="frame-where" placeholder="e.g. park" style="width:10rem; padding:0.25rem;"></label>
-          <label>cake?: <input type="text" id="frame-cake" placeholder="yes / no / ?" style="width:10rem; padding:0.25rem;"></label>
+        <div class="frame-slots">
+          <label>who <span class="frame-hint">(birthday person)</span><br><input type="text" id="frame-who" placeholder="e.g. Emma" class="frame-input"></label>
+          <label>when <span class="frame-hint">(date/time)</span><br><input type="text" id="frame-when" placeholder="e.g. Saturday 2pm" class="frame-input"></label>
+          <label>where <span class="frame-hint">(location)</span><br><input type="text" id="frame-where" placeholder="e.g. park" class="frame-input"></label>
+          <label>cake? <span class="frame-hint">(yes / no)</span><br><input type="text" id="frame-cake" placeholder="yes, no, or leave blank" class="frame-input"></label>
+          <label>presents? <span class="frame-hint">(expected)</span><br><input type="text" id="frame-presents" placeholder="yes or blank" class="frame-input"></label>
         </div>
-        <button type="button" class="btn btn-primary" id="frame-infer">Infer defaults</button>
-        <p id="frame-result" style="margin-top:0.75rem; font-size:0.9rem;"></p>
+        <div class="frame-actions">
+          <button type="button" class="btn btn-primary" id="frame-infer">Infer defaults</button>
+          <button type="button" class="btn btn-secondary" id="frame-reset">Reset</button>
+        </div>
+        <div id="frame-result" class="frame-result" aria-live="polite"></div>
       </div>
     </div>
   </div>
+  <style>
+    .frame-slots { display:grid; gap:0.5rem; margin:0.5rem 0; }
+    .frame-hint { font-size:0.75rem; color:var(--muted); font-weight:400; }
+    .frame-input { width:100%; max-width:14rem; padding:0.35rem; border:1px solid var(--border); border-radius:4px; margin-top:0.15rem; }
+    .frame-actions { display:flex; gap:0.5rem; flex-wrap:wrap; margin:0.5rem 0; }
+    .frame-result { margin-top:0.75rem; font-size:0.88rem; min-height:1.5rem; }
+    .frame-result ul { margin:0; padding-left:1.25rem; }
+    .frame-result li { margin:0.2rem 0; }
+    .frame-default { color:var(--muted); font-style:italic; }
+  </style>
   <script src="../shared/nav.js"></script>
   <script>
     (function(){
@@ -76,24 +90,35 @@
       var when = document.getElementById('frame-when');
       var where = document.getElementById('frame-where');
       var cake = document.getElementById('frame-cake');
+      var presents = document.getElementById('frame-presents');
       var result = document.getElementById('frame-result');
-      document.getElementById('frame-infer').addEventListener('click', function(){
-        var w = who.value.trim();
-        var t = when.value.trim();
-        var wh = where.value.trim();
+      var defaults = { who: 'the birthday person', when: 'afternoon', where: 'home or party venue', cake: 'yes', presents: 'yes' };
+      function infer() {
+        var filled = [];
+        if (!who.value.trim()) { who.value = defaults.who; filled.push('who'); }
+        if (!when.value.trim()) { when.value = defaults.when; filled.push('when'); }
+        if (!where.value.trim()) { where.value = defaults.where; filled.push('where'); }
         var c = cake.value.trim().toLowerCase();
-        var suggestions = [];
-        if (!w) suggestions.push('who: (default) the birthday person');
-        else suggestions.push('who: ' + w);
-        if (!t) suggestions.push('when: (default) afternoon');
-        else suggestions.push('when: ' + t);
-        if (!wh) suggestions.push('where: (default) home or party venue');
-        else suggestions.push('where: ' + wh);
-        if (!c || c === '?') suggestions.push('cake?: (default) yes');
-        else suggestions.push('cake?: ' + cake.value);
-        result.textContent = 'Filled frame: ' + suggestions.join('; ');
-        result.className = 'truth-true';
-      });
+        if (!c || c === '?') { cake.value = defaults.cake; filled.push('cake?'); }
+        if (!presents.value.trim()) { presents.value = defaults.presents; filled.push('presents?'); }
+        var html = '<p><strong>Filled frame</strong> (defaults applied for empty slots):</p><ul>';
+        html += '<li>who: ' + who.value + (filled.indexOf('who') >= 0 ? ' <span class="frame-default">(default)</span>' : '') + '</li>';
+        html += '<li>when: ' + when.value + (filled.indexOf('when') >= 0 ? ' <span class="frame-default">(default)</span>' : '') + '</li>';
+        html += '<li>where: ' + where.value + (filled.indexOf('where') >= 0 ? ' <span class="frame-default">(default)</span>' : '') + '</li>';
+        html += '<li>cake?: ' + cake.value + (filled.indexOf('cake?') >= 0 ? ' <span class="frame-default">(default)</span>' : '') + '</li>';
+        html += '<li>presents?: ' + presents.value + (filled.indexOf('presents?') >= 0 ? ' <span class="frame-default">(default)</span>' : '') + '</li>';
+        html += '</ul>';
+        if (filled.length) {
+          html += '<p class="frame-default">Slots filled from defaults: ' + filled.join(', ') + '.</p>';
+        }
+        result.innerHTML = html;
+      }
+      function reset() {
+        who.value = when.value = where.value = cake.value = presents.value = '';
+        result.innerHTML = '';
+      }
+      document.getElementById('frame-infer').addEventListener('click', infer);
+      document.getElementById('frame-reset').addEventListener('click', reset);
     })();
   </script>
 </body>
