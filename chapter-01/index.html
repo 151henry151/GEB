@@ -15,12 +15,12 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter I: The MU-puzzle</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="full">Full Text</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content on">
+      <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
           <p>You have a little game. You start with the letters <strong>MI</strong>. You are allowed to change them only by a few rules: you can add a copy of the end after the M, you can turn I into IU, you can turn III into U, or you can take UU away.</p>
           <p>Your job is to get to <strong>MU</strong>. You can push the rules as much as you like. But no matter how you play, you will never get from MI to MU. The rules never let you make that word. So some things are just not reachable—even when the rules are simple.</p>
@@ -46,7 +46,7 @@
           <p>The chapter distinguishes implicit characterization (the rules “characterize” the set of theorems in the sense that they generate exactly that set) from a decision procedure: an algorithm that, given any string, determines in finite time whether it is a theorem. For the MIU-system, a decision procedure exists (e.g. based on the I-count). Discovering that a decision procedure exists is a substantive result—it means theoremhood is concretely testable.</p>
         </div>
       </div>
-      <div data-reading-panel="full" class="reading-content">
+      <div data-reading-panel="full" class="reading-content on">
         <div class="content-inner">
           <p>The full chapter appears in the book. Read it in the PDF below.</p>
           <iframe class="fulltext-embed" title="Chapter I — full text (PDF)" src="../pdfs/chapter-01.pdf"></iframe>
