@@ -13,7 +13,7 @@
     { id: 'ch04', num: 'IV', title: 'Consistency, Completeness, and Geometry', path: '/chapter-04/', pdfPage: 90 },
     { id: 'ch05', num: 'V', title: 'Recursive Structures and Processes', path: '/chapter-05/', pdfPage: 135 },
     { id: 'ch06', num: 'VI', title: 'The Location of Meaning', path: '/chapter-06/', pdfPage: 166 },
-    { id: 'ch07', num: 'VII', title: 'The Propositional Calculus', path: '/chapter-07/', pdfPage: 188 },
+    { id: 'ch07', num: 'VII', title: 'The Propositional Calculus', path: '/chapter-07/', pdfPage: 189 },
     { id: 'ch08', num: 'VIII', title: 'Typographical Number Theory', path: '/chapter-08/', pdfPage: 211 },
     { id: 'ch09', num: 'IX', title: 'Mumon and Gödel', path: '/chapter-09/', pdfPage: 253 },
     { id: 'ch10', num: 'X', title: 'Levels of Description, and Computer Systems', path: '/chapter-10/', pdfPage: 290 },

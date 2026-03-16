@@ -52,34 +52,126 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Set P and Q true or false. The formula updates; green means true, red means false.</p>
+      <p class="companion-caption">Build and explore the propositional calculus: pick a formula, flip P and Q, and watch the truth table. Then try modus ponens—the rule that gets you from P and P⊃Q to Q.</p>
       <div class="companion-box" id="prop-companion">
-        <p><strong>Formula:</strong> <code class="logic">P and Q</code></p>
-        <div style="margin:0.75rem 0;">
-          <label><input type="checkbox" id="prop-p"> P</label>
-          <label style="margin-left:1rem;"><input type="checkbox" id="prop-q"> Q</label>
+        <label style="display:block; margin-bottom:0.25rem;"><strong>Choose a formula</strong></label>
+        <select id="prop-formula" class="logic" style="width:100%; max-width:20rem; padding:0.35rem; margin-bottom:0.75rem;" aria-label="Formula">
+          <option value="and">P ∧ Q (and)</option>
+          <option value="or">P ∨ Q (or)</option>
+          <option value="not">~P (not)</option>
+          <option value="impl">P ⊃ Q (if-then)</option>
+          <option value="nand">~(P ∧ Q)</option>
+          <option value="equiv">(P ⊃ Q) ∧ (Q ⊃ P)</option>
+          <option value="xor">~(P ↔ Q)  (exclusive or)</option>
+        </select>
+        <p style="margin-bottom:0.35rem;"><strong>Assign truth values</strong></p>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:0.75rem;">
+          <label class="prop-toggle"><input type="checkbox" id="prop-p"> <strong>P</strong></label>
+          <label class="prop-toggle"><input type="checkbox" id="prop-q"> <strong>Q</strong></label>
         </div>
-        <p id="prop-result" style="font-weight:600;"></p>
+        <div id="prop-result-box" style="padding:0.6rem; border-radius:6px; margin-bottom:1rem; text-align:center; font-size:1.1rem;">
+          <span id="prop-formula-display" class="logic"></span> = <span id="prop-result" style="font-weight:700;"></span>
+        </div>
+        <p style="margin-bottom:0.35rem;"><strong>Truth table</strong> <span style="color:var(--muted); font-size:0.85rem;">(current row highlighted)</span></p>
+        <table id="prop-truth-table" class="logic" style="width:100%; border-collapse:collapse; font-size:0.9rem;">
+          <thead><tr><th style="padding:0.3rem; border:1px solid var(--border);">P</th><th style="padding:0.3rem; border:1px solid var(--border);">Q</th><th style="padding:0.3rem; border:1px solid var(--border);">Result</th></tr></thead>
+          <tbody id="prop-tbody"></tbody>
+        </table>
+        <div id="prop-modus" style="margin-top:1.25rem; padding:0.75rem; background:var(--panel); border-radius:6px; border-left:4px solid var(--accent);">
+          <p style="margin:0 0 0.5rem 0;"><strong>Modus ponens</strong></p>
+          <p style="margin:0 0 0.35rem 0; font-size:0.9rem;">If P is true and P⊃Q is true, then Q must be true. Set P = T above and choose P⊃Q; when the formula is T, Q is forced to T.</p>
+          <p id="prop-modus-status" style="margin:0; font-size:0.9rem; color:var(--muted);"></p>
+        </div>
       </div>
     </div>
   </div>
   <script src="../shared/nav.js"></script>
   <script>
     (function () {
-      var p = document.getElementById('prop-p');
-      var q = document.getElementById('prop-q');
-      var res = document.getElementById('prop-result');
+      var formulaSelect = document.getElementById('prop-formula');
+      var pCheck = document.getElementById('prop-p');
+      var qCheck = document.getElementById('prop-q');
+      var formulaDisplay = document.getElementById('prop-formula-display');
+      var resultSpan = document.getElementById('prop-result');
+      var resultBox = document.getElementById('prop-result-box');
+      var tbody = document.getElementById('prop-tbody');
+      var modusStatus = document.getElementById('prop-modus-status');
+
+      var formulas = {
+        and:  { label: 'P ∧ Q', eval: function (p, q) { return p && q; } },
+        or:   { label: 'P ∨ Q', eval: function (p, q) { return p || q; } },
+        not:  { label: '~P',   eval: function (p, q) { return !p; } },
+        impl: { label: 'P ⊃ Q', eval: function (p, q) { return !p || q; } },
+        nand: { label: '~(P ∧ Q)', eval: function (p, q) { return !(p && q); } },
+        equiv:{ label: 'P ↔ Q', eval: function (p, q) { return (!p || q) && (!q || p); } },
+        xor:  { label: 'P ⊕ Q', eval: function (p, q) { return p !== q; } }
+      };
+
+      function getVal() {
+        var p = pCheck && pCheck.checked;
+        var q = qCheck && qCheck.checked;
+        return { p: p, q: q };
+      }
+
+      function currentFormula() {
+        var id = formulaSelect && formulaSelect.value;
+        return id && formulas[id] ? formulas[id] : formulas.and;
+      }
+
       function update() {
-        var pv = p && p.checked;
-        var qv = q && q.checked;
-        var val = pv && qv;
-        if (res) {
-          res.textContent = 'P and Q = ' + (val ? 'TRUE' : 'FALSE');
-          res.className = val ? 'truth-true' : 'truth-false';
+        var v = getVal();
+        var f = currentFormula();
+        var result = f.eval(v.p, v.q);
+        if (formulaDisplay) formulaDisplay.textContent = f.label;
+        if (resultSpan) {
+          resultSpan.textContent = result ? 'TRUE' : 'FALSE';
+          resultSpan.className = result ? 'truth-true' : 'truth-false';
+        }
+        if (resultBox) resultBox.style.background = result ? 'rgba(58,125,68,0.12)' : 'rgba(139,58,58,0.12)';
+        buildTruthTable(v.p, v.q, f, result);
+        updateModusStatus(v, f, result);
+      }
+
+      function buildTruthTable(currentP, currentQ, f, currentResult) {
+        if (!tbody) return;
+        var rows = [
+          [false, false],
+          [false, true],
+          [true, false],
+          [true, true]
+        ];
+        tbody.innerHTML = '';
+        rows.forEach(function (pair) {
+          var p = pair[0], q = pair[1];
+          var val = f.eval(p, q);
+          var isCurrent = p === currentP && q === currentQ;
+          var tr = document.createElement('tr');
+          if (isCurrent) tr.style.background = 'var(--accent)';
+          if (isCurrent) tr.style.color = '#fff';
+          tr.innerHTML = '<td style="padding:0.3rem; border:1px solid var(--border);">' + (p ? 'T' : 'F') + '</td><td style="padding:0.3rem; border:1px solid var(--border);">' + (q ? 'T' : 'F') + '</td><td style="padding:0.3rem; border:1px solid var(--border);">' + (val ? 'T' : 'F') + '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+
+      function updateModusStatus(v, f, result) {
+        if (!modusStatus) return;
+        var isImpl = formulaSelect && formulaSelect.value === 'impl';
+        if (!isImpl) {
+          modusStatus.textContent = 'Select P ⊃ Q above to see modus ponens in action.';
+          return;
+        }
+        if (v.p && result) {
+          modusStatus.innerHTML = 'Right now: P = T and P⊃Q = T, so by modus ponens, <strong>Q must be T</strong>. ' + (v.q ? 'Q is T ✓' : 'Set Q = T to match.');
+        } else if (v.p && !result) {
+          modusStatus.textContent = 'P = T but P⊃Q = F (because Q = F). So the premise P⊃Q is false—no conclusion about Q from modus ponens.';
+        } else {
+          modusStatus.textContent = 'With P = F, P⊃Q is true no matter what Q is. Modus ponens only applies when both P and P⊃Q are true.';
         }
       }
-      if (p) p.addEventListener('change', update);
-      if (q) q.addEventListener('change', update);
+
+      if (formulaSelect) formulaSelect.addEventListener('change', update);
+      if (pCheck) pCheck.addEventListener('change', update);
+      if (qCheck) qCheck.addEventListener('change', update);
       update();
     })();
   </script>

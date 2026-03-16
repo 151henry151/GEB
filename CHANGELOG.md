@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.8.0] — 2026-03-16
+
+### Fixed
+
+- Chapter VII PDF now starts on first page of chapter (was including last page of Chapter VI); update split script and regenerate pdfs/chapter-06.pdf and chapter-07.pdf.
+
+### Changed
+
+- Chapter VII propositional calculus companion: formula selector (P∧Q, P∨Q, ~P, P⊃Q, ~(P∧Q), P↔Q, P⊕Q), live truth table with highlighted current row, result display with truth/false styling, and modus ponens explainer that updates when P⊃Q is selected.
+
 ## [0.7.2] — 2026-03-16
 
 ### Changed
