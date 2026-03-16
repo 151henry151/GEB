@@ -52,14 +52,28 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Build a TNT term or equation. S means "successor"; SS0 is 2. The interpreter shows the number fact.</p>
+      <p class="companion-caption">Build a TNT term or equation with the symbols below. S is successor (SS0 = 2). Click Interpret to see the number fact—form becomes number.</p>
       <div class="companion-box" id="tnt-companion">
-        <p><strong>Example:</strong> <code class="logic">S0 + S0 = SS0</code></p>
-        <p style="margin:0.5rem 0 0.25rem 0;">Interpretation: 1 + 1 = 2</p>
-        <p style="font-size:0.9rem; color:var(--muted);">TNT encodes arithmetic as typography: the same fact (1+1=2) is expressed purely by symbol shape.</p>
+        <p style="margin-bottom:0.35rem;"><strong>Formula</strong></p>
+        <div id="tnt-display" class="logic" style="min-height:2rem; padding:0.5rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; word-break:break-all;">S0+S0=SS0</div>
+        <p style="margin-bottom:0.35rem;"><strong>Insert symbol</strong></p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.35rem; margin-bottom:0.75rem;">
+          <button type="button" class="btn btn-secondary" data-insert="0">0</button>
+          <button type="button" class="btn btn-secondary" data-insert="S">S</button>
+          <button type="button" class="btn btn-secondary" data-insert="+">+</button>
+          <button type="button" class="btn btn-secondary" data-insert="·">·</button>
+          <button type="button" class="btn btn-secondary" data-insert="=">=</button>
+          <button type="button" class="btn btn-secondary" data-insert="(">(</button>
+          <button type="button" class="btn btn-secondary" data-insert=")">)</button>
+          <button type="button" class="btn btn-secondary" id="tnt-back">⌫</button>
+          <button type="button" class="btn btn-secondary" id="tnt-clear">Clear</button>
+        </div>
+        <button type="button" class="btn btn-primary" id="tnt-interpret" style="margin-bottom:0.75rem;">Interpret</button>
+        <div id="tnt-result" style="padding:0.5rem; background:var(--panel); border-radius:4px; font-size:0.95rem;"></div>
       </div>
     </div>
   </div>
   <script src="../shared/nav.js"></script>
+  <script src="tnt.js"></script>
 </body>
 </html>

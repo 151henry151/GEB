@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.9.0] — 2026-03-16
+
+### Fixed
+
+- Chapter VIII PDF now starts on first page of chapter (was including last page of Chapter VII); update split script and regenerate pdfs/chapter-07.pdf and chapter-08.pdf.
+
+### Changed
+
+- Chapter VIII TNT companion: replace static text with interactive formula builder (insert 0, S, +, ·, =, parentheses; Back, Clear), Interpret button parses term or equation and shows number value or left=right with true/false; parser supports successor, addition, multiplication, and grouping.
+
 ## [0.8.0] — 2026-03-16
 
 ### Fixed
