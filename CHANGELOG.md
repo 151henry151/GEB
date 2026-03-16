@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.14.1] — 2026-03-16
+
+### Changed
+
+- Chapter XIII BlooP/FlooP companion: add “What you’re seeing” explainer; visual search strips for BlooP and FlooP with step-by-step animation (checked/found/bound states); BlooP strip shows BOUND at N and stops at or before N; FlooP strip has no bound and animates until found; tip to set N=3 to see BlooP “not in range” while FlooP finds 4; separate result area and CSS for strip cells.
+
 ## [0.14.0] — 2026-03-16
 
 ### Changed

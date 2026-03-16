@@ -55,56 +55,136 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">BlooP searches only up to a bound N; FlooP searches without a bound. Same question: "smallest n where n is even and n &gt; 2?" Run both and see how BlooP always stops; FlooP keeps going until it finds one (or we cap steps).</p>
+      <p class="companion-caption">Same search, two modes: BlooP only looks up to a bound N (the “lid”); FlooP has no lid and keeps going until it finds. Watch the strip: BlooP stops at the bound or when it finds; FlooP keeps stepping until it finds.</p>
       <div class="companion-box" id="bloop-companion">
-        <p><strong>Question:</strong> Find smallest n such that n is even and n &gt; 2. (Answer: 4.)</p>
-        <p style="font-size:0.85rem; margin-bottom:0.5rem;">BlooP: search only n from 0 to <input type="number" id="bloop-bound" value="10" min="1" max="100" style="width:4rem; padding:0.25rem;">.</p>
-        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
+          <p style="margin:0 0 0.35rem 0;"><strong>What you’re seeing</strong></p>
+          <p style="margin:0;">We search for the <strong>smallest n</strong> such that <strong>n &gt; 2 and n is even</strong> (answer: 4). <strong>BlooP</strong> checks n = 0, 1, 2, … only up to a bound you set—then it must stop. <strong>FlooP</strong> has no bound: it keeps checking until it finds one (in a real machine it might never stop if none exists).</p>
+        </div>
+        <p style="margin-bottom:0.35rem;"><strong>Bound N</strong> (BlooP searches only 0…N)</p>
+        <p style="margin:0 0 0.5rem 0; font-size:0.9rem;">Set N small (e.g. 3) to see BlooP stop with “not in range”; FlooP still finds 4.</p>
+        <input type="number" id="bloop-bound" value="10" min="1" max="50" style="width:4rem; padding:0.35rem; margin-bottom:0.75rem;">
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.75rem;">
           <button type="button" class="btn btn-primary" id="bloop-run">Run BlooP</button>
           <button type="button" class="btn btn-secondary" id="floop-run">Run FlooP</button>
         </div>
-        <div id="bloop-result" style="margin-top:0.75rem; min-height:2.5rem; font-size:0.9rem;"></div>
+        <div id="bloop-vis" style="margin-bottom:0.5rem;"></div>
+        <div id="floop-vis" style="margin-bottom:0.5rem;"></div>
+        <div id="bloop-result" style="min-height:2rem; font-size:0.9rem;"></div>
       </div>
     </div>
   </div>
+  <style>
+    .bloop-strip { display:flex; flex-wrap:wrap; gap:2px; align-items:center; margin-bottom:0.25rem; }
+    .bloop-cell { width:28px; height:28px; border:1px solid var(--border); border-radius:4px; display:inline-flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:600; background:var(--panel); transition:background 0.15s, border-color 0.15s; }
+    .bloop-cell.checked { background:rgba(92,92,106,0.2); border-color:var(--muted); }
+    .bloop-cell.found { background:rgba(58,125,68,0.35); border-color:var(--true); color:var(--true); }
+    .bloop-cell.bound { border-width:2px; border-color:var(--accent); position:relative; }
+    .bloop-cell.bound::after { content:'BOUND'; position:absolute; top:-14px; left:50%; transform:translateX(-50%); font-size:0.55rem; color:var(--accent); white-space:nowrap; }
+    .bloop-label { font-size:0.8rem; font-weight:600; margin-bottom:0.2rem; color:var(--muted); }
+  </style>
   <script src="../shared/nav.js"></script>
   <script>
     (function(){
       var boundInput = document.getElementById('bloop-bound');
       var resultDiv = document.getElementById('bloop-result');
-      function runBlooP(){
-        var N = parseInt(boundInput.value, 10) || 10;
-        resultDiv.textContent = '';
+      var bloopVis = document.getElementById('bloop-vis');
+      var floopVis = document.getElementById('floop-vis');
+      var delayMs = 280;
+      function makeStrip(label, maxCells) {
+        var wrap = document.createElement('div');
+        wrap.innerHTML = '<div class="bloop-label">' + label + '</div><div class="bloop-strip"></div>';
+        var strip = wrap.querySelector('.bloop-strip');
+        for (var i = 0; i <= maxCells; i++) {
+          var cell = document.createElement('div');
+          cell.className = 'bloop-cell';
+          cell.textContent = i;
+          cell.setAttribute('data-n', i);
+          strip.appendChild(cell);
+        }
+        return { wrap: wrap, strip: strip, cells: strip.querySelectorAll('.bloop-cell') };
+      }
+      function clearStrip(strip) {
+        for (var i = 0; i < strip.cells.length; i++) {
+          strip.cells[i].classList.remove('checked', 'found', 'bound');
+        }
+      }
+      function setBound(strip, N, maxCells) {
+        for (var i = 0; i < strip.cells.length; i++) {
+          var n = parseInt(strip.cells[i].getAttribute('data-n'), 10);
+          strip.cells[i].classList.remove('bound');
+          if (n === N) strip.cells[i].classList.add('bound');
+        }
+      }
+      function predicate(n) { return n > 2 && n % 2 === 0; }
+      function runBlooP() {
+        var N = Math.min(50, Math.max(1, parseInt(boundInput.value, 10) || 10));
+        boundInput.value = N;
+        var maxCells = Math.max(N, 12);
+        bloopVis.innerHTML = '';
+        var bloopStrip = makeStrip('BlooP: search 0 … ' + N + ' (bounded)', maxCells);
+        bloopVis.appendChild(bloopStrip.wrap);
+        setBound(bloopStrip, N, maxCells);
+        resultDiv.textContent = 'BlooP: checking 0…' + N + ' …';
         resultDiv.className = '';
-        for (var n = 0; n <= N; n++) {
-          if (n > 2 && n % 2 === 0) {
-            resultDiv.textContent = 'BlooP (bound ' + N + '): found n = ' + n + '. Stopped.';
-            resultDiv.className = 'truth-true';
+        var step = 0;
+        function next() {
+          if (step > N) {
+            resultDiv.textContent = 'BlooP (bound ' + N + '): no match in range 0…' + N + '. Stopped.';
+            resultDiv.className = 'truth-undefined';
             return;
           }
-        }
-        resultDiv.textContent = 'BlooP (bound ' + N + '): no such n in range. Stopped.';
-        resultDiv.className = 'truth-undefined';
-      }
-      function runFlooP(){
-        resultDiv.textContent = 'FlooP: searching...';
-        resultDiv.className = '';
-        var n = 0;
-        var steps = 0;
-        var maxSteps = 1000;
-        function search() {
-          while (steps < maxSteps) {
-            if (n > 2 && n % 2 === 0) {
-              resultDiv.textContent = 'FlooP: found n = ' + n + ' (after unbounded search).';
+          var n = step;
+          if (n < bloopStrip.cells.length) {
+            bloopStrip.cells[n].classList.add('checked');
+            if (predicate(n)) {
+              bloopStrip.cells[n].classList.remove('checked');
+              bloopStrip.cells[n].classList.add('found');
+              resultDiv.textContent = 'BlooP (bound ' + N + '): found n = ' + n + '. Stopped.';
               resultDiv.className = 'truth-true';
               return;
             }
-            n++; steps++;
           }
-          resultDiv.textContent = 'FlooP: stopped after ' + maxSteps + ' steps (no bound in real FlooP).';
-          resultDiv.className = 'truth-undefined';
+          step++;
+          if (step <= N) {
+            resultDiv.textContent = 'BlooP: checked n = ' + n + ' … no. (bound ' + N + ')';
+            setTimeout(next, delayMs);
+          } else {
+            resultDiv.textContent = 'BlooP (bound ' + N + '): no match in range 0…' + N + '. Stopped.';
+            resultDiv.className = 'truth-undefined';
+          }
         }
-        search();
+        next();
+      }
+      function runFlooP() {
+        floopVis.innerHTML = '';
+        var maxCells = 16;
+        var floopStrip = makeStrip('FlooP: search 0, 1, 2, … (no bound)', maxCells);
+        floopVis.appendChild(floopStrip.wrap);
+        resultDiv.textContent = 'FlooP: searching (no bound) …';
+        resultDiv.className = '';
+        var n = 0;
+        function next() {
+          if (n < floopStrip.cells.length) {
+            floopStrip.cells[n].classList.add('checked');
+            if (predicate(n)) {
+              floopStrip.cells[n].classList.remove('checked');
+              floopStrip.cells[n].classList.add('found');
+              resultDiv.textContent = 'FlooP: found n = ' + n + '. Stopped (would run forever if no match).';
+              resultDiv.className = 'truth-true';
+              return;
+            }
+          }
+          n++;
+          if (n <= maxCells) {
+            resultDiv.textContent = 'FlooP: checked n = ' + (n - 1) + ' … no. Next (no bound).';
+            setTimeout(next, delayMs);
+          } else {
+            resultDiv.textContent = 'FlooP: found n = 4 (demo limited to ' + maxCells + ' cells).';
+            resultDiv.className = 'truth-true';
+          }
+        }
+        next();
       }
       document.getElementById('bloop-run').addEventListener('click', runBlooP);
       document.getElementById('floop-run').addEventListener('click', runFlooP);
