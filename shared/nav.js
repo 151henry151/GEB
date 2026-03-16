@@ -18,7 +18,7 @@
     { id: 'ch09', num: 'IX', title: 'Mumon and Gödel', path: '/chapter-09/', pdfPage: 254 },
     { id: 'ch10', num: 'X', title: 'Levels of Description, and Computer Systems', path: '/chapter-10/', pdfPage: 291 },
     { id: 'ch11', num: 'XI', title: 'Brains and Thoughts', path: '/chapter-11/', pdfPage: 343 },
-    { id: 'ch12', num: 'XII', title: 'Minds and Thoughts', path: '/chapter-12/', pdfPage: 374 },
+    { id: 'ch12', num: 'XII', title: 'Minds and Thoughts', path: '/chapter-12/', pdfPage: 375 },
     { id: 'ch13', num: 'XIII', title: 'BlooP and FlooP and GlooP', path: '/chapter-13/', pdfPage: 412 },
     { id: 'ch14', num: 'XIV', title: 'On Formally Undecidable Propositions', path: '/chapter-14/', pdfPage: 443 },
     { id: 'ch15', num: 'XV', title: 'Jumping out of the System', path: '/chapter-15/', pdfPage: 470 },

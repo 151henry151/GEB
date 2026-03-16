@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.13.1] — 2026-03-16
+
+### Fixed
+
+- Chapter XII PDF now starts on first page of chapter (was including last page of Chapter XI); update split script and regenerate pdfs/chapter-11.pdf and chapter-12.pdf.
+
+### Changed
+
+- Chapter XII symbol companion: remove S/E labels from grid (use color only for start path and end cell); rename “Symbol grounding” to “What this shows” and tighten copy; rename “Context 1/2” to “Interpretation 1: As directions” and “Interpretation 2: As position numbers” with short explanations (start at center, path = where you go, darker = end; position code ↑=5 etc.); add “Your message” and “Read as” / “Decoded” labels for clarity.
+
 ## [0.13.0] — 2026-03-16
 
 ### Changed
