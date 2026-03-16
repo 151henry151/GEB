@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.14.5] — 2026-03-16
+
+### Fixed
+
+- Chapter XIV, XV, and XVI PDFs: correct start pages so each opens on the first page of the chapter (not the last page of the previous chapter). Updated STARTS in scripts/split_geb_pdf.py and pdfPage in shared/nav.js; regenerated pdfs/chapter-14.pdf, chapter-15.pdf, chapter-16.pdf.
+
 ## [0.14.4] — 2026-03-16
 
 ### Changed
