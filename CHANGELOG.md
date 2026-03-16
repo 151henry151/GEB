@@ -4,9 +4,15 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-03-15
+
 ### Fixed
 
-- Chapter III PDF now starts on first page of chapter (was including last page of Chapter II); adjust split script and regenerate pdfs/chapter-02.pdf and chapter-03.pdf.
+- Chapter VI PDF now starts on first page of chapter (was including last page of Chapter V); update split script STARTS and regenerate pdfs/chapter-05.pdf and chapter-06.pdf.
+
+### Added
+
+- Chapter VI message–decoder companion: user-editable message, input mode (ASCII/text, Binary, Hex, Decimal, Octal, Base64) and decoder/show-as (same six options); convert between any input and output pair (e.g. input ASCII "A", decoder Binary → "01000001").
 
 ## [0.3.0] — 2025-03-15
 

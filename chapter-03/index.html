@@ -62,11 +62,11 @@
           <button type="button" class="btn btn-secondary" id="fg-figure">See figure (vase)</button>
           <button type="button" class="btn btn-secondary" id="fg-ground">See ground (faces)</button>
         </div>
-        <div id="fg-canvas" style="min-height:180px; display:flex; align-items:center; justify-content:center; background:#7a7a8a; border-radius:6px; position:relative;">
-          <svg width="200" height="180" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
-            <!-- Rubin vase: one contour. Dark = two face profiles; light center = vase. -->
-            <rect width="200" height="180" fill="#1a1a2e"/>
-            <path id="fg-vase" d="M100 20 L72 25 C62 42 76 72 72 98 C68 120 74 145 70 168 L100 172 L130 168 C126 145 132 120 128 98 C124 72 138 42 128 25 Z" fill="#eeeae3"/>
+        <div id="fg-canvas" style="min-height:200px; display:flex; align-items:center; justify-content:center; background:#2c2c3a; border-radius:6px; position:relative;">
+          <!-- Classic Rubin vase: shared contour. Light = vase; dark sides = two face profiles (nose, lips, chin on each side). -->
+          <svg id="fg-svg" width="240" height="200" viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rubin vase illusion: vase or two faces in profile">
+            <rect width="240" height="200" fill="#1a1a28"/>
+            <path id="fg-vase" d="M120 10 L92 16 C76 24 66 42 70 60 C72 78 68 96 72 114 C76 132 70 152 78 172 C92 188 108 194 120 194 L148 188 C164 172 174 152 170 132 C172 114 168 96 170 78 C174 60 164 42 148 24 L148 16 Z" fill="#e8e4dc"/>
           </svg>
         </div>
         <p id="fg-label" style="text-align:center; margin-top:0.5rem; font-size:0.9rem; color:var(--muted);">Click a button to switch what you “see.”</p>
@@ -87,8 +87,8 @@
         document.getElementById('fg-ground').classList.add('btn-secondary');
       }
       function showGround() {
-        if (vase) { vase.setAttribute('stroke', 'var(--accent)'); vase.setAttribute('stroke-width', '1'); }
-        if (label) label.textContent = 'Ground: two faces in profile. (The “non-theorems”—what’s left when you don’t see the vase.)';
+        if (vase) { vase.setAttribute('stroke', '#b5873b'); vase.setAttribute('stroke-width', '1'); }
+        if (label) label.textContent = 'Ground: two faces in profile. Look at the dark areas on either side—each is a face (nose, lips, chin).';
         document.getElementById('fg-ground').classList.add('btn-primary');
         document.getElementById('fg-ground').classList.remove('btn-secondary');
         document.getElementById('fg-figure').classList.remove('btn-primary');
