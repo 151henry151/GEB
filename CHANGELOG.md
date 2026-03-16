@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.0] — 2026-03-16
+
+### Changed
+
+- Chapter XII (Minds and Thoughts): replace symbol-grounding companion with <strong>isomorphism</strong> companion. Two side-by-side symbol networks (same graph structure, different node labels: e.g. cat/dog/run/animal/move vs chat/chien/courir/animal/bouger). “Show isomorphism (pair nodes)” reveals the structure-preserving one-to-one mapping with matching colors and a short explanation that isomorphism = same structure/different names and that partial isomorphism between brains explains how we understand each other.
+
 ## [0.14.9] — 2026-03-16
 
 ### Changed

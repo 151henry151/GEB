@@ -22,21 +22,21 @@
       </div>
       <div data-reading-panel="eli5" class="reading-content">
         <div class="content-inner">
-          <p>The same mark can mean different things. An arrow ↑ might mean “go up” in one game and “the number five” in another. Meaning depends on who’s reading it and what game they’re in.</p>
+          <p>The same mark can mean different things. An arrow ↑ might mean "go up" in one game and "the number five" in another. Meaning depends on who's reading it and what game they're in.</p>
         </div>
       </div>
       <div data-reading-panel="eli10" class="reading-content">
         <div class="content-inner">
           <h2>Minds and intentionality</h2>
-          <p>Minds have “aboutness”—thoughts are about things. A thought can be about a cat, or about the number 5. The chapter asks: can we understand minds in the same way we understand message, decoder, and receiver? The “meaning” of a symbol in your head might depend on how the rest of your brain “decodes” it—what it’s connected to, what rules use it. So the “location of meaning” idea from earlier chapters applies to mental content too: meaning isn’t in the symbol alone but in the relation between the symbol and the system that uses it.</p>
+          <p>Minds have "aboutness"—thoughts are about things. A thought can be about a cat, or about the number 5. The chapter asks: can we understand minds in the same way we understand message, decoder, and receiver? The "meaning" of a symbol in your head might depend on how the rest of your brain "decodes" it—what it's connected to, what rules use it. So the "location of meaning" idea from earlier chapters applies to mental content too: meaning isn't in the symbol alone but in the relation between the symbol and the system that uses it.</p>
           <h2>Symbol grounding</h2>
-          <p>Symbols in a system get meaning from how they’re used and what they’re connected to. The same shape (e.g. ↑) in two contexts can have two meanings—as a direction or as a position in a list. So “grounding” means: the symbol gets its meaning from its role in the larger system, not from a single definition. That idea will matter when we ask whether machines could have “real” understanding or just manipulate symbols.</p>
+          <p>Symbols in a system get meaning from how they're used and what they're connected to. The same shape (e.g. ↑) in two contexts can have two meanings—as a direction or as a position in a list. So "grounding" means: the symbol gets its meaning from its role in the larger system, not from a single definition. That idea will matter when we ask whether machines could have "real" understanding or just manipulate symbols.</p>
         </div>
       </div>
       <div data-reading-panel="eli20" class="reading-content">
         <div class="content-inner">
           <h2>Minds and thoughts</h2>
-          <p>Hofstadter explores whether minds can be understood in the same multilevel, symbolic framework as computers and brains. Intentionality—the “aboutness” of mental states—might be explained by the role symbols play in a larger system: what they’re connected to, how they’re used in inference and action. The “grounding” of symbols in context (symbol grounding) is the idea that meaning comes from use and connection, not from a single internal label. The chapter connects this to the location-of-meaning theme (message, decoder, receiver) and to the possibility that minds are multi-level systems where “thought” is a high-level description of lower-level processes. It sets up the later discussion of whether machines could think: the question turns on whether symbol manipulation with the right structure could constitute understanding.</p>
+          <p>Hofstadter explores whether minds can be understood in the same multilevel, symbolic framework as computers and brains. Intentionality—the "aboutness" of mental states—might be explained by the role symbols play in a larger system: what they're connected to, how they're used in inference and action. The "grounding" of symbols in context (symbol grounding) is the idea that meaning comes from use and connection, not from a single internal label. The chapter connects this to the location-of-meaning theme (message, decoder, receiver) and to the possibility that minds are multi-level systems where "thought" is a high-level description of lower-level processes. It sets up the later discussion of whether machines could think: the question turns on whether symbol manipulation with the right structure could constitute understanding.</p>
         </div>
       </div>
       <div data-reading-panel="full" class="reading-content on">
@@ -49,124 +49,100 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">The same symbols mean different things in different contexts. Build a message with the arrow buttons; below you see it decoded two ways—as a path on a grid and as a list of numbers.</p>
-      <div class="companion-box" id="symbol-companion">
-        <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
-          <p style="margin:0 0 0.35rem 0;"><strong>What this shows</strong></p>
-          <p style="margin:0;">You build one message (e.g. ↑ ↑ →). The same marks are then interpreted two different ways. Meaning depends on the decoder—that’s symbol grounding.</p>
+      <p class="companion-caption">The chapter asks when two brains (or two symbol networks) can be <strong>mapped onto each other</strong>: same structure, same links—an <strong>isomorphism</strong>. No two people are fully isomorphic, but partial isomorphism (matching “core” symbols and their connections) is what makes understanding possible.</p>
+      <div class="companion-box" id="iso-companion">
+        <div class="iso-explainer">
+          <p><strong>Two networks, same structure.</strong> Below: two small “symbol networks” (nodes = symbols, edges = triggering links). The <em>structure</em> is identical—same number of nodes, same connections. Only the <em>labels</em> differ (e.g. “cat” vs “chat”). An <strong>isomorphism</strong> is a one-to-one pairing that preserves structure: if A is linked to B in one network, their counterparts are linked in the other.</p>
         </div>
-        <p style="margin-bottom:0.35rem; font-size:0.9rem;"><strong>Your message</strong></p>
-        <p style="margin:0 0 0.35rem 0; font-size:0.85rem; color:var(--muted);">Click arrows to add symbols; Clear to reset.</p>
-        <div style="display:flex; flex-wrap:wrap; gap:0.35rem; align-items:center; margin-bottom:0.5rem;">
-          <button type="button" class="btn btn-secondary symbol-btn" data-sym="↑" title="Up">↑</button>
-          <button type="button" class="btn btn-secondary symbol-btn" data-sym="↓" title="Down">↓</button>
-          <button type="button" class="btn btn-secondary symbol-btn" data-sym="→" title="Right">→</button>
-          <button type="button" class="btn btn-secondary symbol-btn" data-sym="←" title="Left">←</button>
-          <button type="button" class="btn btn-secondary" id="sym-clear" style="margin-left:0.5rem;">Clear</button>
-        </div>
-        <div id="sym-message" class="logic" style="min-height:1.5rem; padding:0.4rem; background:var(--bg); border-radius:4px; margin-bottom:0.75rem;">↑ ↑ →</div>
-        <div style="display:grid; gap:0.75rem;">
-          <div style="padding:0.6rem; background:var(--bg); border-radius:6px; border:1px solid var(--border);">
-            <p style="margin:0 0 0.25rem 0; font-size:0.9rem;"><strong>Interpretation 1: As directions</strong></p>
-            <p style="margin:0 0 0.35rem 0; font-size:0.85rem; color:var(--muted);">We read each symbol as a step: ↑ up, ↓ down, → right, ← left. Start at the center of the grid; the path shows where you end up. The darker cell is your final position.</p>
-            <p id="sym-arrow-text" style="margin:0 0 0.25rem 0; font-size:0.85rem;">Read as: Up, Up, Right</p>
-            <div id="sym-grid-wrap" style="display:inline-block; padding:0.25rem; background:#fff; border-radius:4px;"></div>
+        <div class="iso-networks">
+          <div class="iso-panel">
+            <p class="iso-label">Network A</p>
+            <svg id="iso-svg-a" class="iso-svg" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"></svg>
           </div>
-          <div style="padding:0.6rem; background:var(--bg); border-radius:6px; border:1px solid var(--border);">
-            <p style="margin:0 0 0.25rem 0; font-size:0.9rem;"><strong>Interpretation 2: As position numbers</strong></p>
-            <p style="margin:0 0 0.35rem 0; font-size:0.85rem; color:var(--muted);">We use a fixed code: ↑→5, ↓→2, →→3, ←→4. The same message becomes a list of numbers.</p>
-            <p id="sym-seq-text" style="margin:0 0 0.25rem 0; font-size:0.85rem;">Decoded: 5, 5, 3</p>
-            <div id="sym-seq-vis" style="display:flex; flex-wrap:wrap; gap:0.25rem; align-items:center; margin-top:0.35rem;"></div>
+          <div class="iso-panel">
+            <p class="iso-label">Network B</p>
+            <svg id="iso-svg-b" class="iso-svg" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg"></svg>
           </div>
         </div>
+        <button type="button" class="btn btn-primary" id="iso-toggle">Show isomorphism (pair nodes)</button>
+        <div id="iso-mapping" class="iso-mapping" aria-live="polite"></div>
       </div>
     </div>
   </div>
   <style>
-    .sym-cell { width:22px; height:22px; border:1px solid var(--border); background:var(--panel); border-radius:2px; display:inline-flex; align-items:center; justify-content:center; font-size:0.65rem; }
-    .sym-cell.path { background:rgba(46,107,138,0.25); }
-    .sym-cell.start { background:rgba(58,125,68,0.3); }
-    .sym-cell.end { background:var(--accent-secondary); color:#fff; font-weight:700; }
-    .sym-pos { width:28px; height:28px; border:1px solid var(--border); border-radius:4px; display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:600; }
-    .sym-pos.highlight { background:var(--accent-secondary); color:#fff; border-color:var(--accent-secondary); }
+    .iso-explainer { padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.88rem; border-left:4px solid var(--accent); }
+    .iso-networks { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin:0.75rem 0; }
+    .iso-panel { padding:0.5rem; background:var(--bg); border:1px solid var(--border); border-radius:6px; }
+    .iso-label { margin:0 0 0.35rem 0; font-size:0.9rem; font-weight:600; }
+    .iso-svg { width:100%; height:auto; display:block; }
+    .iso-node { cursor:pointer; }
+    .iso-node.highlight { stroke-width:3; stroke:var(--accent); }
+    .iso-mapping { margin-top:0.5rem; padding:0.5rem; background:var(--panel); border-radius:4px; font-size:0.88rem; min-height:2rem; }
+    .iso-mapping ul { margin:0; padding-left:1.25rem; }
+    .iso-hint { margin:0.5rem 0 0 0; font-size:0.82rem; color:var(--muted); }
   </style>
   <script src="../shared/nav.js"></script>
   <script>
     (function(){
-      var ARROW_MAP = { '↑':'Up', '↓':'Down', '→':'Right', '←':'Left' };
-      var SEQ_MAP = { '↑':5, '↓':2, '→':3, '←':4 };
-      var message = ['↑','↑','→'];
-      var msgEl = document.getElementById('sym-message');
-      var arrowText = document.getElementById('sym-arrow-text');
-      var seqText = document.getElementById('sym-seq-text');
-      var gridWrap = document.getElementById('sym-grid-wrap');
-      var seqVis = document.getElementById('sym-seq-vis');
-      function getArrows(){ return message.map(function(s){ return ARROW_MAP[s] || '?'; }); }
-      function getSeq(){ return message.map(function(s){ return SEQ_MAP[s]; }).filter(function(n){ return n != null; }); }
-      function renderMessage(){
-        msgEl.textContent = message.length ? message.join(' ') : '(empty)';
-      }
-      function renderArrows(){
-        var labels = getArrows();
-        arrowText.textContent = labels.length ? 'Read as: ' + labels.join(', ') : '(no symbols)';
-        var g = 5;
-        var cx = 2, cy = 2;
-        var path = [[cx,cy]];
-        for (var i = 0; i < message.length; i++) {
-          var s = message[i];
-          if (s === '↑') cy--; else if (s === '↓') cy++; else if (s === '→') cx++; else if (s === '←') cx--;
-          cx = Math.max(0, Math.min(g - 1, cx));
-          cy = Math.max(0, Math.min(g - 1, cy));
-          path.push([cx, cy]);
-        }
-        gridWrap.innerHTML = '';
-        var table = document.createElement('div');
-        table.style.display = 'grid';
-        table.style.gridTemplateColumns = 'repeat(' + g + ', 22px)';
-        table.style.gap = '0';
-        for (var row = 0; row < g; row++) {
-          for (var col = 0; col < g; col++) {
-            var cell = document.createElement('div');
-            cell.className = 'sym-cell';
-            var isPath = path.some(function(p){ return p[0] === col && p[1] === row; });
-            var isStart = path.length && path[0][0] === col && path[0][1] === row;
-            var isEnd = path.length && path[path.length-1][0] === col && path[path.length-1][1] === row;
-            if (isEnd) cell.className += ' end';
-            else if (isStart) cell.className += ' start';
-            else if (isPath) cell.className += ' path';
-            table.appendChild(cell);
-          }
-        }
-        gridWrap.appendChild(table);
-      }
-      function renderSeq(){
-        var nums = getSeq();
-        seqText.textContent = nums.length ? 'Decoded: ' + nums.join(', ') : 'Decoded: (no symbols)';
-        seqVis.innerHTML = '';
-        if (nums.length) {
-          nums.forEach(function(n){
-            var box = document.createElement('div');
-            box.className = 'sym-pos highlight';
-            box.textContent = n;
-            seqVis.appendChild(box);
-          });
-        } else {
-          seqVis.textContent = '';
-        }
-      }
-      function update(){
-        renderMessage();
-        renderArrows();
-        renderSeq();
-      }
-      document.querySelectorAll('.symbol-btn').forEach(function(btn){
-        btn.addEventListener('click', function(){
-          message.push(btn.getAttribute('data-sym'));
-          update();
+      var LABELS_A = ['cat', 'dog', 'run', 'animal', 'move'];
+      var LABELS_B = ['chat', 'chien', 'courir', 'animal', 'bouger'];
+      var EDGES = [[0,1],[1,2],[0,2],[2,3],[3,4]];
+      var POS = [{x:60,y:18},{x:25,y:55},{x:95,y:55},{x:95,y:82},{x:60,y:82}];
+      var colors = ['#b5873b','#2e6b8a','#3a7d44','#8b3a3a','#5c5c6a'];
+      function render(svgId, labels, highlight) {
+        var svg = document.getElementById(svgId);
+        svg.innerHTML = '';
+        EDGES.forEach(function(e){
+          var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+          line.setAttribute('x1', POS[e[0]].x);
+          line.setAttribute('y1', POS[e[0]].y);
+          line.setAttribute('x2', POS[e[1]].x);
+          line.setAttribute('y2', POS[e[1]].y);
+          line.setAttribute('stroke', 'var(--border)');
+          line.setAttribute('stroke-width', '2');
+          svg.appendChild(line);
         });
-      });
-      document.getElementById('sym-clear').addEventListener('click', function(){
-        message = [];
+        labels.forEach(function(lbl, i){
+          var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+          var circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          circle.setAttribute('cx', POS[i].x);
+          circle.setAttribute('cy', POS[i].y);
+          circle.setAttribute('r', 14);
+          circle.setAttribute('fill', 'var(--panel)');
+          circle.setAttribute('stroke', highlight && highlight[i] ? colors[i] : 'var(--border)');
+          circle.setAttribute('stroke-width', highlight && highlight[i] ? '3' : '1.5');
+          circle.setAttribute('class', 'iso-node');
+          g.appendChild(circle);
+          var text = document.createElementNS('http://www.w3.org/2000/svg','text');
+          text.setAttribute('x', POS[i].x);
+          text.setAttribute('y', POS[i].y + 4);
+          text.setAttribute('text-anchor', 'middle');
+          text.setAttribute('font-size', '9');
+          text.setAttribute('fill', 'var(--text)');
+          text.textContent = lbl;
+          g.appendChild(text);
+          svg.appendChild(g);
+        });
+      }
+      var showing = false;
+      var mappingEl = document.getElementById('iso-mapping');
+      function update() {
+        render('iso-svg-a', LABELS_A, showing ? [1,1,1,1,1] : null);
+        render('iso-svg-b', LABELS_B, showing ? [1,1,1,1,1] : null);
+        if (showing) {
+          var html = '<p><strong>Isomorphism (structure-preserving mapping):</strong></p><ul>';
+          LABELS_A.forEach(function(a, i){
+            html += '<li><span style="color:' + colors[i] + ';">●</span> ' + a + ' ↔ ' + LABELS_B[i] + '</li>';
+          });
+          html += '</ul><p class="iso-hint">Same links in both: cat–dog, dog–run, cat–run, run–animal, animal–move. So the two networks are <em>isomorphic</em>—different labels, same structure. The chapter: brains are never fully isomorphic, but partial isomorphism (shared “core” and links) lets us understand each other.</p>';
+          mappingEl.innerHTML = html;
+        } else {
+          mappingEl.innerHTML = '';
+        }
+      }
+      document.getElementById('iso-toggle').addEventListener('click', function(){
+        showing = !showing;
+        this.textContent = showing ? 'Hide isomorphism' : 'Show isomorphism (pair nodes)';
         update();
       });
       update();
