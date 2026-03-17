@@ -3,6 +3,9 @@
   var resultEl = document.getElementById('tnt-result');
   var formula = 'S0+S0=SS0';
 
+  var GODEL_SYMBOLS = { '0': 1, 'S': 2, '+': 3, '\u00B7': 4, '·': 4, '=': 5, '(': 6, ')': 7 };
+  var PRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
+
   function getFormula() { return (display && display.textContent) || formula; }
   function setFormula(s) { formula = s; if (display) display.textContent = s; }
 
@@ -15,6 +18,94 @@
         if (c === '0' || c === 'S' || c === '+' || c === dot || c === '=' || c === '(' || c === ')') tokens.push(c);
     }
     return tokens;
+  }
+
+  function godelNumber(tokens) {
+    var num = 1;
+    for (var i = 0; i < tokens.length; i++) {
+      var code = GODEL_SYMBOLS[tokens[i]];
+      if (code === undefined) return null;
+      var p = PRIMES[i];
+      if (!p) return null;
+      num *= Math.pow(p, code);
+    }
+    return tokens.length ? num : null;
+  }
+
+  function runGodelAnimation() {
+    var godelResult = document.getElementById('tnt-godel-result');
+    var godelCaption = document.getElementById('tnt-godel-caption');
+    var str = getFormula();
+    var tokens = tokenize(str);
+    if (!tokens.length) {
+      if (godelResult) godelResult.innerHTML = 'Build a formula first.';
+      if (godelCaption) godelCaption.textContent = '';
+      return;
+    }
+    var gn = godelNumber(tokens);
+    if (gn === null) {
+      if (godelResult) godelResult.innerHTML = 'Formula contains a symbol with no code.';
+      if (godelCaption) godelCaption.textContent = '';
+      return;
+    }
+    var codes = tokens.map(function (t) { return t + '\u2192' + GODEL_SYMBOLS[t]; }).join(', ');
+    godelResult.innerHTML = 'Symbol codes: ' + codes;
+    godelResult.classList.remove('godel-glow');
+    if (godelCaption) godelCaption.textContent = '';
+    setTimeout(function () {
+      var parts = [];
+      for (var j = 0; j < tokens.length; j++) {
+        parts.push(PRIMES[j] + '<sup>' + GODEL_SYMBOLS[tokens[j]] + '</sup>');
+      }
+      godelResult.innerHTML = parts.join(' \u00D7 ') + ' = <strong class="logic">' + gn.toLocaleString() + '</strong>';
+      godelResult.classList.add('godel-glow');
+      if (godelCaption) godelCaption.textContent = 'This formula is also a number. TNT can talk about this number. So TNT can talk about this formula.';
+    }, 400);
+    setTimeout(function () {
+      if (godelCaption) godelCaption.textContent = 'Every formula has a number. Every proof has a number. Arithmetic can therefore discuss proofs.';
+    }, 2200);
+  }
+
+  var TNT_AXIOMS = ['0+0=0', 'S0+0=S0', '0+S0=S0'];
+  var derivationLines = [];
+
+  function initDerivation() {
+    derivationLines = TNT_AXIOMS.map(function (ax, i) { return { label: 'Axiom ' + (i + 1), formula: ax }; });
+    renderDerivation();
+  }
+
+  function addSBothSides(formulaStr) {
+    var eqIdx = formulaStr.indexOf('=');
+    if (eqIdx === -1) return null;
+    var left = formulaStr.slice(0, eqIdx).trim();
+    var right = formulaStr.slice(eqIdx + 1).trim();
+    return 'S' + left + '=' + 'S' + right;
+  }
+
+  function deriveOne() {
+    if (derivationLines.length === 0) initDerivation();
+    var last = derivationLines[derivationLines.length - 1].formula;
+    var next = addSBothSides(last);
+    if (!next) return;
+    derivationLines.push({ label: 'Theorem ' + (derivationLines.length - 3 + 1), formula: next });
+    renderDerivation();
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function renderDerivation() {
+    var container = document.getElementById('tnt-derivation-chain');
+    if (!container) return;
+    if (derivationLines.length === 0) {
+      container.innerHTML = '<p class="tnt-hint" style="margin:0;">Axioms will appear here. Click Derive to add a line from the last one.</p>';
+      return;
+    }
+    container.innerHTML = derivationLines.map(function (line, i) {
+      var rule = i >= 3 ? ' (add S to both sides)' : '';
+      return '<div class="tnt-derivation-line"><span class="tnt-derivation-label">' + line.label + '</span><code class="logic">' + escapeHtml(line.formula) + '</code>' + rule + '</div>';
+    }).join('');
   }
 
   function parseAtom(tokens, idx) {
@@ -112,5 +203,12 @@
   if (clearBtn) clearBtn.addEventListener('click', function () { setFormula(''); });
   var interpBtn = document.getElementById('tnt-interpret');
   if (interpBtn) interpBtn.addEventListener('click', interpret);
+  var godelBtn = document.getElementById('tnt-godel-btn');
+  if (godelBtn) godelBtn.addEventListener('click', runGodelAnimation);
+
+  var deriveBtn = document.getElementById('tnt-derive-btn');
+  if (deriveBtn) deriveBtn.addEventListener('click', deriveOne);
+
   interpret();
+  initDerivation();
 })();

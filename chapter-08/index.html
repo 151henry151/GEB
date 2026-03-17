@@ -51,7 +51,7 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">TNT (Typographical Number Theory) encodes arithmetic as symbol-shapes. Build a term or equation below, then click Interpret to see the number fact.</p>
+      <p class="companion-caption">TNT (Typographical Number Theory) encodes arithmetic as symbol-shapes. Build a term or equation, interpret it, assign it a Gödel number, and see a short derivation chain.</p>
       <div class="companion-box" id="tnt-companion">
         <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
           <p style="margin:0 0 0.4rem 0;"><strong>How it works</strong></p>
@@ -74,9 +74,30 @@
         </div>
         <button type="button" class="btn btn-primary" id="tnt-interpret" style="margin-bottom:0.75rem;">Interpret</button>
         <div id="tnt-result" style="padding:0.5rem; background:var(--panel); border-radius:4px; font-size:0.95rem;"></div>
+
+        <h3 class="tnt-panel-heading">Gödel numbering</h3>
+        <p class="tnt-hint">Each symbol gets a number (0→1, S→2, +→3, ·→4, =→5, (→6, )→7). The formula's Gödel number is 2<sup>(1st)</sup>×3<sup>(2nd)</sup>×5<sup>(3rd)</sup>×… — one prime per position, exponent = symbol code.</p>
+        <button type="button" class="btn btn-primary" id="tnt-godel-btn" style="margin-bottom:0.5rem;">Assign Gödel number</button>
+        <div id="tnt-godel-result" class="tnt-godel-result" aria-live="polite"></div>
+        <p id="tnt-godel-caption" class="tnt-godel-caption" style="margin-top:0.5rem; font-size:0.88rem; color:var(--muted);"></p>
+
+        <h3 class="tnt-panel-heading">Derivation chain</h3>
+        <p class="tnt-hint">Axioms are starting formulas. Click <strong>Derive</strong> to apply a rule (e.g. add S to both sides of an equation) and append a new line.</p>
+        <div id="tnt-derivation-chain" class="tnt-derivation-chain"></div>
+        <button type="button" class="btn btn-secondary" id="tnt-derive-btn" style="margin-top:0.5rem;">Derive</button>
       </div>
     </div>
   </div>
+  <style>
+    .tnt-panel-heading { font-size:1rem; margin:1.25rem 0 0.35rem 0; color:var(--text); }
+    .tnt-hint { font-size:0.82rem; color:var(--muted); margin:0 0 0.5rem 0; }
+    .tnt-godel-result { padding:0.6rem; background:var(--bg); border-radius:4px; border:1px solid var(--border); font-size:0.9rem; min-height:2rem; }
+    .tnt-godel-result.godel-glow { border-color:var(--accent); box-shadow:0 0 12px rgba(181,135,59,0.35); }
+    .tnt-derivation-chain { padding:0.5rem; background:var(--panel); border-radius:4px; border:1px solid var(--border); font-size:0.88rem; }
+    .tnt-derivation-line { margin:0.25rem 0; padding:0.25rem 0; border-bottom:1px solid var(--border); }
+    .tnt-derivation-line:last-child { border-bottom:none; }
+    .tnt-derivation-label { font-weight:600; color:var(--muted); margin-right:0.5rem; }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>

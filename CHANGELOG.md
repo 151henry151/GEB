@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.13] — 2026-03-17
+
+### Changed
+
+- Chapter VIII (Typographical Number Theory): add Gödel numbering panel with symbol table (0→1, S→2, +→3, ·→4, =→5, (→6, )→7), "Assign Gödel number" button, animation showing symbol codes then prime-power product and result, and updating captions. Add derivation chain with three preset axioms (0+0=0, S0+0=S0, 0+S0=S0), "Derive" button that applies "add S to both sides" to append theorem lines, and chain display with labels. Update companion caption to mention Gödel number and derivation chain.
+
 ## [0.15.12] — 2026-03-17
 
 ### Fixed
