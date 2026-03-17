@@ -55,14 +55,52 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Same triangle in two worlds: flat (Euclidean) and curved. Use the slider to see how the triangle bends when the space curves.</p>
+      <p class="companion-caption" id="ch4-caption-part1">Classify each statement: provable, disprovable, or neither. See what happens to consistency and completeness.</p>
+      <div class="companion-box" id="cc-companion">
+        <style>
+          .cc-heading { font-size: 1rem; font-weight: 600; margin: 0 0 0.5rem 0; }
+          .cc-axioms { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+          .cc-tile { padding: 0.4rem 0.75rem; border-radius: 6px; font-family: ui-monospace, monospace; font-size: 0.95rem; font-weight: 500; }
+          .cc-statement { font-size: 1rem; margin-bottom: 0.75rem; padding: 0.5rem; background: var(--panel); border-radius: 6px; border: 1px solid var(--border); }
+          .cc-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+          .cc-buttons button { padding: 0.4rem 0.8rem; font-size: 0.9rem; border-radius: 6px; border: 1px solid var(--border); background: var(--panel); cursor: pointer; }
+          .cc-buttons button:hover { border-color: var(--accent); background: var(--border); }
+          .cc-feedback { min-height: 1.5rem; font-size: 0.9rem; margin-bottom: 0.5rem; }
+          .cc-badge { font-weight: 700; font-size: 1rem; padding: 0.5rem 0.75rem; border-radius: 6px; margin: 0.5rem 0; display: inline-block; }
+          .cc-badge.inconsistent { background: #8b3a3a; color: #fff; }
+          .cc-badge.incomplete { background: #b59a2d; color: #1a1a2e; }
+          .cc-closing { font-size: 0.9rem; color: var(--muted); font-style: italic; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+          .cc-scenario-tabs { display: flex; gap: 0.35rem; margin-bottom: 0.75rem; }
+          .cc-scenario-tabs button { padding: 0.35rem 0.6rem; font-size: 0.85rem; border-radius: 999px; border: 1px solid var(--border); background: var(--panel); cursor: pointer; }
+          .cc-scenario-tabs button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        </style>
+        <p class="cc-heading">Part 1: Consistency and Completeness</p>
+        <div class="cc-scenario-tabs" role="tablist" aria-label="Scenario">
+          <button type="button" role="tab" aria-selected="true" data-scenario="incomplete" class="active">Incomplete system</button>
+          <button type="button" role="tab" aria-selected="false" data-scenario="inconsistent">Inconsistent system</button>
+        </div>
+        <p style="font-size:0.85rem; color:var(--muted); margin-bottom:0.5rem;">Axioms (you have modus ponens: from A and A→B derive B):</p>
+        <div class="cc-axioms" id="cc-axioms"></div>
+        <p style="font-size:0.85rem; margin-bottom:0.25rem;">Statement:</p>
+        <div class="cc-statement" id="cc-statement"></div>
+        <div class="cc-buttons" id="cc-buttons">
+          <button type="button" data-choice="provable">PROVABLE</button>
+          <button type="button" data-choice="disprovable">DISPROVABLE</button>
+          <button type="button" data-choice="neither">NEITHER</button>
+        </div>
+        <div class="cc-feedback" id="cc-feedback"></div>
+        <div id="cc-badge-wrap"></div>
+        <p class="cc-closing" id="cc-closing" style="display:none;">For systems rich enough to describe arithmetic, you must choose: consistent or complete. You cannot have both.</p>
+      </div>
+      <p class="companion-caption" id="ch4-caption-part2">The same axioms. Two different worlds. Both consistent.</p>
       <div class="companion-box" id="geo-companion">
-        <p style="font-size:0.9rem; margin-bottom:0.5rem;"><strong>Curvature:</strong> <span id="geo-label">Flat</span></p>
+        <p class="cc-heading" style="margin-bottom:0.5rem;">Part 2: Same Axioms, Different Worlds</p>
+        <p style="font-size:0.9rem; margin-bottom:0.5rem;"><strong>Curvature:</strong> <span id="geo-label">Flat</span> &nbsp;|&nbsp; <strong>Angle sum:</strong> <span id="geo-angle-sum">180°</span></p>
         <input type="range" id="geo-slider" min="0" max="100" value="0" style="width:100%; margin-bottom:1rem;">
         <div id="geo-vis" style="min-height:140px; display:flex; align-items:center; justify-content:center; background:var(--bg); border-radius:6px;">
           <svg id="geo-svg" width="180" height="120" viewBox="0 0 180 120"></svg>
         </div>
-        <p style="font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">In curved space, straight lines (geodesics) bend; angles of a triangle don't add to 180.</p>
+        <p style="font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">In curved space, straight lines (geodesics) bend; angles of a triangle don't add to 180°.</p>
       </div>
     </div>
   </div>
@@ -71,14 +109,140 @@
   <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
+      // --- Part 1: Consistency/Completeness Machine ---
+      var scenarios = {
+        incomplete: {
+          axioms: [
+            { sym: 'P', color: '#2e6b8a' },
+            { sym: 'Q', color: '#3a7d44' },
+            { sym: 'P→R', color: '#b5873b' }
+          ],
+          statements: [
+            { text: 'P', answer: 'provable' },
+            { text: 'Q', answer: 'provable' },
+            { text: 'R', answer: 'provable' },
+            { text: '¬P', answer: 'disprovable' },
+            { text: 'S', answer: 'neither' }
+          ],
+          caption: 'Some truths live outside the reach of any proof.'
+        },
+        inconsistent: {
+          axioms: [
+            { sym: 'P', color: '#2e6b8a' },
+            { sym: '¬P', color: '#8b3a3a' },
+            { sym: 'Q', color: '#3a7d44' }
+          ],
+          statements: [
+            { text: 'P', answer: 'provable' },
+            { text: '¬P', answer: 'provable' }
+          ],
+          caption: 'A contradiction means everything becomes provable — the system collapses.'
+        }
+      };
+      var state = { scenario: 'incomplete', index: 0, done: false, badgeShown: false };
+      var axiomsEl = document.getElementById('cc-axioms');
+      var statementEl = document.getElementById('cc-statement');
+      var feedbackEl = document.getElementById('cc-feedback');
+      var badgeWrap = document.getElementById('cc-badge-wrap');
+      var closingEl = document.getElementById('cc-closing');
+      var captionPart1 = document.getElementById('ch4-caption-part1');
+
+      function renderAxioms(scenario) {
+        var ax = scenarios[scenario].axioms;
+        axiomsEl.innerHTML = ax.map(function (a) {
+          return '<span class="cc-tile" style="background:' + a.color + '; color:#fff;">' + a.sym + '</span>';
+        }).join('');
+      }
+
+      function showStatement() {
+        var sc = scenarios[state.scenario];
+        if (state.index >= sc.statements.length) {
+          statementEl.textContent = '—';
+          document.getElementById('cc-buttons').style.display = 'none';
+          return;
+        }
+        statementEl.textContent = sc.statements[state.index].text;
+        feedbackEl.textContent = '';
+      }
+
+      function showBadge(type) {
+        if (state.badgeShown) return;
+        state.badgeShown = true;
+        var label = type === 'inconsistent' ? 'INCONSISTENT' : 'INCOMPLETE';
+        var cls = type === 'inconsistent' ? 'inconsistent' : 'incomplete';
+        badgeWrap.innerHTML = '<span class="cc-badge ' + cls + '">' + label + '</span>';
+        closingEl.style.display = 'block';
+        var sc = scenarios[state.scenario];
+        if (sc.caption) captionPart1.textContent = sc.caption;
+      }
+
+      function onChoice(choice) {
+        if (state.done) return;
+        var sc = scenarios[state.scenario];
+        var st = sc.statements[state.index];
+        var correct = st.answer === choice;
+        feedbackEl.textContent = correct ? 'Correct.' : 'Not quite — the answer is ' + st.answer.toUpperCase() + '.';
+        feedbackEl.style.color = correct ? 'var(--true)' : 'var(--false)';
+        state.index++;
+        if (state.scenario === 'inconsistent' && state.index >= 2) showBadge('inconsistent');
+        if (state.scenario === 'incomplete' && st.answer === 'neither') showBadge('incomplete');
+        if (state.index < sc.statements.length) showStatement();
+        else {
+          statementEl.textContent = '—';
+          document.getElementById('cc-buttons').style.display = 'none';
+          if (state.scenario === 'incomplete' && !state.badgeShown) showBadge('incomplete');
+        }
+      }
+
+      function reset(scenario) {
+        state.scenario = scenario;
+        state.index = 0;
+        state.done = false;
+        state.badgeShown = false;
+        renderAxioms(scenario);
+        showStatement();
+        feedbackEl.textContent = '';
+        feedbackEl.style.color = '';
+        badgeWrap.innerHTML = '';
+        closingEl.style.display = 'none';
+        captionPart1.textContent = 'Classify each statement: provable, disprovable, or neither. See what happens to consistency and completeness.';
+        document.getElementById('cc-buttons').style.display = 'flex';
+      }
+
+      document.querySelectorAll('.cc-scenario-tabs button').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var sc = btn.getAttribute('data-scenario');
+          document.querySelectorAll('.cc-scenario-tabs button').forEach(function (b) {
+            b.classList.toggle('active', b.getAttribute('data-scenario') === sc);
+            b.setAttribute('aria-selected', b.getAttribute('data-scenario') === sc);
+          });
+          reset(sc);
+        });
+      });
+      document.getElementById('cc-buttons').addEventListener('click', function (e) {
+        var choice = e.target.getAttribute('data-choice');
+        if (choice) onChoice(choice);
+      });
+      renderAxioms('incomplete');
+      showStatement();
+
+      // --- Part 2: Geometry with live angle sum ---
       var slider = document.getElementById('geo-slider');
       var label = document.getElementById('geo-label');
+      var angleSumEl = document.getElementById('geo-angle-sum');
       var svg = document.getElementById('geo-svg');
+      function angleSumForK(k) {
+        if (k < 50) return 180;
+        var t = (k - 50) / 50;
+        return Math.round(180 + t * 90);
+      }
       function draw(k) {
         if (!svg) return;
         var flat = k < 50;
         var curvature = (k - 50) / 50;
         label.textContent = flat ? 'Flat (Euclidean)' : 'Curved (sphere-like)';
+        var angleSum = angleSumForK(k);
+        if (angleSumEl) angleSumEl.textContent = angleSum + '°';
         var pts;
         if (flat) {
           pts = [{x:40,y:90},{x:140,y:90},{x:90,y:20}];

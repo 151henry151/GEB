@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.9] — 2026-03-16
+
+### Changed
+
+- Chapter IV (Consistency, Completeness, and Geometry): add Part 1 Consistency/Completeness Machine with two scenarios (incomplete system: axioms P, Q, P→R and statements P, Q, R, ¬P, S; inconsistent system: P, ¬P, Q and statements P, ¬P). Show axioms as colored tiles; present statements one at a time with PROVABLE / DISPROVABLE / NEITHER buttons; show INCOMPLETE (yellow) or INCONSISTENT (red) badge and contextual caption; add closing line on arithmetic. Reframe geometry as Part 2: Same Axioms, Different Worlds; add live angle-sum readout to slider; add three contextual captions per spec.
+
 ## [0.15.8] — 2026-03-16
 
 ### Changed
