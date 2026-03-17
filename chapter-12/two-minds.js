@@ -140,7 +140,7 @@
       var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       text.setAttribute('x', POS[j].x); text.setAttribute('y', POS[j].y + 4);
       text.setAttribute('text-anchor', 'middle'); text.setAttribute('font-size', '14');
-      text.setAttribute('fill', act > 0 ? '#1a1a2e' : '#c0beb8');
+      text.setAttribute('fill', act > 0 ? '#1a1a2e' : '#f0eee9');
       text.textContent = LABELS[j]; g.appendChild(text);
       svg.appendChild(g);
     }
