@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.10] — 2026-03-16
+
+### Changed
+
+- Chapter V (Recursive Structures and Processes): add three-panel companion with unifying caption. Recursive tree: single Grow click animates through all levels (1.5 s between levels), max depth 10, larger canvas (320×280) and scaled geometry for visibility; re-enable Grow when slider is moved below max after full grow. Recursion in language: clause-by-clause nesting with highlighted relative clauses, Add Nesting button switches to Reset at max nesting (Reset restarts from first sentence). Trace the call stack: factorial(4) Step/Reset with explainer text describing push/unwind; green styling for returned frames.
+
 ## [0.15.9] — 2026-03-16
 
 ### Changed

@@ -54,46 +54,236 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Grow a recursive tree. Each branch splits into two smaller branches; the same rule repeats at every level. Change the depth to see how recursion builds complexity.</p>
-      <div class="companion-box" id="tree-companion">
-        <label style="font-size:0.9rem;">Depth: <span id="tree-depth-val">3</span></label>
-        <input type="range" id="tree-depth" min="1" max="6" value="3" style="width:100%; margin:0.5rem 0 1rem 0;">
-        <div style="display:flex; justify-content:center;">
-          <canvas id="tree-canvas" width="220" height="160" style="border:1px solid var(--border); border-radius:6px;"></canvas>
+      <p class="companion-caption">One rule, applied to itself. Finite instructions, infinite reach.</p>
+      <div class="companion-box ch5-panel">
+        <p class="ch5-panel-title">Recursive tree</p>
+        <p class="ch5-panel-desc">Click Grow once; the tree grows through all levels.</p>
+        <div class="ch5-tree-controls">
+          <span class="ch5-depth-label">Depth: <span id="tree-depth-val">0</span></span>
+          <button type="button" id="tree-grow-btn" class="btn btn-primary">Grow</button>
+          <input type="range" id="tree-depth" min="0" max="10" value="0" class="ch5-slider" aria-label="Tree depth">
+        </div>
+        <div class="ch5-tree-wrap">
+          <canvas id="tree-canvas" width="320" height="280"></canvas>
+        </div>
+      </div>
+      <div class="companion-box ch5-panel">
+        <p class="ch5-panel-title">Recursion in language</p>
+        <p class="ch5-panel-desc">Each click adds one relative clause (highlighted). The clause can contain a clause → recursion. (The book also uses “The House that Jack Built,” where each line repeats the full previous phrase.)</p>
+        <div id="ch5-sentence" class="ch5-sentence"></div>
+        <button type="button" id="ch5-nest-btn" class="btn btn-secondary">Add Nesting</button>
+        <p id="ch5-grammar-msg" class="ch5-grammar-msg" style="display:none;">Finite grammar, infinite sentences.</p>
+      </div>
+      <div class="companion-box ch5-panel">
+        <p class="ch5-panel-title">Trace the call stack</p>
+        <p class="ch5-panel-desc">factorial(4) = 4 × factorial(3), and factorial(3) = 3 × factorial(2), and so on. So the program keeps calling itself with a smaller number until it hits factorial(1) = 1. Each call pushes a new frame onto the stack (bottom of the list). When a call returns, its frame pops off and the return value is passed back. Use Step to watch the stack grow, then unwind.</p>
+        <div id="ch5-stack-vis" class="ch5-stack-vis"></div>
+        <div class="ch5-stack-buttons">
+          <button type="button" id="ch5-stack-step-btn" class="btn btn-secondary">Step</button>
+          <button type="button" id="ch5-stack-reset-btn" class="btn btn-secondary">Reset</button>
         </div>
       </div>
     </div>
   </div>
+  <style>
+    .ch5-panel { margin-bottom: 1.25rem; }
+    .ch5-panel-title { font-size: 1rem; font-weight: 600; margin: 0 0 0.25rem 0; }
+    .ch5-panel-desc { font-size: 0.85rem; color: var(--muted); margin: 0 0 0.75rem 0; }
+    .ch5-tree-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .ch5-depth-label { font-size: 0.9rem; }
+    .ch5-slider { flex: 1; min-width: 80px; }
+    .ch5-tree-wrap { display: flex; justify-content: center; }
+    .ch5-tree-wrap canvas { border: 1px solid var(--border); border-radius: 6px; display: block; }
+    .ch5-sentence { font-size: 0.95rem; line-height: 1.5; padding: 0.6rem; background: var(--panel); border-radius: 6px; border: 1px solid var(--border); margin-bottom: 0.75rem; min-height: 2.5rem; }
+    .ch5-sentence .nest { background: rgba(46, 107, 138, 0.2); padding: 0.1em 0.2em; border-radius: 3px; }
+    .ch5-grammar-msg { font-size: 0.9rem; font-style: italic; color: var(--accent-secondary); margin-top: 0.5rem; }
+    .ch5-stack-vis { min-height: 120px; padding: 0.5rem; background: var(--panel); border-radius: 6px; border: 1px solid var(--border); margin-bottom: 0.75rem; display: flex; flex-direction: column-reverse; gap: 0.25rem; align-items: flex-start; }
+    .ch5-stack-card { font-family: ui-monospace, monospace; font-size: 0.85rem; padding: 0.35rem 0.6rem; background: #fff; border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+    .ch5-stack-card.unwinding { border-color: var(--true); color: var(--true); }
+    .ch5-stack-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
+      // --- Recursive tree: animate segments one level at a time, Grow button (max depth 10) ---
       var depthSlider = document.getElementById('tree-depth');
       var depthVal = document.getElementById('tree-depth-val');
+      var growBtn = document.getElementById('tree-grow-btn');
       var canvas = document.getElementById('tree-canvas');
-      function drawTree(ctx, x, y, angle, len, d) {
-        if (d <= 0 || len < 2) return;
+      var treeMaxDepth = 10;
+      var treeOriginX = 160;
+      var treeOriginY = 255;
+      var treeLen = 52;
+      var segments = [];
+      function collectSegments(x, y, angle, len, d, out) {
+        if (d <= 0 || len < 1.5) return;
         var x2 = x + len * Math.cos(angle);
         var y2 = y - len * Math.sin(angle);
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x2, y2);
-        ctx.strokeStyle = '#2e6b8a';
-        ctx.lineWidth = Math.max(1, d);
-        ctx.stroke();
-        drawTree(ctx, x2, y2, angle - 0.5, len * 0.7, d - 1);
-        drawTree(ctx, x2, y2, angle + 0.5, len * 0.7, d - 1);
+        out.push({ x: x, y: y, x2: x2, y2: y2, w: Math.max(0.8, d * 0.4) });
+        collectSegments(x2, y2, angle - 0.5, len * 0.7, d - 1, out);
+        collectSegments(x2, y2, angle + 0.5, len * 0.7, d - 1, out);
       }
-      function redraw() {
+      function drawSegmentsUpTo(ctx, count) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#2e6b8a';
+        for (var i = 0; i < count && i < segments.length; i++) {
+          var s = segments[i];
+          ctx.beginPath();
+          ctx.moveTo(s.x, s.y);
+          ctx.lineTo(s.x2, s.y2);
+          ctx.lineWidth = s.w;
+          ctx.stroke();
+        }
+      }
+      function updateTreeUI() {
         var d = parseInt(depthSlider.value, 10);
         depthVal.textContent = d;
+        segments = [];
+        collectSegments(treeOriginX, treeOriginY, Math.PI / 2, treeLen, d, segments);
         var ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawTree(ctx, 110, 150, Math.PI / 2, 45, d);
+        drawSegmentsUpTo(ctx, segments.length);
       }
-      depthSlider.addEventListener('input', redraw);
-      redraw();
+      var isAnimating = false;
+      function animateGrow() {
+        if (isAnimating) return;
+        var currentDepth = parseInt(depthSlider.value, 10);
+        if (currentDepth >= treeMaxDepth) return;
+        isAnimating = true;
+        growBtn.disabled = true;
+        function doNextLevel() {
+          currentDepth++;
+          depthSlider.value = currentDepth;
+          depthVal.textContent = currentDepth;
+          segments = [];
+          collectSegments(treeOriginX, treeOriginY, Math.PI / 2, treeLen, currentDepth, segments);
+          var ctx = canvas.getContext('2d');
+          var prevCount = [];
+          collectSegments(treeOriginX, treeOriginY, Math.PI / 2, treeLen, currentDepth - 1, prevCount);
+          var drawn = prevCount.length;
+          function step() {
+            if (drawn >= segments.length) {
+              if (currentDepth >= treeMaxDepth) {
+                isAnimating = false;
+                growBtn.disabled = true;
+                return;
+              }
+              setTimeout(doNextLevel, 1500);
+              return;
+            }
+            var batch = Math.min(2, segments.length - drawn);
+            drawn += batch;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawSegmentsUpTo(ctx, drawn);
+            setTimeout(step, 60);
+          }
+          step();
+        }
+        doNextLevel();
+      }
+      growBtn.addEventListener('click', animateGrow);
+      depthSlider.addEventListener('input', function () {
+        if (!isAnimating) {
+          updateTreeUI();
+          growBtn.disabled = parseInt(depthSlider.value, 10) >= treeMaxDepth;
+        }
+      });
+      updateTreeUI();
+      growBtn.disabled = parseInt(depthSlider.value, 10) >= treeMaxDepth;
+
+      // --- Recursion in language: each level adds one relative clause (spec pattern) ---
+      var sentenceEl = document.getElementById('ch5-sentence');
+      var nestBtn = document.getElementById('ch5-nest-btn');
+      var grammarMsg = document.getElementById('ch5-grammar-msg');
+      var nestLevel = 0;
+      var sentences = [
+        'The cat chased the mouse.',
+        'The dog that [the cat chased] bit the mouse.',
+        'The fish that [the dog that the cat chased bit] swam away.',
+        'The bird that [the fish that the dog that the cat chased bit swam away] saw the worm.',
+        'The worm that [the bird that the fish that the dog that the cat chased bit swam away saw] wriggled.'
+      ];
+      function renderSentence() {
+        if (nestLevel >= sentences.length) {
+          sentenceEl.innerHTML = sentences[sentences.length - 1].replace(/\[([^\]]+)\]/g, '<span class="nest">$1</span>');
+          nestBtn.textContent = 'Reset';
+          nestBtn.dataset.mode = 'reset';
+          grammarMsg.style.display = 'block';
+          return;
+        }
+        sentenceEl.innerHTML = sentences[nestLevel].replace(/\[([^\]]+)\]/g, '<span class="nest">$1</span>');
+        nestBtn.textContent = 'Add Nesting';
+        nestBtn.dataset.mode = 'nest';
+        nestBtn.disabled = false;
+        if (nestLevel >= 4) grammarMsg.style.display = 'block';
+        else grammarMsg.style.display = 'none';
+      }
+      nestBtn.addEventListener('click', function () {
+        if (nestBtn.dataset.mode === 'reset') {
+          nestLevel = 0;
+          grammarMsg.style.display = 'none';
+        } else {
+          nestLevel++;
+        }
+        renderSentence();
+      });
+      renderSentence();
+
+      // --- Trace the call stack: factorial(4) ---
+      var stackVis = document.getElementById('ch5-stack-vis');
+      var stackStepBtn = document.getElementById('ch5-stack-step-btn');
+      var traceSteps = [
+        { op: 'push', n: 4 },
+        { op: 'push', n: 3 },
+        { op: 'push', n: 2 },
+        { op: 'push', n: 1 },
+        { op: 'pop', n: 1, val: 1 },
+        { op: 'pop', n: 2, val: 2 },
+        { op: 'pop', n: 3, val: 6 },
+        { op: 'pop', n: 4, val: 24 }
+      ];
+      var stepIndex = -1;
+      function renderStack() {
+        stackVis.innerHTML = '';
+        var stack = [];
+        var returned = [];
+        for (var i = 0; i <= stepIndex; i++) {
+          var t = traceSteps[i];
+          if (t.op === 'push') stack.push(t.n);
+          if (t.op === 'pop') {
+            stack.pop();
+            returned.push({ n: t.n, val: t.val });
+          }
+        }
+        stack.forEach(function (n) {
+          var card = document.createElement('div');
+          card.className = 'ch5-stack-card';
+          card.textContent = 'factorial(' + n + ') → ...';
+          stackVis.appendChild(card);
+        });
+        returned.forEach(function (r) {
+          var card = document.createElement('div');
+          card.className = 'ch5-stack-card unwinding';
+          card.textContent = 'factorial(' + r.n + ') = ' + r.val;
+          stackVis.appendChild(card);
+        });
+      }
+      function advanceStack() {
+        stepIndex = Math.min(stepIndex + 1, traceSteps.length - 1);
+        renderStack();
+        stackStepBtn.disabled = stepIndex >= traceSteps.length - 1;
+        stackStepBtn.textContent = stepIndex >= traceSteps.length - 1 ? 'Done' : 'Step';
+      }
+      function resetStack() {
+        stepIndex = -1;
+        renderStack();
+        stackStepBtn.disabled = false;
+        stackStepBtn.textContent = 'Step';
+      }
+      stackStepBtn.addEventListener('click', advanceStack);
+      document.getElementById('ch5-stack-reset-btn').addEventListener('click', resetStack);
+      renderStack();
     })();
   </script>
 </body>
