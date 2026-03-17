@@ -4,6 +4,14 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.14] — 2026-03-18
+
+### Changed
+
+- Chapter VIII (Typographical Number Theory): retitle Gödel section to "Every Formula Is Also a Number"; add "Why primes?" callout (Fundamental Theorem of Arithmetic, unique reversible encoding); highlight prime bases in the Gödel product and show "Primes by position" line; add "Why this creates self-reference" block and closing footer after animation; extend derivation encoding for ∀, a, b, : on axiom lines.
+
+- Chapter VIII (Typographical Number Theory): replace derivation chain with axiom selector (four preset axioms with meanings and Gödel numbers), rule palette (Specification, Successor, Symmetry, Transitivity, Add S to both sides) with applicability highlighting and tooltips, scrollable chain with justification tags, numeric interpretations, Gödel badges, line selection for Transitivity, Reset, "You just proved" summary, three "Watch" preset derivations (1+0=1, 1+1=2, 2=2), and capstone text after three lines linking proofs to Gödel-numbered sequences.
+
 ## [0.15.13] — 2026-03-17
 
 ### Changed
