@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.8] — 2026-03-16
+
+### Changed
+
+- Chapter III (Figure and Ground): remove figure/ground toggle buttons; add discover-by-click (left/center/right highlights face/vase/face with label). Add Part 2: formal-systems widget with Figure (theorems) list that auto-fills, Ground column as ???, and "Can we list the ground?" button with typing animation. Update caption for discovery. Keep existing SVG and light color scheme.
+
 ## [0.15.7] — 2026-03-16
 
 ### Changed
