@@ -55,12 +55,57 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Enter a pq-string (e.g. <code>--p---q-----</code>). The checker tests whether it has the form of a theorem; the interpreter shows the addition fact it encodes.</p>
+      <p class="companion-caption">Build a pq-string with the controls. Then click <strong>Interpret</strong> to see whether or not it is a valid theorem — meaning snaps into focus.</p>
       <div class="companion-box" id="pq-companion">
-        <label for="pq-input" style="display:block; margin-bottom:0.35rem; font-weight:600;">pq-string</label>
-        <input type="text" id="pq-input" class="logic" value="--p---q-----" style="width:100%; padding:0.5rem; border:1px solid var(--border); border-radius:6px; font-family:inherit;" placeholder="e.g. --p---q-----">
-        <button type="button" class="btn btn-primary" id="pq-check" style="margin-top:0.5rem;">Check theorem</button>
-        <div id="pq-result" style="margin-top:1rem; min-height:2.5rem;"></div>
+        <style>
+          .pq-two-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+          @media (max-width: 420px) { .pq-two-panel { grid-template-columns: 1fr; } }
+          .pq-panel { padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; background: var(--panel, #f8f8f8); }
+          .pq-form-panel { min-height: 6rem; }
+          .pq-meaning-panel { min-height: 5rem; transition: filter 0.35s ease, opacity 0.35s ease; }
+          .pq-meaning-panel.pq-blurred { filter: blur(6px); opacity: 0.6; pointer-events: none; user-select: none; }
+          .pq-label { margin: 0 0 0.5rem 0; font-weight: 600; font-size: 0.9rem; }
+          .pq-builder { display: flex; flex-direction: column; gap: 0.5rem; }
+          .pq-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+          .pq-row .pq-count { min-width: 1.5rem; font-variant-numeric: tabular-nums; }
+          .pq-string-display { margin-top: 0.75rem; font-family: ui-monospace, monospace; font-size: 1rem; letter-spacing: 0.05em; word-break: break-all; color: var(--text); }
+          .pq-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        </style>
+        <div class="pq-two-panel">
+          <div class="pq-panel pq-form-panel">
+            <p class="pq-label">Form (shapes only)</p>
+            <div class="pq-builder">
+              <div class="pq-row">
+                <span>Before <em>p</em></span>
+                <button type="button" class="btn btn-secondary" id="pq-before-minus" aria-label="Remove hyphen">−</button>
+                <span class="pq-count" id="pq-before-count">2</span>
+                <button type="button" class="btn btn-secondary" id="pq-before-plus" aria-label="Add hyphen">+</button>
+              </div>
+              <div class="pq-row">
+                <span>Between <em>p</em> and <em>q</em></span>
+                <button type="button" class="btn btn-secondary" id="pq-between-minus" aria-label="Remove hyphen">−</button>
+                <span class="pq-count" id="pq-between-count">3</span>
+                <button type="button" class="btn btn-secondary" id="pq-between-plus" aria-label="Add hyphen">+</button>
+              </div>
+              <div class="pq-row">
+                <span>After <em>q</em></span>
+                <button type="button" class="btn btn-secondary" id="pq-after-minus" aria-label="Remove hyphen">−</button>
+                <span class="pq-count" id="pq-after-count">5</span>
+                <button type="button" class="btn btn-secondary" id="pq-after-plus" aria-label="Add hyphen">+</button>
+              </div>
+            </div>
+            <div class="pq-string-display" id="pq-string-display" aria-live="polite">--p---q-----</div>
+          </div>
+          <div class="pq-panel pq-meaning-panel pq-blurred" id="pq-meaning-panel">
+            <p class="pq-label">Meaning</p>
+            <div id="pq-interpretation" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="pq-actions">
+          <button type="button" class="btn btn-primary" id="pq-interpret-btn">Interpret</button>
+          <button type="button" class="btn btn-secondary" id="pq-explain-btn" style="display:none;">Explain</button>
+          <button type="button" class="btn btn-secondary" id="pq-random-btn">Random theorem</button>
+        </div>
       </div>
     </div>
   </div>
@@ -69,42 +114,88 @@
   <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
-      var input = document.getElementById('pq-input');
-      var result = document.getElementById('pq-result');
-      var checkBtn = document.getElementById('pq-check');
-      function parse(s) {
-        s = (s || '').trim();
-        var a = s.indexOf('p');
-        var b = s.indexOf('q');
-        if (a === -1 || b === -1 || b <= a) return null;
-        var beforeP = s.slice(0, a);
-        var between = s.slice(a + 1, b);
-        var afterQ = s.slice(b + 1);
-        if (/^-*$/.test(beforeP) && /^-*$/.test(between) && /^-*$/.test(afterQ)) {
-          return { m: beforeP.length, n: between.length, sum: afterQ.length };
-        }
-        return null;
+      var beforeCount = 2, betweenCount = 3, afterCount = 5;
+      var maxDashes = 20;
+      var interpretCount = 0;
+      var explainedForCurrent = false;
+      var beforeCountEl = document.getElementById('pq-before-count');
+      var betweenCountEl = document.getElementById('pq-between-count');
+      var afterCountEl = document.getElementById('pq-after-count');
+      var stringDisplay = document.getElementById('pq-string-display');
+      var meaningPanel = document.getElementById('pq-meaning-panel');
+      var interpretationEl = document.getElementById('pq-interpretation');
+      var explainBtn = document.getElementById('pq-explain-btn');
+
+      function getState() { return { m: beforeCount, n: betweenCount, sum: afterCount }; }
+      function isTheorem(m, n, sum) { return m >= 0 && n >= 0 && sum === m + n; }
+      function getCurrentString() {
+        return ''.padEnd(beforeCount, '-') + 'p' + ''.padEnd(betweenCount, '-') + 'q' + ''.padEnd(afterCount, '-');
       }
-      function isTheorem(m, n, sum) {
-        if (m < 1 || n < 1) return false;
-        return sum === m + n;
+      function renderString() {
+        var s = getCurrentString();
+        if (stringDisplay) stringDisplay.textContent = s;
       }
-      function check() {
-        var s = (input && input.value) || '';
-        var p = parse(s);
-        if (!p) {
-          result.innerHTML = '<p style="color:var(--false);">Not a valid pq-string (only hyphens, one p, one q).</p>';
-          return;
-        }
-        var th = isTheorem(p.m, p.n, p.sum);
+      function updateCounts() {
+        if (beforeCountEl) beforeCountEl.textContent = beforeCount;
+        if (betweenCountEl) betweenCountEl.textContent = betweenCount;
+        if (afterCountEl) afterCountEl.textContent = afterCount;
+        renderString();
+      }
+      function blurMeaning() {
+        if (meaningPanel) meaningPanel.classList.add('pq-blurred');
+        if (interpretationEl) interpretationEl.innerHTML = '';
+        explainedForCurrent = false;
+      }
+      function interpret() {
+        if (!meaningPanel || !interpretationEl) return;
+        meaningPanel.classList.remove('pq-blurred');
+        explainedForCurrent = false;
+        var s = getCurrentString();
+        var m = beforeCount, n = betweenCount, sum = afterCount;
+        var th = isTheorem(m, n, sum);
         if (th) {
-          result.innerHTML = '<p class="truth-true">Yes — it has the form of a theorem.</p><p><strong>Interpretation:</strong> ' + p.m + ' + ' + p.n + ' = ' + p.sum + '</p>';
+          interpretationEl.innerHTML = '<p style="margin:0;"><code>' + escapeHtml(s) + '</code> is a theorem.</p>';
         } else {
-          result.innerHTML = '<p class="truth-false">No — the hyphen counts don\'t match addition (need ' + p.m + ' + ' + p.n + ' = ' + (p.m + p.n) + ').</p><p><strong>Interpretation:</strong> ' + p.m + ' + ' + p.n + ' = ' + p.sum + '</p>';
+          interpretationEl.innerHTML = '<p style="margin:0;"><code>' + escapeHtml(s) + '</code> is not a theorem.</p>';
         }
+        interpretCount++;
+        if (interpretCount >= 5 && explainBtn) explainBtn.style.display = '';
       }
-      if (checkBtn) checkBtn.addEventListener('click', check);
-      if (input) input.addEventListener('keydown', function (e) { if (e.key === 'Enter') check(); });
+      function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+      function explain() {
+        if (!interpretationEl) return;
+        if (explainedForCurrent) return;
+        explainedForCurrent = true;
+        var m = beforeCount, n = betweenCount, sum = afterCount;
+        var extra = '<p style="margin:0.5rem 0 0 0;">It means: ' + m + ' + ' + n + ' = ' + sum + '.</p>';
+        interpretationEl.innerHTML = interpretationEl.innerHTML + extra;
+      }
+      function randomTheorem() {
+        var m = Math.floor(Math.random() * 9) + 1;
+        var n = Math.floor(Math.random() * 9) + 1;
+        beforeCount = m;
+        betweenCount = n;
+        afterCount = m + n;
+        updateCounts();
+        blurMeaning();
+      }
+
+      updateCounts();
+      blurMeaning();
+
+      document.getElementById('pq-before-plus').addEventListener('click', function () { if (beforeCount < maxDashes) { beforeCount++; updateCounts(); blurMeaning(); } });
+      document.getElementById('pq-before-minus').addEventListener('click', function () { if (beforeCount > 0) { beforeCount--; updateCounts(); blurMeaning(); } });
+      document.getElementById('pq-between-plus').addEventListener('click', function () { if (betweenCount < maxDashes) { betweenCount++; updateCounts(); blurMeaning(); } });
+      document.getElementById('pq-between-minus').addEventListener('click', function () { if (betweenCount > 0) { betweenCount--; updateCounts(); blurMeaning(); } });
+      document.getElementById('pq-after-plus').addEventListener('click', function () { if (afterCount < maxDashes) { afterCount++; updateCounts(); blurMeaning(); } });
+      document.getElementById('pq-after-minus').addEventListener('click', function () { if (afterCount > 0) { afterCount--; updateCounts(); blurMeaning(); } });
+      document.getElementById('pq-interpret-btn').addEventListener('click', interpret);
+      document.getElementById('pq-explain-btn').addEventListener('click', explain);
+      document.getElementById('pq-random-btn').addEventListener('click', randomTheorem);
     })();
   </script>
 </body>

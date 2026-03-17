@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.6] — 2026-03-16
+
+### Changed
+
+- Chapter II (Meaning and Form): replace pq-string text input with visual builder (three rows: hyphens before p, between p and q, after q; +/- buttons). Add two-panel layout (form vs meaning); meaning panel starts blurred, Interpret reveals theorem/not only (no arithmetic). After five Interpret clicks, show Explain button to reveal addition fact. Add Random theorem button. Update caption to avoid revealing addition before Explain.
+
 ## [0.15.5] — 2026-03-16
 
 ### Changed
