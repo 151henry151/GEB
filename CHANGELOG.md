@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.5] — 2026-03-16
+
+### Changed
+
+- Introduction companion: add Bach tab with self-hosted first-track audio and inline player; add Escher tab with self-hosted Ascending and Descending image and staircase text; add Gödel tab with KaTeX-rendered equation. Override intro companion box min-height and hide empty result area so box fits the three buttons when idle. Add cdn.jsdelivr.net to CSP font-src for KaTeX.
+
 ## [0.15.4] — 2026-03-16
 
 ### Changed

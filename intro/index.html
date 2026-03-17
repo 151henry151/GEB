@@ -8,6 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <style>
+    .companion-box#intro-companion { min-height: 0 !important; }
+    #intro-result:empty { display: none; }
+  </style>
 </head>
 <body>
   <div class="chapter-layout">
@@ -62,13 +67,14 @@
           <button type="button" class="btn btn-secondary" data-pick="escher">Escher</button>
           <button type="button" class="btn btn-secondary" data-pick="godel">Gödel</button>
         </div>
-        <div id="intro-result" style="margin-top:1rem; min-height:4rem;"></div>
+        <div id="intro-result" style="margin-top:1rem; min-height:0;"></div>
       </div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
   <script>
     (function () {
       var result = document.getElementById('intro-result');
@@ -77,15 +83,18 @@
       var content = {
         bach: {
           title: 'Bach: Canon per Tonos',
-          text: 'In the Musical Offering, one canon has three voices. The melody seems to rise by steps through the keys—but after six “steps up” it has returned to the same key it started in. So the music goes “up” and yet loops back. That’s a strange loop in sound.'
+          text: 'In the Musical Offering, one canon has three voices. The melody seems to rise by steps through the keys—but after six “steps up” it has returned to the same key it started in. So the music goes “up” and yet loops back. That’s a strange loop in sound.',
+          extra: '<p style="margin-top:0.75rem;">First track (Ricercare A 3, Canon Perpetuus, Canon per Tonos, etc., Stuttgarter Kammerorchester / Karl Münchinger):</p><audio src="01.01_Ricercare_A_3_-_Canon_Perpetuus_-_Canon_A_2_Violini_In_Unisono_-_Canon_A_2_Per_Motum_Contrarium_-_Canon_A_2_Per_Augmentationem_Contrario_Motu_-_Canon_A_2_Per_Tonos_-_Canon_A_2_-_Canon_A_2_Quaerendo_Inventietis_With_Inversion_-_Canon_etc.mp3" controls preload="metadata" style="width:100%; max-width:400px; margin-top:0.25rem;"></audio>'
         },
         escher: {
-          title: 'Escher: Drawing Hands',
-          text: 'Two hands, each drawing the other. The left hand draws the right, and the right draws the left. There’s no “first” hand; each depends on the other. So the picture loops: A draws B, and B draws A.'
+          title: 'Escher: Ascending and Descending',
+          text: 'A lithograph from 1960. Two lines of figures—one ascending, one descending—walk an endless staircase. Despite going “up” or “down,” they never leave the same level. The same paradox as Bach\'s rising melody: the path loops back.',
+          extra: '<figure style="margin:0.75rem 0 0 0;"><img src="Ascending_and_Descending.jpg" alt="Ascending and Descending by M.C. Escher" style="max-width:100%; height:auto; border-radius:4px; border:1px solid var(--border, #ccc);" loading="lazy"><figcaption style="font-size:0.8rem; color:var(--muted, #666); margin-top:0.25rem;">M.C. Escher, 1960.</figcaption></figure>'
         },
         godel: {
           title: 'Gödel: “I am not provable”',
-          text: 'Gödel built a sentence that (when interpreted) says: “I am not a theorem of this system.” If the system could prove it, the system would be inconsistent. So if the system is consistent, it can’t prove that sentence—which means the sentence is true. So something is true but not provable: a loop between truth and proof.'
+          text: 'Gödel built a sentence that (when interpreted) says: “I am not a theorem of this system.” If the system could prove it, the system would be inconsistent. So if the system is consistent, it can\'t prove that sentence—which means the sentence is true. So something is true but not provable: a loop between truth and proof.',
+          extra: '<div id="godel-katex" style="margin-top:0.75rem;"></div>'
         }
       };
       choices.querySelectorAll('[data-pick]').forEach(function (btn) {
@@ -95,7 +104,17 @@
           if (!c) return;
           choices.querySelectorAll('.btn').forEach(function (b) { b.classList.remove('btn-primary'); b.classList.add('btn-secondary'); });
           btn.classList.remove('btn-secondary'); btn.classList.add('btn-primary');
-          result.innerHTML = '<h3 class="font-heading" style="margin-top:0;">' + c.title + '</h3><p>' + c.text + '</p>';
+          var html = '<h3 class="font-heading" style="margin-top:0;">' + c.title + '</h3><p>' + c.text + '</p>';
+          if (c.extra) html += c.extra;
+          result.innerHTML = html;
+          if (key === 'godel' && window.katex) {
+            var el = document.getElementById('godel-katex');
+            if (el) {
+              try {
+                katex.render('G \\leftrightarrow \\lnot \\mathrm{Prov}(\\ulcorner G \\urcorner)', el, { displayMode: true, throwOnError: false });
+              } catch (err) {}
+            }
+          }
         });
       });
     })();
