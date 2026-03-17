@@ -80,8 +80,59 @@
         <p id="out-label" style="font-size:0.9rem; color:var(--muted); margin-top:0.25rem;">Interpretation</p>
         <pre id="out" class="logic" style="margin-top:0.25rem; padding:0.5rem; background:var(--panel); border-radius:4px; overflow-x:auto; min-height:2rem;"></pre>
       </div>
+      <p class="companion-caption" id="ch6-gift-caption">Marks without a decoder are just shapes.</p>
+      <div class="companion-box ch6-gift" id="decoders-gift">
+        <p class="ch6-gift-title">The Decoder's Gift</p>
+        <p class="ch6-gift-question">What does this mean?</p>
+        <div class="ch6-message-panel" id="ch6-marks-wrap">
+          <svg id="ch6-marks" class="ch6-marks-svg" viewBox="0 0 240 36" width="240" height="36" aria-label="Abstract marks: shapes"></svg>
+        </div>
+        <div class="ch6-sequence-buttons">
+          <button type="button" class="btn btn-secondary" id="ch6-scramble-btn">Scramble order</button>
+          <button type="button" class="btn btn-secondary" id="ch6-reset-order-btn">Reset order</button>
+        </div>
+        <p class="ch6-gift-sub">Choose your decoder</p>
+        <div class="ch6-decoder-buttons" id="ch6-decoder-btns">
+          <button type="button" class="btn btn-secondary ch6-decoder-btn" data-decoder="number">Decoder A (number)</button>
+          <button type="button" class="btn btn-secondary ch6-decoder-btn" data-decoder="melody">Decoder B (melody)</button>
+          <button type="button" class="btn btn-secondary ch6-decoder-btn" data-decoder="path">Decoder C (path)</button>
+        </div>
+        <div class="ch6-result-area" id="ch6-result-area">
+          <p class="ch6-result-label">Interpretation</p>
+          <div id="ch6-result" class="ch6-result-box">—</div>
+        </div>
+        <div class="ch6-missing">
+          <p class="ch6-gift-sub">???</p>
+          <p class="ch6-missing-caption">What if we lost the decoder? The marks would still exist. The meaning would be gone.</p>
+          <div class="ch6-missing-buttons">
+            <button type="button" class="btn btn-secondary" id="ch6-lose-btn">Lose the decoder</button>
+            <button type="button" class="btn btn-secondary" id="ch6-gift-reset-btn">Reset</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  <style>
+    .ch6-gift { margin-top: 1.25rem; }
+    .ch6-gift-title { font-size: 1rem; font-weight: 600; margin: 0 0 0.5rem 0; }
+    .ch6-gift-question { font-style: italic; font-size: 0.95rem; color: var(--muted); margin: 0 0 0.5rem 0; }
+    .ch6-message-panel { padding: 0.75rem; background: var(--panel); border-radius: 6px; border: 1px solid var(--border); margin-bottom: 0.75rem; display: flex; justify-content: center; }
+    .ch6-marks-svg { display: block; }
+    .ch6-marks-svg.glow .ch6-shape { filter: drop-shadow(0 0 4px var(--accent)); }
+    .ch6-gift-sub { font-size: 0.9rem; font-weight: 600; margin: 0.5rem 0 0.35rem 0; }
+    .ch6-decoder-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .ch6-result-area { min-height: 3rem; margin-bottom: 1rem; }
+    .ch6-result-label { font-size: 0.85rem; color: var(--muted); margin: 0 0 0.25rem 0; }
+    .ch6-result-box { padding: 0.5rem; background: var(--panel); border-radius: 4px; border: 1px solid var(--border); font-size: 0.95rem; min-height: 2rem; }
+    .ch6-result-box.unknown { color: var(--muted); font-style: italic; }
+    .ch6-sequence-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .ch6-missing { padding-top: 0.75rem; border-top: 1px solid var(--border); }
+    .ch6-missing-caption { font-size: 0.85rem; color: var(--muted); font-style: italic; margin: 0 0 0.5rem 0; }
+    .ch6-missing-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .ch6-decoders-disabled .ch6-decoder-buttons { opacity: 0.5; pointer-events: none; }
+    .ch6-decoders-disabled .ch6-result-box { color: var(--muted); font-style: italic; }
+    #ch6-path-canvas { display: block; margin-top: 0.25rem; border: 1px solid var(--border); border-radius: 4px; background: #fff; }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
@@ -184,6 +235,206 @@
       inputMode.addEventListener('change', run);
       decoder.addEventListener('change', run);
       run();
+    })();
+
+    (function () {
+      var CAPTIONS = {
+        none: 'Marks without a decoder are just shapes.',
+        chosen: 'Meaning appeared — but it was in the relation, not the marks.',
+        lost: 'The information is still there. But for whom?'
+      };
+      var originalSequence = [0, 1, 2, 1, 0, 2];
+      var sequence = originalSequence.slice();
+      var marksSvg = document.getElementById('ch6-marks');
+      var resultBox = document.getElementById('ch6-result');
+      var captionEl = document.getElementById('ch6-gift-caption');
+      var giftBox = document.getElementById('decoders-gift');
+      var decoderBtns = document.getElementById('ch6-decoder-btns');
+      var loseBtn = document.getElementById('ch6-lose-btn');
+      var state = { decoder: null, lost: false };
+
+      function shuffleArray(arr) {
+        var a = arr.slice();
+        for (var i = a.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = a[i];
+          a[i] = a[j];
+          a[j] = t;
+        }
+        return a;
+      }
+
+      function clearResultAndGlow() {
+        marksSvg.classList.remove('glow');
+        showResult('—', false);
+      }
+
+      function drawMarks() {
+        var x = 12;
+        var step = 36;
+        var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        sequence.forEach(function (code, i) {
+          var shape = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          shape.setAttribute('class', 'ch6-shape');
+          shape.setAttribute('transform', 'translate(' + (x + i * step) + ',18)');
+          if (code === 0) {
+            var tri = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            tri.setAttribute('d', 'M0,-12 L10,8 L-10,8 Z');
+            tri.setAttribute('fill', 'none');
+            tri.setAttribute('stroke', 'var(--accent-secondary)');
+            tri.setAttribute('stroke-width', '2');
+            shape.appendChild(tri);
+          } else if (code === 1) {
+            var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circ.setAttribute('r', '10');
+            circ.setAttribute('fill', 'none');
+            circ.setAttribute('stroke', 'var(--accent-secondary)');
+            circ.setAttribute('stroke-width', '2');
+            shape.appendChild(circ);
+          } else {
+            var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', '-10');
+            line.setAttribute('y1', '0');
+            line.setAttribute('x2', '10');
+            line.setAttribute('y2', '0');
+            line.setAttribute('stroke', 'var(--accent-secondary)');
+            line.setAttribute('stroke-width', '2');
+            shape.appendChild(line);
+          }
+          g.appendChild(shape);
+        });
+        marksSvg.innerHTML = '';
+        marksSvg.appendChild(g);
+      }
+      drawMarks();
+
+      document.getElementById('ch6-scramble-btn').addEventListener('click', function () {
+        sequence = shuffleArray(sequence);
+        drawMarks();
+        clearResultAndGlow();
+      });
+      document.getElementById('ch6-reset-order-btn').addEventListener('click', function () {
+        sequence = originalSequence.slice();
+        drawMarks();
+        clearResultAndGlow();
+      });
+      document.getElementById('ch6-gift-reset-btn').addEventListener('click', function () {
+        state.lost = false;
+        state.decoder = null;
+        giftBox.classList.remove('ch6-decoders-disabled');
+        sequence = originalSequence.slice();
+        drawMarks();
+        setCaption('none');
+        showResult('—', false);
+        marksSvg.classList.remove('glow');
+      });
+
+      function setCaption(key) {
+        captionEl.textContent = CAPTIONS[key];
+      }
+
+      function showResult(content, isUnknown) {
+        resultBox.innerHTML = '';
+        resultBox.className = 'ch6-result-box' + (isUnknown ? ' unknown' : '');
+        if (typeof content === 'string') {
+          resultBox.textContent = content;
+        } else {
+          resultBox.appendChild(content);
+        }
+      }
+
+      function decodeNumber() {
+        var map = { 0: 1, 1: 2, 2: 3 };
+        var digits = sequence.map(function (c) { return map[c]; });
+        return digits.join(' ') + ' → number ' + digits.join('');
+      }
+
+      function decodeMelody() {
+        var audioCtx = null;
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+          return '(Web Audio not supported in this browser)';
+        }
+        var map = { 0: 262, 1: 330, 2: 392 };
+        var freqs = sequence.map(function (c) { return map[c]; });
+        function playNext(i) {
+          if (i >= freqs.length) return;
+          var osc = audioCtx.createOscillator();
+          var gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.frequency.value = freqs[i];
+          osc.type = 'sine';
+          gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+          osc.start(audioCtx.currentTime);
+          osc.stop(audioCtx.currentTime + 0.25);
+          setTimeout(function () { playNext(i + 1); }, 260);
+        }
+        playNext(0);
+        return 'Playing melody (triangle=262 Hz, circle=330 Hz, line=392 Hz): ' + freqs.map(function (f) { return f + ' Hz'; }).join(' → ');
+      }
+
+      function decodePath() {
+        var map = { 0: 'E', 1: 'N', 2: 'S' };
+        var dirs = sequence.map(function (c) { return map[c]; });
+        var canvas = document.createElement('canvas');
+        canvas.id = 'ch6-path-canvas';
+        canvas.width = 160;
+        canvas.height = 120;
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = 'var(--accent-secondary)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        var x = 80, y = 60;
+        var step = 18;
+        ctx.moveTo(x, y);
+        dirs.forEach(function (d) {
+          if (d === 'N') y -= step;
+          else if (d === 'S') y += step;
+          else if (d === 'E') x += step;
+          else if (d === 'W') x -= step;
+          ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        ctx.fillStyle = 'var(--accent-secondary)';
+        ctx.beginPath();
+        ctx.arc(80, 60, 4, 0, Math.PI * 2);
+        ctx.fill();
+        var label = document.createElement('span');
+        label.textContent = 'Path: ' + dirs.join(' → ');
+        label.style.display = 'block';
+        label.style.marginTop = '0.35rem';
+        label.style.fontSize = '0.85rem';
+        label.style.color = 'var(--muted)';
+        var wrap = document.createElement('div');
+        wrap.appendChild(canvas);
+        wrap.appendChild(label);
+        return wrap;
+      }
+
+      decoderBtns.addEventListener('click', function (e) {
+        var btn = e.target.closest('.ch6-decoder-btn');
+        if (!btn || state.lost) return;
+        var which = btn.getAttribute('data-decoder');
+        state.decoder = which;
+        marksSvg.classList.add('glow');
+        setCaption('chosen');
+        if (which === 'number') showResult(decodeNumber(), false);
+        else if (which === 'melody') {
+          showResult(decodeMelody(), false);
+        } else if (which === 'path') showResult(decodePath(), false);
+      });
+
+      loseBtn.addEventListener('click', function () {
+        state.lost = true;
+        giftBox.classList.add('ch6-decoders-disabled');
+        showResult('[unknown]', true);
+        setCaption('lost');
+      });
     })();
   </script>
 </body>

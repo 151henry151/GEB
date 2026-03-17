@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.11] — 2026-03-16
+
+### Changed
+
+- Chapter VI (The Location of Meaning): keep existing encoding converter companion at top. Add "The Decoder's Gift" below: Panel 1 fixed abstract marks (triangle/circle/line SVG); Panel 2 three decoders (A: shapes → number, B: shapes → melody via Web Audio, C: shapes → compass path on canvas); Panel 3 "Lose the decoder" grays decoders and shows [unknown] with contextual captions. Add Scramble order and Reset order for the mark sequence; add Reset button to restore from lost state and reset sequence.
+
 ## [0.15.10] — 2026-03-16
 
 ### Changed
