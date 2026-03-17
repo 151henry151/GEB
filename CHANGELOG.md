@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.7] — 2026-03-16
+
+### Changed
+
+- Chapter I (MU-puzzle): add live I-count badge (green when not divisible by 3, red when divisible by 3). Add Step outside button after 5 moves with overlay and I-count history sparkline. Add progress bar for reaching MU (I-count ≡ 0 mod 3). Shorten companion caption to end at "Try to reach MU."
+
 ## [0.15.6] — 2026-03-16
 
 ### Changed
