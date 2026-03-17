@@ -55,9 +55,9 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Play with the MIU-system. Start from <strong>MI</strong>. Apply one rule at a time. Try to reach <strong>MU</strong>—and discover that the rules never get you there.</p>
+      <p class="companion-caption">Play with the MIU-system. Start from <strong>MI</strong>. Apply one rule at a time. Try to reach <strong>MU</strong>.</p>
       <div class="companion-box" id="miu-companion">
-        <p><strong>Current string:</strong> <code class="logic" id="miu-current">MI</code></p>
+        <p style="display:flex; align-items:center; flex-wrap:wrap; gap:0.5rem;"><strong>Current string:</strong> <code class="logic" id="miu-current">MI</code> <span id="miu-icount-badge" style="font-size:0.85rem; padding:0.2rem 0.5rem; border-radius:4px; font-variant-numeric:tabular-nums;">I-count: 1</span></p>
         <p style="font-size:0.85rem; color:var(--muted); margin-bottom:0.75rem;">Rules: (I) Mx → Mxx (II) xI → xIU (III) III → U (IV) UU → remove</p>
         <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
           <button type="button" class="btn btn-secondary" id="miu-rule1" title="Double the string after M">Rule I</button>
@@ -65,9 +65,24 @@
           <button type="button" class="btn btn-secondary" id="miu-rule3" title="Replace III by U">Rule III</button>
           <button type="button" class="btn btn-secondary" id="miu-rule4" title="Remove UU">Rule IV</button>
         </div>
-        <button type="button" class="btn btn-secondary" id="miu-reset">Reset to MI</button>
-        <div id="miu-log" style="margin-top:1rem; font-size:0.85rem; max-height:120px; overflow-y:auto;"></div>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; margin-bottom:1rem;">
+          <button type="button" class="btn btn-secondary" id="miu-reset">Reset to MI</button>
+          <button type="button" class="btn btn-primary" id="miu-step-outside" style="display:none;">Step outside</button>
+        </div>
+        <p style="font-size:0.85rem; margin-bottom:0.25rem;">Try to reach MU (I-count must be ≡ 0 mod 3)</p>
+        <div style="height:8px; background:var(--border); border-radius:4px; overflow:hidden; margin-bottom:1rem;"><div id="miu-progress-fill" style="height:100%; width:0%; background:var(--accent); border-radius:4px; transition:width 0.2s;"></div></div>
+        <div id="miu-log" style="margin-top:0.5rem; font-size:0.85rem; max-height:120px; overflow-y:auto;"></div>
         <p id="miu-goal" style="margin-top:0.75rem; font-size:0.9rem;"></p>
+      </div>
+      <div id="miu-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:100; align-items:center; justify-content:center; padding:1rem;" aria-modal="true" role="dialog" aria-label="Step outside explanation">
+        <div style="background:#fff; border-radius:8px; max-width:420px; width:100%; max-height:90vh; overflow-y:auto; padding:1.25rem; box-shadow:0 4px 20px rgba(0,0,0,0.2);">
+          <h3 style="margin:0 0 1rem 0; font-size:1.1rem;">Step outside</h3>
+          <p style="margin:0 0 0.75rem 0; font-size:0.9rem;">Notice: the number of I's started at 1. Rule I doubles it. Rule II adds one. Rule III removes three. Rule IV doesn't touch I's.</p>
+          <p style="margin:0 0 0.5rem 0; font-size:0.9rem;"><strong>I-count (mod 3) so far:</strong></p>
+          <div id="miu-sparkline" style="display:flex; gap:2px; align-items:flex-end; margin-bottom:1rem; min-height:24px;"></div>
+          <p style="margin:0 0 0.75rem 0; font-size:0.9rem;">It never reaches 0. MU has zero I's — divisible by 3. So MU is unreachable.</p>
+          <button type="button" class="btn btn-primary" id="miu-overlay-close">Close</button>
+        </div>
       </div>
     </div>
   </div>
@@ -79,10 +94,27 @@
       var current = document.getElementById('miu-current');
       var log = document.getElementById('miu-log');
       var goal = document.getElementById('miu-goal');
+      var icountBadge = document.getElementById('miu-icount-badge');
+      var progressFill = document.getElementById('miu-progress-fill');
+      var stepOutsideBtn = document.getElementById('miu-step-outside');
+      var overlay = document.getElementById('miu-overlay');
+      var sparkline = document.getElementById('miu-sparkline');
       var state = 'MI';
+      var moveCount = 0;
+      var iCountHistory = [1];
+
+      function getICount(s) { return (s.match(/I/g) || []).length; }
 
       function update() {
         current.textContent = state;
+        var count = getICount(state);
+        var mod3 = count % 3;
+        if (icountBadge) {
+          icountBadge.textContent = 'I-count: ' + count;
+          icountBadge.style.background = mod3 === 0 ? 'var(--false)' : 'var(--true)';
+          icountBadge.style.color = mod3 === 0 ? '#fff' : 'inherit';
+        }
+        if (progressFill) progressFill.style.width = (mod3 === 0 ? 100 : 0) + '%';
         if (state === 'MU') {
           goal.innerHTML = 'You reached <strong>MU</strong>! (In the real MIU-system this is impossible—here we only simulate the rules; the book proves MU is not derivable.)';
           goal.style.color = 'var(--true)';
@@ -101,34 +133,59 @@
         log.scrollTop = log.scrollHeight;
       }
 
+      function afterMove() {
+        iCountHistory.push(getICount(state));
+        moveCount++;
+        if (stepOutsideBtn && moveCount >= 5) stepOutsideBtn.style.display = '';
+        update();
+      }
+
       function rule1() {
         if (!state.startsWith('M')) return;
         var after = state.slice(1);
         if (!after) return;
         state = 'M' + after + after;
         addLog('Rule I (double after M): ' + state);
-        update();
+        afterMove();
       }
       function rule2() {
         if (!state.endsWith('I')) return;
         state = state + 'U';
         addLog('Rule II (I→IU at end): ' + state);
-        update();
+        afterMove();
       }
       function rule3() {
         var idx = state.indexOf('III');
         if (idx === -1) return;
         state = state.slice(0, idx) + 'U' + state.slice(idx + 3);
         addLog('Rule III: ' + state);
-        update();
+        afterMove();
       }
       function rule4() {
         var idx = state.indexOf('UU');
         if (idx === -1) return;
         state = state.slice(0, idx) + state.slice(idx + 2);
         addLog('Rule IV: ' + state);
-        update();
+        afterMove();
       }
+
+      function showOverlay() {
+        if (!overlay || !sparkline) return;
+        var maxC = Math.max.apply(null, iCountHistory);
+        if (maxC < 1) maxC = 1;
+        sparkline.innerHTML = '';
+        iCountHistory.forEach(function (c) {
+          var bar = document.createElement('div');
+          bar.style.width = '8px';
+          bar.style.height = (6 + (c / maxC) * 18) + 'px';
+          bar.style.background = (c % 3 === 0) ? 'var(--false)' : 'var(--accent)';
+          bar.style.borderRadius = '2px';
+          bar.title = 'I-count: ' + c + ' (mod 3: ' + (c % 3) + ')';
+          sparkline.appendChild(bar);
+        });
+        overlay.style.display = 'flex';
+      }
+      function hideOverlay() { if (overlay) overlay.style.display = 'none'; }
 
       document.getElementById('miu-rule1').addEventListener('click', rule1);
       document.getElementById('miu-rule2').addEventListener('click', rule2);
@@ -136,10 +193,16 @@
       document.getElementById('miu-rule4').addEventListener('click', rule4);
       document.getElementById('miu-reset').addEventListener('click', function () {
         state = 'MI';
+        moveCount = 0;
+        iCountHistory = [1];
         if (log) log.innerHTML = '';
+        if (stepOutsideBtn) stepOutsideBtn.style.display = 'none';
         addLog('Reset to MI');
         update();
       });
+      if (stepOutsideBtn) stepOutsideBtn.addEventListener('click', showOverlay);
+      document.getElementById('miu-overlay-close').addEventListener('click', hideOverlay);
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) hideOverlay(); });
       update();
     })();
   </script>
