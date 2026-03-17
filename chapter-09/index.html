@@ -49,68 +49,327 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Gödel built a sentence G that says “I am not provable in this system.” Explore both paths below: try to prove it, then assume it’s false. The result is that G is true but unprovable—truth and provability come apart.</p>
-      <div class="companion-box" id="godel-companion">
-        <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
-          <p style="margin:0 0 0.35rem 0;"><strong>Setup</strong></p>
-          <p style="margin:0;">G is a formula of TNT that, via Gödel numbering, refers to itself and says: “The formula with my number is not a theorem.” So G asserts its own unprovability. What follows?</p>
+      <p class="companion-caption">Walk two corridors. Each path slams shut. Then stand in the chamber where G still glows — and step outside to <strong>MU</strong>.</p>
+      <div class="companion-box inescapable-root" id="inescapable-root">
+        <div class="inescap-g-banner g-glow" role="status" aria-live="polite" id="inescap-g-banner">G: &ldquo;I am not provable in TNT.&rdquo;</div>
+        <div id="inescap-phase-setup" class="inescap-phase">
+          <p class="inescap-hint">G is a formula of TNT that refers to itself. Two doors stand open &mdash; choose where to step first.</p>
+          <div class="inescap-doors">
+            <button type="button" class="door door-prove" id="door-prove" aria-describedby="door-prove-desc">
+              <span class="door-assembly door-assembly-left">
+                <span class="door-jamb door-jamb-left" aria-hidden="true"></span>
+                <span class="door-surround">
+                  <span class="door-lintel" aria-hidden="true"></span>
+                  <span class="door-leaf">
+                    <span class="door-panel" aria-hidden="true"></span>
+                    <span class="door-panel" aria-hidden="true"></span>
+                    <span class="door-knob door-knob-right" aria-hidden="true"></span>
+                  </span>
+                  <span class="door-threshold" aria-hidden="true"></span>
+                </span>
+                <span class="door-jamb door-jamb-right" aria-hidden="true"></span>
+              </span>
+              <span class="door-placard">
+                <span class="door-label">Door 1</span>
+                <span class="door-title">Let&rsquo;s prove G.</span>
+              </span>
+            </button>
+            <button type="button" class="door door-false" id="door-false" aria-describedby="door-false-desc">
+              <span class="door-assembly door-assembly-right">
+                <span class="door-jamb door-jamb-left" aria-hidden="true"></span>
+                <span class="door-surround">
+                  <span class="door-lintel" aria-hidden="true"></span>
+                  <span class="door-leaf">
+                    <span class="door-panel" aria-hidden="true"></span>
+                    <span class="door-panel" aria-hidden="true"></span>
+                    <span class="door-knob door-knob-left" aria-hidden="true"></span>
+                  </span>
+                  <span class="door-threshold" aria-hidden="true"></span>
+                </span>
+                <span class="door-jamb door-jamb-right" aria-hidden="true"></span>
+              </span>
+              <span class="door-placard">
+                <span class="door-label">Door 2</span>
+                <span class="door-title">Let&rsquo;s say G is false.</span>
+              </span>
+            </button>
+          </div>
+          <p id="door-prove-desc" class="sr-only">Opens a corridor showing why proving G leads to inconsistency.</p>
+          <p id="door-false-desc" class="sr-only">After you return from the first corridor, opens a corridor on why G cannot be false.</p>
+          <p id="door2-order-hint" class="inescap-after1" style="display:none; font-size:0.85rem; color:var(--accent-secondary); margin-top:0.5rem;" role="status" aria-live="polite">That story continues the first corridor &mdash; walk Door 1 and come back here.</p>
+          <p id="setup-after1" class="inescap-after1" style="display:none; font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">Door 1 is closed. Try Door 2.</p>
         </div>
-        <p style="margin-bottom:0.35rem;"><strong>The sentence G</strong></p>
-        <blockquote id="g-sentence" style="margin:0 0 0.75rem 0; padding:0.5rem 0.75rem; background:var(--panel); border-radius:4px; font-style:italic;">“This sentence is not provable in TNT.”</blockquote>
-        <p style="margin-bottom:0.5rem; font-size:0.9rem; color:var(--muted);">Choose a path. Each reveals part of the argument.</p>
-        <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">
-          <button type="button" class="btn btn-secondary" id="try-prove">1. Try to prove G</button>
-          <button type="button" class="btn btn-secondary" id="try-false">2. Assume G is false</button>
+
+        <div id="inescap-phase-c1" class="inescap-phase inescap-hidden" aria-hidden="true">
+          <p class="corridor-title">Corridor 1 &mdash; suppose we could prove G</p>
+          <div class="corridor-track" id="c1-track"></div>
+          <div class="corridor-wall wall-inconsistency inescap-hidden" id="c1-wall" aria-live="polite">INCONSISTENCY</div>
+          <p class="corridor-caption inescap-hidden" id="c1-caption">If TNT is consistent, this path is blocked.</p>
+          <button type="button" class="btn btn-secondary" id="c1-back" style="display:none; margin-top:0.75rem;">Return to the doors</button>
         </div>
-        <div id="path-prove" style="display:none; padding:0.6rem; margin-bottom:0.5rem; background:rgba(46,107,138,0.1); border-radius:4px; border-left:4px solid var(--accent-secondary); font-size:0.9rem;">
-          <p style="margin:0 0 0.35rem 0;"><strong>Path 1: Suppose we could prove G.</strong></p>
-          <p style="margin:0;">Then G would be a theorem. But G says “I am not provable.” So we would have proved a sentence that says it has no proof—the system would be proving something that claims it isn’t provable. In a consistent system, that can’t happen. So <strong>no proof of G exists</strong>. G is not provable.</p>
+
+        <div id="inescap-phase-c2" class="inescap-phase inescap-hidden" aria-hidden="true">
+          <p class="corridor-title">Corridor 2 &mdash; suppose G were false</p>
+          <div class="corridor-track" id="c2-track"></div>
+          <div class="corridor-wall wall-contradiction inescap-hidden" id="c2-wall" aria-live="polite">CONTRADICTION</div>
+          <p class="corridor-caption inescap-hidden" id="c2-caption">This path collapses too.</p>
+          <button type="button" class="btn btn-secondary" id="c2-back" style="display:none; margin-top:0.75rem;">Enter the chamber</button>
         </div>
-        <div id="path-false" style="display:none; padding:0.6rem; margin-bottom:0.5rem; background:rgba(58,125,68,0.1); border-radius:4px; border-left:4px solid var(--true); font-size:0.9rem;">
-          <p style="margin:0 0 0.35rem 0;"><strong>Path 2: Suppose G is false.</strong></p>
-          <p style="margin:0;">If G is false, then what G says is false. G says “I am not provable,” so if that’s false, then G <em>is</em> provable. So there would be a proof of G. But Path 1 showed there is no proof of G. So we get a contradiction. So G cannot be false. Therefore <strong>G is true</strong>. And we already know G is not provable. So: <strong>G is true but not provable in TNT.</strong></p>
+
+        <div id="inescap-phase-chamber" class="inescap-phase inescap-hidden" aria-hidden="true">
+          <div class="chamber-doors">
+            <div class="chamber-door-panel chamber-door-left" aria-hidden="true"><span class="chamber-door-x">✕</span></div>
+            <div class="chamber-center">
+              <p class="chamber-reveal inescap-hidden" id="chamber-reveal">G is not provable &mdash; and that&rsquo;s exactly what G says. So <strong class="truth-true">G is true</strong>.</p>
+              <p class="chamber-final inescap-hidden" id="chamber-final">Truth and provability have come apart.</p>
+            </div>
+            <div class="chamber-door-panel chamber-door-right" aria-hidden="true"><span class="chamber-door-x">✕</span></div>
+          </div>
+          <button type="button" class="btn btn-primary" id="chamber-mu-btn" style="display:none; margin-top:1rem;">Step outside the system</button>
         </div>
-        <div id="g-conclusion" style="padding:0.6rem; margin-top:0.5rem; background:var(--panel); border-radius:4px; font-size:0.95rem;">
-          <p style="margin:0 0 0.35rem 0;"><strong>Conclusion</strong></p>
-          <p id="g-conclusion-text" style="margin:0; color:var(--muted);">Explore both paths above to see the full argument.</p>
+
+        <div id="inescap-phase-mu" class="inescap-phase inescap-hidden" aria-hidden="true">
+          <div class="mu-word" aria-live="polite">MU</div>
+          <p class="mu-caption">To ask &ldquo;is G true or provable?&rdquo; is to ask the wrong question. Step outside the system.</p>
+          <button type="button" class="btn btn-secondary" id="mu-restart" style="margin-top:1rem;">Start again</button>
         </div>
       </div>
     </div>
   </div>
+  <style>
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+    .inescapable-root { min-height:280px; }
+    .inescap-g-banner { margin-bottom:0.85rem; }
+    .inescap-phase { padding:0.25rem 0; }
+    .inescap-hidden { display:none !important; }
+    .inescap-hint { font-size:0.85rem; color:var(--muted); margin:0 0 0.75rem 0; }
+    .g-glow {
+      text-align:center; font-family:'EB Garamond',Georgia,serif; font-size:1.15rem; font-weight:600; font-style:italic;
+      padding:0.85rem 0.75rem; margin:0 0 1rem 0; border-radius:8px;
+      background:linear-gradient(135deg, rgba(181,135,59,0.2), rgba(46,107,138,0.12));
+      border:1px solid var(--accent); box-shadow:0 0 20px rgba(181,135,59,0.25);
+      color:var(--text);
+    }
+    .inescap-doors { display:flex; flex-wrap:wrap; gap:1.25rem; justify-content:center; align-items:flex-end; padding:0.5rem 0; }
+    .door {
+      flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:0.65rem;
+      padding:0; border:none; background:transparent; cursor:pointer; font-family:inherit;
+      transition:opacity 0.35s, filter 0.35s;
+    }
+    .door:focus-visible { outline:2px solid var(--accent); outline-offset:4px; border-radius:4px; }
+    .door-assembly { display:flex; align-items:stretch; filter:drop-shadow(4px 6px 10px rgba(0,0,0,0.28)); }
+    .door-jamb { width:8px; min-height:200px; background:linear-gradient(90deg,#2a2218,#3d3228,#2a2218); border-radius:2px; }
+    .door-surround { display:flex; flex-direction:column; align-items:stretch; width:118px; }
+    .door-lintel {
+      height:12px; background:linear-gradient(180deg,#4a3d32,#2e2620); border-radius:3px 3px 0 0;
+      border:2px solid #1a1512; border-bottom:none; box-shadow:inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .door-leaf {
+      position:relative; min-height:188px; display:flex; flex-direction:column; gap:10px; padding:14px 16px;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,0.12) 0%, transparent 18%, transparent 82%, rgba(0,0,0,0.1) 100%),
+        linear-gradient(180deg, #6b5648 0%, #4d3f35 45%, #5c4a3e 100%);
+      border:3px solid #1f1814; border-top:2px solid #3d3229;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04), inset 0 -20px 40px rgba(0,0,0,0.15);
+      transform-origin:left center; transition:transform 0.22s ease, filter 0.25s ease;
+    }
+    .door-assembly-right .door-leaf { transform-origin:right center; }
+    .door:hover:not(:disabled) .door-leaf { transform:perspective(400px) rotateY(-6deg); }
+    .door-assembly-right:hover:not(:disabled) .door-leaf,
+    .door-false:hover:not(:disabled) .door-leaf { transform:perspective(400px) rotateY(6deg); }
+    .door-panel {
+      flex:1; min-height:52px; border-radius:2px;
+      border:2px solid rgba(20,15,12,0.65); border-top-color:rgba(255,255,255,0.06);
+      background:linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.18));
+      box-shadow:inset 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .door-knob {
+      position:absolute; top:50%; margin-top:-9px; width:16px; height:16px; border-radius:50%;
+      background:radial-gradient(circle at 35% 35%, #e8c87a, #8b6914 55%, #4a3a1a);
+      box-shadow:1px 2px 4px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.35);
+      border:1px solid #2a2210;
+    }
+    .door-knob-right { right:10px; }
+    .door-knob-left { left:10px; }
+    .door-threshold {
+      height:8px; background:linear-gradient(180deg,#3d3229,#2a2218); border:2px solid #1a1512; border-top:none;
+      border-radius:0 0 2px 2px;
+    }
+    .door-placard { text-align:center; max-width:140px; }
+    .door.door-sealed .door-leaf {
+      transform:none !important; filter:brightness(0.5) saturate(0.5);
+      box-shadow:inset 0 0 0 2px rgba(0,0,0,0.4), inset 0 -20px 40px rgba(0,0,0,0.35);
+    }
+    .door.door-sealed { cursor:not-allowed; opacity:0.92; }
+    .door.door-sealed .door-leaf::after {
+      content:'\2715'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      font-size:2.5rem; color:rgba(0,0,0,0.35); font-weight:300; pointer-events:none;
+    }
+    .door-label { display:block; font-size:0.72rem; color:var(--muted); letter-spacing:0.04em; text-transform:uppercase; margin-bottom:0.2rem; }
+    .door-title { display:block; font-weight:600; font-size:0.88rem; color:var(--text); line-height:1.25; }
+    .corridor-title { font-size:0.88rem; font-weight:600; margin:0 0 0.75rem 0; color:var(--accent-secondary); }
+    .corridor-track { min-height:120px; }
+    .corridor-step {
+      opacity:0; transform:translateX(-12px); margin:0.4rem 0; padding:0.45rem 0.55rem;
+      border-left:3px solid var(--accent-secondary); background:rgba(46,107,138,0.06); border-radius:0 4px 4px 0;
+      font-size:0.88rem; transition:opacity 0.45s ease, transform 0.45s ease;
+    }
+    .corridor-step.visible { opacity:1; transform:translateX(0); }
+    .corridor-wall {
+      margin:1rem 0 0.5rem 0; padding:1rem; text-align:center; font-weight:800; font-size:1.25rem; letter-spacing:0.08em;
+      border-radius:6px; animation:wall-slam 0.5s ease;
+    }
+    @keyframes wall-slam { from { transform:scale(0.92); opacity:0; } to { transform:scale(1); opacity:1; } }
+    .wall-inconsistency { background:linear-gradient(180deg, #5c2a2a, #8b3a3a); color:#fff; border:2px solid #3d1a1a; }
+    .wall-contradiction { background:linear-gradient(180deg, #4a3a2a, #7a6b3a); color:#fff; border:2px solid #3d3520; }
+    .corridor-caption { font-size:0.88rem; font-style:italic; color:var(--muted); margin:0.5rem 0 0 0; }
+    .chamber-doors { display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; justify-content:center; }
+    .chamber-door-panel {
+      width:48px; min-height:140px; background:linear-gradient(90deg, #4a4a52, #2a2a32); border-radius:4px;
+      display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.35); font-size:1.5rem;
+    }
+    .chamber-center { flex:1; min-width:200px; text-align:center; padding:0.5rem; }
+    .chamber-reveal { font-size:0.95rem; line-height:1.5; margin:0.75rem 0; animation:fade-in 1s ease; }
+    .chamber-final { font-size:1rem; font-weight:600; color:var(--accent); margin:0; animation:fade-in 1.2s ease; }
+    @keyframes fade-in { from { opacity:0; } to { opacity:1; } }
+    .mu-word {
+      font-family:'EB Garamond',Georgia,serif; font-size:4rem; font-weight:600; text-align:center; margin:1rem 0;
+      color:var(--accent); text-shadow:0 0 24px rgba(181,135,59,0.4); letter-spacing:0.2em; animation:mu-pulse 3s ease-in-out infinite;
+    }
+    @keyframes mu-pulse { 0%,100% { opacity:1; } 50% { opacity:0.85; } }
+    .mu-caption { text-align:center; font-size:0.95rem; max-width:22rem; margin:0 auto; line-height:1.55; color:var(--text); }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
-      var pathProve = document.getElementById('path-prove');
-      var pathFalse = document.getElementById('path-false');
-      var conclusionText = document.getElementById('g-conclusion-text');
-      var btnProve = document.getElementById('try-prove');
-      var btnFalse = document.getElementById('try-false');
-      var sawProve = false;
-      var sawFalse = false;
-      function updateConclusion() {
-        if (sawProve && sawFalse) {
-          conclusionText.innerHTML = 'G is <strong class="truth-true">true</strong> (Path 2) and <strong>not provable</strong> (Path 1). So in any consistent system strong enough for arithmetic, there is a true sentence it cannot prove. That is Gödel\u2019s first incompleteness theorem.';
-          conclusionText.style.color = '';
-        } else if (sawProve) {
-          conclusionText.textContent = 'You\u2019ve seen that G has no proof. Now try \u201cAssume G is false\u201d to complete the argument.';
-        } else if (sawFalse) {
-          conclusionText.textContent = 'You\u2019ve seen that G can\u2019t be false. Try \u201cTry to prove G\u201d to see why G has no proof.';
-        } else {
-          conclusionText.textContent = 'Explore both paths above to see the full argument.';
-        }
+      var STEP_MS = 750;
+      function show(el) { if (el) { el.classList.remove('inescap-hidden'); el.style.display = ''; el.setAttribute('aria-hidden', 'false'); } }
+      function hide(el) { if (el) { el.classList.add('inescap-hidden'); el.setAttribute('aria-hidden', 'true'); } }
+      function setPhase(id) {
+        ['inescap-phase-setup', 'inescap-phase-c1', 'inescap-phase-c2', 'inescap-phase-chamber', 'inescap-phase-mu'].forEach(function (pid) {
+          var n = document.getElementById(pid);
+          if (n) { if (pid === id) show(n); else hide(n); }
+        });
       }
-      if (btnProve) btnProve.addEventListener('click', function () {
-        if (pathProve) pathProve.style.display = 'block';
-        sawProve = true;
-        updateConclusion();
+      var path1Done = false;
+      var path2Done = false;
+      var doorProve = document.getElementById('door-prove');
+      var doorFalse = document.getElementById('door-false');
+      var setupAfter1 = document.getElementById('setup-after1');
+
+      function runCorridor(trackId, steps, wallId, capId, backId, onDone) {
+        var track = document.getElementById(trackId);
+        if (!track) return;
+        track.innerHTML = '';
+        var wall = document.getElementById(wallId);
+        var cap = document.getElementById(capId);
+        var backBtn = document.getElementById(backId);
+        if (wall) { hide(wall); wall.classList.remove('visible'); }
+        if (cap) hide(cap);
+        if (backBtn) backBtn.style.display = 'none';
+        var i = 0;
+        function nextStep() {
+          if (i < steps.length) {
+            var div = document.createElement('div');
+            div.className = 'corridor-step';
+            div.textContent = steps[i];
+            track.appendChild(div);
+            requestAnimationFrame(function () { div.classList.add('visible'); });
+            i++;
+            setTimeout(nextStep, STEP_MS);
+          } else {
+            setTimeout(function () {
+              if (wall) show(wall);
+              setTimeout(function () {
+                if (cap) show(cap);
+                if (backBtn) backBtn.style.display = 'inline-block';
+                if (onDone) onDone();
+              }, 400);
+            }, 300);
+          }
+        }
+        nextStep();
+      }
+
+      var steps1 = [
+        'If TNT proves G\u2026',
+        '\u2026then G is a theorem.',
+        '\u2026but G says it has no proof.',
+        '\u2026so TNT proved something false.'
+      ];
+      var steps2 = [
+        'If G is false\u2026',
+        '\u2026then \u201cI am not provable\u201d is false\u2026',
+        '\u2026so G IS provable\u2026',
+        '\u2026but Door 1 showed it can\u2019t be proved\u2026'
+      ];
+
+      if (doorProve) doorProve.addEventListener('click', function () {
+        if (path1Done || doorProve.disabled) return;
+        setPhase('inescap-phase-c1');
+        runCorridor('c1-track', steps1, 'c1-wall', 'c1-caption', 'c1-back', null);
       });
-      if (btnFalse) btnFalse.addEventListener('click', function () {
-        if (pathFalse) pathFalse.style.display = 'block';
-        sawFalse = true;
-        updateConclusion();
+      document.getElementById('c1-back').addEventListener('click', function () {
+        path1Done = true;
+        doorProve.disabled = true;
+        doorProve.classList.add('door-sealed');
+        if (doorFalse) {
+          doorFalse.disabled = false;
+          doorFalse.removeAttribute('title');
+        }
+        if (setupAfter1) setupAfter1.style.display = 'block';
+        setPhase('inescap-phase-setup');
       });
+
+      if (doorFalse) doorFalse.addEventListener('click', function () {
+        if (!path1Done) {
+          var early = document.getElementById('door2-order-hint');
+          if (early) early.style.display = 'block';
+          return;
+        }
+        if (path2Done || doorFalse.disabled) return;
+        setPhase('inescap-phase-c2');
+        runCorridor('c2-track', steps2, 'c2-wall', 'c2-caption', 'c2-back', null);
+      });
+      document.getElementById('c2-back').addEventListener('click', function () {
+        path2Done = true;
+        doorFalse.disabled = true;
+        doorFalse.classList.add('door-sealed');
+        setPhase('inescap-phase-chamber');
+        var rev = document.getElementById('chamber-reveal');
+        var fin = document.getElementById('chamber-final');
+        var muBtn = document.getElementById('chamber-mu-btn');
+        hide(rev); hide(fin);
+        if (muBtn) muBtn.style.display = 'none';
+        setTimeout(function () { show(rev); }, 500);
+        setTimeout(function () { show(fin); }, 1400);
+        setTimeout(function () { if (muBtn) muBtn.style.display = 'inline-block'; }, 2400);
+      });
+
+      document.getElementById('chamber-mu-btn').addEventListener('click', function () {
+        setPhase('inescap-phase-mu');
+      });
+      document.getElementById('mu-restart').addEventListener('click', function () {
+        path1Done = false;
+        path2Done = false;
+        doorProve.disabled = false;
+        doorFalse.disabled = false;
+        doorProve.classList.remove('door-sealed');
+        doorFalse.classList.remove('door-sealed');
+        if (setupAfter1) setupAfter1.style.display = 'none';
+        var d2h = document.getElementById('door2-order-hint');
+        if (d2h) d2h.style.display = 'none';
+        document.getElementById('c1-track').innerHTML = '';
+        document.getElementById('c2-track').innerHTML = '';
+        hide(document.getElementById('c1-wall'));
+        hide(document.getElementById('c2-wall'));
+        hide(document.getElementById('c1-caption'));
+        hide(document.getElementById('c2-caption'));
+        setPhase('inescap-phase-setup');
+      });
+
     })();
   </script>
 </body>
