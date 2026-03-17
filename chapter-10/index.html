@@ -10,6 +10,149 @@
   <link rel="stylesheet" href="../shared/style.css">
   <style>
     .level-line-current { background: rgba(46, 107, 138, 0.2); padding: 0.1rem 0.25rem; border-radius: 3px; }
+    .ch10-section { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .ch10-section h3 { font-size: 1rem; margin: 0 0 0.5rem 0; color: var(--text); }
+    .ch10-explainer { padding: 0.5rem 0.6rem; background: var(--panel); border-radius: 6px; margin-bottom: 0.75rem; font-size: 0.9rem; border-left: 4px solid var(--accent); }
+    .ch10-bridge { font-style: italic; color: var(--muted); font-size: 0.9rem; margin: 1rem 0 0.25rem 0; line-height: 1.5; padding: 0.5rem 0.65rem; background: rgba(181, 135, 59, 0.08); border-radius: 4px; border-left: 3px solid var(--accent); }
+
+    .ch10-dashboard-head {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem 1rem;
+      padding: 0.6rem 0.75rem; margin-bottom: 0.65rem; background: var(--bg); border-radius: 6px; border: 1px solid var(--border);
+    }
+    .ch10-step-indicator { font-size: 0.85rem; font-weight: 600; color: var(--accent-secondary); margin-left: auto; }
+    .ch10-sticky-mini {
+      display: none; position: sticky; top: 0; z-index: 8; padding: 0.45rem 0.65rem; margin-bottom: 0.5rem;
+      background: var(--panel); border: 1px solid var(--border); border-radius: 6px; font-size: 0.8rem; color: var(--muted);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .ch10-cols {
+      display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 0.5rem;
+    }
+    @media (min-width: 701px) {
+      .ch10-cols {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.5rem;
+        align-items: start;
+      }
+      .ch10-grid-l0 { grid-column: 1; grid-row: 1; }
+      .ch10-grid-l1 { grid-column: 2; grid-row: 1; }
+      .ch10-grid-l2 { grid-column: 3; grid-row: 1 / span 2; }
+      .ch10-callout-placement {
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        align-self: center;
+      }
+      .ch10-sticky-mini { display: none !important; }
+    }
+    @media (max-width: 700px) {
+      .ch10-sticky-mini { display: block; }
+      .ch10-callout-placement { grid-column: auto; grid-row: auto; }
+    }
+
+    .ch10-panel {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 0.55rem 0.65rem; min-width: 0;
+    }
+    .ch10-panel-hdr {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 0.5rem 0;
+      text-transform: uppercase;
+    }
+    .ch10-panel-body { font-size: 0.88rem; }
+
+    .phys-level2-inner { margin-top: 0.25rem; }
+    .phys-copy { font-size: 0.72rem; color: var(--muted); margin: 0 0 0.45rem 0; line-height: 1.4; }
+    .phys-bit-group { margin-bottom: 0.35rem; }
+    .phys-bit-group .phys-lbl { font-size: 0.65rem; color: var(--muted); margin-bottom: 0.2rem; display: block; }
+    .phys-bits { display: flex; gap: 4px; }
+    .phys-bit {
+      width: 18px; height: 18px; border-radius: 3px; border: 1px solid var(--border);
+      background: #2a2830; flex-shrink: 0; transition: box-shadow 0.2s, opacity 0.2s;
+    }
+    .phys-bit.high { background: linear-gradient(145deg, #f0d78c, #c9a227); border-color: #8a7020; box-shadow: 0 0 6px rgba(201, 162, 39, 0.4); }
+    .phys-bit.low { background: #3a3842; }
+    .phys-bit.dim { opacity: 0.38; }
+    .phys-bits.pulse-in .phys-bit.high { animation: phys-bit-pulse 200ms ease-out; }
+    @keyframes phys-bit-pulse { 50% { box-shadow: 0 0 12px rgba(201, 162, 39, 0.95); } }
+
+    .carry-stubs-wrap { display: flex; justify-content: center; margin: 0.15rem 0 0.1rem 0; }
+    .carry-stubs { display: flex; gap: 8px; justify-content: center; align-items: flex-end; height: 10px; }
+    .carry-stub { width: 36px; display: flex; justify-content: center; }
+    .carry-stub i { display: block; width: 1.5px; height: 10px; background: var(--border); transition: background 0.2s; }
+    .carry-stub i.lit { background: var(--accent-secondary); }
+
+    .carry-bus-bar {
+      display: flex; align-items: center; justify-content: center; flex-wrap: nowrap; gap: 0; margin: 0.2rem 0 0 0;
+      min-height: 28px;
+    }
+    .carry-bus-line {
+      height: 1.5px; background: #9a9588; flex: 1; min-width: 6px; max-width: 28px; transition: background 0.2s, box-shadow 0.2s;
+    }
+    .carry-bus-line.lit { background: var(--accent); box-shadow: 0 0 6px rgba(181,135,59,0.65); }
+    .carry-bus-node {
+      width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 1.5px solid #9a9588;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .carry-bus-node.lit { border-color: var(--accent); box-shadow: 0 0 8px rgba(181,135,59,0.5); }
+    .carry-bus-node .cval { font-size: 9px; font-weight: 700; color: var(--muted); line-height: 1; }
+    .carry-bus-node.lit .cval { color: var(--accent); }
+    .carry-bus-end { font-size: 8px; color: var(--muted); white-space: nowrap; padding: 0 2px; flex-shrink: 0; transition: color 0.2s; }
+    .carry-bus-end .ce { font-size: 9px; font-weight: 600; }
+    .carry-bus-end.lit { color: var(--accent-secondary); }
+    .carry-bus-end.lit .ce { color: var(--accent); }
+
+    .phys-fa-row { display: flex; justify-content: center; gap: 8px; margin: 0.15rem 0 0.35rem 0; }
+    .phys-fa {
+      width: 36px; height: 36px; border: 1.5px solid var(--muted); border-radius: 3px; background: var(--bg);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0;
+      font-size: 8px; line-height: 1.05; padding: 1px; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .phys-fa strong { font-size: 11px; font-weight: 700; color: var(--text); }
+    .phys-fa.glow { border-color: var(--accent-secondary); box-shadow: 0 0 8px rgba(46,107,138,0.35); }
+    .phys-fa .fa-t { font-size: 7px; color: var(--muted); }
+
+    .phys-data-wires { display: block; width: 100%; max-width: 200px; height: 28px; margin: 0 auto; }
+    .phys-vwire { stroke: var(--border); stroke-width: 1.2; fill: none; }
+    .phys-dot { fill: var(--accent-secondary); opacity: 0; }
+    .phys-dot.drop { animation: phys-dot-fall 0.32s ease-out forwards; }
+    @keyframes phys-dot-fall { from { opacity: 1; } to { opacity: 0.9; transform: translateY(22px); } }
+
+    .ch10-grid-l2 { display: flex; flex-direction: column; }
+    .phys-l2-fa-band {
+      display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.1rem;
+    }
+    .phys-l2-fa-column { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+    .ch10-fa-callout-card {
+      font-style: italic; font-size: 0.72rem; color: var(--muted); line-height: 1.45;
+      padding: 0.4rem 0.5rem;
+      background: rgba(46, 107, 138, 0.07);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      align-self: stretch;
+    }
+    .ch10-fa-callout-card::before {
+      content: '';
+      display: block; height: 1px; background: var(--border); margin: 0 0 0.4rem 0; opacity: 0.85;
+    }
+    .ch10-fa-callout-card strong { font-style: normal; color: var(--text); font-size: 0.68rem; }
+    .level2-phys-caption { margin: 0.35rem 0 0 0; font-size: 0.76rem; color: var(--muted); line-height: 1.4; }
+    .level2-phys-caption.payoff { font-size: 0.78rem; }
+
+    .ant-canvas-wrap {
+      border-radius: 6px; overflow: hidden; border: 1px solid var(--border); background: #f7f4ef; max-width: 100%;
+      transition: filter 0.5s ease, box-shadow 0.5s ease;
+    }
+    .ant-canvas-wrap.colony-glow { box-shadow: 0 0 24px rgba(200, 140, 50, 0.25); }
+    #ant-canvas { display: block; width: 100%; height: auto; max-height: 85vw; aspect-ratio: 500 / 300; transition: opacity 0.5s ease; }
+    .ch10-real-btns { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0; }
+    .ch10-real-response { font-size: 0.88rem; color: var(--text); margin: 0.5rem 0 0 0; padding: 0.5rem 0.6rem; background: rgba(46, 107, 138, 0.08); border-radius: 4px; border-left: 3px solid var(--accent-secondary); }
+    .ch10-real-unify { margin-top: 0.5rem; font-weight: 600; color: var(--accent); }
+    .ant-controls { margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center; }
+    .ant-speed { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--muted); }
+    .ant-trail-hint {
+      font-size: 0.8rem; color: var(--accent-secondary); font-style: italic; margin: 0.35rem 0 0 0; max-height: 0; overflow: hidden; opacity: 0;
+      transition: max-height 0.4s ease, opacity 0.4s ease, margin 0.4s ease;
+    }
+    .ant-trail-hint.visible { max-height: 3rem; opacity: 1; margin-top: 0.45rem; }
   </style>
 </head>
 <body>
@@ -54,38 +197,110 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">The same process—adding two numbers—described at three levels. Set A and B, then click Step to run one instruction at a time and watch all levels update together.</p>
+      <p class="companion-caption" id="ch10-main-caption">One process—three vocabularies. Step once and watch all three panels move together.</p>
       <div class="companion-box" id="levels-companion">
-        <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
+        <div class="ch10-explainer">
           <p style="margin:0 0 0.35rem 0;"><strong>Levels of description</strong></p>
-          <p style="margin:0;">Level 0: what we want (add two numbers). Level 1: machine steps (LOAD, ADD, STORE). Level 2: same values in binary. One process, three views.</p>
+          <p style="margin:0;">The dashboard below shows the same moment at three depths. Wide screens: three columns. Narrow: scroll—sticky line shows the step.</p>
         </div>
-        <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center; margin-bottom:0.75rem;">
-          <label>A: <input type="number" id="levels-a" min="0" max="15" value="3" style="width:3.5rem; padding:0.25rem;" aria-label="Value A"></label>
-          <label>B: <input type="number" id="levels-b" min="0" max="15" value="5" style="width:3.5rem; padding:0.25rem;" aria-label="Value B"></label>
+
+        <div class="ch10-dashboard-head">
+          <label>A: <input type="number" id="levels-a" min="0" max="15" value="3" style="width:3.25rem; padding:0.22rem;" aria-label="Value A"></label>
+          <label>B: <input type="number" id="levels-b" min="0" max="15" value="5" style="width:3.25rem; padding:0.22rem;" aria-label="Value B"></label>
           <button type="button" class="btn btn-primary" id="levels-step">Step</button>
           <button type="button" class="btn btn-secondary" id="levels-reset">Reset</button>
+          <span class="ch10-step-indicator" id="ch10-step-indicator" aria-live="polite">Step 0 / 3</span>
         </div>
-        <p style="margin-bottom:0.35rem; font-size:0.9rem; color:var(--muted);" id="levels-step-label">Step 0: initial state. Click Step to run LOAD A → ADD B → STORE C.</p>
-        <div style="display:grid; gap:0.6rem; margin-bottom:0.5rem;">
-          <div class="level-block" style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px;">
-            <p style="margin:0 0 0.25rem 0; font-size:0.85rem; color:var(--muted);"><strong>Level 0</strong> (goal)</p>
-            <p id="level0-text" style="margin:0; font-family:var(--font-mono);">Add A and B → C</p>
-            <p id="level0-vals" style="margin:0.25rem 0 0 0; font-size:0.9rem;">A = <span id="v-a">3</span>, B = <span id="v-b">5</span>, C = <span id="v-c">—</span></p>
+        <div class="ch10-sticky-mini" id="ch10-sticky-mini"></div>
+
+        <div class="ch10-cols">
+          <section class="ch10-panel ch10-grid-l0">
+            <div class="ch10-panel-hdr">Level 0 — Goal</div>
+            <div class="ch10-panel-body">
+              <p id="level0-text" style="margin:0; font-family:var(--font-mono); font-size:0.85rem;">Add A and B → C</p>
+              <p id="level0-vals" style="margin:0.35rem 0 0 0; font-size:0.88rem;">A = <span id="v-a">3</span>, B = <span id="v-b">5</span>, C = <span id="v-c">—</span></p>
+            </div>
+          </section>
+          <section class="ch10-panel ch10-grid-l1">
+            <div class="ch10-panel-hdr">Level 1 — Instructions</div>
+            <div class="ch10-panel-body">
+              <p id="level1-lines" style="margin:0; font-family:var(--font-mono); font-size:0.82rem; line-height:1.45;">
+                <span id="line-load" class="level-line">LOAD A</span><br>
+                <span id="line-add" class="level-line">ADD B</span><br>
+                <span id="line-store" class="level-line">STORE C</span>
+              </p>
+              <p id="level1-regs" style="margin:0.4rem 0 0 0; font-size:0.82rem;">Acc = <span id="v-acc">—</span>, C = <span id="v-c1">—</span></p>
+            </div>
+          </section>
+          <section class="ch10-panel ch10-grid-l2">
+            <div class="ch10-panel-hdr">Level 2 — Physical signals</div>
+            <div class="ch10-panel-body phys-level2-inner">
+              <p class="phys-copy">High and low through gates (AND, OR, XOR). No gate knows &ldquo;add.&rdquo;</p>
+              <div class="phys-bit-group">
+                <span class="phys-lbl" id="phys-label-a">A = 0 → 0000</span>
+                <div class="phys-bits" id="phys-bits-a"></div>
+              </div>
+              <div class="phys-bit-group">
+                <span class="phys-lbl" id="phys-label-b">B = 0 → 0000</span>
+                <div class="phys-bits" id="phys-bits-b"></div>
+              </div>
+              <div class="carry-stubs-wrap"><div class="carry-stubs" id="carry-stubs"></div></div>
+              <div class="carry-bus-bar" id="carry-bus-bar" aria-hidden="true"></div>
+              <div class="phys-l2-fa-band">
+                <div class="phys-l2-fa-column">
+                  <div class="phys-fa-row" id="phys-fa-row"></div>
+                  <svg class="phys-data-wires" id="phys-data-wires" viewBox="0 0 200 28" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                    <path class="phys-vwire" d="M 23 2 L 23 26"/><circle class="phys-dot" id="drop-a-0" cx="23" cy="5" r="2.5"/>
+                    <path class="phys-vwire" d="M 55 2 L 55 26"/><circle class="phys-dot" id="drop-a-1" cx="55" cy="5" r="2.5"/>
+                    <path class="phys-vwire" d="M 87 2 L 87 26"/><circle class="phys-dot" id="drop-a-2" cx="87" cy="5" r="2.5"/>
+                    <path class="phys-vwire" d="M 137 2 L 137 26"/><circle class="phys-dot" id="drop-a-3" cx="137" cy="5" r="2.5"/>
+                    <path class="phys-vwire" d="M 31 2 L 31 26"/><circle class="phys-dot" id="drop-b-0" cx="31" cy="5" r="2.5"/>
+                    <path class="phys-vwire" d="M 63 2 L 63 26"/><circle class="phys-dot" id="drop-b-1" cx="63" cy="5" r="2.5"/>
+                    <path class="phys-vwire" d="M 95 2 L 95 26"/><circle class="phys-dot" id="drop-b-2" cx="95" cy="5" r="2.5"/>
+                    <path class="phys-vwire" d="M 145 2 L 145 26"/><circle class="phys-dot" id="drop-b-3" cx="145" cy="5" r="2.5"/>
+                  </svg>
+                  <div class="phys-bit-group" style="margin-top:0.2rem;">
+                    <span class="phys-lbl">Sum + c<sub>out</sub></span>
+                    <div class="phys-bits" id="phys-bits-out"></div>
+                  </div>
+                  <p class="level2-phys-caption" id="level2-phys-caption">Silicon quiet — no rails asserted yet.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <aside class="ch10-panel ch10-fa-callout-card ch10-callout-placement" aria-label="Full adder internals">
+            <strong>Inside each FA box:</strong> XOR drives the sum bit; AND (with more logic when c<sub>in</sub> ≠ 0) builds the carry. XOR and AND are the only operations. Neither knows what &ldquo;eight&rdquo; means.
+          </aside>
+        </div>
+
+        <p style="display:none;" id="levels-step-label" aria-hidden="true"></p>
+
+        <div class="ch10-section">
+          <h3>Which level is the &ldquo;real&rdquo; addition?</h3>
+          <p style="font-size:0.88rem; color:var(--muted); margin:0 0 0.35rem 0;">Pick one. Each answer shows why the other levels still matter.</p>
+          <div class="ch10-real-btns">
+            <button type="button" class="btn btn-secondary" data-real="goal">The goal (add A + B)</button>
+            <button type="button" class="btn btn-secondary" data-real="instr">The instructions</button>
+            <button type="button" class="btn btn-secondary" data-real="gates">The gates &amp; signals</button>
           </div>
-          <div class="level-block" style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px;">
-            <p style="margin:0 0 0.25rem 0; font-size:0.85rem; color:var(--muted);"><strong>Level 1</strong> (instructions)</p>
-            <p id="level1-lines" style="margin:0; font-family:var(--font-mono); font-size:0.9rem;">
-              <span id="line-load" class="level-line">LOAD A</span><br>
-              <span id="line-add" class="level-line">ADD B</span><br>
-              <span id="line-store" class="level-line">STORE C</span>
-            </p>
-            <p id="level1-regs" style="margin:0.35rem 0 0 0; font-size:0.85rem;">Accumulator = <span id="v-acc">—</span>, C = <span id="v-c1">—</span></p>
+          <div id="ch10-real-response" class="ch10-real-response" hidden></div>
+        </div>
+
+        <p class="ch10-bridge">The same structure appears in biology: individual ants follow rules as simple as logic gates. But at the colony level, something new emerges — just as &ldquo;addition&rdquo; emerges from voltages.</p>
+
+        <div class="ch10-section" style="border-top:none; padding-top:0; margin-top:0;">
+          <h3>Ant colony (Ant Fugue)</h3>
+          <p style="font-size:0.88rem; color:var(--muted); margin:0 0 0.5rem 0;">Same simulation—switch the level of description: agents vs emergent trail.</p>
+          <div class="ant-canvas-wrap" id="ant-canvas-wrap">
+            <canvas id="ant-canvas" width="500" height="300" aria-label="Pheromone ant simulation"></canvas>
           </div>
-          <div class="level-block" style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px;">
-            <p style="margin:0 0 0.25rem 0; font-size:0.85rem; color:var(--muted);"><strong>Level 2</strong> (binary)</p>
-            <p id="level2-text" style="margin:0; font-family:var(--font-mono); font-size:0.85rem;">A = <span id="bin-a">0011</span>, B = <span id="bin-b">0101</span>, Acc = <span id="bin-acc">—</span>, C = <span id="bin-c">—</span></p>
+          <div class="ant-controls">
+            <button type="button" class="btn btn-primary" id="ant-zoom-btn">Switch to colony view</button>
+            <button type="button" class="btn btn-secondary" id="ant-reset-btn">Reset</button>
+            <label class="ant-speed">Speed <input type="range" id="ant-speed" min="0" max="2" value="0" aria-valuetext="1x" aria-label="Simulation speed"> <span id="ant-speed-label">1×</span></label>
           </div>
+          <p class="ant-trail-hint" id="ant-trail-hint">Something is forming — try the colony view.</p>
+          <p style="font-size:0.85rem; color:var(--muted); margin:0.45rem 0 0 0;" id="ant-caption">At the ant level: dots moving, scent fading. No ant knows about trails, food, or the colony.</p>
         </div>
       </div>
     </div>
@@ -95,55 +310,294 @@
   <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
-      function toBin(n) {
-        if (n === null || n === undefined) return '\u2014';
-        var s = (n >>> 0).toString(2);
-        return '0000'.slice(s.length) + s;
-      }
       var stepCount = 0;
       var aIn = document.getElementById('levels-a');
       var bIn = document.getElementById('levels-b');
       var stepBtn = document.getElementById('levels-step');
       var resetBtn = document.getElementById('levels-reset');
-      var stepLabel = document.getElementById('levels-step-label');
+      var stepInd = document.getElementById('ch10-step-indicator');
+      var stickyMini = document.getElementById('ch10-sticky-mini');
       var vA = document.getElementById('v-a');
       var vB = document.getElementById('v-b');
       var vC = document.getElementById('v-c');
       var vAcc = document.getElementById('v-acc');
       var vC1 = document.getElementById('v-c1');
-      var binA = document.getElementById('bin-a');
-      var binB = document.getElementById('bin-b');
-      var binAcc = document.getElementById('bin-acc');
-      var binC = document.getElementById('bin-c');
       var lineLoad = document.getElementById('line-load');
       var lineAdd = document.getElementById('line-add');
       var lineStore = document.getElementById('line-store');
+      var physCap = document.getElementById('level2-phys-caption');
+      var mainCap = document.getElementById('ch10-main-caption');
       var highlightClass = 'level-line-current';
+      var physAnimTimers = [];
+      var physAnimGen = 0;
+      var PAYOFF = 'No gate performed addition. Each gate answered one boolean question: is this wire high or low? Addition is what we call the pattern of their answers — seen from above.';
+
+      var STEP_HINTS = [
+        'Ready — click Step.',
+        'LOAD A: goal and rails updated.',
+        'ADD B: watch Level 2 ripple.',
+        'STORE C: all levels agree.'
+      ];
+
+      function bits4(n) {
+        n = Math.max(0, Math.min(15, n | 0));
+        return [(n >> 3) & 1, (n >> 2) & 1, (n >> 1) & 1, n & 1];
+      }
+      function binStr4(n) {
+        return bits4(n).join('');
+      }
+      function rippleSum(a, b) {
+        var ab = bits4(a), bb = bits4(b);
+        var c = 0, s = [], i, x;
+        for (i = 3; i >= 0; i--) {
+          x = ab[i] + bb[i] + c;
+          s[i] = x & 1;
+          c = (x >> 1) & 1;
+        }
+        return { s: s, cout: c };
+      }
+      function rippleLSBfirst(a, b) {
+        var ab = bits4(a), bb = bits4(b);
+        var c = 0, stages = [], k, x;
+        for (k = 3; k >= 0; k--) {
+          x = ab[k] + bb[k] + c;
+          stages.push({ cout: (x >> 1) & 1 });
+          c = (x >> 1) & 1;
+        }
+        return { stages: stages, finalCout: c };
+      }
+
+      function buildCarryBus() {
+        var bar = document.getElementById('carry-bus-bar');
+        var stubs = document.getElementById('carry-stubs');
+        if (!bar || !stubs) return;
+        bar.innerHTML = '';
+        stubs.innerHTML = '';
+        var i;
+        function L(id) { var e = document.createElement('div'); e.className = 'carry-bus-line'; e.id = id; return e; }
+        function N(nid, vid) {
+          var e = document.createElement('div');
+          e.className = 'carry-bus-node';
+          e.id = nid;
+          e.innerHTML = '<span class="cval" id="' + vid + '">0</span>';
+          return e;
+        }
+        var leftEnd = document.createElement('div');
+        leftEnd.className = 'carry-bus-end';
+        leftEnd.innerHTML = '<span class="ce" id="carry-val-final">0</span><br>c<sub>out</sub>';
+        bar.appendChild(leftEnd);
+        bar.appendChild(L('cw-msb'));
+        bar.appendChild(N('carry-node-msb', 'carry-cv-msb'));
+        bar.appendChild(L('cw-mid1'));
+        bar.appendChild(N('carry-node-mid', 'carry-cv-mid'));
+        bar.appendChild(L('cw-mid0'));
+        bar.appendChild(N('carry-node-lsb', 'carry-cv-lsb'));
+        bar.appendChild(L('cw-in'));
+        var rightEnd = document.createElement('div');
+        rightEnd.className = 'carry-bus-end';
+        rightEnd.innerHTML = '<span class="ce">0</span><br>c<sub>in</sub>';
+        bar.appendChild(rightEnd);
+        for (i = 0; i < 4; i++) {
+          var st = document.createElement('div');
+          st.className = 'carry-stub';
+          st.innerHTML = '<i id="stub-' + i + '"></i>';
+          stubs.appendChild(st);
+        }
+      }
+
+      function buildPhysDOM() {
+        var rowA = document.getElementById('phys-bits-a');
+        var rowB = document.getElementById('phys-bits-b');
+        var rowOut = document.getElementById('phys-bits-out');
+        var faRow = document.getElementById('phys-fa-row');
+        var i;
+        rowA.innerHTML = '';
+        rowB.innerHTML = '';
+        rowOut.innerHTML = '';
+        faRow.innerHTML = '';
+        for (i = 0; i < 4; i++) {
+          rowA.appendChild(document.createElement('div')).className = 'phys-bit low';
+          rowB.appendChild(document.createElement('div')).className = 'phys-bit low';
+          rowOut.appendChild(document.createElement('div')).className = 'phys-bit low';
+          var fa = document.createElement('div');
+          fa.className = 'phys-fa';
+          fa.innerHTML = '<span class="fa-t">c<sub>in</sub></span><strong>FA</strong><span class="fa-t">c<sub>out</sub></span>';
+          faRow.appendChild(fa);
+        }
+        rowOut.appendChild(document.createElement('div')).className = 'phys-bit low';
+        buildCarryBus();
+      }
+      buildPhysDOM();
+
+      function setCarryDisplay(rp) {
+        var st = rp.stages;
+        document.getElementById('carry-cv-lsb').textContent = String(st[0].cout);
+        document.getElementById('carry-cv-mid').textContent = String(st[1].cout);
+        document.getElementById('carry-cv-msb').textContent = String(st[2].cout);
+        var el = document.getElementById('carry-val-final');
+        if (el) el.textContent = String(rp.finalCout);
+      }
+
+      function clearCarryAnim() {
+        document.querySelectorAll('.carry-bus-line').forEach(function (e) { e.classList.remove('lit'); });
+        document.querySelectorAll('.carry-bus-node').forEach(function (e) { e.classList.remove('lit'); });
+        document.querySelectorAll('.carry-bus-end').forEach(function (e) { e.classList.remove('lit'); });
+        document.querySelectorAll('.carry-stub i').forEach(function (e) { e.classList.remove('lit'); });
+        document.querySelectorAll('.phys-dot').forEach(function (d) {
+          d.classList.remove('drop');
+          d.setAttribute('opacity', '0');
+        });
+        document.querySelectorAll('.phys-bits.pulse-in').forEach(function (r) { r.classList.remove('pulse-in'); });
+        document.querySelectorAll('.phys-fa').forEach(function (f) { f.classList.remove('glow'); });
+      }
+
+      function runPhysicalAddAnim() {
+        physAnimTimers.forEach(clearTimeout);
+        physAnimTimers = [];
+        var gen = ++physAnimGen;
+        var ab = getAB();
+        var res = rippleSum(ab.a, ab.b);
+        var rp = rippleLSBfirst(ab.a, ab.b);
+        setCarryDisplay(rp);
+        clearCarryAnim();
+
+        var ra = document.getElementById('phys-bits-a');
+        var rb = document.getElementById('phys-bits-b');
+        var ro = document.getElementById('phys-bits-out');
+        var fas = document.querySelectorAll('.phys-fa');
+        setPhysBits(ra, bits4(ab.a), false);
+        setPhysBits(rb, bits4(ab.b), false);
+        setPhysBits(ro, [0, 0, 0, 0, 0], true);
+
+        function t(fn, ms) {
+          physAnimTimers.push(setTimeout(function () {
+            if (gen !== physAnimGen || stepCount !== 2) return;
+            fn();
+          }, ms));
+        }
+
+        t(function () { ra.classList.add('pulse-in'); rb.classList.add('pulse-in'); }, 0);
+        t(function () { ra.classList.remove('pulse-in'); rb.classList.remove('pulse-in'); }, 220);
+
+        [3, 2, 1, 0].forEach(function (col, j) {
+          t(function () {
+            var da = document.getElementById('drop-a-' + col);
+            var db = document.getElementById('drop-b-' + col);
+            if (da) { da.classList.add('drop'); da.setAttribute('opacity', '1'); }
+            if (db) { db.classList.add('drop'); db.setAttribute('opacity', '1'); }
+            if (fas[col]) fas[col].classList.add('glow');
+            var stub = document.getElementById('stub-' + col);
+            if (stub) stub.classList.add('lit');
+          }, j * 50);
+        });
+
+        t(function () {
+          document.getElementById('cw-in').classList.add('lit');
+          document.getElementById('carry-node-lsb').classList.add('lit');
+        }, 200);
+        t(function () {
+          document.getElementById('cw-mid0').classList.add('lit');
+          document.getElementById('carry-node-mid').classList.add('lit');
+        }, 350);
+        t(function () {
+          document.getElementById('cw-mid1').classList.add('lit');
+          document.getElementById('carry-node-msb').classList.add('lit');
+        }, 500);
+        t(function () {
+          document.getElementById('cw-msb').classList.add('lit');
+          var le = document.querySelector('.carry-bus-bar > .carry-bus-end');
+          if (le) le.classList.add('lit');
+        }, 650);
+
+        var out5 = res.s.slice().concat([res.cout]);
+        [3, 2, 1, 0].forEach(function (bitIdx, j) {
+          t(function () {
+            var cells = ro.querySelectorAll('.phys-bit');
+            if (cells[bitIdx]) cells[bitIdx].className = 'phys-bit ' + (out5[bitIdx] ? 'high' : 'low');
+          }, 720 + j * 70);
+        });
+        t(function () {
+          var cells = ro.querySelectorAll('.phys-bit');
+          if (cells[4]) cells[4].className = 'phys-bit ' + (out5[4] ? 'high' : 'low');
+        }, 1020);
+        t(function () { document.querySelectorAll('.phys-fa').forEach(function (f) { f.classList.remove('glow'); }); }, 980);
+        t(function () {
+          if (gen !== physAnimGen || stepCount !== 2) return;
+          if (physCap) { physCap.textContent = PAYOFF; physCap.classList.add('payoff'); }
+        }, 1050);
+      }
+
+      function setPhysBits(rowEl, arr, dim) {
+        var cells = rowEl.querySelectorAll('.phys-bit');
+        for (var i = 0; i < arr.length && i < cells.length; i++) {
+          cells[i].className = 'phys-bit ' + (arr[i] ? 'high' : 'low') + (dim ? ' dim' : '');
+        }
+      }
+
+      function updatePhysLabels() {
+        var ab = getAB();
+        var la = document.getElementById('phys-label-a');
+        var lb = document.getElementById('phys-label-b');
+        if (la) la.textContent = 'A = ' + ab.a + ' → ' + binStr4(ab.a);
+        if (lb) lb.textContent = 'B = ' + ab.b + ' → ' + binStr4(ab.b);
+      }
+
+      function updatePhys(step) {
+        var ab = getAB();
+        var res = rippleSum(ab.a, ab.b);
+        var ra = document.getElementById('phys-bits-a');
+        var rb = document.getElementById('phys-bits-b');
+        var ro = document.getElementById('phys-bits-out');
+        if (step <= 0) {
+          physAnimGen++;
+          physAnimTimers.forEach(clearTimeout);
+          physAnimTimers = [];
+          clearCarryAnim();
+          setPhysBits(ra, bits4(ab.a), true);
+          setPhysBits(rb, bits4(ab.b), true);
+          setPhysBits(ro, [0, 0, 0, 0, 0], true);
+          setCarryDisplay(rippleLSBfirst(ab.a, ab.b));
+          if (physCap) { physCap.textContent = 'Silicon quiet — no rails asserted yet.'; physCap.classList.remove('payoff'); }
+          return;
+        }
+        if (step === 1) {
+          clearCarryAnim();
+          setPhysBits(ra, bits4(ab.a), false);
+          setPhysBits(rb, bits4(ab.b), true);
+          setPhysBits(ro, [0, 0, 0, 0, 0], true);
+          setCarryDisplay(rippleLSBfirst(ab.a, ab.b));
+          if (physCap) { physCap.textContent = 'Charge on four rails from one bank — high or low, no symbols.'; physCap.classList.remove('payoff'); }
+          return;
+        }
+        if (step === 2) return;
+        setPhysBits(ra, bits4(ab.a), false);
+        setPhysBits(rb, bits4(ab.b), false);
+        setPhysBits(ro, res.s.slice().concat([res.cout]), false);
+        setCarryDisplay(rippleLSBfirst(ab.a, ab.b));
+        document.querySelectorAll('.carry-bus-line').forEach(function (e) { e.classList.add('lit'); });
+        document.querySelectorAll('.carry-bus-node').forEach(function (e) { e.classList.add('lit'); });
+        if (physCap) { physCap.textContent = PAYOFF; physCap.classList.add('payoff'); }
+      }
+
       function getAB() {
         var a = parseInt(aIn.value, 10);
         var b = parseInt(bIn.value, 10);
         if (isNaN(a)) a = 0;
         if (isNaN(b)) b = 0;
-        a = Math.max(0, Math.min(15, a));
-        b = Math.max(0, Math.min(15, b));
-        return { a: a, b: b };
+        return { a: Math.max(0, Math.min(15, a)), b: Math.max(0, Math.min(15, b)) };
       }
+
       function render() {
         var ab = getAB();
         var a = ab.a, b = ab.b;
-        var acc = null, c = null;
-        if (stepCount >= 1) acc = a;
+        var acc = stepCount >= 1 ? a : null;
         if (stepCount >= 2) acc = a + b;
-        if (stepCount >= 3) c = a + b;
+        var c = stepCount >= 3 ? a + b : null;
         if (vA) vA.textContent = a;
         if (vB) vB.textContent = b;
         if (vC) vC.textContent = c !== null ? c : '\u2014';
         if (vAcc) vAcc.textContent = acc !== null ? acc : '\u2014';
         if (vC1) vC1.textContent = c !== null ? c : '\u2014';
-        if (binA) binA.textContent = toBin(a);
-        if (binB) binB.textContent = toBin(b);
-        if (binAcc) binAcc.textContent = toBin(acc);
-        if (binC) binC.textContent = toBin(c);
         [lineLoad, lineAdd, lineStore].forEach(function (el, i) {
           if (!el) return;
           el.classList.remove(highlightClass);
@@ -151,25 +605,281 @@
           if (i === 1 && stepCount >= 2) el.classList.add(highlightClass);
           if (i === 2 && stepCount >= 3) el.classList.add(highlightClass);
         });
-        var labels = [
-          'Step 0: initial state. Click Step to run LOAD A \u2192 ADD B \u2192 STORE C.',
-          'Step 1: LOAD A. Accumulator now holds A. Click Step again for ADD B.',
-          'Step 2: ADD B. Accumulator now holds A+B. Click Step for STORE C.',
-          'Step 3: STORE C. C = A+B. Same result at every level. Click Reset to run again.'
-        ];
-        if (stepLabel) stepLabel.textContent = labels[Math.min(stepCount, 3)];
+        if (stepInd) stepInd.textContent = 'Step ' + stepCount + ' / 3';
+        if (stickyMini) stickyMini.textContent = 'Step ' + stepCount + ' / 3 — ' + STEP_HINTS[stepCount];
+        updatePhysLabels();
+        updatePhys(stepCount);
       }
+
       if (stepBtn) stepBtn.addEventListener('click', function () {
-        if (stepCount < 3) stepCount++;
-        render();
+        if (stepCount < 3) {
+          stepCount++;
+          render();
+          if (stepCount === 2) runPhysicalAddAnim();
+        }
       });
       if (resetBtn) resetBtn.addEventListener('click', function () {
         stepCount = 0;
+        if (mainCap) mainCap.textContent = 'One process—three vocabularies. Step once and watch all three panels move together.';
         render();
       });
-      if (aIn) aIn.addEventListener('input', function () { if (stepCount === 0) render(); });
-      if (bIn) bIn.addEventListener('input', function () { if (stepCount === 0) render(); });
+      if (aIn) aIn.addEventListener('input', function () { render(); });
+      if (bIn) bIn.addEventListener('input', function () { render(); });
       render();
+
+      document.querySelectorAll('[data-real]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var key = btn.getAttribute('data-real');
+          var el = document.getElementById('ch10-real-response');
+          var txt = {
+            goal: 'Without LOAD, ADD, and STORE—and without the gates obeying them—the high-level intention would never land. The intention is <em>realized through</em> the lower levels.',
+            instr: 'The CPU only moves charge—but those motions <em>constitute</em> your program. The goal is still honored; neither view cancels the other.',
+            gates: 'At this level there is no addition — only voltages. High and low. Physics. The word &ldquo;add&rdquo; doesn&rsquo;t exist here. Meaning for the whole machine still lives across levels.'
+          };
+          if (el) {
+            el.innerHTML = txt[key] + '<div class="ch10-real-unify">All levels are real. None is the only real one.</div>';
+            el.hidden = false;
+          }
+        });
+      });
+
+      /* Ants + view blend */
+      var canvas = document.getElementById('ant-canvas');
+      var canvasWrap = document.getElementById('ant-canvas-wrap');
+      var zoomBtn = document.getElementById('ant-zoom-btn');
+      var antReset = document.getElementById('ant-reset-btn');
+      var antCap = document.getElementById('ant-caption');
+      var speedEl = document.getElementById('ant-speed');
+      var speedLabel = document.getElementById('ant-speed-label');
+      var trailHint = document.getElementById('ant-trail-hint');
+      if (!canvas || !canvas.getContext) return;
+
+      var CW = 500, CH = 300, GW = 100, GH = 60;
+      var nest = { x: 48, y: CH / 2 };
+      var food = { x: CW - 48, y: CH / 2 };
+      var trail = new Float32Array(GW * GH);
+      var ctx = canvas.getContext('2d');
+      var ants = [];
+      var N = 160;
+      var speeds = [1, 4, 8];
+      var colonyTarget = 0;
+      var viewBlend = 0;
+      var blendUntil = 0;
+      var blendFrom = 0;
+      var blendTo = 0;
+      var trailHintShown = sessionStorage.getItem('ch10-trail-hint') === '1';
+      var maxTrailSeen = 0;
+
+      function cellAt(wx, wy) {
+        var gx = Math.floor(wx / CW * GW);
+        var gy = Math.floor(wy / CH * GH);
+        if (gx < 0 || gx >= GW || gy < 0 || gy >= GH) return -1;
+        return gy * GW + gx;
+      }
+      function samplePher(x, y) {
+        var idx = cellAt(x, y);
+        return idx < 0 ? 0 : trail[idx];
+      }
+
+      function initAnts() {
+        ants = [];
+        var perDir = Math.max(1, Math.floor(N / 2));
+        var startX = 160;
+        var endX = 340;
+        var spanX = endX - startX;
+        for (var i = 0; i < N; i++) {
+          var dir = i % 2 === 0 ? 1 : -1;
+          var idx = Math.floor(i / 2);
+          var phase = (idx + 0.5) / perDir;
+          var lane = (idx % 10) - 4.5;
+          var band = Math.floor(idx / 10) % 2;
+          var xBase = dir > 0 ? startX + phase * spanX : endX - phase * spanX;
+          var yBase = CH / 2 + lane * 11 + (band ? 9 : -9) + (dir > 0 ? -5 : 5);
+          ants.push({
+            x: xBase + (Math.random() - 0.5) * 10,
+            y: yBase + (Math.random() - 0.5) * 12,
+            ang: dir > 0 ? 0 : Math.PI,
+            ret: dir < 0,
+            canSmell: dir < 0,
+            wander: Math.random() * Math.PI * 2
+          });
+        }
+        trail.fill(0);
+        maxTrailSeen = 0;
+      }
+      initAnts();
+
+      function stepOneAnt(a) {
+        var spd = 0.72 + Math.sin(a.wander) * 0.08;
+        var toFood = Math.atan2(food.y - a.y, food.x - a.x);
+        var toNest = Math.atan2(nest.y - a.y, nest.x - a.x);
+        var da, lx, ly, i, best, bi, v;
+        a.wander += 0.045;
+        if (!a.ret) {
+          if (Math.hypot(a.x - food.x, a.y - food.y) < 14) { a.ret = true; a.canSmell = true; return; }
+          da = toFood - a.ang;
+          while (da > Math.PI) da -= Math.PI * 2;
+          while (da < -Math.PI) da += Math.PI * 2;
+          a.ang += da * 0.05 + (Math.random() - 0.5) * 1.05;
+          a.ang += (CH * 0.5 - a.y) * 0.0011;
+          if (a.canSmell) {
+            best = -1; bi = 1;
+            for (i = 0; i < 3; i++) {
+              var angs = [a.ang - 0.85, a.ang, a.ang + 0.85];
+              lx = a.x + Math.cos(angs[i]) * 24;
+              ly = a.y + Math.sin(angs[i]) * 24;
+              v = samplePher(lx, ly);
+              if (v > best) { best = v; bi = i; }
+            }
+            if (best > 0.18) {
+              da = [a.ang - 0.85, a.ang, a.ang + 0.85][bi] - a.ang;
+              while (da > Math.PI) da -= Math.PI * 2;
+              while (da < -Math.PI) da += Math.PI * 2;
+              a.ang += da * 0.12;
+            }
+          }
+        } else {
+          if (Math.hypot(a.x - nest.x, a.y - nest.y) < 14) {
+            a.ret = false;
+            a.canSmell = true;
+            return;
+          }
+          da = toNest - a.ang;
+          while (da > Math.PI) da -= Math.PI * 2;
+          while (da < -Math.PI) da += Math.PI * 2;
+          a.ang += da * 0.045 + (Math.random() - 0.5) * 0.58;
+          a.ang += (CH * 0.5 - a.y) * 0.0009;
+          var ci = cellAt(a.x, a.y);
+          if (ci >= 0) trail[ci] = Math.min(120, trail[ci] + 1.0);
+        }
+        a.x += Math.cos(a.ang) * spd;
+        a.y += Math.sin(a.ang) * spd;
+        if (a.x < 4) { a.x = 4; a.ang = Math.PI - a.ang; }
+        if (a.x > CW - 4) { a.x = CW - 4; a.ang = Math.PI - a.ang; }
+        if (a.y < 4) { a.y = 4; a.ang = -a.ang; }
+        if (a.y > CH - 4) { a.y = CH - 4; a.ang = -a.ang; }
+      }
+
+      function decayTrail() {
+        for (var i = 0; i < trail.length; i++) trail[i] *= 0.995;
+      }
+
+      function drawFrame() {
+        var now = performance.now();
+        if (now < blendUntil) {
+          var u = (now - (blendUntil - 500)) / 500;
+          if (u > 1) u = 1;
+          viewBlend = blendFrom + (blendTo - blendFrom) * u;
+        } else viewBlend = blendTo;
+
+        var mult = speeds[parseInt(speedEl && speedEl.value, 10) || 0];
+        var s, i, gx, gy, p, a, mx = 0;
+        for (s = 0; s < mult; s++) {
+          for (i = 0; i < ants.length; i++) stepOneAnt(ants[i]);
+        }
+        decayTrail();
+        for (i = 0; i < trail.length; i++) if (trail[i] > mx) mx = trail[i];
+        maxTrailSeen = Math.max(maxTrailSeen, mx);
+        if (!trailHintShown && maxTrailSeen > 72 && viewBlend < 0.35) {
+          trailHintShown = true;
+          sessionStorage.setItem('ch10-trail-hint', '1');
+          if (trailHint) trailHint.classList.add('visible');
+        }
+
+        var phBase = 0.009;
+        var colony = viewBlend;
+        var phScale = 0.4 + 0.6 * colony;
+        var zoom = 1 + (1 - colony) * 3;
+        var zoomX = CW / 2 - zoom * (CW / 2);
+        var zoomY = CH / 2 - zoom * (CH / 2);
+
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = '#f7f4ef';
+        ctx.fillRect(0, 0, CW, CH);
+
+        ctx.save();
+        ctx.setTransform(zoom, 0, 0, zoom, zoomX, zoomY);
+
+        for (gy = 0; gy < GH; gy++) {
+          for (gx = 0; gx < GW; gx++) {
+            p = trail[gy * GW + gx];
+            if (p < 0.06) continue;
+            a = Math.min(0.88, p * phBase * phScale);
+            if (colony > 0.15) {
+              var glow = a * (0.35 + 0.65 * colony);
+              ctx.fillStyle = 'rgba(220,150,50,' + (glow * 0.35) + ')';
+              ctx.fillRect(gx * 5 - 1, gy * 5 - 1, 7, 7);
+            }
+            ctx.fillStyle = 'rgba(200,140,40,' + a + ')';
+            ctx.fillRect(gx * 5, gy * 5, 5, 5);
+          }
+        }
+
+        for (i = 0; i < ants.length; i++) {
+          a = ants[i];
+          ctx.beginPath();
+          ctx.arc(a.x, a.y, 0.75 + colony * 0.75, 0, Math.PI * 2);
+          ctx.fillStyle = '#111111';
+          ctx.fill();
+        }
+
+        ctx.strokeStyle = colony > 0.4 ? 'rgba(46,107,138,0.75)' : 'rgba(46,107,138,0.45)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(nest.x, nest.y, 10, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.strokeStyle = colony > 0.4 ? 'rgba(139,90,43,0.85)' : 'rgba(139,90,43,0.5)';
+        ctx.beginPath();
+        ctx.arc(food.x, food.y, 10, 0, Math.PI * 2);
+        ctx.stroke();
+
+        if (colony > 0.2) {
+          ctx.globalAlpha = Math.min(1, (colony - 0.2) / 0.5);
+          ctx.fillStyle = '#1a1a2e';
+          ctx.font = 'bold 11px Inter,sans-serif';
+          ctx.fillText('Nest', nest.x - 14, nest.y + 26);
+          ctx.fillText('Food', food.x - 16, food.y + 26);
+          ctx.globalAlpha = 1;
+        }
+
+        ctx.restore();
+
+        if (canvasWrap) {
+          canvasWrap.classList.toggle('colony-glow', colony > 0.65);
+        }
+
+        requestAnimationFrame(drawFrame);
+      }
+
+      drawFrame();
+
+      function setColonyView(wantColony) {
+        colonyTarget = wantColony ? 1 : 0;
+        blendFrom = viewBlend;
+        blendTo = colonyTarget;
+        blendUntil = performance.now() + 500;
+        if (zoomBtn) zoomBtn.textContent = wantColony ? 'Switch to ant view' : 'Switch to colony view';
+        if (antCap) {
+          antCap.textContent = wantColony
+            ? 'At the colony level: black dots and a trail emerge together. No ant planned this.'
+            : 'At the ant level: zoomed in on black dots and fading scent. No ant knows about trails, food, or the colony.';
+        }
+      }
+
+      if (zoomBtn) zoomBtn.addEventListener('click', function () {
+        setColonyView(colonyTarget < 0.5);
+      });
+      setColonyView(false);
+
+      if (antReset) antReset.addEventListener('click', function () { initAnts(); });
+      if (speedEl) {
+        speedEl.addEventListener('input', function () {
+          var v = parseInt(speedEl.value, 10);
+          if (speedLabel) speedLabel.textContent = speeds[v] + '×';
+          speedEl.setAttribute('aria-valuetext', speeds[v] + 'x');
+        });
+      }
     })();
   </script>
 </body>

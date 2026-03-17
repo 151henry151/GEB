@@ -4,6 +4,19 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.17] — 2026-03-17
+
+### Changed
+
+- Chapter X (Ant Fugue): increase the ant population to keep a steadier stream across the zoomed corridor, slow the ants down, and spread their starting positions more widely so the two directions stay visibly populated.
+
+## [0.15.16] — 2026-03-17
+
+### Changed
+
+- Chapter X (Levels of Description, and Computer Systems): keep the right-side Level 2 dashboard as one uninterrupted column, move the FA explanation callout into the lower-left grid area, and retain the carry bus, FA row, and sum rails as a coordinated physical-signals display.
+- Chapter X (Ant Fugue): zoom the ant view into the central corridor, render ants as black dots in both views, spread the ant stream across the visible band in two opposing directions, and increase wandering so the ants stray farther from the center line while still reading as a colony-level trail.
+
 ## [0.15.15] — 2026-03-15
 
 ### Changed
