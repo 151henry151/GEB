@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.12] — 2026-03-17
+
+### Fixed
+
+- Chapter VII (Propositional Calculus): rename parser right-subtree variable from `r` to `rFn` in `parseAnd`, `parseOr`, and `parseImpl` so the evaluation closure no longer shadows the `r` parameter (truth value for R), fixing "r is not a function" and enabling build-your-own formulas with ∧, ∨, ⊃ to evaluate and display truth tables correctly.
+
+### Changed
+
+- Chapter VII (Propositional Calculus): treat build mode as implication when the built formula is P⊃Q so the modus ponens explanation and "Show modus ponens" button work in Build your own; update fallback message to "Build P⊃Q (click P, then ⊃, then Q) or switch to Preset to see modus ponens."
+
 ## [0.15.11] — 2026-03-16
 
 ### Changed

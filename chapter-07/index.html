@@ -55,34 +55,71 @@
     <div class="chapter-right">
       <p class="companion-caption">Build and explore the propositional calculus: pick a formula, flip P and Q, and watch the truth table. Then try modus ponens—the rule that gets you from P and P⊃Q to Q.</p>
       <div class="companion-box" id="prop-companion">
-        <label style="display:block; margin-bottom:0.25rem;"><strong>Choose a formula</strong></label>
-        <select id="prop-formula" class="logic" style="width:100%; max-width:20rem; padding:0.35rem; margin-bottom:0.75rem;" aria-label="Formula">
-          <option value="and">P ∧ Q (and)</option>
-          <option value="or">P ∨ Q (or)</option>
-          <option value="not">~P (not)</option>
-          <option value="impl">P ⊃ Q (if-then)</option>
-          <option value="nand">~(P ∧ Q)</option>
-          <option value="equiv">(P ⊃ Q) ∧ (Q ⊃ P)</option>
-          <option value="xor">~(P ↔ Q)  (exclusive or)</option>
-        </select>
+        <div class="prop-mode-tabs" role="tablist">
+          <button type="button" role="tab" aria-selected="true" data-mode="preset" class="prop-mode-tab active">Preset formula</button>
+          <button type="button" role="tab" aria-selected="false" data-mode="build" class="prop-mode-tab">Build your own</button>
+        </div>
+        <div id="prop-preset-area">
+          <label style="display:block; margin-bottom:0.25rem;"><strong>Choose a formula</strong></label>
+          <select id="prop-formula" class="logic" style="width:100%; max-width:20rem; padding:0.35rem; margin-bottom:0.75rem;" aria-label="Formula">
+            <option value="and">P ∧ Q (and)</option>
+            <option value="or">P ∨ Q (or)</option>
+            <option value="not">~P (not)</option>
+            <option value="impl">P ⊃ Q (if-then)</option>
+            <option value="nand">~(P ∧ Q)</option>
+            <option value="equiv">(P ⊃ Q) ∧ (Q ⊃ P)</option>
+            <option value="xor">~(P ↔ Q)  (exclusive or)</option>
+            <option value="taut">P ∨ ¬P  (tautology)</option>
+          </select>
+        </div>
+        <div id="prop-build-area" style="display:none;">
+          <p style="margin-bottom:0.35rem;"><strong>Formula</strong></p>
+          <div id="prop-built-display" class="logic prop-built-display" style="min-height:2rem; padding:0.4rem; background:var(--panel); border-radius:4px; margin-bottom:0.5rem;"></div>
+          <div class="prop-builder-buttons">
+            <button type="button" class="btn btn-secondary prop-sym" data-sym="P">P</button>
+            <button type="button" class="btn btn-secondary prop-sym" data-sym="Q">Q</button>
+            <button type="button" class="btn btn-secondary prop-sym" data-sym="R">R</button>
+            <button type="button" class="btn btn-secondary prop-sym" data-sym="∧">∧</button>
+            <button type="button" class="btn btn-secondary prop-sym" data-sym="∨">∨</button>
+            <button type="button" class="btn btn-secondary prop-sym" data-sym="¬">¬</button>
+            <button type="button" class="btn btn-secondary prop-sym" data-sym="⊃">⊃</button>
+            <button type="button" class="btn btn-secondary prop-sym" data-sym="(">(</button>
+            <button type="button" class="btn btn-secondary prop-sym" data-sym=")">)</button>
+            <button type="button" class="btn btn-secondary" id="prop-backspace">⌫</button>
+          </div>
+        </div>
         <p style="margin-bottom:0.35rem;"><strong>Assign truth values</strong></p>
         <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:0.75rem;">
-          <label class="prop-toggle"><input type="checkbox" id="prop-p"> <strong>P</strong></label>
-          <label class="prop-toggle"><input type="checkbox" id="prop-q"> <strong>Q</strong></label>
+          <label class="prop-toggle" id="prop-p-wrap"><input type="checkbox" id="prop-p"> <strong>P</strong></label>
+          <label class="prop-toggle" id="prop-q-wrap"><input type="checkbox" id="prop-q"> <strong>Q</strong></label>
+          <label class="prop-toggle prop-r-wrap" id="prop-r-wrap" style="display:none;"><input type="checkbox" id="prop-r"> <strong>R</strong></label>
         </div>
-        <div id="prop-result-box" style="padding:0.6rem; border-radius:6px; margin-bottom:1rem; text-align:center; font-size:1.1rem;">
+        <div id="prop-result-box" style="padding:0.6rem; border-radius:6px; margin-bottom:0.5rem; text-align:center; font-size:1.1rem;">
           <span id="prop-formula-display" class="logic"></span> = <span id="prop-result" style="font-weight:700;"></span>
         </div>
+        <p id="prop-tautology-msg" class="prop-tautology-msg" style="display:none;">Tautology — true no matter what P and Q mean. This is a theorem of the propositional calculus.</p>
         <p style="margin-bottom:0.35rem;"><strong>Truth table</strong> <span style="color:var(--muted); font-size:0.85rem;">(current row highlighted)</span></p>
         <table id="prop-truth-table" class="logic" style="width:100%; border-collapse:collapse; font-size:0.9rem;">
-          <thead><tr><th style="padding:0.3rem; border:1px solid var(--border);">P</th><th style="padding:0.3rem; border:1px solid var(--border);">Q</th><th style="padding:0.3rem; border:1px solid var(--border);">Result</th></tr></thead>
+          <thead><tr id="prop-thead"><th style="padding:0.3rem; border:1px solid var(--border);">P</th><th style="padding:0.3rem; border:1px solid var(--border);">Q</th><th style="padding:0.3rem; border:1px solid var(--border);">Result</th></tr></thead>
           <tbody id="prop-tbody"></tbody>
         </table>
         <div id="prop-modus" style="margin-top:1.25rem; padding:0.75rem; background:var(--panel); border-radius:6px; border-left:4px solid var(--accent);">
           <p style="margin:0 0 0.5rem 0;"><strong>Modus ponens</strong></p>
-          <p style="margin:0 0 0.35rem 0; font-size:0.9rem;">If P is true and P⊃Q is true, then Q must be true. Set P = T above and choose P⊃Q; when the formula is T, Q is forced to T.</p>
-          <p id="prop-modus-status" style="margin:0; font-size:0.9rem; color:var(--muted);"></p>
+          <p style="margin:0 0 0.35rem 0; font-size:0.9rem;">If P is true and P⊃Q is true, then Q must be true.</p>
+          <button type="button" class="btn btn-secondary" id="prop-modus-animate">Show modus ponens</button>
+          <p id="prop-modus-status" style="margin:0.5rem 0 0 0; font-size:0.9rem; color:var(--muted);"></p>
         </div>
+      </div>
+  <style>
+    .prop-mode-tabs { display: flex; gap: 0.25rem; margin-bottom: 0.75rem; }
+    .prop-mode-tab { padding: 0.35rem 0.6rem; font-size: 0.9rem; border-radius: 6px; border: 1px solid var(--border); background: var(--panel); cursor: pointer; }
+    .prop-mode-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .prop-built-display.tautology { box-shadow: 0 0 0 2px #b59a2d; background: rgba(181,154,45,0.15); }
+    .prop-result-box.tautology { box-shadow: 0 0 0 2px #b59a2d; background: rgba(181,154,45,0.15); }
+    .prop-tautology-msg { font-size: 0.9rem; color: #8a7426; font-weight: 500; margin-bottom: 0.75rem; }
+    .prop-builder-buttons { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.75rem; }
+    .prop-glow { box-shadow: 0 0 8px var(--accent); }
+  </style>
       </div>
     </div>
   </div>
@@ -94,29 +131,117 @@
       var formulaSelect = document.getElementById('prop-formula');
       var pCheck = document.getElementById('prop-p');
       var qCheck = document.getElementById('prop-q');
+      var rCheck = document.getElementById('prop-r');
       var formulaDisplay = document.getElementById('prop-formula-display');
       var resultSpan = document.getElementById('prop-result');
       var resultBox = document.getElementById('prop-result-box');
       var tbody = document.getElementById('prop-tbody');
+      var thead = document.getElementById('prop-thead');
       var modusStatus = document.getElementById('prop-modus-status');
+      var presetArea = document.getElementById('prop-preset-area');
+      var buildArea = document.getElementById('prop-build-area');
+      var builtDisplay = document.getElementById('prop-built-display');
+      var tautologyMsg = document.getElementById('prop-tautology-msg');
+      var propRWrap = document.getElementById('prop-r-wrap');
+      var builtFormula = '';
 
       var formulas = {
-        and:  { label: 'P ∧ Q', eval: function (p, q) { return p && q; } },
-        or:   { label: 'P ∨ Q', eval: function (p, q) { return p || q; } },
-        not:  { label: '~P',   eval: function (p, q) { return !p; } },
-        impl: { label: 'P ⊃ Q', eval: function (p, q) { return !p || q; } },
-        nand: { label: '~(P ∧ Q)', eval: function (p, q) { return !(p && q); } },
-        equiv:{ label: 'P ↔ Q', eval: function (p, q) { return (!p || q) && (!q || p); } },
-        xor:  { label: 'P ⊕ Q', eval: function (p, q) { return p !== q; } }
+        and:  { label: 'P ∧ Q', eval: function (p, q, r) { return p && q; } },
+        or:   { label: 'P ∨ Q', eval: function (p, q, r) { return p || q; } },
+        not:  { label: '~P',   eval: function (p, q, r) { return !p; } },
+        impl: { label: 'P ⊃ Q', eval: function (p, q, r) { return !p || q; } },
+        nand: { label: '~(P ∧ Q)', eval: function (p, q, r) { return !(p && q); } },
+        equiv:{ label: 'P ↔ Q', eval: function (p, q, r) { return (!p || q) && (!q || p); } },
+        xor:  { label: 'P ⊕ Q', eval: function (p, q, r) { return p !== q; } },
+        taut: { label: 'P ∨ ¬P', eval: function (p, q, r) { return p || !p; } }
       };
 
       function getVal() {
-        var p = pCheck && pCheck.checked;
-        var q = qCheck && qCheck.checked;
-        return { p: p, q: q };
+        return {
+          p: pCheck && pCheck.checked,
+          q: qCheck && qCheck.checked,
+          r: rCheck && rCheck.checked
+        };
+      }
+
+      function isBuildMode() {
+        return buildArea && buildArea.style.display !== 'none';
+      }
+
+      function parseFormula(str) {
+        str = String(str).replace(/\s/g, '');
+        if (!str) return null;
+        var pos = 0;
+        function skip() { while (str[pos] === ' ') pos++; }
+        function parseAtom() {
+          skip();
+          if (str[pos] === '¬' || str[pos] === '~') {
+            pos++;
+            var a = parseAtom();
+            return a === null ? null : function (p, q, r) { return !a(p, q, r); };
+          }
+          if (str[pos] === '(') {
+            pos++;
+            var inner = parseImpl();
+            skip();
+            if (str[pos] === ')') { pos++; return inner; }
+            return null;
+          }
+          if (str[pos] === 'P') { pos++; return function (p, q, r) { return p; }; }
+          if (str[pos] === 'Q') { pos++; return function (p, q, r) { return q; }; }
+          if (str[pos] === 'R') { pos++; return function (p, q, r) { return r; }; }
+          return null;
+        }
+        function parseAnd() {
+          var left = parseAtom();
+          if (left === null) return null;
+          skip();
+          while (str[pos] === '∧') {
+            pos++;
+            var right = parseAtom();
+            if (right === null) return null;
+            var l = left, rFn = right;
+            left = function (p, q, r) { return l(p, q, r) && rFn(p, q, r); };
+            skip();
+          }
+          return left;
+        }
+        function parseOr() {
+          var left = parseAnd();
+          if (left === null) return null;
+          skip();
+          while (str[pos] === '∨') {
+            pos++;
+            var right = parseAnd();
+            if (right === null) return null;
+            var l = left, rFn = right;
+            left = function (p, q, r) { return l(p, q, r) || rFn(p, q, r); };
+            skip();
+          }
+          return left;
+        }
+        function parseImpl() {
+          var left = parseOr();
+          if (left === null) return null;
+          skip();
+          if (str[pos] === '⊃' || str[pos] === '\u2283') {
+            pos++;
+            var right = parseImpl();
+            if (right === null) return null;
+            var l = left, rFn = right;
+            return function (p, q, r) { return !l(p, q, r) || rFn(p, q, r); };
+          }
+          return left;
+        }
+        var out = parseImpl();
+        return pos === str.length ? out : null;
       }
 
       function currentFormula() {
+        if (isBuildMode()) {
+          var fn = parseFormula(builtFormula);
+          return fn ? { label: builtFormula || '(empty)', eval: fn } : null;
+        }
         var id = formulaSelect && formulaSelect.value;
         return id && formulas[id] ? formulas[id] : formulas.and;
       }
@@ -124,43 +249,64 @@
       function update() {
         var v = getVal();
         var f = currentFormula();
-        var result = f.eval(v.p, v.q);
+        if (!f) {
+          if (formulaDisplay) formulaDisplay.textContent = builtFormula || '(empty)';
+          if (resultSpan) { resultSpan.textContent = '—'; resultSpan.className = ''; }
+          if (resultBox) resultBox.style.background = ''; resultBox.classList.remove('tautology');
+          if (tautologyMsg) tautologyMsg.style.display = 'none';
+          if (builtDisplay) builtDisplay.classList.remove('tautology');
+          tbody.innerHTML = '';
+          if (modusStatus) modusStatus.textContent = 'Build a valid formula (e.g. P ∧ Q).';
+          return;
+        }
+        var result = f.eval(v.p, v.q, v.r);
         if (formulaDisplay) formulaDisplay.textContent = f.label;
         if (resultSpan) {
           resultSpan.textContent = result ? 'TRUE' : 'FALSE';
           resultSpan.className = result ? 'truth-true' : 'truth-false';
         }
-        if (resultBox) resultBox.style.background = result ? 'rgba(58,125,68,0.12)' : 'rgba(139,58,58,0.12)';
-        buildTruthTable(v.p, v.q, f, result);
-        updateModusStatus(v, f, result);
-      }
-
-      function buildTruthTable(currentP, currentQ, f, currentResult) {
-        if (!tbody) return;
-        var rows = [
-          [false, false],
-          [false, true],
-          [true, false],
-          [true, true]
-        ];
+        if (resultBox) {
+          resultBox.style.background = result ? 'rgba(58,125,68,0.12)' : 'rgba(139,58,58,0.12)';
+          resultBox.classList.remove('tautology');
+        }
+        var rows = isBuildMode() ? [ [false,false,false],[false,false,true],[false,true,false],[false,true,true],[true,false,false],[true,false,true],[true,true,false],[true,true,true] ] : [ [false,false,false],[false,true,false],[true,false,false],[true,true,false] ];
+        var currentVals = [v.p, v.q, v.r];
+        var allTrue = true;
         tbody.innerHTML = '';
-        rows.forEach(function (pair) {
-          var p = pair[0], q = pair[1];
-          var val = f.eval(p, q);
-          var isCurrent = p === currentP && q === currentQ;
+        if (isBuildMode() && thead) {
+          thead.innerHTML = '<tr><th style="padding:0.3rem; border:1px solid var(--border);">P</th><th style="padding:0.3rem; border:1px solid var(--border);">Q</th><th style="padding:0.3rem; border:1px solid var(--border);">R</th><th style="padding:0.3rem; border:1px solid var(--border);">Result</th></tr>';
+        } else if (thead) {
+          thead.innerHTML = '<tr><th style="padding:0.3rem; border:1px solid var(--border);">P</th><th style="padding:0.3rem; border:1px solid var(--border);">Q</th><th style="padding:0.3rem; border:1px solid var(--border);">Result</th></tr>';
+        }
+        rows.forEach(function (triple) {
+          var p = triple[0], q = triple[1], r = triple[2];
+          var val = f.eval(p, q, r);
+          if (!val) allTrue = false;
+          var isCurrent = p === v.p && q === v.q && (!isBuildMode() || r === v.r);
           var tr = document.createElement('tr');
-          if (isCurrent) tr.style.background = 'var(--accent)';
-          if (isCurrent) tr.style.color = '#fff';
-          tr.innerHTML = '<td style="padding:0.3rem; border:1px solid var(--border);">' + (p ? 'T' : 'F') + '</td><td style="padding:0.3rem; border:1px solid var(--border);">' + (q ? 'T' : 'F') + '</td><td style="padding:0.3rem; border:1px solid var(--border);">' + (val ? 'T' : 'F') + '</td>';
+          if (isCurrent) tr.style.background = 'var(--accent)'; if (isCurrent) tr.style.color = '#fff';
+          var cells = (p ? 'T' : 'F') + '</td><td style="padding:0.3rem; border:1px solid var(--border);">' + (q ? 'T' : 'F');
+          if (isBuildMode()) cells += '</td><td style="padding:0.3rem; border:1px solid var(--border);">' + (r ? 'T' : 'F');
+          tr.innerHTML = '<td style="padding:0.3rem; border:1px solid var(--border);">' + cells + '</td><td style="padding:0.3rem; border:1px solid var(--border);">' + (val ? 'T' : 'F') + '</td>';
           tbody.appendChild(tr);
         });
+        if (allTrue && rows.length > 0) {
+          if (resultBox) resultBox.classList.add('tautology');
+          if (tautologyMsg) tautologyMsg.style.display = 'block';
+          if (builtDisplay && isBuildMode()) builtDisplay.classList.add('tautology');
+        } else {
+          if (tautologyMsg) tautologyMsg.style.display = 'none';
+          if (builtDisplay) builtDisplay.classList.remove('tautology');
+        }
+        updateModusStatus(v, f, result);
       }
 
       function updateModusStatus(v, f, result) {
         if (!modusStatus) return;
-        var isImpl = formulaSelect && formulaSelect.value === 'impl';
+        var builtNorm = builtFormula.replace(/\s/g, '');
+        var isImpl = (!isBuildMode() && formulaSelect && formulaSelect.value === 'impl') || (isBuildMode() && f && (builtNorm === 'P\u2283Q' || builtNorm === 'P⊃Q'));
         if (!isImpl) {
-          modusStatus.textContent = 'Select P ⊃ Q above to see modus ponens in action.';
+          modusStatus.textContent = isBuildMode() ? 'Build P⊃Q (click P, then ⊃, then Q) or switch to Preset to see modus ponens.' : 'Select P ⊃ Q above to see modus ponens in action.';
           return;
         }
         if (v.p && result) {
@@ -172,9 +318,73 @@
         }
       }
 
+      document.querySelectorAll('.prop-mode-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var mode = tab.getAttribute('data-mode');
+          document.querySelectorAll('.prop-mode-tab').forEach(function (t) {
+            t.classList.toggle('active', t.getAttribute('data-mode') === mode);
+            t.setAttribute('aria-selected', t.getAttribute('data-mode') === mode);
+          });
+          if (mode === 'build') {
+            presetArea.style.display = 'none';
+            buildArea.style.display = 'block';
+            propRWrap.style.display = 'block';
+          } else {
+            presetArea.style.display = 'block';
+            buildArea.style.display = 'none';
+            propRWrap.style.display = 'none';
+          }
+          update();
+        });
+      });
+      document.querySelectorAll('.prop-sym').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          builtFormula += btn.getAttribute('data-sym');
+          if (builtDisplay) builtDisplay.textContent = builtFormula;
+          update();
+        });
+      });
+      document.getElementById('prop-backspace').addEventListener('click', function () {
+        builtFormula = builtFormula.slice(0, -1);
+        if (builtDisplay) builtDisplay.textContent = builtFormula;
+        update();
+      });
+
+      document.getElementById('prop-modus-animate').addEventListener('click', function () {
+        var pWrap = document.getElementById('prop-p-wrap');
+        var qWrap = document.getElementById('prop-q-wrap');
+        if (isBuildMode()) {
+          builtFormula = 'P\u2283Q';
+          if (builtDisplay) builtDisplay.textContent = builtFormula;
+        } else {
+          formulaSelect.value = 'impl';
+        }
+        pCheck.checked = true;
+        qCheck.checked = false;
+        if (rCheck) rCheck.checked = false;
+        update();
+        function removeGlow() {
+          pWrap.classList.remove('prop-glow');
+          qWrap.classList.remove('prop-glow');
+          if (resultBox) resultBox.classList.remove('prop-glow');
+        }
+        pWrap.classList.add('prop-glow');
+        setTimeout(function () {
+          update();
+          if (resultBox) resultBox.classList.add('prop-glow');
+          setTimeout(function () {
+            qCheck.checked = true;
+            update();
+            qWrap.classList.add('prop-glow');
+            setTimeout(removeGlow, 900);
+          }, 800);
+        }, 800);
+      });
+
       if (formulaSelect) formulaSelect.addEventListener('change', update);
       if (pCheck) pCheck.addEventListener('change', update);
       if (qCheck) qCheck.addEventListener('change', update);
+      if (rCheck) rCheck.addEventListener('change', update);
       update();
     })();
   </script>
