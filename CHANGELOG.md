@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.15] — 2026-03-15
+
+### Changed
+
+- Chapter IX (Mumon and Gödel): show theorem text G in a persistent banner above phase content so it remains visible during corridors, chamber, and MU while explanations unfold.
+
 ## [0.15.14] — 2026-03-18
 
 ### Changed
