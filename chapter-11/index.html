@@ -8,6 +8,316 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    .ch11-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      transition: background-color 400ms ease, border-color 400ms ease, color 400ms ease;
+    }
+    .ch11-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.55rem;
+    }
+    .ch11-mode-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .ch11-question {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.35;
+      transition: color 400ms ease, opacity 400ms ease;
+    }
+    .ch11-note {
+      margin: 0 0 0.6rem 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .ch11-concepts {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.35rem;
+      margin-bottom: 0.6rem;
+    }
+    .ch11-concept {
+      appearance: none;
+      padding: 0.45rem 0.35rem;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: rgba(46, 107, 138, 0.06);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 400ms ease, box-shadow 400ms ease, opacity 400ms ease, background-color 400ms ease, border-color 400ms ease, color 400ms ease;
+    }
+    .ch11-concept span {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: inherit;
+      transition: font-size 400ms ease, letter-spacing 400ms ease, color 400ms ease, opacity 400ms ease;
+    }
+    .ch11-concept small {
+      display: block;
+      margin-top: 0.18rem;
+      font-size: 0.68rem;
+      line-height: 1.2;
+      color: var(--muted);
+      transition: opacity 400ms ease, max-height 400ms ease, margin-top 400ms ease;
+    }
+    .ch11-concept.is-active {
+      box-shadow: 0 0 14px rgba(181, 135, 59, 0.24);
+      transform: translateY(-1px);
+    }
+    .ch11-thought {
+      margin: 0 0 0.65rem 0;
+      padding: 0.45rem 0.55rem;
+      background: rgba(46, 107, 138, 0.08);
+      border-left: 3px solid var(--accent-secondary);
+      border-radius: 4px;
+      font-size: 0.86rem;
+      color: var(--text);
+      line-height: 1.35;
+    }
+    .ch11-thought strong { color: var(--accent); }
+    .ch11-thought .sub { color: var(--muted); }
+    .ch11-network {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: linear-gradient(180deg, rgba(46, 107, 138, 0.05), rgba(46, 107, 138, 0.02));
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: background-color 400ms ease, opacity 400ms ease, filter 400ms ease, border-color 400ms ease;
+    }
+    .ch11-stage {
+      position: relative;
+    }
+    .ch11-hit-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+    .ch11-hit {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      color: transparent;
+    }
+    .ch11-hit:hover,
+    .ch11-hit:focus-visible {
+      background: rgba(181, 135, 59, 0.12);
+      box-shadow: 0 0 0 1px rgba(181, 135, 59, 0.55), 0 0 10px rgba(181, 135, 59, 0.2);
+      outline: none;
+    }
+    .ch11-edge {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke: var(--ch11-edge);
+      stroke-width: 1px;
+      opacity: 0.34;
+      transition: stroke 400ms ease, stroke-width 400ms ease, opacity 400ms ease, d 400ms ease;
+    }
+    .ch11-edge.is-active {
+      stroke: var(--ch11-edge-active);
+      opacity: 0.95;
+    }
+    .ch11-mode-symbol .ch11-edge {
+      stroke-width: 2.5px;
+    }
+    .ch11-node-group {
+      transition: opacity 400ms ease, transform 400ms ease;
+    }
+    .ch11-node-core {
+      fill: var(--ch11-node-off);
+      stroke: var(--ch11-node-border);
+      stroke-width: 1.5;
+      transition: fill 400ms ease, stroke 400ms ease, opacity 400ms ease, r 400ms ease, filter 400ms ease;
+    }
+    .ch11-node-label {
+      text-anchor: middle;
+      dominant-baseline: middle;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      fill: var(--ch11-label);
+      opacity: 0;
+      transition: opacity 400ms ease, fill 400ms ease, transform 400ms ease, font-size 400ms ease;
+      pointer-events: none;
+    }
+    .ch11-pulse {
+      pointer-events: none;
+      transition: opacity 400ms ease, transform 400ms ease;
+    }
+    .ch11-mode-neuron .ch11-pulse {
+      filter: none;
+    }
+    .ch11-travel-dot {
+      pointer-events: none;
+      transition: opacity 400ms ease, fill 400ms ease, filter 400ms ease, r 400ms ease;
+    }
+    .ch11-caption {
+      margin: 0.6rem 0 0 0;
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.4;
+      transition: color 400ms ease, opacity 400ms ease;
+    }
+    .ch11-mode-neuron {
+      --ch11-panel-bg: #f8fbff;
+      --ch11-panel-border: #d7dfea;
+      --ch11-panel-text: #243243;
+      --ch11-muted: #64748b;
+      --ch11-network-bg: #fbfdff;
+      --ch11-edge: #3a4a5a;
+      --ch11-edge-active: #8cc4ff;
+      --ch11-node-off: #2a2a3a;
+      --ch11-node-on: #a8d8ff;
+      --ch11-node-border: #4a5568;
+      --ch11-label: #1f2937;
+      --ch11-concept-bg: #eef2f7;
+      --ch11-concept-border: #cbd5e1;
+      --ch11-concept-text: #334155;
+      --ch11-concept-muted: #64748b;
+      --ch11-concept-active-bg: #dceafe;
+      --ch11-concept-active-border: #8cc4ff;
+      --ch11-concept-active-text: #17324d;
+      --ch11-concept-active-shadow: rgba(140, 196, 255, 0.24);
+      --ch11-pulse-fill: rgba(168, 216, 255, 0.08);
+      --ch11-pulse-stroke: #a8d8ff;
+      --ch11-travel-fill: #a8d8ff;
+      --ch11-text-color: #243243;
+      color: var(--ch11-text-color);
+    }
+    .ch11-mode-symbol {
+      --ch11-panel-bg: #fffaf0;
+      --ch11-panel-border: #ddc79f;
+      --ch11-panel-text: #5a4630;
+      --ch11-muted: #8b6c45;
+      --ch11-network-bg: #fdf6e8;
+      --ch11-edge: rgba(196, 144, 48, 0.5);
+      --ch11-edge-active: #d4a030;
+      --ch11-node-off: #f5e6c8;
+      --ch11-node-on: #d4a030;
+      --ch11-node-border: #b07a2c;
+      --ch11-label: #50361f;
+      --ch11-concept-bg: #f5e6c8;
+      --ch11-concept-border: #d8c29d;
+      --ch11-concept-text: #5a4630;
+      --ch11-concept-muted: #8b6c45;
+      --ch11-concept-active-bg: #f6d893;
+      --ch11-concept-active-border: #c9902b;
+      --ch11-concept-active-text: #4e341d;
+      --ch11-concept-active-shadow: rgba(212, 160, 48, 0.28);
+      --ch11-pulse-fill: rgba(212, 160, 48, 0.14);
+      --ch11-pulse-stroke: #d4a030;
+      --ch11-travel-fill: #d4a030;
+      --ch11-text-color: #5a4630;
+      color: var(--ch11-text-color);
+    }
+    .ch11-panel {
+      background: var(--ch11-panel-bg);
+      border-color: var(--ch11-panel-border);
+      color: var(--ch11-panel-text);
+    }
+    .ch11-network {
+      background: var(--ch11-network-bg);
+      border-color: var(--ch11-panel-border);
+    }
+    .ch11-note,
+    .ch11-caption,
+    .ch11-thought,
+    .ch11-question {
+      color: var(--ch11-muted);
+    }
+    .ch11-thought {
+      background: color-mix(in srgb, var(--ch11-panel-bg) 78%, var(--ch11-concept-active-bg) 22%);
+      border-left-color: var(--ch11-concept-active-border);
+      color: var(--ch11-panel-text);
+    }
+    .ch11-concept {
+      background: var(--ch11-concept-bg);
+      border-color: var(--ch11-concept-border);
+      color: var(--ch11-concept-text);
+    }
+    .ch11-concept small {
+      color: var(--ch11-concept-muted);
+    }
+    .ch11-concept.is-active {
+      border-color: var(--ch11-concept-active-border);
+      background: var(--ch11-concept-active-bg);
+      box-shadow: 0 0 0 1px var(--ch11-concept-active-shadow);
+      transform: translateY(-1px) scale(1.02);
+    }
+    .ch11-mode-neuron .ch11-concept span {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+    }
+    .ch11-mode-neuron .ch11-concept small {
+      opacity: 0;
+      max-height: 0;
+      margin-top: 0;
+      overflow: hidden;
+    }
+    .ch11-mode-neuron .ch11-concept.is-active {
+      border-color: var(--ch11-concept-active-border);
+      background: var(--ch11-concept-active-bg);
+      color: var(--ch11-concept-active-text);
+      box-shadow: 0 0 0 1px rgba(140, 196, 255, 0.24);
+      transform: translateY(-1px);
+    }
+    .ch11-mode-symbol .ch11-concept span {
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+    }
+    .ch11-mode-symbol .ch11-concept small {
+      opacity: 1;
+      max-height: 2rem;
+      margin-top: 0.18rem;
+      overflow: visible;
+    }
+    .ch11-mode-symbol .ch11-concept.is-active {
+      transform: translateY(-1px) scale(1.04);
+      box-shadow: 0 0 0 1px rgba(201, 144, 43, 0.2), 0 0 14px rgba(212, 160, 48, 0.26);
+    }
+    .ch11-mode-neuron .ch11-network { opacity: 1; filter: none; }
+    .ch11-mode-symbol .ch11-network { opacity: 1; filter: none; }
+    .ch11-mode-neuron .ch11-node-label { opacity: 0; }
+    .ch11-mode-symbol .ch11-node-label { opacity: 1; }
+    .ch11-mode-neuron .ch11-caption,
+    .ch11-mode-neuron .ch11-question,
+    .ch11-mode-neuron .ch11-note,
+    .ch11-mode-neuron .ch11-thought {
+      color: var(--ch11-muted);
+    }
+    .ch11-mode-symbol .ch11-caption,
+    .ch11-mode-symbol .ch11-question,
+    .ch11-mode-symbol .ch11-note,
+    .ch11-mode-symbol .ch11-thought {
+      color: var(--ch11-muted);
+    }
+    @media (max-width: 700px) {
+      .ch11-concepts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
 </head>
 <body>
   <div class="chapter-layout">
@@ -49,19 +359,33 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">A 1D chain of cells: a minimal model of activation spreading. Turn some on (click to toggle); a cell turns ON if it has at least two ON neighbors. Click Step to apply the rule—e.g. a single 0 between two 1s fills in.</p>
-      <div class="companion-box" id="neuron-companion">
-        <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
-          <p style="margin:0 0 0.35rem 0;"><strong>How it works</strong></p>
-          <p style="margin:0;">Each cell is either ON (1) or OFF (0). <strong>Rule:</strong> a cell turns <strong>ON</strong> if it has <strong>at least two</strong> neighbors that are ON. (In this 1D chain, each cell has a left and right neighbor; ends have only one, so they never turn on by the rule.) So a 0 between two 1s becomes 1 on the next step—activation fills in the gaps.</p>
+      <p class="companion-caption" id="ch11-main-caption">At one level: neurons firing. At another: thoughts emerging. Click any neuron to perturb the network.</p>
+      <div class="companion-box ch11-panel" id="ch11-companion">
+        <div class="ch11-toolbar">
+          <div class="ch11-mode-row">
+            <div class="ch11-question" id="ch11-question">Are thoughts “just” neurons?</div>
+            <button type="button" class="btn btn-primary" id="ch11-mode-btn">Switch to symbol view</button>
+          </div>
+          <button type="button" class="btn btn-secondary" id="ch11-reset-btn">Reset</button>
         </div>
-        <p style="margin-bottom:0.35rem; font-size:0.9rem;"><strong>Chain</strong> — click a cell to toggle it, then click Step to run one round of the rule.</p>
-        <div id="neurons" style="display:flex; gap:3px; margin-bottom:0.75rem; flex-wrap:wrap; justify-content:center;"></div>
-        <div style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center;">
-          <button type="button" class="btn btn-primary" id="neuro-step">Step</button>
-          <button type="button" class="btn btn-secondary" id="neuro-reset">Reset</button>
+        <p class="ch11-note" id="ch11-note">Click any neuron to fire it. The same pattern can be read as raw voltage or as a thought.</p>
+        <div class="ch11-concepts" id="ch11-concepts" aria-label="Symbolic concepts">
+          <button type="button" class="ch11-concept" data-concept="hunger"><span>HUNGER</span><small>seeking / lack</small></button>
+          <button type="button" class="ch11-concept" data-concept="warmth"><span>WARMTH</span><small>comfort / shelter</small></button>
+          <button type="button" class="ch11-concept" data-concept="danger"><span>DANGER</span><small>alert / withdraw</small></button>
+          <button type="button" class="ch11-concept" data-concept="comfort"><span>COMFORT</span><small>rest / settle</small></button>
+          <button type="button" class="ch11-concept" data-concept="curiosity"><span>CURIOSITY</span><small>explore / reach</small></button>
         </div>
-        <p id="neuro-step-count" style="font-size:0.85rem; color:var(--muted); margin-top:0.5rem;">Step: 0. Turn on two or more cells (e.g. two with a gap between), then click Step to apply the rule.</p>
+        <div class="ch11-thought" id="ch11-thought">No thought is dominant yet.</div>
+        <div class="ch11-stage">
+          <svg class="ch11-network" id="ch11-network" viewBox="0 0 720 430" role="img" aria-label="Neural network and concept map">
+            <g id="ch11-edge-layer" aria-hidden="true"></g>
+            <g id="ch11-node-layer" aria-hidden="true"></g>
+            <g id="ch11-effect-layer" aria-hidden="true"></g>
+          </svg>
+          <div id="ch11-hit-layer" class="ch11-hit-layer" aria-label="Neuron hit targets"></div>
+        </div>
+        <p class="ch11-caption" id="ch11-caption">At this level, there is no hunger. Only voltage.</p>
       </div>
     </div>
   </div>
@@ -69,50 +393,461 @@
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
   <script>
-    (function(){
-      var n = 12;
-      var initialState = [0,0,1,0,1,0,0,1,0,1,0,0];
-      var state = initialState.slice();
-      var stepCount = 0;
-      var div = document.getElementById('neurons');
-      var stepCountEl = document.getElementById('neuro-step-count');
-      function render(){
-        div.innerHTML = '';
-        for (var i = 0; i < n; i++) {
-          var b = document.createElement('button');
-          b.type = 'button';
-          b.className = 'btn ' + (state[i] ? 'btn-primary' : 'btn-secondary');
-          b.textContent = state[i] ? '1' : '0';
-          b.style.width = '32px';
-          b.style.height = '32px';
-          b.style.padding = '0';
-          b.style.minWidth = '32px';
-          b.setAttribute('aria-label', 'Cell ' + (i + 1) + ' ' + (state[i] ? 'on' : 'off'));
-          (function(j){
-            b.onclick = function(){ state[j] = 1 - state[j]; render(); };
-          })(i);
-          div.appendChild(b);
-        }
-        if (stepCountEl) stepCountEl.textContent = 'Step: ' + stepCount + '. Click cells to toggle; click Step to apply the rule once.';
+    (function () {
+      var svgNS = 'http://www.w3.org/2000/svg';
+      var root = document.getElementById('ch11-companion');
+      var questionEl = document.getElementById('ch11-question');
+      var modeBtn = document.getElementById('ch11-mode-btn');
+      var resetBtn = document.getElementById('ch11-reset-btn');
+      var noteEl = document.getElementById('ch11-note');
+      var thoughtEl = document.getElementById('ch11-thought');
+      var captionEl = document.getElementById('ch11-caption');
+      var edgeLayer = document.getElementById('ch11-edge-layer');
+      var nodeLayer = document.getElementById('ch11-node-layer');
+      var effectLayer = document.getElementById('ch11-effect-layer');
+      var hitLayer = document.getElementById('ch11-hit-layer');
+      var conceptEls = Array.prototype.slice.call(document.querySelectorAll('#ch11-concepts .ch11-concept'));
+      var mode = 'neuron';
+      var seenNeuron = false;
+      var seenSymbol = false;
+      var queue = [];
+      var nodes = [];
+      var edges = [];
+      var nodeGroups = [];
+      var nodeEls = [];
+      var nodeLabelEls = [];
+      var conceptMap = {};
+      var concepts = [
+        { id: 'hunger', label: 'HUNGER', short: 'Symbol A', phrase: 'seeking / lack', cx: 120, cy: 155 },
+        { id: 'warmth', label: 'WARMTH', short: 'Symbol B', phrase: 'comfort / shelter', cx: 310, cy: 110 },
+        { id: 'danger', label: 'DANGER', short: 'Symbol C', phrase: 'alert / withdraw', cx: 520, cy: 155 },
+        { id: 'comfort', label: 'COMFORT', short: 'Symbol D', phrase: 'rest / settle', cx: 190, cy: 315 },
+        { id: 'curiosity', label: 'CURIOSITY', short: 'Symbol E', phrase: 'explore / reach', cx: 430, cy: 315 }
+      ];
+      var offsets = [
+        { x: -28, y: -8 },
+        { x: 0, y: -26 },
+        { x: 28, y: -6 },
+        { x: 2, y: 22 }
+      ];
+      var pulseBursts = [];
+      var travelBursts = [];
+
+      function el(name) {
+        return document.createElementNS(svgNS, name);
       }
-      function doStep(){
-        var next = state.slice();
-        for (var i = 0; i < n; i++) {
-          var left = i > 0 ? state[i - 1] : 0;
-          var right = i < n - 1 ? state[i + 1] : 0;
-          if (left + right >= 2) next[i] = 1;
-        }
-        state = next;
-        stepCount++;
-        render();
+
+      function rand(seed) {
+        var x = Math.sin(seed * 999.123 + 0.37) * 43758.5453123;
+        return x - Math.floor(x);
       }
-      document.getElementById('neuro-step').onclick = doStep;
-      document.getElementById('neuro-reset').onclick = function(){
-        state = initialState.slice();
-        stepCount = 0;
-        render();
+
+      function clamp(v, min, max) {
+        return Math.max(min, Math.min(max, v));
+      }
+
+      function conceptById(id) {
+        for (var i = 0; i < concepts.length; i++) {
+          if (concepts[i].id === id) return concepts[i];
+        }
+        return null;
+      }
+
+      function updateQuestion() {
+        if (seenNeuron && seenSymbol) {
+          questionEl.innerHTML = mode === 'neuron'
+            ? 'Are thoughts “just” neurons?<br>You just watched HUNGER become anonymous voltage.'
+            : 'Are thoughts “just” neurons?<br>You just watched anonymous voltage become HUNGER.';
+        } else {
+          questionEl.textContent = 'Are thoughts “just” neurons?';
+        }
+      }
+
+      function setMode(nextMode) {
+        if (mode !== nextMode) {
+          if (nextMode === 'neuron') seenNeuron = true;
+          if (nextMode === 'symbol') seenSymbol = true;
+        }
+        mode = nextMode;
+        root.classList.toggle('ch11-mode-neuron', mode === 'neuron');
+        root.classList.toggle('ch11-mode-symbol', mode === 'symbol');
+        modeBtn.textContent = mode === 'neuron' ? 'Switch to symbol view' : 'Switch to neuron view';
+        modeBtn.className = 'btn ' + (mode === 'neuron' ? 'btn-primary' : 'btn-secondary');
+        noteEl.textContent = mode === 'neuron'
+          ? 'Click a symbol to fire anonymous voltage. The same activity is still there, just rendered as voltage.'
+          : 'Click a concept to fire a labeled pattern. The same activity is still there, just rendered as meaning.';
+        captionEl.textContent = mode === 'neuron'
+          ? 'At this level, there is no hunger. Only voltage.'
+          : 'At this level, there is no voltage. Only hunger.';
+        updateQuestion();
+      }
+
+      function syncConceptButtons(activeId) {
+        for (var i = 0; i < conceptEls.length; i++) {
+          var concept = concepts[i];
+          var button = conceptEls[i];
+          var span = button.querySelector('span');
+          var small = button.querySelector('small');
+          span.textContent = mode === 'neuron' ? concept.short : concept.label;
+          small.textContent = mode === 'neuron' ? '' : concept.phrase;
+          button.setAttribute('aria-label', concept.label);
+          button.classList.toggle('is-active', !!activeId && activeId === concept.id);
+        }
+      }
+
+      function updateThought(activeId) {
+        if (!activeId) {
+          thoughtEl.innerHTML = mode === 'neuron'
+            ? '<strong>No voltage pattern is dominant yet.</strong> <span class="sub">Click a symbol to start a cascade.</span>'
+            : '<strong>No thought is dominant yet.</strong> <span class="sub">Click a concept to start a cascade.</span>';
+          return;
+        }
+        var concept = conceptById(activeId);
+        if (!concept) return;
+        thoughtEl.innerHTML = mode === 'neuron'
+          ? '<strong>Current voltage:</strong> ' + concept.short + ' <span class="sub">— anonymous activity</span>'
+          : '<strong>Current thought:</strong> ' + concept.label + ' <span class="sub">— ' + concept.phrase + '</span>';
+      }
+
+      function addDirectedEdge(a, b, weight, delay) {
+        edges.push({ a: a, b: b, weight: weight, delay: delay, glowUntil: 0, el: null });
+      }
+
+      function addBidirectionalEdge(a, b, weight, delay) {
+        addDirectedEdge(a, b, weight, delay);
+        addDirectedEdge(b, a, weight, delay);
+      }
+
+      function buildNetwork() {
+        var i, j, c, idx, groupNodes;
+        nodes = [];
+        edges = [];
+        nodeGroups = [];
+        nodeEls = [];
+        nodeLabelEls = [];
+        conceptMap = {};
+        edgeLayer.innerHTML = '';
+        nodeLayer.innerHTML = '';
+        effectLayer.innerHTML = '';
+        hitLayer.innerHTML = '';
+
+        for (i = 0; i < concepts.length; i++) {
+          conceptMap[concepts[i].id] = [];
+        }
+
+        for (c = 0; c < concepts.length; c++) {
+          groupNodes = [];
+          for (j = 0; j < offsets.length; j++) {
+            idx = nodes.length;
+            nodes.push({
+              id: 'n' + idx,
+              x: concepts[c].cx + offsets[j].x + (rand(idx) - 0.5) * 8,
+              y: concepts[c].cy + offsets[j].y + (rand(idx + 21) - 0.5) * 8,
+              group: concepts[c].id,
+              charge: 0,
+              fireUntil: 0,
+              refractoryUntil: 0
+            });
+            groupNodes.push(idx);
+            conceptMap[concepts[c].id].push(idx);
+          }
+          concepts[c].seedIndex = groupNodes[1];
+          addBidirectionalEdge(groupNodes[0], groupNodes[1], 0.44, 62);
+          addBidirectionalEdge(groupNodes[1], groupNodes[2], 0.42, 64);
+          addBidirectionalEdge(groupNodes[2], groupNodes[3], 0.45, 58);
+          addBidirectionalEdge(groupNodes[3], groupNodes[0], 0.43, 66);
+          addBidirectionalEdge(groupNodes[0], groupNodes[2], 0.36, 76);
+          addBidirectionalEdge(groupNodes[1], groupNodes[3], 0.36, 74);
+        }
+
+        addBidirectionalEdge(conceptMap.hunger[1], conceptMap.warmth[0], 0.28, 96);
+        addBidirectionalEdge(conceptMap.warmth[1], conceptMap.danger[0], 0.27, 98);
+        addBidirectionalEdge(conceptMap.danger[1], conceptMap.curiosity[0], 0.26, 100);
+        addBidirectionalEdge(conceptMap.curiosity[1], conceptMap.comfort[0], 0.29, 94);
+        addBidirectionalEdge(conceptMap.comfort[1], conceptMap.hunger[0], 0.27, 102);
+
+        for (i = 0; i < nodes.length - 1; i++) {
+          addBidirectionalEdge(i, i + 1, 0.58, 48);
+        }
+
+        for (i = 0; i < edges.length; i++) {
+          var edge = edges[i];
+          var path = el('path');
+          path.setAttribute('class', 'ch11-edge');
+          edgeLayer.appendChild(path);
+          edge.el = path;
+        }
+
+        for (i = 0; i < nodes.length; i++) {
+          var group = el('g');
+          var circle = el('circle');
+          var text = el('text');
+          group.setAttribute('class', 'ch11-node-group');
+          circle.setAttribute('class', 'ch11-node-core');
+          circle.setAttribute('cx', '0');
+          circle.setAttribute('cy', '0');
+          text.setAttribute('class', 'ch11-node-label');
+          text.setAttribute('x', '0');
+          text.setAttribute('y', '4');
+          group.appendChild(circle);
+          group.appendChild(text);
+          nodeLayer.appendChild(group);
+          nodeGroups.push(group);
+          nodeEls.push(circle);
+          nodeLabelEls.push(text);
+
+          var hit = document.createElement('button');
+          hit.type = 'button';
+          hit.className = 'ch11-hit';
+          hit.setAttribute('aria-label', 'Neuron ' + (i + 1));
+          hit.style.left = (nodes[i].x / 720 * 100) + '%';
+          hit.style.top = (nodes[i].y / 430 * 100) + '%';
+          hit.addEventListener('click', (function (idx2) {
+            return function () { fireNode(idx2, 1, performance.now(), true); };
+          })(i));
+          hitLayer.appendChild(hit);
+        }
+
+        for (i = 0; i < conceptEls.length; i++) {
+          conceptEls[i].addEventListener('click', (function (conceptId) {
+            return function () { fireConcept(conceptId, performance.now(), true); };
+          })(concepts[i].id));
+        }
+      }
+
+      function fireConcept(id, now, manual) {
+        var concept = conceptById(id);
+        if (!concept) return false;
+        return fireNode(concept.seedIndex, 1, now, manual);
+      }
+
+      function fireNode(idx, strength, now, manual) {
+        var node = nodes[idx];
+        var concept = conceptById(node.group);
+        if (!manual && now < node.refractoryUntil) return false;
+        node.charge = Math.max(node.charge, strength);
+        node.fireUntil = now + 320 + rand(idx + Math.floor(now / 33)) * 120;
+        node.refractoryUntil = now + 520 + rand(idx + 9) * 220;
+        pulseBursts.push({ nodeIndex: idx, start: now, duration: 300 });
+        if (concept) {
+          updateThought(concept.id);
+        }
+        for (var k = 0; k < nodeMap(idx).length; k++) {
+          var edgeIndex = nodeMap(idx)[k];
+          var edge = edges[edgeIndex];
+          queue.push({
+            at: now + edge.delay + rand(idx * 3 + k) * 24,
+            edgeIndex: edgeIndex,
+            to: edge.b,
+            strength: edge.weight * (0.7 + strength * 0.35)
+          });
+          edge.glowUntil = now + 200;
+          travelBursts.push({ edgeIndex: edgeIndex, start: now, duration: 200 });
+        }
+        return true;
+      }
+
+      function nodeMap(idx) {
+        var out = [];
+        for (var i = 0; i < edges.length; i++) {
+          if (edges[i].a === idx) out.push(i);
+        }
+        return out;
+      }
+
+      function applyPulse(pulse, now) {
+        var edge = edges[pulse.edgeIndex];
+        var node = nodes[pulse.to];
+        edge.glowUntil = now + 200;
+        node.charge = Math.min(1.2, node.charge + pulse.strength);
+        if (node.charge >= 0.42 && now >= node.refractoryUntil) {
+          fireNode(pulse.to, node.charge, now, false);
+        }
+      }
+
+      function dominantConcept(now) {
+        var bestId = null;
+        var bestScore = 0;
+        for (var i = 0; i < concepts.length; i++) {
+          var concept = concepts[i];
+          var score = 0;
+          var nodesForConcept = conceptMap[concept.id];
+          for (var j = 0; j < nodesForConcept.length; j++) {
+            var node = nodes[nodesForConcept[j]];
+            score += node.charge + (now < node.fireUntil ? 0.45 : 0);
+          }
+          if (score > bestScore) {
+            bestScore = score;
+            bestId = concept.id;
+          }
+        }
+        return bestScore > 0.25 ? bestId : null;
+      }
+
+      function edgeControl(edge) {
+        var a = nodes[edge.a];
+        var b = nodes[edge.b];
+        var mx = (a.x + b.x) / 2;
+        var my = (a.y + b.y) / 2;
+        var dx = b.x - a.x;
+        var dy = b.y - a.y;
+        var len = Math.sqrt(dx * dx + dy * dy) || 1;
+        var bend = Math.min(28, len * 0.14);
+        return {
+          x1: a.x,
+          y1: a.y,
+          x2: b.x,
+          y2: b.y,
+          cx: mx - (dy / len) * bend,
+          cy: my + (dx / len) * bend
+        };
+      }
+
+      function edgePath(edge) {
+        if (mode === 'neuron') {
+          return 'M ' + edge.aX + ' ' + edge.aY + ' L ' + edge.bX + ' ' + edge.bY;
+        }
+        return 'M ' + edge.aX + ' ' + edge.aY + ' Q ' + edge.cX + ' ' + edge.cY + ' ' + edge.bX + ' ' + edge.bY;
+      }
+
+      function edgePoint(edge, t) {
+        if (mode === 'neuron') {
+          return {
+            x: edge.aX + (edge.bX - edge.aX) * t,
+            y: edge.aY + (edge.bY - edge.aY) * t
+          };
+        }
+        var u = 1 - t;
+        return {
+          x: u * u * edge.aX + 2 * u * t * edge.cX + t * t * edge.bX,
+          y: u * u * edge.aY + 2 * u * t * edge.cY + t * t * edge.bY
+        };
+      }
+
+      function render(now) {
+        var activeId = dominantConcept(now);
+        var i;
+        syncConceptButtons(activeId);
+        updateThought(activeId);
+
+        for (i = 0; i < edges.length; i++) {
+          var edge = edges[i];
+          var geom = edgeControl(edge);
+          edge.aX = geom.x1;
+          edge.aY = geom.y1;
+          edge.bX = geom.x2;
+          edge.bY = geom.y2;
+          edge.cX = geom.cx;
+          edge.cY = geom.cy;
+          edge.el.setAttribute('d', edgePath(edge));
+          edge.el.classList.toggle('is-active', now < edge.glowUntil || nodes[edge.a].charge > 0.15 || nodes[edge.b].charge > 0.15);
+        }
+
+        for (i = 0; i < nodes.length; i++) {
+          var node = nodes[i];
+          var isFiring = now < node.fireUntil;
+          var circle = nodeEls[i];
+          var text = nodeLabelEls[i];
+          nodeGroups[i].setAttribute('transform', 'translate(' + node.x + ',' + node.y + ')');
+          if (mode === 'neuron') {
+            circle.setAttribute('r', isFiring ? '18.8' : '18');
+            circle.setAttribute('fill', isFiring ? '#a8d8ff' : '#2a2a3a');
+            circle.setAttribute('stroke', '#4a5568');
+            circle.style.filter = isFiring ? 'drop-shadow(0 0 8px rgba(168, 216, 255, 0.55))' : 'none';
+            text.textContent = '';
+            text.setAttribute('opacity', '0');
+          } else {
+            circle.setAttribute('r', isFiring ? '29.5' : '28');
+            circle.setAttribute('fill', isFiring || node.charge > 0.18 ? '#d4a030' : '#f5e6c8');
+            circle.setAttribute('stroke', '#b07a2c');
+            circle.style.filter = isFiring ? 'drop-shadow(0 0 8px rgba(212, 160, 48, 0.65))' : 'none';
+            text.textContent = conceptById(node.group).label;
+            text.setAttribute('fill', '#50361f');
+            text.setAttribute('opacity', '1');
+          }
+        }
+
+        effectLayer.innerHTML = '';
+        pulseBursts = pulseBursts.filter(function (burst) { return now - burst.start <= burst.duration; });
+        travelBursts = travelBursts.filter(function (burst) { return now - burst.start <= burst.duration; });
+
+        for (i = 0; i < pulseBursts.length; i++) {
+          var burst = pulseBursts[i];
+          var p = clamp((now - burst.start) / burst.duration, 0, 1);
+          var node2 = nodes[burst.nodeIndex];
+          var pulse = el('circle');
+          pulse.setAttribute('class', 'ch11-pulse');
+          pulse.setAttribute('cx', node2.x);
+          pulse.setAttribute('cy', node2.y);
+          if (mode === 'neuron') {
+            pulse.setAttribute('r', String(18 + p * 20));
+            pulse.setAttribute('fill', 'none');
+            pulse.setAttribute('stroke', '#a8d8ff');
+            pulse.setAttribute('stroke-width', '2');
+            pulse.setAttribute('opacity', String(1 - p));
+          } else {
+            pulse.setAttribute('r', String(28 + p * 18));
+            pulse.setAttribute('fill', '#d4a030');
+            pulse.setAttribute('opacity', String(0.18 * (1 - p)));
+          }
+          effectLayer.appendChild(pulse);
+        }
+
+        for (i = 0; i < travelBursts.length; i++) {
+          var travel = travelBursts[i];
+          var edge3 = edges[travel.edgeIndex];
+          var t = clamp((now - travel.start) / travel.duration, 0, 1);
+          var point = edgePoint(edge3, t);
+          var dot = el('circle');
+          dot.setAttribute('class', 'ch11-travel-dot');
+          dot.setAttribute('cx', point.x);
+          dot.setAttribute('cy', point.y);
+          dot.setAttribute('r', mode === 'neuron' ? '3' : '4.5');
+          dot.setAttribute('fill', mode === 'neuron' ? '#a8d8ff' : '#d4a030');
+          dot.setAttribute('opacity', String(1 - t * 0.15));
+          effectLayer.appendChild(dot);
+        }
+      }
+
+      function tick(now) {
+        var remaining = [];
+        while (queue.length) {
+          var pulse = queue.shift();
+          if (pulse.at <= now) {
+            applyPulse(pulse, now);
+          } else {
+            remaining.push(pulse);
+          }
+        }
+        queue = remaining;
+        for (var i = 0; i < nodes.length; i++) {
+          if (nodes[i].charge > 0.001) nodes[i].charge *= 0.992;
+        }
+        render(now);
+        requestAnimationFrame(tick);
+      }
+
+      modeBtn.onclick = function () {
+        setMode(mode === 'neuron' ? 'symbol' : 'neuron');
       };
-      render();
+
+      resetBtn.onclick = function () {
+        var i;
+        queue = [];
+        pulseBursts = [];
+        travelBursts = [];
+        for (i = 0; i < nodes.length; i++) {
+          nodes[i].charge = 0;
+          nodes[i].fireUntil = 0;
+          nodes[i].refractoryUntil = 0;
+        }
+        render(performance.now());
+      };
+
+      buildNetwork();
+      setMode('neuron');
+      render(performance.now());
+      requestAnimationFrame(tick);
     })();
   </script>
 </body>

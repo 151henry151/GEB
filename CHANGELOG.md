@@ -4,6 +4,13 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.25] — 2026-03-15
+
+### Changed
+
+- Chapter 11 (Brains and Thoughts): replace the one-dimensional cellular automaton with the neuron-and-symbol companion (firing cascade, concept bubbles, neuron vs symbol mode, reductionism toggle) and light-themed styling for both views.
+- Point `prompts/GEB_continue_improvement.md` at `GEB/prompts/GEB_companion_rebuild_spec.md` for the spec path.
+
 ## [0.15.24] — 2026-03-17
 
 ### Changed
