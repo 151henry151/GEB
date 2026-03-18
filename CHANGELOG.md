@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.18] — 2026-03-17
+
+### Changed
+
+- Chapter X (Ant Fugue): add a per-ant home-lane pull to keep the zoomed stream inside the corridor, reduce vertical drift toward the crop edge, and preserve two visibly populated directions.
+
 ## [0.15.17] — 2026-03-17
 
 ### Changed

@@ -698,6 +698,7 @@
           ants.push({
             x: xBase + (Math.random() - 0.5) * 10,
             y: yBase + (Math.random() - 0.5) * 12,
+            homeY: yBase,
             ang: dir > 0 ? 0 : Math.PI,
             ret: dir < 0,
             canSmell: dir < 0,
@@ -720,8 +721,8 @@
           da = toFood - a.ang;
           while (da > Math.PI) da -= Math.PI * 2;
           while (da < -Math.PI) da += Math.PI * 2;
-          a.ang += da * 0.05 + (Math.random() - 0.5) * 1.05;
-          a.ang += (CH * 0.5 - a.y) * 0.0011;
+          a.ang += da * 0.05 + (Math.random() - 0.5) * 0.55;
+          a.ang += (a.homeY - a.y) * 0.0055;
           if (a.canSmell) {
             best = -1; bi = 1;
             for (i = 0; i < 3; i++) {
@@ -747,8 +748,8 @@
           da = toNest - a.ang;
           while (da > Math.PI) da -= Math.PI * 2;
           while (da < -Math.PI) da += Math.PI * 2;
-          a.ang += da * 0.045 + (Math.random() - 0.5) * 0.58;
-          a.ang += (CH * 0.5 - a.y) * 0.0009;
+          a.ang += da * 0.045 + (Math.random() - 0.5) * 0.33;
+          a.ang += (a.homeY - a.y) * 0.0045;
           var ci = cellAt(a.x, a.y);
           if (ci >= 0) trail[ci] = Math.min(120, trail[ci] + 1.0);
         }
