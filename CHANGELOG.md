@@ -4,6 +4,42 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.24] — 2026-03-17
+
+### Changed
+
+- Chapter X (Ant Fugue): redraw zoomed-in ants with a clearer ant silhouette, including distinct body segments, six legs, and antennae, while keeping the colony view as small dots.
+
+## [0.15.23] — 2026-03-17
+
+### Changed
+
+- Chapter X (Ant Fugue): render ants as ant-shaped silhouettes in the zoomed-in view and keep them as tiny dots in the colony view while preserving per-ant variation in body shape and leg motion.
+
+## [0.15.22] — 2026-03-17
+
+### Changed
+
+- Chapter X (Ant Fugue): release all ants from the nest at once, vary each ant’s speed and squiggle profile independently, and keep trail-following local so the motion reads as many distinct ants instead of a shared sway.
+
+## [0.15.21] — 2026-03-17
+
+### Changed
+
+- Chapter X (Ant Fugue): remove the food-directed prebias from searching ants, require a closer pheromone encounter before trail-following starts, and keep the return path wiggly without forcing a corridor band.
+
+## [0.15.20] — 2026-03-17
+
+### Changed
+
+- Chapter X (Ant Fugue): release ants from the nest one at a time on staggered intervals, make searching ants wander first and only lock onto pheromone when they come close, and strengthen the return trail so the corridor forms from repeated trips rather than from a fixed middle band.
+
+## [0.15.19] — 2026-03-17
+
+### Changed
+
+- Chapter X (Ant Fugue): replace the per-ant lane pull with a shared corridor center, strengthen the food/nest steering, and increase pheromone-following weight so the trail stays narrow and stretched instead of blooming into a spiral.
+
 ## [0.15.18] — 2026-03-17
 
 ### Changed

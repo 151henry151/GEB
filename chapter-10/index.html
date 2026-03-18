@@ -290,7 +290,7 @@
 
         <div class="ch10-section" style="border-top:none; padding-top:0; margin-top:0;">
           <h3>Ant colony (Ant Fugue)</h3>
-          <p style="font-size:0.88rem; color:var(--muted); margin:0 0 0.5rem 0;">Same simulation—switch the level of description: agents vs emergent trail.</p>
+          <p style="font-size:0.88rem; color:var(--muted); margin:0 0 0.5rem 0;">At one level: dozens of dots wandering. At another: a highway. Pick your level of description.</p>
           <div class="ant-canvas-wrap" id="ant-canvas-wrap">
             <canvas id="ant-canvas" width="500" height="300" aria-label="Pheromone ant simulation"></canvas>
           </div>
@@ -669,6 +669,7 @@
       var blendTo = 0;
       var trailHintShown = sessionStorage.getItem('ch10-trail-hint') === '1';
       var maxTrailSeen = 0;
+      var trailEstablished = false;
 
       function cellAt(wx, wy) {
         var gx = Math.floor(wx / CW * GW);
@@ -683,73 +684,86 @@
 
       function initAnts() {
         ants = [];
-        var perDir = Math.max(1, Math.floor(N / 2));
-        var startX = 160;
-        var endX = 340;
-        var spanX = endX - startX;
         for (var i = 0; i < N; i++) {
-          var dir = i % 2 === 0 ? 1 : -1;
-          var idx = Math.floor(i / 2);
-          var phase = (idx + 0.5) / perDir;
-          var lane = (idx % 10) - 4.5;
-          var band = Math.floor(idx / 10) % 2;
-          var xBase = dir > 0 ? startX + phase * spanX : endX - phase * spanX;
-          var yBase = CH / 2 + lane * 11 + (band ? 9 : -9) + (dir > 0 ? -5 : 5);
+          var squiggleFreq = 1.4 + Math.random() * 1.8;
+          var squigglePhase = Math.random() * Math.PI * 2;
+          var trailSense = 0.025 + Math.random() * 0.025;
+          var followStrength = 0.32 + Math.random() * 0.14;
           ants.push({
-            x: xBase + (Math.random() - 0.5) * 10,
-            y: yBase + (Math.random() - 0.5) * 12,
-            homeY: yBase,
-            ang: dir > 0 ? 0 : Math.PI,
-            ret: dir < 0,
-            canSmell: dir < 0,
-            wander: Math.random() * Math.PI * 2
+            x: nest.x + (Math.random() - 0.5) * 10,
+            y: nest.y + (Math.random() - 0.5) * 10,
+            ang: Math.random() * Math.PI * 2,
+            ret: false,
+            canSmell: false,
+            wander: Math.random() * Math.PI * 2,
+            state: 'searching',
+            speedBase: 0.64 + Math.random() * 0.18,
+            speedAmp: 0.04 + Math.random() * 0.06,
+            speedFreq: 1.15 + Math.random() * 1.2,
+            speedPhase: Math.random() * Math.PI * 2,
+            squiggleFreq: squiggleFreq,
+            squigglePhase: squigglePhase,
+            squiggleAmp: 0.12 + Math.random() * 0.14,
+            jitterAmp: 0.08 + Math.random() * 0.12,
+            turnBias: (Math.random() - 0.5) * 0.02,
+            trailSense: trailSense,
+            trailReachBase: 8 + Math.random() * 5,
+            followStrength: followStrength,
+            bodyLen: 1.2 + Math.random() * 0.7,
+            bodyWid: 0.45 + Math.random() * 0.25,
+            legSpread: 0.7 + Math.random() * 0.6,
+            legPhase: Math.random() * Math.PI * 2
           });
         }
         trail.fill(0);
         maxTrailSeen = 0;
+        trailEstablished = false;
       }
       initAnts();
 
       function stepOneAnt(a) {
-        var spd = 0.72 + Math.sin(a.wander) * 0.08;
-        var toFood = Math.atan2(food.y - a.y, food.x - a.x);
+        var spd = a.speedBase + Math.sin(a.wander * a.speedFreq + a.speedPhase) * a.speedAmp;
         var toNest = Math.atan2(nest.y - a.y, nest.x - a.x);
-        var da, lx, ly, i, best, bi, v;
+        var da, lx, ly, i, best, bi, v, wiggle, jitter;
+        var trailHere;
+        var trailReach;
         a.wander += 0.045;
+        wiggle = Math.sin(a.wander * a.squiggleFreq + a.squigglePhase + a.x * 0.02) * a.squiggleAmp;
+        wiggle += Math.sin(a.wander * (a.squiggleFreq * 0.51) + a.squigglePhase * 0.37 + a.y * 0.015) * (a.squiggleAmp * 0.55);
+        jitter = (Math.random() - 0.5) * a.jitterAmp;
         if (!a.ret) {
-          if (Math.hypot(a.x - food.x, a.y - food.y) < 14) { a.ret = true; a.canSmell = true; return; }
-          da = toFood - a.ang;
-          while (da > Math.PI) da -= Math.PI * 2;
-          while (da < -Math.PI) da += Math.PI * 2;
-          a.ang += da * 0.05 + (Math.random() - 0.5) * 0.55;
-          a.ang += (a.homeY - a.y) * 0.0055;
-          if (a.canSmell) {
+          if (Math.hypot(a.x - food.x, a.y - food.y) < 14) { a.ret = true; a.state = 'returning'; a.canSmell = true; return; }
+          a.ang += wiggle + jitter + a.turnBias;
+          trailHere = samplePher(a.x, a.y);
+          if ((a.canSmell || trailEstablished) && trailHere > a.trailSense) {
             best = -1; bi = 1;
+            trailReach = a.trailReachBase + Math.min(10, maxTrailSeen * 0.03);
             for (i = 0; i < 3; i++) {
-              var angs = [a.ang - 0.85, a.ang, a.ang + 0.85];
-              lx = a.x + Math.cos(angs[i]) * 24;
-              ly = a.y + Math.sin(angs[i]) * 24;
+              var angs = [a.ang - 0.45, a.ang, a.ang + 0.45];
+              lx = a.x + Math.cos(angs[i]) * trailReach;
+              ly = a.y + Math.sin(angs[i]) * trailReach;
               v = samplePher(lx, ly);
               if (v > best) { best = v; bi = i; }
             }
-            if (best > 0.18) {
-              da = [a.ang - 0.85, a.ang, a.ang + 0.85][bi] - a.ang;
+            if (best > a.trailSense * 0.9) {
+              da = [a.ang - 0.45, a.ang, a.ang + 0.45][bi] - a.ang;
               while (da > Math.PI) da -= Math.PI * 2;
               while (da < -Math.PI) da += Math.PI * 2;
-              a.ang += da * 0.12;
+              a.ang += da * a.followStrength;
             }
           }
         } else {
           if (Math.hypot(a.x - nest.x, a.y - nest.y) < 14) {
             a.ret = false;
+            a.state = 'searching';
             a.canSmell = true;
+            a.ang = Math.random() * Math.PI * 2;
             return;
           }
           da = toNest - a.ang;
           while (da > Math.PI) da -= Math.PI * 2;
           while (da < -Math.PI) da += Math.PI * 2;
-          a.ang += da * 0.045 + (Math.random() - 0.5) * 0.33;
-          a.ang += (a.homeY - a.y) * 0.0045;
+          a.ang += da * 0.32 + wiggle * 0.95 + jitter * 0.7;
           var ci = cellAt(a.x, a.y);
           if (ci >= 0) trail[ci] = Math.min(120, trail[ci] + 1.0);
         }
@@ -759,6 +773,79 @@
         if (a.x > CW - 4) { a.x = CW - 4; a.ang = Math.PI - a.ang; }
         if (a.y < 4) { a.y = 4; a.ang = -a.ang; }
         if (a.y > CH - 4) { a.y = CH - 4; a.ang = -a.ang; }
+      }
+
+      function drawAntBody(a, colony) {
+        var detail = 1 - colony;
+        var scale = 0.55 + detail * 1.75;
+        var bodyLen = a.bodyLen * scale;
+        var bodyWid = a.bodyWid * scale;
+        var legLen = bodyLen * (0.95 + a.legSpread * 0.2);
+        var antennaLen = bodyLen * 0.42;
+        var segBack = -bodyLen * 0.34;
+        var segMid = 0;
+        var segFront = bodyLen * 0.34;
+        var dotSize = 0.75 + (1 - detail) * 0.2;
+        ctx.save();
+        ctx.translate(a.x, a.y);
+        ctx.rotate(a.ang);
+        ctx.fillStyle = '#111111';
+        ctx.strokeStyle = '#111111';
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        if (colony > 0.55) {
+          ctx.beginPath();
+          ctx.arc(0, 0, dotSize, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+          return;
+        }
+
+        ctx.globalAlpha = Math.max(0.35, detail);
+
+        // Ant abdomen, thorax, and head.
+        ctx.beginPath();
+        ctx.ellipse(segBack, 0, bodyLen * 0.30, bodyWid * 0.74, 0.05, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(segMid, 0, bodyLen * 0.20, bodyWid * 0.54, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(segFront, 0, bodyLen * 0.23, bodyWid * 0.60, -0.03, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Six legs, attached at three body positions so they read as ant legs rather than a spider.
+        ctx.lineWidth = Math.max(0.42, bodyWid * 0.18);
+        var legs = [
+          { ax: -bodyLen * 0.04, ay: -bodyWid * 0.16, bx: -bodyLen * 0.48, by: -bodyWid * 0.85 },
+          { ax: -bodyLen * 0.04, ay: bodyWid * 0.16, bx: -bodyLen * 0.48, by: bodyWid * 0.85 },
+          { ax: bodyLen * 0.04, ay: -bodyWid * 0.14, bx: -bodyLen * 0.08, by: -bodyWid * 0.98 },
+          { ax: bodyLen * 0.04, ay: bodyWid * 0.14, bx: -bodyLen * 0.08, by: bodyWid * 0.98 },
+          { ax: bodyLen * 0.22, ay: -bodyWid * 0.10, bx: bodyLen * 0.58, by: -bodyWid * 0.68 },
+          { ax: bodyLen * 0.22, ay: bodyWid * 0.10, bx: bodyLen * 0.58, by: bodyWid * 0.68 }
+        ];
+        for (var li = 0; li < legs.length; li++) {
+          var leg = legs[li];
+          var side = li % 2 === 0 ? -1 : 1;
+          var phase = a.legPhase + li * 0.55;
+          var bend = Math.sin(phase) * bodyWid * 0.18;
+          ctx.beginPath();
+          ctx.moveTo(leg.ax, leg.ay);
+          ctx.lineTo((leg.ax + leg.bx) * 0.5 + side * bodyLen * 0.06, (leg.ay + leg.by) * 0.5 + bend);
+          ctx.lineTo(leg.bx, leg.by + bend * 0.35);
+          ctx.stroke();
+        }
+
+        ctx.lineWidth = Math.max(0.35, bodyWid * 0.14);
+        ctx.beginPath();
+        ctx.moveTo(segFront + bodyLen * 0.08, -bodyWid * 0.12);
+        ctx.quadraticCurveTo(segFront + antennaLen * 0.25, -bodyWid * 0.85, segFront + antennaLen * 0.75, -bodyWid * 1.18);
+        ctx.moveTo(segFront + bodyLen * 0.08, bodyWid * 0.12);
+        ctx.quadraticCurveTo(segFront + antennaLen * 0.22, bodyWid * 0.82, segFront + antennaLen * 0.72, bodyWid * 1.1);
+        ctx.stroke();
+
+        ctx.restore();
       }
 
       function decayTrail() {
@@ -781,6 +868,7 @@
         decayTrail();
         for (i = 0; i < trail.length; i++) if (trail[i] > mx) mx = trail[i];
         maxTrailSeen = Math.max(maxTrailSeen, mx);
+        if (mx > 0.2) trailEstablished = true;
         if (!trailHintShown && maxTrailSeen > 72 && viewBlend < 0.35) {
           trailHintShown = true;
           sessionStorage.setItem('ch10-trail-hint', '1');
@@ -819,10 +907,7 @@
 
         for (i = 0; i < ants.length; i++) {
           a = ants[i];
-          ctx.beginPath();
-          ctx.arc(a.x, a.y, 0.75 + colony * 0.75, 0, Math.PI * 2);
-          ctx.fillStyle = '#111111';
-          ctx.fill();
+          drawAntBody(a, colony);
         }
 
         ctx.strokeStyle = colony > 0.4 ? 'rgba(46,107,138,0.75)' : 'rgba(46,107,138,0.45)';
