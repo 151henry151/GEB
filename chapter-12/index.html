@@ -49,26 +49,35 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Two minds, same words. Click a concept to think it — activation spreads through each mind's connections. Where both minds light up together (gold), that's <strong>resonance</strong>: partial isomorphism, the mechanism of understanding.</p>
-      <div class="companion-box" id="two-minds-companion">
+      <p class="companion-caption">Same words, different webs: Mind A (cool blue) and Mind B (warm rose) link ideas differently. Gold is where activations <strong>match</strong>—partial isomorphism, the bridge across the gulf. <strong>Ctrl+click</strong> two nodes in one mind to add a link; <strong>Shift+click</strong> a link to remove it; click a link (no Shift) to tune its weight.</p>
+      <div class="companion-box two-minds-companion" id="two-minds-companion">
         <div class="two-minds-canvas-wrap">
           <div class="two-minds-panel mind-a" id="mind-a-panel">
             <p class="two-minds-label">Mind A</p>
-            <svg id="mind-a-svg" class="two-minds-svg" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg"></svg>
+            <svg id="mind-a-svg" class="two-minds-svg" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" aria-label="Mind A network"></svg>
           </div>
-          <div class="two-minds-center" id="two-minds-center">
+          <div class="two-minds-center" id="two-minds-center" aria-live="polite">
+            <div class="two-minds-center-glow" id="two-minds-center-glow"></div>
             <div class="two-minds-resonance" id="resonance-display">—</div>
             <p class="two-minds-resonance-label">Resonance</p>
+            <div class="two-minds-thermo" id="resonance-thermo" aria-hidden="true">
+              <div class="two-minds-thermo-fill" id="resonance-thermo-fill"></div>
+            </div>
+            <p class="two-minds-resonance-tier" id="resonance-tier"></p>
           </div>
           <div class="two-minds-panel mind-b" id="mind-b-panel">
             <p class="two-minds-label">Mind B</p>
-            <svg id="mind-b-svg" class="two-minds-svg" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg"></svg>
+            <svg id="mind-b-svg" class="two-minds-svg" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" aria-label="Mind B network"></svg>
           </div>
         </div>
+        <div class="two-minds-strip-wrap">
+          <p class="two-minds-strip-title">Resonance readout</p>
+          <div class="two-minds-pills" id="two-minds-pills" role="list"></div>
+        </div>
         <div class="two-minds-legend">
-          <span class="two-minds-legend-dot mind-a-dot"></span> Mind A
-          <span class="two-minds-legend-dot mind-b-dot"></span> Mind B
-          <span class="two-minds-legend-dot resonance-dot"></span> Both (resonance)
+          <span class="two-minds-legend-dot mind-a-dot"></span> Mind A only
+          <span class="two-minds-legend-dot mind-b-dot"></span> Mind B only
+          <span class="two-minds-legend-dot resonance-dot"></span> Both (gold)
         </div>
         <div class="two-minds-presets">
           <button type="button" class="btn btn-secondary two-minds-preset" data-preset="default">Default</button>
@@ -78,38 +87,248 @@
           <button type="button" class="btn btn-secondary two-minds-preset" data-preset="becoming">Becoming Similar</button>
           <button type="button" class="btn btn-secondary" id="two-minds-reset">Reset</button>
         </div>
-        <p class="two-minds-message" id="two-minds-message" aria-live="polite">Click any concept to think it. Watch meaning ripple.</p>
+        <p class="two-minds-message" id="two-minds-message" aria-live="polite">Click any concept in either mind to think it. Watch how the same word ripples differently.</p>
+        <div class="two-minds-edge-editor" id="two-minds-edge-editor" hidden>
+          <label for="two-minds-edge-weight">Link weight</label>
+          <input type="range" id="two-minds-edge-weight" min="0.1" max="1" step="0.05" value="0.5">
+          <span id="two-minds-edge-weight-val">0.50</span>
+          <button type="button" class="btn btn-secondary" id="two-minds-edge-close">Close</button>
+        </div>
       </div>
     </div>
   </div>
   <style>
-    .two-minds-companion { background:#1a1a2e; color:#e8e6e3; border-radius:8px; padding:0.75rem; }
-    .two-minds-canvas-wrap { display:flex; align-items:stretch; gap:0; min-height:320px; }
-    .two-minds-panel { flex:1; min-width:0; background:rgba(30,50,70,0.4); border-radius:6px; padding:0.5rem; }
-    .two-minds-panel.mind-b { background:rgba(60,30,45,0.4); }
-    .two-minds-label { margin:0 0 0.35rem 0; font-size:0.85rem; font-weight:600; opacity:0.9; }
-    .two-minds-svg { width:100%; height:auto; display:block; }
-    .two-minds-center { width:80px; flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.5rem; }
-    .two-minds-resonance { font-size:1.5rem; font-weight:700; color:#e8c547; text-shadow:0 0 12px rgba(232,197,71,0.6); transition:opacity 0.3s; }
-    .two-minds-resonance-label { margin:0.25rem 0 0 0; font-size:0.75rem; opacity:0.8; }
-    .two-minds-legend { font-size:0.8rem; opacity:0.85; margin-top:0.5rem; display:flex; gap:1rem; flex-wrap:wrap; }
-    .two-minds-legend-dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:0.25rem; vertical-align:middle; }
-    .mind-a-dot { background:#5b8fb9; box-shadow:0 0 8px #5b8fb9; }
-    .mind-b-dot { background:#b96b8f; box-shadow:0 0 8px #b96b8f; }
-    .resonance-dot { background:#e8c547; box-shadow:0 0 8px #e8c547; }
-    .two-minds-presets { display:flex; flex-wrap:wrap; gap:0.35rem; margin-top:0.5rem; }
-    .two-minds-presets .btn { font-size:0.8rem; }
-    .two-minds-message { margin:0.5rem 0 0 0; font-size:0.88rem; font-style:italic; min-height:1.4em; opacity:0.95; }
-    .two-minds-node { cursor:pointer; }
-    .two-minds-edge { cursor:pointer; stroke-width:6; stroke:transparent; }
-    .two-minds-edge:hover { stroke:rgba(232,197,71,0.4); }
+    .two-minds-companion {
+      position: relative;
+      background: #1a1f28;
+      color: #243243;
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+    .two-minds-canvas-wrap {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      min-height: 340px;
+    }
+    .two-minds-panel {
+      flex: 1;
+      min-width: 0;
+      border-radius: 8px;
+      padding: 0.5rem;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .two-minds-panel.mind-a {
+      background: #f5f9fd;
+    }
+    .two-minds-panel.mind-b {
+      background: #fdf5f3;
+    }
+    .two-minds-label {
+      margin: 0 0 0.35rem 0;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #334155;
+    }
+    .two-minds-svg { width: 100%; height: auto; display: block; }
+    .two-minds-center {
+      width: 104px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.45rem;
+      position: relative;
+      background: linear-gradient(180deg, rgba(212,160,48,0.12) 0%, rgba(212,160,48,0.04) 45%, rgba(90,159,192,0.08) 100%);
+      border-radius: 10px;
+      border: 1px solid rgba(212,160,48,0.25);
+      box-shadow: inset 0 0 24px rgba(212,160,48,0.08);
+    }
+    .two-minds-center-glow {
+      position: absolute;
+      inset: 4px;
+      border-radius: 8px;
+      pointer-events: none;
+      opacity: 0.35;
+      background: radial-gradient(ellipse at center, rgba(212,160,48,0.55) 0%, transparent 70%);
+      transition: opacity 0.2s ease;
+    }
+    .two-minds-resonance {
+      position: relative;
+      z-index: 1;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #64748b;
+      text-shadow: none;
+      transition: color 0.2s;
+      line-height: 1.1;
+    }
+    .two-minds-resonance.is-amber { color: #b45309; text-shadow: 0 0 10px rgba(180,83,9,0.25); }
+    .two-minds-resonance.is-gold { color: #d4a030; text-shadow: 0 0 14px rgba(212,160,48,0.55); }
+    .two-minds-resonance-label {
+      position: relative;
+      z-index: 1;
+      margin: 0.2rem 0 0 0;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+    .two-minds-thermo {
+      position: relative;
+      z-index: 1;
+      width: 8px;
+      height: 56px;
+      margin-top: 0.45rem;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .two-minds-thermo-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 0%;
+      border-radius: 0 0 4px 4px;
+      background: #94a3b8;
+      transition: background 0.15s;
+    }
+    .two-minds-thermo-fill.is-amber { background: linear-gradient(180deg, #f59e0b, #b45309); }
+    .two-minds-thermo-fill.is-gold { background: linear-gradient(180deg, #f0c040, #d4a030); }
+    .two-minds-resonance-tier {
+      position: relative;
+      z-index: 1;
+      margin: 0.35rem 0 0 0;
+      font-size: 0.62rem;
+      line-height: 1.25;
+      text-align: center;
+      color: #475569;
+      max-width: 96px;
+    }
+    .two-minds-strip-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      margin-top: 0.55rem;
+      padding: 0.45rem 0.35rem;
+      background: rgba(255,255,255,0.55);
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .two-minds-strip-title {
+      margin: 0 0 0.35rem 0;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+    .two-minds-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      justify-content: center;
+    }
+    .two-minds-pill {
+      min-width: 58px;
+      height: 24px;
+      padding: 0 0.35rem;
+      border-radius: 999px;
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: #e2e8f0;
+      color: #64748b;
+      transition: background 0.15s, color 0.15s, box-shadow 0.15s, border-color 0.15s;
+    }
+    .two-minds-pill.is-a {
+      background: rgba(58,143,209,0.2);
+      color: #1e5a8a;
+      border-color: rgba(58,143,209,0.45);
+      box-shadow: 0 0 8px rgba(58,143,209,0.2);
+    }
+    .two-minds-pill.is-b {
+      background: rgba(209,80,58,0.18);
+      color: #9a2f1f;
+      border-color: rgba(209,80,58,0.4);
+      box-shadow: 0 0 8px rgba(209,80,58,0.2);
+    }
+    .two-minds-pill.is-both {
+      background: rgba(212,160,48,0.35);
+      color: #6b4a0a;
+      border-color: rgba(212,160,48,0.65);
+      box-shadow: 0 0 12px rgba(212,160,48,0.45);
+    }
+    .two-minds-legend {
+      font-size: 0.78rem;
+      color: #475569;
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .two-minds-legend-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 0.25rem;
+      vertical-align: middle;
+    }
+    .mind-a-dot { background: #3a8fd1; box-shadow: 0 0 6px rgba(58,143,209,0.5); }
+    .mind-b-dot { background: #d1503a; box-shadow: 0 0 6px rgba(209,80,58,0.45); }
+    .resonance-dot { background: #d4a030; box-shadow: 0 0 8px rgba(212,160,48,0.6); }
+    .two-minds-presets { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
+    .two-minds-presets .btn { font-size: 0.8rem; }
+    .two-minds-message {
+      margin: 0.5rem 0 0 0;
+      font-size: 0.88rem;
+      font-style: italic;
+      min-height: 2.6em;
+      line-height: 1.35;
+      color: #334155;
+    }
+    .two-minds-node { cursor: pointer; }
+    .two-minds-node.selected .tm-node-shape { stroke: #d4a030; stroke-width: 3px; }
+    .two-minds-edge-hit { cursor: pointer; stroke: transparent; }
+    .two-minds-edge-hit:hover { stroke: rgba(212,160,48,0.25); }
+    .two-minds-node.flash .tm-node-shape {
+      animation: ch12-flash 0.65s ease-out;
+    }
+    @keyframes ch12-flash {
+      0% { filter: drop-shadow(0 0 0 #fff); }
+      40% { filter: drop-shadow(0 0 12px rgba(255,255,255,0.95)); fill: #fffef8 !important; }
+      100% { filter: drop-shadow(0 0 0 transparent); }
+    }
+    .two-minds-edge-editor {
+      position: absolute;
+      z-index: 10;
+      padding: 0.5rem 0.65rem;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      font-size: 0.82rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+      max-width: 220px;
+    }
+    .two-minds-edge-editor label { font-weight: 600; color: #334155; }
+    .two-minds-edge-editor .btn { font-size: 0.75rem; padding: 0.25rem 0.5rem; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
   <script src="two-minds.js"></script>
-
-
-
 </body>
 </html>

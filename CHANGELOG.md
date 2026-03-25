@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.27] — 2026-03-24
+
+### Changed
+
+- Chapter 12 Two Minds companion (`two-minds.js`): use distinct default graphs for Mind A and Mind B, blue/rose node styling with gold when both minds activate a node, weighted edge stroke widths and invisible hit targets, resonance mean over active nodes only with smoothed display plus thermometer and tier labels, horizontal pill readout, context captions after ripples, preset scenarios with delayed auto-fire and a ~3s “Becoming Similar” morph of Mind B toward Mind A, and edge editing via Ctrl/Cmd+click to add links, Shift+click to remove, and click-to-edit weight with a floating slider.
+
 ## [0.15.26] — 2026-03-15
 
 ### Added
