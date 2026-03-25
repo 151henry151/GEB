@@ -4,6 +4,14 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.34] — 2026-03-25
+
+### Changed
+
+- Chapter 13 (`index.html`, new `ch13-companion.js`): animate BlooP and FlooP searches step-by-step with a scrollable log, **Search speed** slider (slow through instant), **Stop** control, BlooP **LID = N** bar with hit bounce, FlooP **∞** header, live **Checking: n = …** readouts, danger zone after 25 steps with pulsing red background, and a 60-step demo cap message.
+- Replace the halting demo with **Build a Halting Oracle — then break it.**: four oracle cards, phased **Destroyer** card with SVG flowchart, thinking delay, verdict flicker, **ERROR: CANNOT DETERMINE**, and explanatory captions.
+- Rework the Gödel panel into a **Next →** step reveal (with FlooP meter gold flash on step 3, panel glow and slow-fade conclusion on step 5); add **Try this** predicate chips, short predicate help copy, collapsible **GlooP** pseudo-code block, and updated companion captions.
+
 ## [0.15.33] — 2026-03-24
 
 ### Changed

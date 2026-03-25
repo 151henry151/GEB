@@ -32,9 +32,46 @@
       background: rgba(46, 107, 138, 0.08);
       border-radius: 4px;
       border-left: 3px solid var(--accent-secondary);
-      display: none;
+      opacity: 0;
+      transform: translateY(4px);
+      max-height: 0;
+      overflow: hidden;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease, max-height 0.35s ease, margin 0.2s ease, padding 0.2s ease;
     }
-    .ch13-godel-step.on { display: block; }
+    .ch13-godel-step.ch13-godel-revealed {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 12rem;
+      pointer-events: auto;
+      margin: 0.35rem 0;
+      padding: 0.4rem 0.5rem;
+    }
+    .ch13-godel-step[data-step="5"].ch13-godel-revealed {
+      animation: ch13-godel-step5-in 1.1s ease forwards;
+    }
+    @keyframes ch13-godel-step5-in {
+      from { opacity: 0; filter: blur(2px); }
+      to { opacity: 1; filter: blur(0); }
+    }
+    .ch13-godel-panel-glow {
+      box-shadow: 0 0 0 1px rgba(212, 160, 48, 0.45), 0 0 28px rgba(212, 160, 48, 0.28);
+      transition: box-shadow 1s ease;
+    }
+    .ch13-godel-final {
+      margin-top: 0.5rem;
+      font-size: 0.84rem;
+      font-style: italic;
+      color: var(--muted);
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity 1s ease 0.2s, max-height 0.5s ease;
+    }
+    .ch13-godel-final.ch13-godel-final-visible {
+      opacity: 1;
+      max-height: 6rem;
+    }
     .ch13-meters {
       display: flex;
       gap: 1.25rem;
@@ -43,31 +80,46 @@
       margin: 0.75rem 0;
       flex-wrap: wrap;
     }
-    .ch13-meter-col { text-align: center; min-width: 72px; }
+    .ch13-meter-col { text-align: center; min-width: 88px; }
     .ch13-meter-label { font-size: 0.75rem; font-weight: 600; color: var(--muted); margin-bottom: 0.35rem; letter-spacing: 0.04em; }
-    .ch13-meter {
+    .ch13-meter-track {
       height: 220px;
       width: 48px;
       margin: 0 auto;
       position: relative;
       border-radius: 10px;
-      overflow: hidden;
+      overflow: visible;
       border: 1px solid var(--border);
-      background: rgba(0,0,0,0.15);
+      background: rgba(0,0,0,0.12);
     }
+    .ch13-meter--bloop .ch13-meter-track { overflow: hidden; }
     .ch13-meter-zones {
       position: absolute;
       inset: 0;
       pointer-events: none;
+      border-radius: 9px;
+    }
+    .ch13-meter-zones--bloop {
+      background: linear-gradient(180deg, transparent 0%, transparent 100%);
+    }
+    .ch13-meter--floop .ch13-meter-zones {
       background: linear-gradient(180deg,
         rgba(180, 55, 55, 0.42) 0%,
-        rgba(180, 55, 55, 0.18) 22%,
-        transparent 28%,
+        rgba(180, 55, 55, 0.16) 22%,
+        transparent 30%,
         rgba(58, 125, 68, 0.06) 100%);
+      transition: opacity 0.3s ease;
+    }
+    .ch13-meter--floop.is-danger-zone .ch13-meter-zones {
+      animation: ch13-zone-pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes ch13-zone-pulse {
+      0%, 100% { opacity: 1; filter: brightness(1); }
+      50% { opacity: 0.88; filter: brightness(1.12); }
     }
     .ch13-meter-zone-label {
       position: absolute;
-      top: 4px;
+      top: 6px;
       left: 50%;
       transform: translateX(-50%) rotate(-90deg);
       transform-origin: center;
@@ -77,6 +129,50 @@
       color: rgba(200, 80, 80, 0.95);
       white-space: nowrap;
     }
+    .ch13-meter--floop .ch13-meter-infty {
+      position: absolute;
+      top: -1.1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+      line-height: 1;
+      z-index: 2;
+    }
+    .ch13-meter--bloop { position: relative; padding-top: 0; }
+    .ch13-meter-lid {
+      position: relative;
+      width: 48px;
+      margin: 0 auto 4px auto;
+      z-index: 4;
+      text-align: center;
+      pointer-events: none;
+    }
+    .ch13-lid-bar {
+      display: block;
+      height: 5px;
+      margin: 0 2px;
+      background: #0f172a;
+      border-radius: 2px;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.2) inset;
+    }
+    .ch13-lid-label {
+      font-size: 0.52rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      display: block;
+      margin-top: 1px;
+      color: var(--text);
+    }
+    .ch13-lid-bounce .ch13-lid-bar {
+      animation: ch13-lid-clunk 0.55s ease-out;
+    }
+    @keyframes ch13-lid-clunk {
+      0%, 100% { transform: scaleX(1) translateY(0); }
+      35% { transform: scaleX(1.08) translateY(3px); }
+      55% { transform: scaleX(0.98) translateY(0); }
+    }
     .ch13-meter-fill {
       position: absolute;
       bottom: 0;
@@ -85,7 +181,9 @@
       height: 0%;
       background: linear-gradient(180deg, var(--accent-secondary), var(--accent));
       opacity: 0.85;
-      transition: height 0.18s ease-out;
+      transition: height 0.12s ease-out;
+      z-index: 1;
+      border-radius: 0 0 8px 8px;
     }
     .ch13-meter.is-danger .ch13-meter-fill {
       background: linear-gradient(180deg, #c44, #a33);
@@ -95,14 +193,51 @@
       background: linear-gradient(180deg, var(--true), #2d8a44);
       opacity: 0.95;
     }
-    .ch13-meter-depth {
-      font-size: 0.68rem;
-      color: var(--muted);
-      margin-top: 0.25rem;
+    .ch13-meter-flash-gold {
+      animation: ch13-meter-gold-flash 0.85s ease-out;
     }
+    @keyframes ch13-meter-gold-flash {
+      0%, 100% { box-shadow: none; }
+      40% { box-shadow: 0 0 0 3px rgba(212, 160, 48, 0.85), 0 0 22px rgba(212, 160, 48, 0.55); }
+    }
+    .ch13-checking {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: 0.35rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .ch13-meter-depth {
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+    .ch13-search-log {
+      max-height: 9.5rem;
+      overflow-y: auto;
+      margin-top: 0.65rem;
+      padding: 0.45rem 0.5rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.04);
+      font-family: ui-monospace, monospace;
+      font-size: 0.72rem;
+      line-height: 1.45;
+      text-align: left;
+    }
+    .ch13-log-line { margin: 0.15rem 0; word-break: break-word; }
+    .ch13-speed-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      margin: 0.5rem 0 0.35rem 0;
+      font-size: 0.82rem;
+    }
+    .ch13-speed-row input[type="range"] { flex: 1; min-width: 120px; max-width: 220px; }
     .ch13-halting-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
       gap: 0.5rem;
       margin-top: 0.5rem;
     }
@@ -122,15 +257,111 @@
       outline: none;
     }
     .ch13-halt-card strong { display: block; margin-bottom: 0.2rem; color: var(--accent); }
-    .ch13-halt-reveal {
-      margin-top: 0.6rem;
-      padding: 0.55rem 0.65rem;
-      font-size: 0.84rem;
+    .ch13-halt-card.ch13-halt-done {
+      border-color: rgba(34, 160, 80, 0.65);
+      background: rgba(34, 160, 80, 0.1);
+    }
+    .ch13-halt-card.ch13-halt-done::after {
+      content: ' ✓';
+      color: #228050;
+      font-weight: 700;
+    }
+    .ch13-destroyer-card {
+      grid-column: 1 / -1;
+      border-color: rgba(180, 60, 60, 0.45);
+      background: rgba(180, 60, 60, 0.07);
+    }
+    .ch13-destroyer-card[hidden] { display: none !important; }
+    @keyframes ch13-destroyer-shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-4px); }
+      40% { transform: translateX(4px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+    }
+    .ch13-destroyer-appear {
+      animation: ch13-destroyer-shake 0.6s ease-out, ch13-destroyer-pulse 1.2s ease-in-out 0.5s 2;
+    }
+    @keyframes ch13-destroyer-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 transparent; }
+      50% { box-shadow: 0 0 0 3px rgba(180, 60, 60, 0.35); }
+    }
+    .ch13-destroyer-flow {
+      margin: 0.45rem 0 0.35rem 0;
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    .ch13-oracle-display {
+      margin-top: 0.55rem;
+      padding: 0.65rem 0.75rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: ui-monospace, monospace;
+      text-align: center;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      background: var(--bg);
+      min-height: 2.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ch13-oracle-display.is-ok {
+      border-color: rgba(34, 160, 80, 0.55);
+      color: #1a6b3d;
+      background: rgba(34, 160, 80, 0.08);
+    }
+    .ch13-oracle-display.is-thinking {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .ch13-oracle-display.is-flicker {
+      border-color: rgba(180, 100, 40, 0.6);
+      color: #a35a12;
+      background: rgba(255, 200, 100, 0.12);
+    }
+    .ch13-oracle-display.is-error {
+      border-color: rgba(160, 40, 40, 0.75);
+      color: #8b2020;
+      background: rgba(160, 40, 40, 0.1);
+      animation: ch13-error-flash 0.35s ease;
+    }
+    @keyframes ch13-error-flash {
+      from { transform: scale(0.98); }
+      to { transform: scale(1); }
+    }
+    .ch13-oracle-spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin-right: 0.4rem;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: ch13-spin 0.7s linear infinite;
+      vertical-align: middle;
+    }
+    @keyframes ch13-spin {
+      to { transform: rotate(360deg); }
+    }
+    .ch13-oracle-caption {
+      margin-top: 0.5rem;
+      font-size: 0.86rem;
+      line-height: 1.5;
       color: var(--text);
-      background: var(--panel);
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      min-height: 2.5rem;
+    }
+    .ch13-oracle-sub {
+      margin-top: 0.45rem;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--muted);
+      font-style: italic;
+      opacity: 0;
+      transition: opacity 1.4s ease;
+    }
+    .ch13-oracle-sub.ch13-oracle-sub-visible {
+      opacity: 1;
     }
     .ch13-predicate-input {
       width: 100%;
@@ -144,8 +375,53 @@
       color: var(--text);
       margin-bottom: 0.35rem;
     }
+    .ch13-predicate-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin: 0.4rem 0 0.5rem 0;
+    }
+    .ch13-predicate-chip {
+      font-family: ui-monospace, monospace;
+      font-size: 0.72rem;
+      padding: 0.25rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      cursor: pointer;
+      color: var(--text);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .ch13-predicate-chip:hover {
+      border-color: var(--accent);
+      background: rgba(46, 107, 138, 0.08);
+    }
+    .ch13-predicate-chip.ch13-chip-warn {
+      border-color: rgba(180, 120, 40, 0.55);
+    }
     .ch13-mode-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; }
     .ch13-mode-row label { font-size: 0.85rem; cursor: pointer; }
+    .ch13-gloop-details { margin-top: 0.75rem; }
+    .ch13-gloop-details summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--accent);
+      list-style: none;
+      padding: 0.35rem 0;
+    }
+    .ch13-gloop-details summary::-webkit-details-marker { display: none; }
+    .ch13-gloop-pre {
+      margin: 0.5rem 0 0 0;
+      padding: 0.55rem 0.65rem;
+      font-size: 0.74rem;
+      line-height: 1.4;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.05);
+      overflow-x: auto;
+      white-space: pre;
+      font-family: ui-monospace, monospace;
+    }
   </style>
 </head>
 <body>
@@ -194,22 +470,23 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Search depth rises in the meters: BlooP stops at your bound N; FlooP keeps climbing until it finds an n or enters the red zone (no match in the demo—real FlooP would never halt).</p>
+      <p class="companion-caption"><em>BlooP has a lid. FlooP doesn’t. Watch what happens when there’s no answer.</em></p>
 
       <div class="ch13-panel" id="ch13-godel-panel">
         <h3>Why it matters (Gödel)</h3>
         <p>Proof search is like FlooP: “Is there a proof of G?” means searching all possible proofs—no fixed lid on how long that search might run.</p>
-        <button type="button" class="btn btn-secondary" id="ch13-godel-walk" style="margin-bottom:0.5rem;">Walk through the chain</button>
-        <div class="ch13-godel-step" data-step="1">1. <strong>“Is there a proof of G?”</strong> → To decide, you must search all possible proofs.</div>
+        <div class="ch13-godel-step ch13-godel-revealed" data-step="1">1. <strong>“Is there a proof of G?”</strong> → To decide, you must search all possible proofs.</div>
         <div class="ch13-godel-step" data-step="2">2. That search is <strong>unbounded</strong>—there is no fixed maximum length of proof to check.</div>
         <div class="ch13-godel-step" data-step="3">3. So “G is provable” is expressed by a kind of program that may need <strong>FlooP</strong>-style unbounded search.</div>
         <div class="ch13-godel-step" data-step="4">4. FlooP programs <strong>might not halt</strong> when there is no witness.</div>
         <div class="ch13-godel-step" data-step="5">5. So the formal system cannot always <strong>decide</strong> its own completeness from inside—this is part of the incompleteness story.</div>
+        <p id="ch13-godel-final" class="ch13-godel-final">The argument is one chain: unbounded search → possible non-halting → limits on what the system can prove about itself.</p>
+        <button type="button" class="btn btn-primary" id="ch13-godel-next" style="margin-top:0.55rem;">Next →</button>
       </div>
 
       <div class="companion-box" id="bloop-companion">
         <div class="ch13-panel" style="margin-top:0;">
-          <p style="margin:0;"><strong>What you’re seeing.</strong> <strong>BlooP</strong> checks n = 0, 1, 2, … only up to <strong>N</strong>, then stops. <strong>FlooP</strong> has no lid. Try a preset or write a predicate in <code>n</code> (e.g. <code>n * n == 25</code>, <code>n > 100</code>).</p>
+          <p style="margin:0;"><strong>What you’re seeing.</strong> <em>Run the same search in both modes. BlooP must stop when it hits its bound—even if the answer lies beyond. FlooP keeps going. If there’s no answer, FlooP never stops. That’s the difference between “decidable” and “undecidable.”</em></p>
         </div>
 
         <div class="ch13-mode-row">
@@ -227,255 +504,134 @@
         <div id="ch13-custom-wrap" style="display:none;">
           <label for="ch13-predicate"><strong>Predicate P(n)</strong></label>
           <input type="text" id="ch13-predicate" class="ch13-predicate-input" placeholder="n * n == 25" maxlength="80" autocomplete="off" spellcheck="false" aria-describedby="ch13-predicate-hint">
-          <p id="ch13-predicate-hint" style="font-size:0.8rem; color:var(--muted); margin:0 0 0.5rem 0;">Use <code>n</code>, numbers, <code>+ − * / %</code>, <code>( )</code>, <code>== != &lt; &gt; &lt;= &gt;=</code>, <code>&amp;&amp; ||</code>.</p>
+          <div class="ch13-predicate-chips" role="group" aria-label="Example predicates">
+            <button type="button" class="ch13-predicate-chip" data-expr="n * n == 144">n * n == 144</button>
+            <button type="button" class="ch13-predicate-chip" data-expr="n % 7 == 0 &amp;&amp; n &gt; 40">n % 7 == 0 &amp;&amp; n &gt; 40</button>
+            <button type="button" class="ch13-predicate-chip" data-expr="n*n*n == 27">n*n*n == 27</button>
+            <button type="button" class="ch13-predicate-chip ch13-chip-warn" data-expr="n &gt; 0 &amp;&amp; n &lt; 0" title="Unsatisfiable — FlooP never halts">n &gt; 0 &amp;&amp; n &lt; 0 ⚠️</button>
+          </div>
+          <p id="ch13-predicate-hint" style="font-size:0.8rem; color:var(--muted); margin:0 0 0.5rem 0;">Write any condition using <code>n</code>. BlooP will check up to your bound N. FlooP will search until it finds a match—or run forever.</p>
+          <p style="font-size:0.78rem; color:var(--muted); margin:0 0 0.5rem 0;">Use <code>n</code>, numbers, <code>+ − * / %</code>, <code>( )</code>, <code>== != &lt; &gt; &lt;= &gt;=</code>, <code>&amp;&amp; ||</code>.</p>
         </div>
         <p style="margin-bottom:0.35rem;"><strong>Bound N</strong> (BlooP only checks 0…N)</p>
-        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
           <label for="bloop-bound">N =</label>
           <input type="number" id="bloop-bound" value="10" min="1" max="200" style="width:4.5rem; padding:0.35rem;" aria-label="Bound N">
         </div>
-        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.75rem;">
+        <div class="ch13-speed-row">
+          <label for="ch13-speed-slider">Search speed</label>
+          <input type="range" id="ch13-speed-slider" min="0" max="100" value="50" aria-valuemin="0" aria-valuemax="100" aria-label="Search speed: slow to instant">
+          <span style="color:var(--muted); font-size:0.78rem;">Slow · · · Fast</span>
+        </div>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.75rem; align-items:center;">
           <button type="button" class="btn btn-primary" id="bloop-run">Run BlooP</button>
           <button type="button" class="btn btn-secondary" id="floop-run">Run FlooP</button>
+          <button type="button" class="btn btn-secondary" id="ch13-search-stop" hidden>Stop</button>
         </div>
 
         <div class="ch13-meters">
           <div class="ch13-meter-col">
             <div class="ch13-meter-label">BlooP depth</div>
-            <div class="ch13-meter" id="ch13-meter-bloop" aria-label="BlooP search depth">
-              <div class="ch13-meter-zones"><span class="ch13-meter-zone-label">NEVER HALTS</span></div>
-              <div class="ch13-meter-fill" id="ch13-fill-bloop"></div>
+            <div class="ch13-meter ch13-meter--bloop" id="ch13-meter-bloop" aria-label="BlooP search depth">
+              <div class="ch13-meter-lid" id="ch13-lid-bloop">
+                <span class="ch13-lid-bar" aria-hidden="true"></span>
+                <span class="ch13-lid-label" id="ch13-lid-label-bloop">LID = N</span>
+              </div>
+              <div class="ch13-meter-track">
+                <div class="ch13-meter-zones ch13-meter-zones--bloop"></div>
+                <div class="ch13-meter-fill" id="ch13-fill-bloop"></div>
+              </div>
             </div>
+            <div class="ch13-checking" id="ch13-checking-bloop">Checking: n = —</div>
             <div class="ch13-meter-depth" id="ch13-depth-bloop">—</div>
           </div>
           <div class="ch13-meter-col">
             <div class="ch13-meter-label">FlooP depth</div>
-            <div class="ch13-meter" id="ch13-meter-floop" aria-label="FlooP search depth">
-              <div class="ch13-meter-zones"><span class="ch13-meter-zone-label">NEVER HALTS</span></div>
-              <div class="ch13-meter-fill" id="ch13-fill-floop"></div>
+            <div class="ch13-meter ch13-meter--floop" id="ch13-meter-floop" aria-label="FlooP search depth">
+              <div class="ch13-meter-infty" aria-hidden="true">∞</div>
+              <div class="ch13-meter-track ch13-meter-track--floop">
+                <div class="ch13-meter-zones">
+                  <span class="ch13-meter-zone-label">NEVER HALTS</span>
+                </div>
+                <div class="ch13-meter-fill" id="ch13-fill-floop"></div>
+              </div>
             </div>
+            <div class="ch13-checking" id="ch13-checking-floop">Checking: n = —</div>
             <div class="ch13-meter-depth" id="ch13-depth-floop">—</div>
           </div>
         </div>
 
-        <div id="bloop-result" style="min-height:2rem; font-size:0.9rem;"></div>
+        <div class="ch13-search-log" id="ch13-search-log" role="log" aria-live="polite">
+          <div id="ch13-search-log-inner"></div>
+        </div>
+
+        <div id="bloop-result" style="min-height:2rem; font-size:0.9rem; margin-top:0.5rem;"></div>
+
+        <details class="ch13-gloop-details">
+          <summary>▶ GlooP: the universal language</summary>
+          <pre class="ch13-gloop-pre" aria-label="GlooP pseudo-code">GLOOP-PROGRAM SIMULATE-FLOOP:
+  FOR STEP = 0, 1, 2, 3, ... [NO BOUND]:
+    RUN one step of FlooP program P
+    IF P has halted: RETURN P's output
+  END [never reached if P runs forever]</pre>
+          <p style="margin:0.5rem 0 0.35rem 0; font-size:0.84rem;"><em>GlooP can simulate any FlooP program—and therefore any computable function. This is the Church–Turing thesis in miniature: all reasonable models of computation turn out to be equivalent.</em></p>
+          <p style="margin:0; font-size:0.84rem;"><em>GlooP is not more powerful than FlooP—it just makes explicit that FlooP is already universal. What FlooP cannot compute, nothing can.</em></p>
+        </details>
       </div>
 
       <div class="ch13-panel">
-        <h3 class="ch13-h3">Can you always tell if a program halts?</h3>
-        <p style="margin-bottom:0.5rem;">Pick a program. Would a perfect predictor always know whether it stops?</p>
+        <h3 class="ch13-h3"><em>Build a Halting Oracle — then break it.</em></h3>
+        <p style="margin-bottom:0.5rem;">Phase 1: click each program. The oracle answers. Phase 2: meet the trap.</p>
         <div class="ch13-halting-grid">
-          <button type="button" class="ch13-halt-card" data-halt="ten">
-            <strong>Ten-count</strong>
-            Loop exactly 10 times, then stop.
+          <button type="button" class="ch13-halt-card" data-oracle="c10" data-verdict="halts">
+            <strong>Count to 10</strong>
+            Loops exactly 10 times, then halts.
           </button>
-          <button type="button" class="ch13-halt-card" data-halt="forever">
-            <strong>Infinite loop</strong>
-            While true, do nothing—never exits.
+          <button type="button" class="ch13-halt-card" data-oracle="c10k" data-verdict="halts">
+            <strong>Count to 10,000</strong>
+            Loops 10,000 times, then halts.
           </button>
-          <button type="button" class="ch13-halt-card" data-halt="collatz">
+          <button type="button" class="ch13-halt-card" data-oracle="collatz" data-verdict="halts">
             <strong>Collatz from 27</strong>
-            Famous sequence; halting for all positive start values is still unproved.
+            The 3n+1 sequence; for 27 it reaches 1 in 111 steps.
           </button>
+          <button type="button" class="ch13-halt-card" data-oracle="inf" data-verdict="forever">
+            <strong>While true: do nothing</strong>
+            Infinite loop—never exits.
+          </button>
+          <div class="ch13-halt-card ch13-destroyer-card" id="ch13-destroyer-card" data-oracle="destroyer" hidden>
+            <strong>The Destroyer</strong>
+            <p style="margin:0.25rem 0 0.35rem 0; font-size:0.78rem;">This program: (1) asks the Oracle whether <em>it</em> halts when given itself as input. (2) If Oracle says HALTS → loop forever. (3) If Oracle says RUNS FOREVER → halt immediately.</p>
+            <svg class="ch13-destroyer-flow" viewBox="0 0 280 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="8" y="8" width="76" height="28" rx="4" fill="rgba(46,107,138,0.12)" stroke="var(--border)"/>
+              <text x="46" y="26" text-anchor="middle" font-size="9" fill="currentColor">Ask Oracle(self)</text>
+              <path d="M84 22h24" stroke="currentColor" fill="none"/>
+              <polygon points="108,22 98,18 98,26" fill="currentColor"/>
+              <rect x="112" y="8" width="72" height="28" rx="4" fill="rgba(180,60,60,0.1)" stroke="var(--border)"/>
+              <text x="148" y="26" text-anchor="middle" font-size="8.5" fill="currentColor">HALTS?</text>
+              <path d="M148 36v10" stroke="currentColor"/>
+              <text x="128" y="54" font-size="7.5" fill="var(--muted)">yes</text>
+              <path d="M132 58h-40v18" stroke="currentColor"/>
+              <rect x="48" y="58" width="72" height="22" rx="3" fill="rgba(180,60,60,0.15)" stroke="var(--border)"/>
+              <text x="84" y="73" text-anchor="middle" font-size="8" fill="currentColor">Loop forever</text>
+              <text x="168" y="54" font-size="7.5" fill="var(--muted)">no</text>
+              <path d="M164 58h40v-18" stroke="currentColor"/>
+              <rect x="204" y="32" width="68" height="22" rx="3" fill="rgba(58,125,68,0.12)" stroke="var(--border)"/>
+              <text x="238" y="47" text-anchor="middle" font-size="8" fill="currentColor">Halt now</text>
+            </svg>
+            <button type="button" class="btn btn-secondary" id="ch13-destroyer-run">Run The Destroyer</button>
+          </div>
         </div>
-        <div class="ch13-halt-reveal" id="ch13-halt-reveal" aria-live="polite">Click a program above.</div>
+        <div class="ch13-oracle-display" id="ch13-oracle-display" aria-live="polite">Oracle</div>
+        <p class="ch13-oracle-caption" id="ch13-oracle-caption">Click a program above.</p>
+        <p class="ch13-oracle-sub" id="ch13-oracle-sub"></p>
       </div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="predicate-eval.js"></script>
+  <script src="ch13-companion.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script>
-    (function () {
-      var boundInput = document.getElementById('bloop-bound');
-      var problemSelect = document.getElementById('bloop-problem');
-      var resultDiv = document.getElementById('bloop-result');
-      var delayMs = 240;
-      var floopMaxSteps = 32;
-      var fillB = document.getElementById('ch13-fill-bloop');
-      var fillF = document.getElementById('ch13-fill-floop');
-      var meterB = document.getElementById('ch13-meter-bloop');
-      var meterF = document.getElementById('ch13-meter-floop');
-      var depthB = document.getElementById('ch13-depth-bloop');
-      var depthF = document.getElementById('ch13-depth-floop');
-      var ev = typeof ch13EvaluatePredicate === 'function' ? ch13EvaluatePredicate : null;
-
-      function getPredicate() {
-        var preset = document.querySelector('input[name="ch13-src"]:checked');
-        if (preset && preset.value === 'custom') {
-          if (!ev) throw new Error('Predicate engine failed to load');
-          var src = (document.getElementById('ch13-predicate') || {}).value || '';
-          return function (n) {
-            return ev(src.trim(), n);
-          };
-        }
-        var v = problemSelect ? problemSelect.value : 'square';
-        if (v === 'square') return function (n) { return n * n === 25; };
-        if (v === 'even') return function (n) { return n > 2 && n % 2 === 0; };
-        return function (n) { return n > 0 && n < 0; };
-      }
-
-      function resetMeters() {
-        fillB.style.height = '0%';
-        fillF.style.height = '0%';
-        meterB.classList.remove('is-danger', 'is-found');
-        meterF.classList.remove('is-danger', 'is-found');
-        depthB.textContent = '—';
-        depthF.textContent = '—';
-      }
-
-      function setFill(el, meterEl, pct, found, danger) {
-        el.style.height = Math.min(100, Math.max(0, pct)) + '%';
-        meterEl.classList.toggle('is-found', !!found);
-        meterEl.classList.toggle('is-danger', !!danger);
-      }
-
-      document.querySelectorAll('input[name="ch13-src"]').forEach(function (r) {
-        r.addEventListener('change', function () {
-          var custom = r.value === 'custom';
-          document.getElementById('ch13-preset-wrap').style.display = custom ? 'none' : 'block';
-          document.getElementById('ch13-custom-wrap').style.display = custom ? 'block' : 'none';
-        });
-      });
-
-      var godelStep = 0;
-      document.getElementById('ch13-godel-walk').addEventListener('click', function () {
-        if (godelStep >= 5) {
-          godelStep = 0;
-          document.querySelectorAll('.ch13-godel-step').forEach(function (el) { el.classList.remove('on'); });
-          return;
-        }
-        godelStep++;
-        document.querySelectorAll('.ch13-godel-step').forEach(function (el) {
-          var s = parseInt(el.getAttribute('data-step'), 10);
-          el.classList.toggle('on', s <= godelStep);
-        });
-      });
-
-      var haltTexts = {
-        ten: 'You can see it halts: the loop runs 10 times and exits. Easy case.',
-        forever: 'This never halts—there is no exit. Also an easy case for you (harder for a machine in general).',
-        collatz: 'Nobody knows a uniform proof that Collatz halts for every starting n. For 27 specifically, the sequence does eventually reach 1—but in general, “does this halt?” is exactly the kind of question no algorithm can answer for all programs.'
-      };
-      document.querySelectorAll('.ch13-halt-card').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var k = btn.getAttribute('data-halt');
-          document.getElementById('ch13-halt-reveal').textContent = haltTexts[k] || '';
-        });
-      });
-
-      function runBlooP() {
-        var pred;
-        try {
-          pred = getPredicate();
-          pred(0);
-        } catch (e) {
-          resultDiv.textContent = 'Predicate error: ' + (e.message || String(e));
-          resultDiv.className = 'truth-undefined';
-          return;
-        }
-        var N = Math.min(200, Math.max(1, parseInt(boundInput.value, 10) || 10));
-        boundInput.value = N;
-        resetMeters();
-        resultDiv.textContent = 'BlooP: checking 0…' + N + ' …';
-        resultDiv.className = '';
-        var step = 0;
-        var total = N + 1;
-        function next() {
-          if (step > N) {
-            setFill(fillB, meterB, 100, false, false);
-            depthB.textContent = 'stopped at N=' + N;
-            resultDiv.textContent = 'BlooP (bound ' + N + '): no n in 0…' + N + ' satisfies P(n). Stopped.';
-            resultDiv.className = 'truth-undefined';
-            return;
-          }
-          var n = step;
-          var pct = ((step + 1) / total) * 88;
-          setFill(fillB, meterB, pct, false, false);
-          depthB.textContent = 'n = ' + n;
-          try {
-            if (pred(n)) {
-              setFill(fillB, meterB, pct, true, false);
-              resultDiv.textContent = 'BlooP: found smallest n = ' + n + ' (within bound).';
-              resultDiv.className = 'truth-true';
-              return;
-            }
-          } catch (err) {
-            resultDiv.textContent = 'Error at n=' + n + ': ' + err.message;
-            resultDiv.className = 'truth-undefined';
-            return;
-          }
-          step++;
-          if (step <= N) {
-            resultDiv.textContent = 'BlooP: tried n = ' + (step - 1) + ' … not yet.';
-            setTimeout(next, delayMs);
-          } else {
-            setFill(fillB, meterB, 100, false, false);
-            depthB.textContent = 'stopped at N=' + N;
-            resultDiv.textContent = 'BlooP (bound ' + N + '): no match. Stopped.';
-            resultDiv.className = 'truth-undefined';
-          }
-        }
-        next();
-      }
-
-      function runFlooP() {
-        var pred;
-        try {
-          pred = getPredicate();
-        } catch (e) {
-          resultDiv.textContent = 'Predicate error: ' + (e.message || String(e));
-          resultDiv.className = 'truth-undefined';
-          return;
-        }
-        resetMeters();
-        resultDiv.textContent = 'FlooP: searching (no bound) …';
-        resultDiv.className = '';
-        var n = 0;
-        var steps = 0;
-        var srcEl = document.querySelector('input[name="ch13-src"]:checked');
-        var isPreset = srcEl && srcEl.value === 'preset';
-        var presetNever = isPreset && problemSelect && problemSelect.value === 'impossible';
-
-        function next() {
-          var pct = Math.min(94, ((steps + 1) / floopMaxSteps) * 90);
-          setFill(fillF, meterF, pct, false, false);
-          depthF.textContent = 'trying n = ' + n + ' (step ' + (steps + 1) + '/' + floopMaxSteps + ')';
-          try {
-            if (pred(n)) {
-              setFill(fillF, meterF, Math.max(pct, 20), true, false);
-              resultDiv.textContent = 'FlooP: found smallest n = ' + n + '.';
-              resultDiv.className = 'truth-true';
-              return;
-            }
-          } catch (err) {
-            resultDiv.textContent = 'Error at n=' + n + ': ' + err.message;
-            resultDiv.className = 'truth-undefined';
-            return;
-          }
-          steps++;
-          n++;
-          if (steps >= floopMaxSteps) {
-            setFill(fillF, meterF, 96, false, true);
-            depthF.textContent = 'red zone (demo cap)';
-            if (presetNever) {
-              resultDiv.textContent = 'FlooP: no witness exists—real FlooP would never halt. The meter reaches the “never halts” zone.';
-            } else {
-              resultDiv.textContent = 'FlooP demo: stopped after ' + floopMaxSteps + ' values. If P(n) is true for some n, real FlooP would keep searching; if none exists, it never halts—raise N in BlooP to check a wider range first.';
-            }
-            resultDiv.className = 'truth-undefined';
-            return;
-          }
-          resultDiv.textContent = 'FlooP: P(' + (n - 1) + ') false … next n.';
-          setTimeout(next, delayMs);
-        }
-        next();
-      }
-
-      document.getElementById('bloop-run').addEventListener('click', runBlooP);
-      document.getElementById('floop-run').addEventListener('click', runFlooP);
-    })();
-  </script>
 </body>
 </html>
