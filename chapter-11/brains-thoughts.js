@@ -10,7 +10,9 @@
   var COHERE_DELAY = 400;
   var FIRING_MS = 70;
   var REFRACTORY_MS = 160;
-  var EPSP_DECAY = 0.96;
+  /** Per animation frame (~60fps). Applied in all states so EPSP cannot pile up during refractory. */
+  var EPSP_DECAY = 0.94;
+  var EPSP_CAP = 1.15;
   var THR_BASE = 0.52;
   var THR_JITTER = 0.08;
 
@@ -403,7 +405,11 @@
           target.epsp = Math.max(0, target.epsp - s.weight * 1.2);
           target.inhibitedUntil = Math.max(target.inhibitedUntil, now + 100);
         } else {
-          target.epsp += s.weight;
+          /* Integrate excitation only while resting; otherwise spikes arriving during
+             firing/refractory would stack and force an immediate re-fire — perpetual loop. */
+          if (target.state === 'resting') {
+            target.epsp = Math.min(EPSP_CAP, target.epsp + s.weight);
+          }
         }
       }
     }
@@ -413,8 +419,8 @@
     var i, n;
     for (i = 0; i < nodes.length; i++) {
       n = nodes[i];
+      n.epsp *= EPSP_DECAY;
       if (n.state === 'resting') {
-        n.epsp *= EPSP_DECAY;
         if (n.epsp >= n.threshold && now >= n.inhibitedUntil) {
           tryFire(i, now, false);
         }

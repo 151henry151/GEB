@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.30] — 2026-03-24
+
+### Changed
+
+- Chapter 11 (`brains-thoughts.js`): stop unbounded reverberation by decaying EPSP in every neuron state and integrating excitatory synaptic input only while the target is resting (with a small EPSP cap and slightly faster decay).
+
 ## [0.15.29] — 2026-03-24
 
 ### Changed
