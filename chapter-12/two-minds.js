@@ -9,77 +9,88 @@
   var BASE_DELAY = 280;
   var DECAY = 0.76;
   var ACT_THR = 0.03;
-  var VIEWBOX = { w: 340, h: 340 };
-  /** Fix 8: node positions as fractions of canvas (340×340). */
+  var VIEWBOX = { w: 320, h: 340 };
+  /** Shared layout (fractions of 320×340); same positions both minds — edges differ. */
   var COORD_FRAC = [
-    [0.2, 0.25],
-    [0.5, 0.15],
-    [0.8, 0.22],
-    [0.15, 0.5],
-    [0.42, 0.42],
-    [0.78, 0.48],
-    [0.28, 0.72],
-    [0.55, 0.65],
-    [0.82, 0.72],
-    [0.1, 0.8],
-    [0.5, 0.85],
-    [0.72, 0.88]
+    [0.5, 0.1],
+    [0.2, 0.22],
+    [0.78, 0.22],
+    [0.15, 0.45],
+    [0.5, 0.38],
+    [0.82, 0.42],
+    [0.25, 0.65],
+    [0.55, 0.62],
+    [0.85, 0.68],
+    [0.12, 0.75],
+    [0.5, 0.82],
+    [0.72, 0.85]
   ];
   var POS = COORD_FRAC.map(function (p) {
     return { x: p[0] * VIEWBOX.w, y: p[1] * VIEWBOX.h };
   });
-  function edgeKey(a, b) { return a < b ? a + ',' + b : b + ',' + a; }
+  /** Directed edge key: from → to */
+  function dirKey(from, to) { return from + '>' + to; }
   function copyEdgeList(list) {
     return list.map(function (e) { return [e[0], e[1], e[2] == null ? 0.6 : e[2]]; });
   }
-  function edgesToMap(edges) {
+  function seededJitter(a, b) {
+    var x = Math.sin(a * 17.9 + b * 31.1 + 4.2) * 43758.5453;
+    return x - Math.floor(x);
+  }
+  function directedEdgesToMap(edges) {
     var m = {};
     for (var ei = 0; ei < edges.length; ei++) {
       var e = edges[ei];
-      m[edgeKey(e[0], e[1])] = e[2];
+      m[dirKey(e[0], e[1])] = e[2];
     }
     return m;
   }
-  function mapToEdges(map) {
+  function mapToDirectedEdges(map) {
     var out = [];
     Object.keys(map).forEach(function (k) {
-      var p = k.split(',');
-      var lo = parseInt(p[0], 10);
-      var hi = parseInt(p[1], 10);
+      var p = k.split('>');
+      var from = parseInt(p[0], 10);
+      var to = parseInt(p[1], 10);
       var w = map[k];
-      if (w > 0.06) out.push([lo, hi, w]);
+      if (w > 0.06) out.push([from, to, w]);
     });
     return out;
   }
-  /** Fix 1 — Mind A: concrete / sensory associations */
+  /**
+   * Mind A — concrete / sensory (directed).
+   * coffee=0 morning=1 warmth=2 home=3 childhood=4 rain=5 music=6 memory=7 fear=8 silence=9 time=10 loss=11
+   */
   var DEFAULT_EDGES_A = copyEdgeList([
-    [0, 1, 0.8], [1, 2, 0.75], [2, 3, 0.7], [3, 4, 0.55], [4, 11, 0.5],
-    [5, 9, 0.72], [6, 7, 0.78], [7, 4, 0.52], [8, 9, 0.48], [10, 11, 0.5]
+    [0, 1, 0.8], [0, 2, 0.45], [1, 2, 0.75], [1, 9, 0.38], [2, 3, 0.7], [3, 4, 0.55], [3, 2, 0.5],
+    [4, 7, 0.62], [4, 11, 0.48], [5, 9, 0.72], [5, 8, 0.35], [6, 7, 0.78], [6, 4, 0.42],
+    [7, 4, 0.55], [7, 11, 0.52], [8, 9, 0.58], [8, 11, 0.4], [10, 11, 0.5], [10, 7, 0.44], [9, 8, 0.3]
   ]);
-  /** Fix 1 — Mind B: abstract / relational */
+  /** Mind B — abstract / relational (directed); skipped invalid warmth→comfort */
   var DEFAULT_EDGES_B = copyEdgeList([
-    [0, 2, 0.76], [2, 3, 0.72], [5, 8, 0.52], [6, 4, 0.432], [8, 5, 0.74],
-    [10, 6, 0.46], [7, 11, 0.5]
+    [0, 2, 0.76], [0, 1, 0.4], [1, 10, 0.62], [2, 3, 0.55], [2, 4, 0.48], [3, 7, 0.6], [3, 10, 0.42],
+    [4, 2, 0.58], [4, 6, 0.5], [5, 8, 0.74], [5, 10, 0.45], [6, 10, 0.68], [6, 7, 0.52],
+    [7, 11, 0.58], [7, 10, 0.5], [8, 11, 0.62], [8, 5, 0.38], [10, 11, 0.55], [10, 6, 0.42],
+    [9, 7, 0.52], [9, 10, 0.4], [11, 9, 0.48], [11, 10, 0.35]
   ]);
-  var STRANGERS_A = copyEdgeList([
-    [3, 10, 0.88], [10, 11, 0.5], [3, 1, 0.25], [0, 5, 0.35], [5, 9, 0.9],
-    [6, 7, 0.45], [4, 8, 0.4]
-  ]);
+  /** Strangers: Mind B = contrasting directed web (~80%+ different edges); Mind A = DEFAULT_EDGES_A. */
   var STRANGERS_B = copyEdgeList([
-    [3, 8, 0.9], [8, 5, 0.85], [5, 11, 0.5], [3, 2, 0.35], [2, 0, 0.4],
-    [6, 10, 0.3], [1, 9, 0.5]
+    [0, 11, 0.7], [0, 8, 0.55], [1, 5, 0.65], [1, 9, 0.25], [2, 7, 0.5], [2, 6, 0.45], [3, 8, 0.6], [3, 9, 0.55],
+    [4, 10, 0.58], [4, 5, 0.5], [5, 7, 0.68], [5, 11, 0.42], [6, 8, 0.65], [6, 9, 0.4], [7, 9, 0.55], [7, 8, 0.48],
+    [8, 6, 0.52], [8, 0, 0.38], [9, 11, 0.45], [9, 2, 0.35], [10, 0, 0.55], [10, 1, 0.48], [11, 1, 0.5], [11, 2, 0.45]
   ]);
   var OLD_FRIENDS_A = copyEdgeList(DEFAULT_EDGES_A);
   var OLD_FRIENDS_B = DEFAULT_EDGES_A.map(function (e) {
-    return [e[0], e[1], Math.min(1, e[2] * 0.98 + 0.01)];
+    var w = e[2] + (seededJitter(e[0], e[1]) - 0.5) * 0.1;
+    return [e[0], e[1], Math.max(0.1, Math.min(1, w))];
   });
+  /** Lost in translation: music hub in A, peripheral in B */
   var TRANSLATION_A = copyEdgeList([
-    [6, 7, 0.88], [6, 4, 0.82], [6, 2, 0.78], [6, 10, 0.8], [6, 9, 0.85], [6, 0, 0.72],
-    [6, 3, 0.55], [7, 11, 0.5], [0, 1, 0.5], [3, 4, 0.45]
+    [6, 0, 0.55], [6, 1, 0.52], [6, 2, 0.58], [6, 3, 0.56], [6, 4, 0.55], [6, 7, 0.72], [6, 9, 0.51], [6, 10, 0.54],
+    [0, 1, 0.5], [3, 4, 0.5], [5, 8, 0.45], [8, 11, 0.4]
   ]);
   var TRANSLATION_B = copyEdgeList([
-    [6, 4, 0.32], [6, 10, 0.22], [0, 1, 0.65], [1, 2, 0.6], [3, 8, 0.5],
-    [5, 8, 0.7], [7, 11, 0.45], [9, 10, 0.4]
+    [6, 7, 0.35], [6, 10, 0.38], [0, 2, 0.5], [1, 10, 0.55], [3, 7, 0.5], [4, 6, 0.42], [5, 8, 0.6], [8, 11, 0.5],
+    [9, 7, 0.45], [11, 10, 0.4]
   ]);
   var edgesA = copyEdgeList(DEFAULT_EDGES_A);
   var edgesB = copyEdgeList(DEFAULT_EDGES_B);
@@ -88,15 +99,16 @@
   var timeouts = [];
   var captionTimer = null;
   var rafId = 0;
-  var displayedPct = null;
+  var displayedResonance = 0;
   var pendingEdge = null;
   var lastFiredNode = null;
   var messageLock = null;
   var becomingActive = false;
   var becomingStart = 0;
-  var becomingMapB0 = null;
-  var becomingMapTarget = null;
   var selectedEditorEdge = null;
+  var hintOnCoffee = false;
+  var hasInteracted = false;
+  var hintTimer = null;
   for (var i = 0; i < N; i++) {
     activationA[i] = 0;
     activationB[i] = 0;
@@ -117,69 +129,108 @@
     timeouts.forEach(function (t) { clearTimeout(t); });
     timeouts = [];
   }
-  function resonanceMean01() {
-    var sum = 0;
-    var c = 0;
-    for (var ri = 0; ri < N; ri++) {
-      var a = activationA[ri] || 0;
-      var b = activationB[ri] || 0;
-      if (a <= ACT_THR && b <= ACT_THR) continue;
-      sum += 1 - Math.abs(a - b);
-      c++;
+  function anyMindActivity() {
+    var i;
+    for (i = 0; i < N; i++) {
+      if ((activationA[i] || 0) > 0.02 || (activationB[i] || 0) > 0.02) return true;
     }
-    return c === 0 ? null : sum / c;
+    return false;
   }
-  function tierLabel(pct) {
-    if (pct == null || isNaN(pct)) return '';
-    if (pct < 20) return 'Distant minds';
-    if (pct < 40) return 'A few shared echoes';
-    if (pct < 60) return 'Real common ground';
-    if (pct < 80) return 'Much in common';
+  function edgeStructuralResonance() {
+    var mapA = directedEdgesToMap(edgesA);
+    var mapB = directedEdgesToMap(edgesB);
+    var keys = {};
+    Object.keys(mapA).forEach(function (k) { keys[k] = true; });
+    Object.keys(mapB).forEach(function (k) { keys[k] = true; });
+    var list = Object.keys(keys);
+    if (list.length === 0) return 0;
+    var sum = 0;
+    var j;
+    for (j = 0; j < list.length; j++) {
+      var wa = mapA[list[j]] != null ? mapA[list[j]] : 0;
+      var wb = mapB[list[j]] != null ? mapB[list[j]] : 0;
+      sum += 1 - Math.abs(wa - wb);
+    }
+    return sum / list.length;
+  }
+  function computeResonance() {
+    if (becomingActive && !anyMindActivity()) {
+      return edgeStructuralResonance();
+    }
+    var total = 0;
+    var i;
+    for (i = 0; i < N; i++) {
+      var actA = Math.min(1, activationA[i] || 0);
+      var actB = Math.min(1, activationB[i] || 0);
+      total += 1 - Math.abs(actA - actB);
+    }
+    return total / N;
+  }
+  function tierLabelFromUnit(u) {
+    if (u < 0.2) return 'Distant minds';
+    if (u < 0.4) return 'A few shared echoes';
+    if (u < 0.6) return 'Real common ground';
+    if (u < 0.8) return 'Much in common';
     return 'Almost the same mind';
   }
-  function applyResonanceStyle(pct) {
-    if (!resonanceEl || !thermoFill) return;
-    resonanceEl.classList.remove('is-amber', 'is-gold');
-    thermoFill.classList.remove('is-amber', 'is-gold');
-    if (pct == null) {
-      resonanceEl.style.color = '';
-      thermoFill.style.background = '';
-      return;
-    }
-    if (pct < 30) {
-      resonanceEl.style.color = '#64748b';
-      thermoFill.style.background = '#94a3b8';
-    } else if (pct < 60) {
-      resonanceEl.classList.add('is-amber');
-      thermoFill.classList.add('is-amber');
-    } else {
-      resonanceEl.classList.add('is-gold');
-      thermoFill.classList.add('is-gold');
-    }
+  function resonanceColorForPct(pct) {
+    if (pct < 25) return '#999999';
+    if (pct < 50) return '#c09040';
+    if (pct < 75) return '#d4a030';
+    return '#e8b820';
   }
-  function updateResonanceDOM(targetPct) {
-    var pct = targetPct;
-    if (pct != null) pct *= 100;
-    if (displayedPct == null) displayedPct = pct != null ? pct : 0;
-    if (pct != null) {
-      displayedPct += (pct - displayedPct) * 0.08;
-      if (Math.abs(pct - displayedPct) < 0.35) displayedPct = pct;
-    }
-    if (resonanceMean01() == null && !becomingActive) {
-      if (resonanceEl) resonanceEl.textContent = '\u2014';
-      if (thermoFill) thermoFill.style.height = '0%';
+  function thermoColorForPct(pct) {
+    if (pct < 50) return '#c09040';
+    if (pct < 75) return '#d4a030';
+    return '#e8b820';
+  }
+  function updateResonanceDOM() {
+    var raw = computeResonance();
+    if (!anyMindActivity() && !becomingActive) {
+      displayedResonance = 0;
+      if (resonanceEl) {
+        resonanceEl.textContent = '\u2014';
+        resonanceEl.style.color = '';
+      }
+      if (thermoFill) {
+        thermoFill.style.height = '0%';
+        thermoFill.style.background = '';
+      }
       if (tierEl) tierEl.textContent = '';
-      applyResonanceStyle(null);
       if (centerGlow) centerGlow.style.opacity = '0.2';
       return;
     }
-    var show = displayedPct != null ? displayedPct : 0;
-    if (resonanceEl) resonanceEl.textContent = Math.round(show) + '%';
-    if (thermoFill) thermoFill.style.height = Math.min(100, Math.max(0, show)) + '%';
-    if (tierEl) tierEl.textContent = tierLabel(show);
-    applyResonanceStyle(show);
+    displayedResonance += (raw - displayedResonance) * 0.06;
+    var pct = Math.round(displayedResonance * 100);
+    var col = resonanceColorForPct(pct);
+    if (resonanceEl) {
+      resonanceEl.textContent = pct + '%';
+      resonanceEl.style.color = col;
+    }
+    if (thermoFill) {
+      thermoFill.style.height = Math.min(100, Math.max(0, displayedResonance * 100)) + '%';
+      thermoFill.style.background = pct < 25 ? '#b0b0b0' : thermoColorForPct(pct);
+    }
+    if (tierEl) tierEl.textContent = tierLabelFromUnit(displayedResonance);
     if (centerGlow) {
-      centerGlow.style.opacity = String(0.22 + (show / 100) * 0.55);
+      centerGlow.style.opacity = String(0.22 + displayedResonance * 0.55);
+    }
+  }
+  function updateCaptionLive() {
+    if (!messageEl || messageLock) return;
+    if (becomingActive) return;
+    var word = lastFiredNode != null ? LABELS[lastFiredNode] : null;
+    var r = displayedResonance;
+    if (!word) {
+      messageEl.textContent = 'Click any concept in either mind to think it. Watch how the same word ripples differently.';
+      return;
+    }
+    if (r > 0.65) {
+      messageEl.textContent = 'High resonance — when you say "' + word + '", they hear almost what you mean.';
+    } else if (r < 0.25) {
+      messageEl.textContent = 'Low resonance — same word, different worlds.';
+    } else {
+      messageEl.textContent = 'Partial overlap — some understanding, some gap.';
     }
   }
   function updatePills() {
@@ -191,40 +242,38 @@
       var a = activationA[pi] || 0;
       var b = activationB[pi] || 0;
       el.classList.remove('is-a', 'is-b', 'is-both');
-      if (a > ACT_THR && b > ACT_THR) el.classList.add('is-both');
+      if (a > 0.3 && b > 0.3) el.classList.add('is-both');
       else if (a > ACT_THR) el.classList.add('is-a');
       else if (b > ACT_THR) el.classList.add('is-b');
     }
   }
   function tick() {
-    var m = resonanceMean01();
-    updateResonanceDOM(m);
+    updateResonanceDOM();
     updatePills();
+    updateCaptionLive();
     if (becomingActive) {
       var now = performance.now();
-      var t = (now - becomingStart) / 3000;
-      if (t >= 1) {
-        t = 1;
+      var mapA = directedEdgesToMap(DEFAULT_EDGES_A);
+      var mapB = directedEdgesToMap(edgesB);
+      var keys = {};
+      Object.keys(mapA).forEach(function (k) { keys[k] = true; });
+      Object.keys(mapB).forEach(function (k) { keys[k] = true; });
+      var outMap = {};
+      Object.keys(keys).forEach(function (k) {
+        var wa = mapA[k] != null ? mapA[k] : 0;
+        var wb = mapB[k] != null ? mapB[k] : 0;
+        var w = wb + (wa - wb) * 0.008;
+        if (w > 0.06) outMap[k] = w;
+      });
+      edgesB = mapToDirectedEdges(outMap);
+      renderBoth();
+      setMessage('As their connections align, understanding grows.');
+      if (now - becomingStart >= 3000) {
         becomingActive = false;
         edgesB = copyEdgeList(DEFAULT_EDGES_A);
         renderBoth();
         setMessage('Minds drew closer. Click a concept to feel the overlap.');
         messageLock = null;
-      } else {
-        var eased = t * t * (3 - 2 * t);
-        var outMap = {};
-        var keys = {};
-        Object.keys(becomingMapB0).forEach(function (k) { keys[k] = true; });
-        Object.keys(becomingMapTarget).forEach(function (k) { keys[k] = true; });
-        Object.keys(keys).forEach(function (k) {
-          var w0 = becomingMapB0[k] != null ? becomingMapB0[k] : 0;
-          var w1 = becomingMapTarget[k] != null ? becomingMapTarget[k] : 0;
-          var w = w0 + eased * (w1 - w0);
-          if (w > 0.07) outMap[k] = w;
-        });
-        edgesB = mapToEdges(outMap);
-        renderBoth();
-        setMessage('As their connections align, understanding grows.');
       }
     }
     rafId = requestAnimationFrame(tick);
@@ -243,29 +292,7 @@
   }
   function edgeStrokeWidth(w) {
     var x = Math.max(0.1, Math.min(1, w));
-    return 0.8 + ((x - 0.1) / 0.9) * 2.2;
-  }
-  function scheduleContextCaption() {
-    if (messageLock) return;
-    if (becomingActive) return;
-    clearTimeout(captionTimer);
-    captionTimer = setTimeout(function () {
-      if (messageLock || becomingActive) return;
-      var r = resonanceMean01();
-      var pct = r != null ? r * 100 : 0;
-      var word = lastFiredNode != null ? LABELS[lastFiredNode] : 'it';
-      if (lastFiredNode == null) {
-        setMessage('Click any concept in either mind to think it. Watch how the same word ripples differently.');
-        return;
-      }
-      if (pct > 65) {
-        setMessage('High resonance — when you say "' + word + '", they hear almost what you mean.');
-      } else if (pct < 25) {
-        setMessage('Low resonance — same word, different worlds.');
-      } else {
-        setMessage('Partial overlap — some understanding, some gap.');
-      }
-    }, 750);
+    return (0.6 + x * 2.8).toFixed(2);
   }
   function flashNodes(mind, idxA, idxB) {
     var svg = mind === 'a' ? svgA : svgB;
@@ -278,17 +305,16 @@
       }
     });
   }
-  function findEdge(mind, i, j) {
+  function findEdge(mind, from, to) {
     var edges = mind === 'a' ? edgesA : edgesB;
-    var k = edgeKey(i, j);
     for (var fi = 0; fi < edges.length; fi++) {
-      if (edgeKey(edges[fi][0], edges[fi][1]) === k) return fi;
+      if (edges[fi][0] === from && edges[fi][1] === to) return fi;
     }
     return -1;
   }
-  function setEdgeWeight(mind, lo, hi, w, opts) {
+  function setEdgeWeight(mind, from, to, w, opts) {
     var edges = mind === 'a' ? edgesA : edgesB;
-    var ix = findEdge(mind, lo, hi);
+    var ix = findEdge(mind, from, to);
     if (ix < 0) return;
     edges[ix][2] = Math.max(0.1, Math.min(1, w));
     renderBoth();
@@ -300,12 +326,12 @@
       setMessage('You changed a triggering relationship. The ripple will be different now.');
     }
   }
-  function openEdgeEditor(mind, lo, hi, clientX, clientY) {
+  function openEdgeEditor(mind, from, to, clientX, clientY) {
     var edges = mind === 'a' ? edgesA : edgesB;
-    var ix = findEdge(mind, lo, hi);
+    var ix = findEdge(mind, from, to);
     if (ix < 0) return;
     var e = edges[ix];
-    selectedEditorEdge = { mind: mind, lo: e[0], hi: e[1], w: e[2] };
+    selectedEditorEdge = { mind: mind, from: e[0], to: e[1], w: e[2] };
     if (edgeEditor && companionEl && edgeWeightInput && edgeWeightVal) {
       edgeEditor.hidden = false;
       edgeWeightInput.value = String(e[2]);
@@ -323,13 +349,29 @@
     if (edgeEditor) edgeEditor.hidden = true;
     selectedEditorEdge = null;
   }
+  function hideOnboardingHint() {
+    if (hintTimer != null) {
+      clearTimeout(hintTimer);
+      hintTimer = null;
+    }
+    hintOnCoffee = false;
+  }
+  function scheduleOnboardingHint() {
+    hideOnboardingHint();
+    hintTimer = setTimeout(function () {
+      hintTimer = null;
+      if (!hasInteracted) {
+        hintOnCoffee = true;
+        renderBoth();
+      }
+    }, 1500);
+  }
   function getNeighbors(mind, nodeIndex) {
     var edges = mind === 'a' ? edgesA : edgesB;
     var out = [];
     for (var i = 0; i < edges.length; i++) {
       var e = edges[i];
       if (e[0] === nodeIndex) out.push({ node: e[1], weight: e[2] });
-      else if (e[1] === nodeIndex) out.push({ node: e[0], weight: e[2] });
     }
     return out;
   }
@@ -343,7 +385,6 @@
     activationA = actA;
     activationB = actB;
     renderBoth();
-    scheduleContextCaption();
     function spread(mind, nodeIdx, value, depth) {
       if (depth > 6) return;
       var neighbors = getNeighbors(mind, nodeIdx);
@@ -360,7 +401,6 @@
               activationB[target] = val;
             }
             renderBoth();
-            scheduleContextCaption();
             spread(m, target, val, d + 1);
           }, delay));
         })(mind, n.node, newVal, depth);
@@ -374,7 +414,6 @@
         timeouts.push(setTimeout(function () {
           if (activationA[t] < v) activationA[t] = v;
           renderBoth();
-          scheduleContextCaption();
           spread('a', t, v, 1);
         }, delayA));
       })(na[ia].node, DECAY * na[ia].weight);
@@ -385,7 +424,6 @@
         timeouts.push(setTimeout(function () {
           if (activationB[t] < v) activationB[t] = v;
           renderBoth();
-          scheduleContextCaption();
           spread('b', t, v, 1);
         }, delayB));
       })(nb[ib].node, DECAY * nb[ib].weight);
@@ -407,8 +445,6 @@
       var y1 = POS[e[0]].y;
       var x2 = POS[e[1]].x;
       var y2 = POS[e[1]].y;
-      var lo = Math.min(e[0], e[1]);
-      var hi = Math.max(e[0], e[1]);
       var aw = Math.max(activations[e[0]] || 0, activations[e[1]] || 0);
       var sw = edgeStrokeWidth(e[2]);
       var stroke = aw > 0.12 ? edgeHot : edgeBase;
@@ -429,8 +465,8 @@
       hit.setAttribute('class', 'two-minds-edge-hit');
       hit.setAttribute('stroke-width', '14');
       hit.setAttribute('data-mind', mindId);
-      hit.setAttribute('data-i', String(lo));
-      hit.setAttribute('data-j', String(hi));
+      hit.setAttribute('data-from', String(e[0]));
+      hit.setAttribute('data-to', String(e[1]));
       svg.appendChild(hit);
     }
     for (var j = 0; j < N; j++) {
@@ -441,7 +477,7 @@
       g.setAttribute('data-node', j);
       g.setAttribute('data-mind', mindId);
       var nodeClass = 'two-minds-node';
-      if (aA > 0.35 && aB > 0.35) nodeClass += ' tm-node-both';
+      if (aA > 0.3 && aB > 0.3) nodeClass += ' tm-node-both';
       else if (act > 0.08) nodeClass += ' tm-node-active';
       else nodeClass += ' tm-node-rest';
       g.setAttribute('class', nodeClass);
@@ -453,7 +489,7 @@
       var fill = restFill;
       var stroke = restStroke;
       var filter = '';
-      if (aA > 0.35 && aB > 0.35) {
+      if (aA > 0.3 && aB > 0.3) {
         fill = '#d4a030';
         stroke = '#b88920';
         filter = 'url(#ch12-gold-glow-' + mindId + ')';
@@ -477,6 +513,33 @@
       text.textContent = LABELS[j];
       g.appendChild(text);
       svg.appendChild(g);
+    }
+    if (mindId === 'a' && hintOnCoffee && !hasInteracted) {
+      var hcx = POS[0].x;
+      var hcy = POS[0].y;
+      var hintG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      hintG.setAttribute('class', 'tm-onboard-hint');
+      hintG.setAttribute('transform', 'translate(' + hcx + ',' + hcy + ')');
+      var hintRing = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      hintRing.setAttribute('class', 'tm-onboard-ring');
+      hintRing.setAttribute('cx', '0');
+      hintRing.setAttribute('cy', '0');
+      hintRing.setAttribute('r', '28');
+      hintRing.setAttribute('fill', 'none');
+      hintRing.setAttribute('stroke', 'rgba(58,143,209,0.55)');
+      hintRing.setAttribute('stroke-width', '2.5');
+      hintG.appendChild(hintRing);
+      var hintLbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      hintLbl.setAttribute('class', 'tm-onboard-label');
+      hintLbl.setAttribute('x', '0');
+      hintLbl.setAttribute('y', '44');
+      hintLbl.setAttribute('text-anchor', 'middle');
+      hintLbl.setAttribute('font-size', '11');
+      hintLbl.setAttribute('font-weight', '600');
+      hintLbl.setAttribute('fill', '#334155');
+      hintLbl.textContent = 'Try clicking here.';
+      hintG.appendChild(hintLbl);
+      svg.appendChild(hintG);
     }
     var defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
     var f = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
@@ -510,24 +573,20 @@
     attachListeners();
   }
   function setMessage(text) { if (messageEl) messageEl.textContent = text; }
-  function addEdge(mind, i, j) {
-    if (i === j) return;
-    var lo = Math.min(i, j);
-    var hi = Math.max(i, j);
-    var key = edgeKey(lo, hi);
+  function addEdge(mind, from, to) {
+    if (from === to) return;
     var edges = mind === 'a' ? edgesA : edgesB;
-    if (edges.some(function (x) { return edgeKey(x[0], x[1]) === key; })) return;
-    edges.push([lo, hi, 0.5]);
+    if (findEdge(mind, from, to) >= 0) return;
+    edges.push([from, to, 0.5]);
     renderBoth();
-    flashNodes(mind, lo, hi);
+    flashNodes(mind, from, to);
     messageLock = null;
     setMessage('You changed a triggering relationship. The ripple will be different now.');
   }
-  function removeEdge(mind, i, j) {
+  function removeEdge(mind, from, to) {
     var edges = mind === 'a' ? edgesA : edgesB;
-    var key = edgeKey(i, j);
     for (var k = 0; k < edges.length; k++) {
-      if (edgeKey(edges[k][0], edges[k][1]) === key) {
+      if (edges[k][0] === from && edges[k][1] === to) {
         edges.splice(k, 1);
         closeEdgeEditor();
         renderBoth();
@@ -568,17 +627,17 @@
         };
       }
       var hits = svg.querySelectorAll('.two-minds-edge-hit');
-      for (var hi = 0; hi < hits.length; hi++) {
-        hits[hi].onclick = function (ev) {
+      for (var hx = 0; hx < hits.length; hx++) {
+        hits[hx].onclick = function (ev) {
           ev.stopPropagation();
           var mi = this.getAttribute('data-mind');
-          var ii = parseInt(this.getAttribute('data-i'), 10);
-          var jj = parseInt(this.getAttribute('data-j'), 10);
+          var fr = parseInt(this.getAttribute('data-from'), 10);
+          var t = parseInt(this.getAttribute('data-to'), 10);
           if (ev.shiftKey) {
-            removeEdge(mi, ii, jj);
+            removeEdge(mi, fr, t);
             return;
           }
-          openEdgeEditor(mi, ii, jj, ev.clientX, ev.clientY);
+          openEdgeEditor(mi, fr, t, ev.clientX, ev.clientY);
         };
       }
     });
@@ -592,7 +651,7 @@
     closeEdgeEditor();
     pendingEdge = null;
     lastFiredNode = null;
-    displayedPct = null;
+    displayedResonance = 0;
     for (var ri = 0; ri < N; ri++) {
       activationA[ri] = 0;
       activationB[ri] = 0;
@@ -614,20 +673,20 @@
       return;
     }
     if (name === 'strangers') {
-      edgesA = copyEdgeList(STRANGERS_A);
+      edgesA = copyEdgeList(DEFAULT_EDGES_A);
       edgesB = copyEdgeList(STRANGERS_B);
       for (var s = 0; s < N; s++) {
         activationA[s] = 0;
         activationB[s] = 0;
       }
       lastFiredNode = 3;
-      displayedPct = null;
+      displayedResonance = 0;
       renderBoth();
       setTimeout(function () {
         runSpreading(3);
         messageLock = 'str';
         setMessage('Same word. Two different worlds.');
-      }, 320);
+      }, 500);
       return;
     }
     if (name === 'oldfriends') {
@@ -638,13 +697,13 @@
         activationB[o] = 0;
       }
       lastFiredNode = 3;
-      displayedPct = null;
+      displayedResonance = 0;
       renderBoth();
       setTimeout(function () {
         runSpreading(3);
         messageLock = 'of';
         setMessage('Almost the same mind — years of shared experience.');
-      }, 320);
+      }, 500);
       return;
     }
     if (name === 'translation') {
@@ -655,13 +714,13 @@
         activationB[t] = 0;
       }
       lastFiredNode = 6;
-      displayedPct = null;
+      displayedResonance = 0;
       renderBoth();
       setTimeout(function () {
         runSpreading(6);
         messageLock = 'tr';
         setMessage('"Music" — one word, two completely different constellations.');
-      }, 320);
+      }, 500);
       return;
     }
     if (name === 'becoming') {
@@ -672,9 +731,7 @@
         activationB[b] = 0;
       }
       lastFiredNode = null;
-      displayedPct = null;
-      becomingMapB0 = edgesToMap(edgesB);
-      becomingMapTarget = edgesToMap(DEFAULT_EDGES_A);
+      displayedResonance = 0;
       becomingActive = true;
       becomingStart = performance.now();
       messageLock = 'be';
@@ -689,26 +746,33 @@
       if (!selectedEditorEdge) return;
       var w = parseFloat(edgeWeightInput.value, 10);
       if (edgeWeightVal) edgeWeightVal.textContent = w.toFixed(2);
-      setEdgeWeight(selectedEditorEdge.mind, selectedEditorEdge.lo, selectedEditorEdge.hi, w, null);
+      setEdgeWeight(selectedEditorEdge.mind, selectedEditorEdge.from, selectedEditorEdge.to, w, null);
     });
     edgeWeightInput.addEventListener('change', function () {
       if (!selectedEditorEdge) return;
       var w = parseFloat(edgeWeightInput.value, 10);
-      setEdgeWeight(selectedEditorEdge.mind, selectedEditorEdge.lo, selectedEditorEdge.hi, w, { flash: true, notify: true });
+      setEdgeWeight(selectedEditorEdge.mind, selectedEditorEdge.from, selectedEditorEdge.to, w, { flash: true, notify: true });
     });
   }
   var edgeClose = document.getElementById('two-minds-edge-close');
   if (edgeClose) {
     edgeClose.addEventListener('click', function () {
       if (selectedEditorEdge) {
-        flashNodes(selectedEditorEdge.mind, selectedEditorEdge.lo, selectedEditorEdge.hi);
+        flashNodes(selectedEditorEdge.mind, selectedEditorEdge.from, selectedEditorEdge.to);
         messageLock = null;
         setMessage('You changed a triggering relationship. The ripple will be different now.');
       }
       closeEdgeEditor();
     });
   }
+  function dismissUserHint() {
+    var hadRing = hintOnCoffee;
+    hideOnboardingHint();
+    hasInteracted = true;
+    if (hadRing) renderBoth();
+  }
   if (companionEl) {
+    companionEl.addEventListener('click', dismissUserHint, true);
     companionEl.addEventListener('click', function (e) {
       if (e.target === companionEl) closeEdgeEditor();
     });
@@ -722,5 +786,6 @@
   if (resetBtn) resetBtn.addEventListener('click', resetActivations);
   buildPills();
   resetActivations();
+  scheduleOnboardingHint();
   rafId = requestAnimationFrame(tick);
 })();

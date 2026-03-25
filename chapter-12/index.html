@@ -49,12 +49,12 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Same words, different webs: Mind A (cool blue) and Mind B (warm rose) link ideas differently. Gold is where activations <strong>match</strong>—partial isomorphism, the bridge across the gulf. <strong>Ctrl+click</strong> two nodes in one mind to add a link; <strong>Shift+click</strong> a link to remove it; click a link (no Shift) to tune its weight.</p>
+      <p class="companion-caption">Same words, different webs: Mind A (cool blue) and Mind B (warm rose) link ideas differently. Gold is where activations <strong>match</strong>—partial isomorphism, the bridge across the gulf. <strong>Ctrl+click</strong> the source node, then the target, to add a directed link; <strong>Shift+click</strong> a link to remove it; click a link (no Shift) to tune its weight.</p>
       <div class="companion-box two-minds-companion" id="two-minds-companion">
         <div class="two-minds-canvas-wrap">
           <div class="two-minds-panel mind-a" id="mind-a-panel">
             <p class="two-minds-label">Mind A</p>
-            <svg id="mind-a-svg" class="two-minds-svg" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" aria-label="Mind A network"></svg>
+            <svg id="mind-a-svg" class="two-minds-svg" viewBox="0 0 320 340" xmlns="http://www.w3.org/2000/svg" aria-label="Mind A network"></svg>
           </div>
           <div class="two-minds-center" id="two-minds-center" aria-live="polite">
             <div class="two-minds-center-glow" id="two-minds-center-glow"></div>
@@ -67,7 +67,7 @@
           </div>
           <div class="two-minds-panel mind-b" id="mind-b-panel">
             <p class="two-minds-label">Mind B</p>
-            <svg id="mind-b-svg" class="two-minds-svg" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg" aria-label="Mind B network"></svg>
+            <svg id="mind-b-svg" class="two-minds-svg" viewBox="0 0 320 340" xmlns="http://www.w3.org/2000/svg" aria-label="Mind B network"></svg>
           </div>
         </div>
         <div class="two-minds-strip-wrap">
@@ -111,7 +111,7 @@
       display: flex;
       align-items: stretch;
       gap: 0;
-      min-height: 340px;
+      min-height: 320px;
     }
     .two-minds-panel {
       flex: 1;
@@ -133,6 +133,21 @@
       color: #334155;
     }
     .two-minds-svg { width: 100%; height: auto; display: block; }
+    @keyframes tm-onboard-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.72; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+    .two-minds-svg .tm-onboard-hint { pointer-events: none; }
+    .two-minds-svg .tm-onboard-ring {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: tm-onboard-pulse 0.8s ease-in-out infinite;
+    }
+    .two-minds-svg .tm-onboard-label {
+      paint-order: stroke fill;
+      stroke: rgba(255, 255, 255, 0.95);
+      stroke-width: 4px;
+    }
     /* Node labels: high contrast on pastel and saturated fills */
     .two-minds-svg .two-minds-node-label {
       paint-order: stroke fill;

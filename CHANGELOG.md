@@ -4,6 +4,15 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.33] — 2026-03-24
+
+### Changed
+
+- Chapter 12 Two Minds (`two-minds.js`): model Mind A and Mind B as **directed** graphs with the twelve shared concept labels; give each mind the specified default edge lists (skip invalid warmth→comfort), identical fractional node positions on a 320×340 viewBox, and weight-based edge stroke widths.
+- Make resonance a smoothed live readout from per-concept activation agreement (`1 − |Δ|`), tier labels and thermometer colors by band, em dash when idle; during **Becoming Similar** with no activations, drive the meter from **edge-weight agreement** so it rises as Mind B lerps toward Mind A.
+- Fix directed edge editing: add/remove by `(from, to)`, edge hit targets use `data-from` / `data-to`, floating weight slider uses `from`/`to`; set preset auto-fire delays to 500ms; load Strangers with Mind A defaults and contrasting Mind B; remove dead becoming-map state.
+- Update the chapter-12 companion caption for **Ctrl+click** (source then target); add a 1.5s onboarding pulse and “Try clicking here.” on **coffee** in Mind A (dismiss on first click in the companion); add `@keyframes` for the hint ring in `index.html`.
+
 ## [0.15.32] — 2026-03-24
 
 ### Changed
