@@ -449,7 +449,7 @@
       circle.setAttribute('class', 'tm-node-shape');
       circle.setAttribute('cx', POS[j].x);
       circle.setAttribute('cy', POS[j].y);
-      circle.setAttribute('r', act > 0.08 ? 15 : 12);
+      circle.setAttribute('r', act > 0.08 ? 24 : 20);
       var fill = restFill;
       var stroke = restStroke;
       var filter = '';
@@ -469,9 +469,10 @@
       var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       text.setAttribute('class', 'two-minds-node-label');
       text.setAttribute('x', POS[j].x);
-      text.setAttribute('y', POS[j].y + 4);
+      text.setAttribute('y', POS[j].y);
       text.setAttribute('text-anchor', 'middle');
-      text.setAttribute('font-size', '12.5');
+      text.setAttribute('dominant-baseline', 'middle');
+      text.setAttribute('font-size', '25');
       text.setAttribute('font-weight', '700');
       text.textContent = LABELS[j];
       g.appendChild(text);

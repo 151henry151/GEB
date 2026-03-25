@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.32] — 2026-03-24
+
+### Changed
+
+- Chapter 12 Two Minds: double SVG node label size (25px), center labels with `dominant-baseline="middle"`, enlarge node circles slightly, and scale label outline strokes for readability.
+
 ## [0.15.31] — 2026-03-24
 
 ### Changed
