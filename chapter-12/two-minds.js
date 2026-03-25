@@ -400,8 +400,6 @@
     var restFill = isA ? '#c8dff0' : '#f0d0c8';
     var actFill = isA ? '#3a8fd1' : '#d1503a';
     var restStroke = isA ? '#5a9fc0' : '#c07060';
-    var labelRest = '#334155';
-    var labelAct = '#0f172a';
     svg.innerHTML = '';
     for (var ei = 0; ei < edges.length; ei++) {
       var e = edges[ei];
@@ -442,7 +440,11 @@
       var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.setAttribute('data-node', j);
       g.setAttribute('data-mind', mindId);
-      g.setAttribute('class', 'two-minds-node');
+      var nodeClass = 'two-minds-node';
+      if (aA > 0.35 && aB > 0.35) nodeClass += ' tm-node-both';
+      else if (act > 0.08) nodeClass += ' tm-node-active';
+      else nodeClass += ' tm-node-rest';
+      g.setAttribute('class', nodeClass);
       var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       circle.setAttribute('class', 'tm-node-shape');
       circle.setAttribute('cx', POS[j].x);
@@ -465,12 +467,12 @@
       if (filter) circle.setAttribute('filter', filter);
       g.appendChild(circle);
       var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('class', 'two-minds-node-label');
       text.setAttribute('x', POS[j].x);
       text.setAttribute('y', POS[j].y + 4);
       text.setAttribute('text-anchor', 'middle');
-      text.setAttribute('font-size', '11');
-      text.setAttribute('font-weight', '600');
-      text.setAttribute('fill', act > 0.08 ? labelAct : labelRest);
+      text.setAttribute('font-size', '12.5');
+      text.setAttribute('font-weight', '700');
       text.textContent = LABELS[j];
       g.appendChild(text);
       svg.appendChild(g);

@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.29] — 2026-03-24
+
+### Changed
+
+- Chapter 12 companion: increase contrast for SVG node labels (larger bold type, white stroke halo, state-specific fills for rest / active / both-minds) and for preset `Reset` buttons on the dark panel (light button background and dark text); lighten companion copy and legend text for readability on the dark outer companion.
+
 ## [0.15.28] — 2026-03-24
 
 ### Changed

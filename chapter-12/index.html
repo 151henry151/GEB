@@ -101,7 +101,7 @@
     .two-minds-companion {
       position: relative;
       background: #1a1f28;
-      color: #243243;
+      color: #e2e8f0;
       border-radius: 8px;
       padding: 0.75rem;
     }
@@ -131,6 +131,24 @@
       color: #334155;
     }
     .two-minds-svg { width: 100%; height: auto; display: block; }
+    /* Node labels: high contrast on pastel and saturated fills */
+    .two-minds-svg .two-minds-node-label {
+      paint-order: stroke fill;
+      stroke-linejoin: round;
+      stroke: rgba(255, 255, 255, 0.96);
+      stroke-width: 3px;
+      fill: #0a0f18;
+    }
+    .two-minds-svg .tm-node-active .two-minds-node-label {
+      fill: #ffffff;
+      stroke: rgba(15, 23, 42, 0.85);
+      stroke-width: 2.5px;
+    }
+    .two-minds-svg .tm-node-both .two-minds-node-label {
+      fill: #1a1204;
+      stroke: rgba(255, 250, 235, 0.98);
+      stroke-width: 2.5px;
+    }
     .two-minds-center {
       width: 104px;
       flex-shrink: 0;
@@ -269,7 +287,7 @@
     }
     .two-minds-legend {
       font-size: 0.78rem;
-      color: #475569;
+      color: #cbd5e1;
       margin-top: 0.5rem;
       display: flex;
       gap: 1rem;
@@ -287,14 +305,29 @@
     .mind-b-dot { background: #d1503a; box-shadow: 0 0 6px rgba(209,80,58,0.45); }
     .resonance-dot { background: #d4a030; box-shadow: 0 0 8px rgba(212,160,48,0.6); }
     .two-minds-presets { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
-    .two-minds-presets .btn { font-size: 0.8rem; }
+    .two-minds-presets .btn {
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: #e2e8f0;
+      color: #0f172a;
+      border: 1px solid #94a3b8;
+    }
+    .two-minds-presets .btn:hover {
+      background: #f8fafc;
+      color: #020617;
+      border-color: #64748b;
+    }
+    .two-minds-presets .btn:focus-visible {
+      outline: 2px solid #d4a030;
+      outline-offset: 2px;
+    }
     .two-minds-message {
       margin: 0.5rem 0 0 0;
       font-size: 0.88rem;
       font-style: italic;
       min-height: 2.6em;
       line-height: 1.35;
-      color: #334155;
+      color: #cbd5e1;
     }
     .two-minds-node { cursor: pointer; }
     .two-minds-node.selected .tm-node-shape { stroke: #d4a030; stroke-width: 3px; }
