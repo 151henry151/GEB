@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.28] — 2026-03-24
+
+### Changed
+
+- Chapter 11 (Brains and Thoughts): replace the dual-mode toggle with a single 500×380 canvas, stacked neural and symbolic SVG layers cross-faded by a continuous “Neurons ↔ Thoughts” slider; add 60 spiking neurons in five Hebbian assemblies (dense intra, sparse inter, inhibitory interneurons), optional brain outline and “show regions” hint, signal dots on edges, coherence detection with first-time “same event” overlay (persisted via `localStorage`), three ordered narrative presets, dual bottom captions keyed to slider position, active-pattern readout bars, and secondary concept triggers with optional button subtitles (`brains-thoughts.js`).
+
 ## [0.15.27] — 2026-03-24
 
 ### Changed

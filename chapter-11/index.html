@@ -6,316 +6,296 @@
   <title>Chapter XI: Brains and Thoughts — GEB Companion</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/style.css">
   <style>
     .ch11-panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
+      background: #f4f6fa;
+      border: 1px solid #d8dee9;
       border-radius: 8px;
       padding: 0.75rem;
-      transition: background-color 400ms ease, border-color 400ms ease, color 400ms ease;
+      color: #1e293b;
+    }
+    .ch11-main-caption {
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: #334155;
+      margin: 0 0 0.5rem 0;
     }
     .ch11-toolbar {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.6rem;
       flex-wrap: wrap;
-      margin-bottom: 0.55rem;
-    }
-    .ch11-mode-row {
-      display: flex;
       align-items: center;
       gap: 0.5rem;
-      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
     }
     .ch11-question {
+      flex: 1 1 200px;
       font-size: 0.88rem;
-      color: var(--muted);
       font-style: italic;
+      color: #64748b;
       line-height: 1.35;
-      transition: color 400ms ease, opacity 400ms ease;
+      margin: 0;
     }
-    .ch11-note {
-      margin: 0 0 0.6rem 0;
-      font-size: 0.88rem;
-      color: var(--muted);
+    .ch11-slider-block {
+      margin: 0.5rem 0 0.35rem 0;
+    }
+    .ch11-slider-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-align: center;
+      color: #475569;
+      margin-bottom: 0.35rem;
+    }
+    .ch11-focus-slider {
+      width: 100%;
+      accent-color: #3a6ea5;
+    }
+    .ch11-focus-desc {
+      font-size: 0.8rem;
+      color: #64748b;
       line-height: 1.4;
+      min-height: 2.8em;
+      margin: 0.35rem 0 0 0;
+    }
+    .ch11-canvas-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      aspect-ratio: 500 / 380;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #cbd5e1;
+      background: #eef1f6;
+      --focus: 0.35;
+    }
+    .ch11-layer-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: none;
+    }
+    .ch11-layer-neurons {
+      z-index: 2;
+      opacity: calc(1 - var(--focus));
+      pointer-events: none;
+    }
+    .ch11-layer-neurons .ch11-hit {
+      pointer-events: auto;
+    }
+    .ch11-layer-symbols {
+      z-index: 1;
+      opacity: var(--focus);
+    }
+    .ch11-brain-outline {
+      stroke: rgba(80, 100, 130, 0.1);
+      stroke-width: 1.2;
+    }
+    .ch11-syn {
+      stroke: #5a6b7c;
+    }
+    .ch11-exc {
+      stroke: none;
+    }
+    .ch11-halo {
+      filter: url(#ch11-symbol-halo);
+    }
+    .ch11-concept-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      fill: #0f172a;
+      pointer-events: none;
+    }
+    .ch11-thought-link {
+      stroke: #64748b;
+      stroke-linecap: round;
+    }
+    .ch11-thought-link.is-pulse {
+      stroke-dasharray: 6 10;
+      animation: ch11-dash 0.8s linear infinite;
+    }
+    @keyframes ch11-dash {
+      to { stroke-dashoffset: -32; }
+    }
+    .ch11-secondary-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.65rem;
+      margin-top: 0.45rem;
+      font-size: 0.78rem;
+      color: #64748b;
+    }
+    .ch11-secondary-row label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
     }
     .ch11-concepts {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 0.35rem;
-      margin-bottom: 0.6rem;
+      gap: 0.3rem;
+      margin-top: 0.35rem;
+    }
+    .ch11-hint-concepts .ch11-concept small {
+      display: block;
     }
     .ch11-concept {
       appearance: none;
-      padding: 0.45rem 0.35rem;
+      padding: 0.35rem 0.25rem;
       text-align: center;
-      border: 1px solid var(--border);
+      border: 1px solid #cbd5e1;
       border-radius: 6px;
-      background: rgba(46, 107, 138, 0.06);
-      color: var(--text);
+      background: #fff;
+      color: #334155;
       cursor: pointer;
-      transition: transform 400ms ease, box-shadow 400ms ease, opacity 400ms ease, background-color 400ms ease, border-color 400ms ease, color 400ms ease;
-    }
-    .ch11-concept span {
-      display: block;
-      font-size: 0.72rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      letter-spacing: 0.06em;
-      color: inherit;
-      transition: font-size 400ms ease, letter-spacing 400ms ease, color 400ms ease, opacity 400ms ease;
+      letter-spacing: 0.05em;
     }
     .ch11-concept small {
-      display: block;
-      margin-top: 0.18rem;
-      font-size: 0.68rem;
-      line-height: 1.2;
-      color: var(--muted);
-      transition: opacity 400ms ease, max-height 400ms ease, margin-top 400ms ease;
+      display: none;
+      margin-top: 0.15rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: #64748b;
+      font-size: 0.6rem;
     }
-    .ch11-concept.is-active {
-      box-shadow: 0 0 14px rgba(181, 135, 59, 0.24);
-      transform: translateY(-1px);
+    .ch11-concept:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
     }
-    .ch11-thought {
-      margin: 0 0 0.65rem 0;
-      padding: 0.45rem 0.55rem;
-      background: rgba(46, 107, 138, 0.08);
-      border-left: 3px solid var(--accent-secondary);
-      border-radius: 4px;
-      font-size: 0.86rem;
-      color: var(--text);
-      line-height: 1.35;
+    .ch11-presets {
+      margin-top: 0.55rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
     }
-    .ch11-thought strong { color: var(--accent); }
-    .ch11-thought .sub { color: var(--muted); }
-    .ch11-network {
+    .ch11-presets > span {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #64748b;
       width: 100%;
-      height: auto;
-      display: block;
-      background: linear-gradient(180deg, rgba(46, 107, 138, 0.05), rgba(46, 107, 138, 0.02));
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      transition: background-color 400ms ease, opacity 400ms ease, filter 400ms ease, border-color 400ms ease;
     }
-    .ch11-stage {
-      position: relative;
-    }
-    .ch11-hit-layer {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-    }
-    .ch11-hit {
-      position: absolute;
-      width: 28px;
-      height: 28px;
-      padding: 0;
-      border: 0;
-      border-radius: 999px;
-      background: transparent;
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-      color: transparent;
-    }
-    .ch11-hit:hover,
-    .ch11-hit:focus-visible {
-      background: rgba(181, 135, 59, 0.12);
-      box-shadow: 0 0 0 1px rgba(181, 135, 59, 0.55), 0 0 10px rgba(181, 135, 59, 0.2);
-      outline: none;
-    }
-    .ch11-edge {
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke: var(--ch11-edge);
-      stroke-width: 1px;
-      opacity: 0.34;
-      transition: stroke 400ms ease, stroke-width 400ms ease, opacity 400ms ease, d 400ms ease;
-    }
-    .ch11-edge.is-active {
-      stroke: var(--ch11-edge-active);
-      opacity: 0.95;
-    }
-    .ch11-mode-symbol .ch11-edge {
-      stroke-width: 2.5px;
-    }
-    .ch11-node-group {
-      transition: opacity 400ms ease, transform 400ms ease;
-    }
-    .ch11-node-core {
-      fill: var(--ch11-node-off);
-      stroke: var(--ch11-node-border);
-      stroke-width: 1.5;
-      transition: fill 400ms ease, stroke 400ms ease, opacity 400ms ease, r 400ms ease, filter 400ms ease;
-    }
-    .ch11-node-label {
-      text-anchor: middle;
-      dominant-baseline: middle;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      fill: var(--ch11-label);
-      opacity: 0;
-      transition: opacity 400ms ease, fill 400ms ease, transform 400ms ease, font-size 400ms ease;
-      pointer-events: none;
-    }
-    .ch11-pulse {
-      pointer-events: none;
-      transition: opacity 400ms ease, transform 400ms ease;
-    }
-    .ch11-mode-neuron .ch11-pulse {
-      filter: none;
-    }
-    .ch11-travel-dot {
-      pointer-events: none;
-      transition: opacity 400ms ease, fill 400ms ease, filter 400ms ease, r 400ms ease;
-    }
-    .ch11-caption {
-      margin: 0.6rem 0 0 0;
-      font-size: 0.86rem;
-      color: var(--muted);
-      line-height: 1.4;
-      transition: color 400ms ease, opacity 400ms ease;
-    }
-    .ch11-mode-neuron {
-      --ch11-panel-bg: #f8fbff;
-      --ch11-panel-border: #d7dfea;
-      --ch11-panel-text: #243243;
-      --ch11-muted: #64748b;
-      --ch11-network-bg: #fbfdff;
-      --ch11-edge: #3a4a5a;
-      --ch11-edge-active: #8cc4ff;
-      --ch11-node-off: #2a2a3a;
-      --ch11-node-on: #a8d8ff;
-      --ch11-node-border: #4a5568;
-      --ch11-label: #1f2937;
-      --ch11-concept-bg: #eef2f7;
-      --ch11-concept-border: #cbd5e1;
-      --ch11-concept-text: #334155;
-      --ch11-concept-muted: #64748b;
-      --ch11-concept-active-bg: #dceafe;
-      --ch11-concept-active-border: #8cc4ff;
-      --ch11-concept-active-text: #17324d;
-      --ch11-concept-active-shadow: rgba(140, 196, 255, 0.24);
-      --ch11-pulse-fill: rgba(168, 216, 255, 0.08);
-      --ch11-pulse-stroke: #a8d8ff;
-      --ch11-travel-fill: #a8d8ff;
-      --ch11-text-color: #243243;
-      color: var(--ch11-text-color);
-    }
-    .ch11-mode-symbol {
-      --ch11-panel-bg: #fffaf0;
-      --ch11-panel-border: #ddc79f;
-      --ch11-panel-text: #5a4630;
-      --ch11-muted: #8b6c45;
-      --ch11-network-bg: #fdf6e8;
-      --ch11-edge: rgba(196, 144, 48, 0.5);
-      --ch11-edge-active: #d4a030;
-      --ch11-node-off: #f5e6c8;
-      --ch11-node-on: #d4a030;
-      --ch11-node-border: #b07a2c;
-      --ch11-label: #50361f;
-      --ch11-concept-bg: #f5e6c8;
-      --ch11-concept-border: #d8c29d;
-      --ch11-concept-text: #5a4630;
-      --ch11-concept-muted: #8b6c45;
-      --ch11-concept-active-bg: #f6d893;
-      --ch11-concept-active-border: #c9902b;
-      --ch11-concept-active-text: #4e341d;
-      --ch11-concept-active-shadow: rgba(212, 160, 48, 0.28);
-      --ch11-pulse-fill: rgba(212, 160, 48, 0.14);
-      --ch11-pulse-stroke: #d4a030;
-      --ch11-travel-fill: #d4a030;
-      --ch11-text-color: #5a4630;
-      color: var(--ch11-text-color);
-    }
-    .ch11-panel {
-      background: var(--ch11-panel-bg);
-      border-color: var(--ch11-panel-border);
-      color: var(--ch11-panel-text);
-    }
-    .ch11-network {
-      background: var(--ch11-network-bg);
-      border-color: var(--ch11-panel-border);
-    }
-    .ch11-note,
-    .ch11-caption,
-    .ch11-thought,
-    .ch11-question {
-      color: var(--ch11-muted);
-    }
-    .ch11-thought {
-      background: color-mix(in srgb, var(--ch11-panel-bg) 78%, var(--ch11-concept-active-bg) 22%);
-      border-left-color: var(--ch11-concept-active-border);
-      color: var(--ch11-panel-text);
-    }
-    .ch11-concept {
-      background: var(--ch11-concept-bg);
-      border-color: var(--ch11-concept-border);
-      color: var(--ch11-concept-text);
-    }
-    .ch11-concept small {
-      color: var(--ch11-concept-muted);
-    }
-    .ch11-concept.is-active {
-      border-color: var(--ch11-concept-active-border);
-      background: var(--ch11-concept-active-bg);
-      box-shadow: 0 0 0 1px var(--ch11-concept-active-shadow);
-      transform: translateY(-1px) scale(1.02);
-    }
-    .ch11-mode-neuron .ch11-concept span {
+    .ch11-readout {
+      margin-top: 0.55rem;
       font-size: 0.72rem;
-      letter-spacing: 0.1em;
+      color: #64748b;
     }
-    .ch11-mode-neuron .ch11-concept small {
-      opacity: 0;
-      max-height: 0;
-      margin-top: 0;
+    .ch11-readout-bars {
+      margin-top: 0.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .ch11-readout-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .ch11-readout-name {
+      flex: 0 0 88px;
+      font-weight: 700;
+      font-size: 0.62rem;
+      letter-spacing: 0.04em;
+    }
+    .ch11-readout-bar {
+      flex: 1;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.06);
       overflow: hidden;
     }
-    .ch11-mode-neuron .ch11-concept.is-active {
-      border-color: var(--ch11-concept-active-border);
-      background: var(--ch11-concept-active-bg);
-      color: var(--ch11-concept-active-text);
-      box-shadow: 0 0 0 1px rgba(140, 196, 255, 0.24);
-      transform: translateY(-1px);
+    .ch11-readout-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.12s ease-out;
+      opacity: 0.85;
     }
-    .ch11-mode-symbol .ch11-concept span {
-      font-size: 0.82rem;
-      letter-spacing: 0.06em;
-    }
-    .ch11-mode-symbol .ch11-concept small {
+    .ch11-readout-fill.is-coherent {
       opacity: 1;
-      max-height: 2rem;
-      margin-top: 0.18rem;
-      overflow: visible;
+      box-shadow: 0 0 8px rgba(212,160,48,0.35);
     }
-    .ch11-mode-symbol .ch11-concept.is-active {
-      transform: translateY(-1px) scale(1.04);
-      box-shadow: 0 0 0 1px rgba(201, 144, 43, 0.2), 0 0 14px rgba(212, 160, 48, 0.26);
+    .ch11-caption {
+      margin: 0.55rem 0 0 0;
+      font-size: 0.84rem;
+      font-style: italic;
+      color: #475569;
+      line-height: 1.45;
+      min-height: 3em;
     }
-    .ch11-mode-neuron .ch11-network { opacity: 1; filter: none; }
-    .ch11-mode-symbol .ch11-network { opacity: 1; filter: none; }
-    .ch11-mode-neuron .ch11-node-label { opacity: 0; }
-    .ch11-mode-symbol .ch11-node-label { opacity: 1; }
-    .ch11-mode-neuron .ch11-caption,
-    .ch11-mode-neuron .ch11-question,
-    .ch11-mode-neuron .ch11-note,
-    .ch11-mode-neuron .ch11-thought {
-      color: var(--ch11-muted);
+    .ch11-aha-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.88);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      animation: ch11-fade-in 0.35s ease;
     }
-    .ch11-mode-symbol .ch11-caption,
-    .ch11-mode-symbol .ch11-question,
-    .ch11-mode-symbol .ch11-note,
-    .ch11-mode-symbol .ch11-thought {
-      color: var(--ch11-muted);
+    .ch11-aha-overlay[hidden] {
+      display: none !important;
+    }
+    .ch11-aha-inner {
+      max-width: 720px;
+      width: 100%;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+      text-align: center;
+    }
+    .ch11-aha-split {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.75rem;
+      align-items: center;
+      margin: 1rem 0;
+      min-height: 120px;
+    }
+    .ch11-aha-half {
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .ch11-aha-half.voltage {
+      background: linear-gradient(135deg, #1e293b, #334155);
+      color: #e2e8f0;
+    }
+    .ch11-aha-half.thought {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      color: #422006;
+    }
+    .ch11-aha-brace {
+      font-size: 2rem;
+      color: #d4a030;
+      line-height: 1;
+    }
+    .ch11-aha-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: 0.02em;
+      margin: 0.5rem 0 0 0;
+    }
+    @keyframes ch11-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     @media (max-width: 700px) {
       .ch11-concepts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ch11-aha-split { grid-template-columns: 1fr; }
+      .ch11-aha-brace { transform: rotate(90deg); }
     }
   </style>
 </head>
@@ -359,496 +339,61 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption" id="ch11-main-caption">At one level: neurons firing. At another: thoughts emerging. Click any neuron to perturb the network.</p>
+      <p class="companion-caption ch11-main-caption">60 neurons. 5 thoughts. Click anywhere in the network and watch what emerges.</p>
       <div class="companion-box ch11-panel" id="ch11-companion">
         <div class="ch11-toolbar">
-          <div class="ch11-mode-row">
-            <div class="ch11-question" id="ch11-question">Are thoughts “just” neurons?</div>
-            <button type="button" class="btn btn-primary" id="ch11-mode-btn">Switch to symbol view</button>
-          </div>
+          <p class="ch11-question" id="ch11-question">Are thoughts “just” neurons?</p>
           <button type="button" class="btn btn-secondary" id="ch11-reset-btn">Reset</button>
         </div>
-        <p class="ch11-note" id="ch11-note">Click any neuron to fire it. The same pattern can be read as raw voltage or as a thought.</p>
-        <div class="ch11-concepts" id="ch11-concepts" aria-label="Symbolic concepts">
+        <div class="ch11-slider-block">
+          <div class="ch11-slider-label" id="ch11-slider-axis">NEURONS ←————————→ THOUGHTS</div>
+          <input type="range" id="ch11-focus-slider" class="ch11-focus-slider" min="0" max="1" step="0.01" value="0.35" aria-label="Focus between neural and symbolic description">
+          <p class="ch11-focus-desc" id="ch11-focus-label"></p>
+        </div>
+        <div class="ch11-canvas-wrap" id="ch11-canvas-wrap">
+          <svg class="ch11-layer-svg" id="ch11-svg-bg" viewBox="0 0 500 380" aria-hidden="true"></svg>
+          <svg class="ch11-layer-svg ch11-layer-symbols" id="ch11-svg-symbols" viewBox="0 0 500 380" aria-label="Symbolic level"></svg>
+          <svg class="ch11-layer-svg ch11-layer-neurons" id="ch11-svg-neurons" viewBox="0 0 500 380" aria-label="Neural network — click neurons to fire"></svg>
+        </div>
+        <div class="ch11-readout" id="ch11-readout">
+          <strong>Active patterns</strong>
+          <div class="ch11-readout-bars" id="ch11-readout-bars"></div>
+        </div>
+        <div class="ch11-presets">
+          <span>Experiences (try in order)</span>
+          <button type="button" class="btn btn-secondary ch11-preset" data-preset="1">1 — A sudden danger</button>
+          <button type="button" class="btn btn-secondary ch11-preset" data-preset="2">2 — Hunger building slowly</button>
+          <button type="button" class="btn btn-secondary ch11-preset" data-preset="3">3 — Comfort after danger</button>
+        </div>
+        <p class="ch11-caption" id="ch11-caption">Click a neuron. The cascade is anonymous until you choose how to describe it.</p>
+        <div class="ch11-secondary-row">
+          <label><input type="checkbox" id="ch11-hint-toggle"> Show concept hints on buttons</label>
+          <label><input type="checkbox" id="ch11-region-toggle"> Show concept regions</label>
+        </div>
+        <p style="font-size:0.72rem;color:#94a3b8;margin:0.35rem 0 0 0;">Secondary: fire a named pattern (hint mode shows subtitles).</p>
+        <div class="ch11-concepts" id="ch11-concepts" aria-label="Named concept triggers">
           <button type="button" class="ch11-concept" data-concept="hunger"><span>HUNGER</span><small>seeking / lack</small></button>
           <button type="button" class="ch11-concept" data-concept="warmth"><span>WARMTH</span><small>comfort / shelter</small></button>
           <button type="button" class="ch11-concept" data-concept="danger"><span>DANGER</span><small>alert / withdraw</small></button>
           <button type="button" class="ch11-concept" data-concept="comfort"><span>COMFORT</span><small>rest / settle</small></button>
           <button type="button" class="ch11-concept" data-concept="curiosity"><span>CURIOSITY</span><small>explore / reach</small></button>
         </div>
-        <div class="ch11-thought" id="ch11-thought">No thought is dominant yet.</div>
-        <div class="ch11-stage">
-          <svg class="ch11-network" id="ch11-network" viewBox="0 0 720 430" role="img" aria-label="Neural network and concept map">
-            <g id="ch11-edge-layer" aria-hidden="true"></g>
-            <g id="ch11-node-layer" aria-hidden="true"></g>
-            <g id="ch11-effect-layer" aria-hidden="true"></g>
-          </svg>
-          <div id="ch11-hit-layer" class="ch11-hit-layer" aria-label="Neuron hit targets"></div>
-        </div>
-        <p class="ch11-caption" id="ch11-caption">At this level, there is no hunger. Only voltage.</p>
       </div>
+    </div>
+  </div>
+  <div class="ch11-aha-overlay" id="ch11-aha-overlay" hidden aria-hidden="true" role="dialog" aria-labelledby="ch11-aha-title">
+    <div class="ch11-aha-inner">
+      <div class="ch11-aha-split">
+        <div class="ch11-aha-half voltage">Spikes. Latencies. Anonymous nodes.</div>
+        <div class="ch11-aha-brace" aria-hidden="true">↔</div>
+        <div class="ch11-aha-half thought">A concept. A word. A meaning.</div>
+      </div>
+      <p class="ch11-aha-title" id="ch11-aha-title">These are the same event.</p>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script>
-    (function () {
-      var svgNS = 'http://www.w3.org/2000/svg';
-      var root = document.getElementById('ch11-companion');
-      var questionEl = document.getElementById('ch11-question');
-      var modeBtn = document.getElementById('ch11-mode-btn');
-      var resetBtn = document.getElementById('ch11-reset-btn');
-      var noteEl = document.getElementById('ch11-note');
-      var thoughtEl = document.getElementById('ch11-thought');
-      var captionEl = document.getElementById('ch11-caption');
-      var edgeLayer = document.getElementById('ch11-edge-layer');
-      var nodeLayer = document.getElementById('ch11-node-layer');
-      var effectLayer = document.getElementById('ch11-effect-layer');
-      var hitLayer = document.getElementById('ch11-hit-layer');
-      var conceptEls = Array.prototype.slice.call(document.querySelectorAll('#ch11-concepts .ch11-concept'));
-      var mode = 'neuron';
-      var seenNeuron = false;
-      var seenSymbol = false;
-      var queue = [];
-      var nodes = [];
-      var edges = [];
-      var nodeGroups = [];
-      var nodeEls = [];
-      var nodeLabelEls = [];
-      var conceptMap = {};
-      var concepts = [
-        { id: 'hunger', label: 'HUNGER', short: 'Symbol A', phrase: 'seeking / lack', cx: 120, cy: 155 },
-        { id: 'warmth', label: 'WARMTH', short: 'Symbol B', phrase: 'comfort / shelter', cx: 310, cy: 110 },
-        { id: 'danger', label: 'DANGER', short: 'Symbol C', phrase: 'alert / withdraw', cx: 520, cy: 155 },
-        { id: 'comfort', label: 'COMFORT', short: 'Symbol D', phrase: 'rest / settle', cx: 190, cy: 315 },
-        { id: 'curiosity', label: 'CURIOSITY', short: 'Symbol E', phrase: 'explore / reach', cx: 430, cy: 315 }
-      ];
-      var offsets = [
-        { x: -28, y: -8 },
-        { x: 0, y: -26 },
-        { x: 28, y: -6 },
-        { x: 2, y: 22 }
-      ];
-      var pulseBursts = [];
-      var travelBursts = [];
-
-      function el(name) {
-        return document.createElementNS(svgNS, name);
-      }
-
-      function rand(seed) {
-        var x = Math.sin(seed * 999.123 + 0.37) * 43758.5453123;
-        return x - Math.floor(x);
-      }
-
-      function clamp(v, min, max) {
-        return Math.max(min, Math.min(max, v));
-      }
-
-      function conceptById(id) {
-        for (var i = 0; i < concepts.length; i++) {
-          if (concepts[i].id === id) return concepts[i];
-        }
-        return null;
-      }
-
-      function updateQuestion() {
-        if (seenNeuron && seenSymbol) {
-          questionEl.innerHTML = mode === 'neuron'
-            ? 'Are thoughts “just” neurons?<br>You just watched HUNGER become anonymous voltage.'
-            : 'Are thoughts “just” neurons?<br>You just watched anonymous voltage become HUNGER.';
-        } else {
-          questionEl.textContent = 'Are thoughts “just” neurons?';
-        }
-      }
-
-      function setMode(nextMode) {
-        if (mode !== nextMode) {
-          if (nextMode === 'neuron') seenNeuron = true;
-          if (nextMode === 'symbol') seenSymbol = true;
-        }
-        mode = nextMode;
-        root.classList.toggle('ch11-mode-neuron', mode === 'neuron');
-        root.classList.toggle('ch11-mode-symbol', mode === 'symbol');
-        modeBtn.textContent = mode === 'neuron' ? 'Switch to symbol view' : 'Switch to neuron view';
-        modeBtn.className = 'btn ' + (mode === 'neuron' ? 'btn-primary' : 'btn-secondary');
-        noteEl.textContent = mode === 'neuron'
-          ? 'Click a symbol to fire anonymous voltage. The same activity is still there, just rendered as voltage.'
-          : 'Click a concept to fire a labeled pattern. The same activity is still there, just rendered as meaning.';
-        captionEl.textContent = mode === 'neuron'
-          ? 'At this level, there is no hunger. Only voltage.'
-          : 'At this level, there is no voltage. Only hunger.';
-        updateQuestion();
-      }
-
-      function syncConceptButtons(activeId) {
-        for (var i = 0; i < conceptEls.length; i++) {
-          var concept = concepts[i];
-          var button = conceptEls[i];
-          var span = button.querySelector('span');
-          var small = button.querySelector('small');
-          span.textContent = mode === 'neuron' ? concept.short : concept.label;
-          small.textContent = mode === 'neuron' ? '' : concept.phrase;
-          button.setAttribute('aria-label', concept.label);
-          button.classList.toggle('is-active', !!activeId && activeId === concept.id);
-        }
-      }
-
-      function updateThought(activeId) {
-        if (!activeId) {
-          thoughtEl.innerHTML = mode === 'neuron'
-            ? '<strong>No voltage pattern is dominant yet.</strong> <span class="sub">Click a symbol to start a cascade.</span>'
-            : '<strong>No thought is dominant yet.</strong> <span class="sub">Click a concept to start a cascade.</span>';
-          return;
-        }
-        var concept = conceptById(activeId);
-        if (!concept) return;
-        thoughtEl.innerHTML = mode === 'neuron'
-          ? '<strong>Current voltage:</strong> ' + concept.short + ' <span class="sub">— anonymous activity</span>'
-          : '<strong>Current thought:</strong> ' + concept.label + ' <span class="sub">— ' + concept.phrase + '</span>';
-      }
-
-      function addDirectedEdge(a, b, weight, delay) {
-        edges.push({ a: a, b: b, weight: weight, delay: delay, glowUntil: 0, el: null });
-      }
-
-      function addBidirectionalEdge(a, b, weight, delay) {
-        addDirectedEdge(a, b, weight, delay);
-        addDirectedEdge(b, a, weight, delay);
-      }
-
-      function buildNetwork() {
-        var i, j, c, idx, groupNodes;
-        nodes = [];
-        edges = [];
-        nodeGroups = [];
-        nodeEls = [];
-        nodeLabelEls = [];
-        conceptMap = {};
-        edgeLayer.innerHTML = '';
-        nodeLayer.innerHTML = '';
-        effectLayer.innerHTML = '';
-        hitLayer.innerHTML = '';
-
-        for (i = 0; i < concepts.length; i++) {
-          conceptMap[concepts[i].id] = [];
-        }
-
-        for (c = 0; c < concepts.length; c++) {
-          groupNodes = [];
-          for (j = 0; j < offsets.length; j++) {
-            idx = nodes.length;
-            nodes.push({
-              id: 'n' + idx,
-              x: concepts[c].cx + offsets[j].x + (rand(idx) - 0.5) * 8,
-              y: concepts[c].cy + offsets[j].y + (rand(idx + 21) - 0.5) * 8,
-              group: concepts[c].id,
-              charge: 0,
-              fireUntil: 0,
-              refractoryUntil: 0
-            });
-            groupNodes.push(idx);
-            conceptMap[concepts[c].id].push(idx);
-          }
-          concepts[c].seedIndex = groupNodes[1];
-          addBidirectionalEdge(groupNodes[0], groupNodes[1], 0.44, 62);
-          addBidirectionalEdge(groupNodes[1], groupNodes[2], 0.42, 64);
-          addBidirectionalEdge(groupNodes[2], groupNodes[3], 0.45, 58);
-          addBidirectionalEdge(groupNodes[3], groupNodes[0], 0.43, 66);
-          addBidirectionalEdge(groupNodes[0], groupNodes[2], 0.36, 76);
-          addBidirectionalEdge(groupNodes[1], groupNodes[3], 0.36, 74);
-        }
-
-        addBidirectionalEdge(conceptMap.hunger[1], conceptMap.warmth[0], 0.28, 96);
-        addBidirectionalEdge(conceptMap.warmth[1], conceptMap.danger[0], 0.27, 98);
-        addBidirectionalEdge(conceptMap.danger[1], conceptMap.curiosity[0], 0.26, 100);
-        addBidirectionalEdge(conceptMap.curiosity[1], conceptMap.comfort[0], 0.29, 94);
-        addBidirectionalEdge(conceptMap.comfort[1], conceptMap.hunger[0], 0.27, 102);
-
-        for (i = 0; i < nodes.length - 1; i++) {
-          addBidirectionalEdge(i, i + 1, 0.58, 48);
-        }
-
-        for (i = 0; i < edges.length; i++) {
-          var edge = edges[i];
-          var path = el('path');
-          path.setAttribute('class', 'ch11-edge');
-          edgeLayer.appendChild(path);
-          edge.el = path;
-        }
-
-        for (i = 0; i < nodes.length; i++) {
-          var group = el('g');
-          var circle = el('circle');
-          var text = el('text');
-          group.setAttribute('class', 'ch11-node-group');
-          circle.setAttribute('class', 'ch11-node-core');
-          circle.setAttribute('cx', '0');
-          circle.setAttribute('cy', '0');
-          text.setAttribute('class', 'ch11-node-label');
-          text.setAttribute('x', '0');
-          text.setAttribute('y', '4');
-          group.appendChild(circle);
-          group.appendChild(text);
-          nodeLayer.appendChild(group);
-          nodeGroups.push(group);
-          nodeEls.push(circle);
-          nodeLabelEls.push(text);
-
-          var hit = document.createElement('button');
-          hit.type = 'button';
-          hit.className = 'ch11-hit';
-          hit.setAttribute('aria-label', 'Neuron ' + (i + 1));
-          hit.style.left = (nodes[i].x / 720 * 100) + '%';
-          hit.style.top = (nodes[i].y / 430 * 100) + '%';
-          hit.addEventListener('click', (function (idx2) {
-            return function () { fireNode(idx2, 1, performance.now(), true); };
-          })(i));
-          hitLayer.appendChild(hit);
-        }
-
-        for (i = 0; i < conceptEls.length; i++) {
-          conceptEls[i].addEventListener('click', (function (conceptId) {
-            return function () { fireConcept(conceptId, performance.now(), true); };
-          })(concepts[i].id));
-        }
-      }
-
-      function fireConcept(id, now, manual) {
-        var concept = conceptById(id);
-        if (!concept) return false;
-        return fireNode(concept.seedIndex, 1, now, manual);
-      }
-
-      function fireNode(idx, strength, now, manual) {
-        var node = nodes[idx];
-        var concept = conceptById(node.group);
-        if (!manual && now < node.refractoryUntil) return false;
-        node.charge = Math.max(node.charge, strength);
-        node.fireUntil = now + 320 + rand(idx + Math.floor(now / 33)) * 120;
-        node.refractoryUntil = now + 520 + rand(idx + 9) * 220;
-        pulseBursts.push({ nodeIndex: idx, start: now, duration: 300 });
-        if (concept) {
-          updateThought(concept.id);
-        }
-        for (var k = 0; k < nodeMap(idx).length; k++) {
-          var edgeIndex = nodeMap(idx)[k];
-          var edge = edges[edgeIndex];
-          queue.push({
-            at: now + edge.delay + rand(idx * 3 + k) * 24,
-            edgeIndex: edgeIndex,
-            to: edge.b,
-            strength: edge.weight * (0.7 + strength * 0.35)
-          });
-          edge.glowUntil = now + 200;
-          travelBursts.push({ edgeIndex: edgeIndex, start: now, duration: 200 });
-        }
-        return true;
-      }
-
-      function nodeMap(idx) {
-        var out = [];
-        for (var i = 0; i < edges.length; i++) {
-          if (edges[i].a === idx) out.push(i);
-        }
-        return out;
-      }
-
-      function applyPulse(pulse, now) {
-        var edge = edges[pulse.edgeIndex];
-        var node = nodes[pulse.to];
-        edge.glowUntil = now + 200;
-        node.charge = Math.min(1.2, node.charge + pulse.strength);
-        if (node.charge >= 0.42 && now >= node.refractoryUntil) {
-          fireNode(pulse.to, node.charge, now, false);
-        }
-      }
-
-      function dominantConcept(now) {
-        var bestId = null;
-        var bestScore = 0;
-        for (var i = 0; i < concepts.length; i++) {
-          var concept = concepts[i];
-          var score = 0;
-          var nodesForConcept = conceptMap[concept.id];
-          for (var j = 0; j < nodesForConcept.length; j++) {
-            var node = nodes[nodesForConcept[j]];
-            score += node.charge + (now < node.fireUntil ? 0.45 : 0);
-          }
-          if (score > bestScore) {
-            bestScore = score;
-            bestId = concept.id;
-          }
-        }
-        return bestScore > 0.25 ? bestId : null;
-      }
-
-      function edgeControl(edge) {
-        var a = nodes[edge.a];
-        var b = nodes[edge.b];
-        var mx = (a.x + b.x) / 2;
-        var my = (a.y + b.y) / 2;
-        var dx = b.x - a.x;
-        var dy = b.y - a.y;
-        var len = Math.sqrt(dx * dx + dy * dy) || 1;
-        var bend = Math.min(28, len * 0.14);
-        return {
-          x1: a.x,
-          y1: a.y,
-          x2: b.x,
-          y2: b.y,
-          cx: mx - (dy / len) * bend,
-          cy: my + (dx / len) * bend
-        };
-      }
-
-      function edgePath(edge) {
-        if (mode === 'neuron') {
-          return 'M ' + edge.aX + ' ' + edge.aY + ' L ' + edge.bX + ' ' + edge.bY;
-        }
-        return 'M ' + edge.aX + ' ' + edge.aY + ' Q ' + edge.cX + ' ' + edge.cY + ' ' + edge.bX + ' ' + edge.bY;
-      }
-
-      function edgePoint(edge, t) {
-        if (mode === 'neuron') {
-          return {
-            x: edge.aX + (edge.bX - edge.aX) * t,
-            y: edge.aY + (edge.bY - edge.aY) * t
-          };
-        }
-        var u = 1 - t;
-        return {
-          x: u * u * edge.aX + 2 * u * t * edge.cX + t * t * edge.bX,
-          y: u * u * edge.aY + 2 * u * t * edge.cY + t * t * edge.bY
-        };
-      }
-
-      function render(now) {
-        var activeId = dominantConcept(now);
-        var i;
-        syncConceptButtons(activeId);
-        updateThought(activeId);
-
-        for (i = 0; i < edges.length; i++) {
-          var edge = edges[i];
-          var geom = edgeControl(edge);
-          edge.aX = geom.x1;
-          edge.aY = geom.y1;
-          edge.bX = geom.x2;
-          edge.bY = geom.y2;
-          edge.cX = geom.cx;
-          edge.cY = geom.cy;
-          edge.el.setAttribute('d', edgePath(edge));
-          edge.el.classList.toggle('is-active', now < edge.glowUntil || nodes[edge.a].charge > 0.15 || nodes[edge.b].charge > 0.15);
-        }
-
-        for (i = 0; i < nodes.length; i++) {
-          var node = nodes[i];
-          var isFiring = now < node.fireUntil;
-          var circle = nodeEls[i];
-          var text = nodeLabelEls[i];
-          nodeGroups[i].setAttribute('transform', 'translate(' + node.x + ',' + node.y + ')');
-          if (mode === 'neuron') {
-            circle.setAttribute('r', isFiring ? '18.8' : '18');
-            circle.setAttribute('fill', isFiring ? '#a8d8ff' : '#2a2a3a');
-            circle.setAttribute('stroke', '#4a5568');
-            circle.style.filter = isFiring ? 'drop-shadow(0 0 8px rgba(168, 216, 255, 0.55))' : 'none';
-            text.textContent = '';
-            text.setAttribute('opacity', '0');
-          } else {
-            circle.setAttribute('r', isFiring ? '29.5' : '28');
-            circle.setAttribute('fill', isFiring || node.charge > 0.18 ? '#d4a030' : '#f5e6c8');
-            circle.setAttribute('stroke', '#b07a2c');
-            circle.style.filter = isFiring ? 'drop-shadow(0 0 8px rgba(212, 160, 48, 0.65))' : 'none';
-            text.textContent = conceptById(node.group).label;
-            text.setAttribute('fill', '#50361f');
-            text.setAttribute('opacity', '1');
-          }
-        }
-
-        effectLayer.innerHTML = '';
-        pulseBursts = pulseBursts.filter(function (burst) { return now - burst.start <= burst.duration; });
-        travelBursts = travelBursts.filter(function (burst) { return now - burst.start <= burst.duration; });
-
-        for (i = 0; i < pulseBursts.length; i++) {
-          var burst = pulseBursts[i];
-          var p = clamp((now - burst.start) / burst.duration, 0, 1);
-          var node2 = nodes[burst.nodeIndex];
-          var pulse = el('circle');
-          pulse.setAttribute('class', 'ch11-pulse');
-          pulse.setAttribute('cx', node2.x);
-          pulse.setAttribute('cy', node2.y);
-          if (mode === 'neuron') {
-            pulse.setAttribute('r', String(18 + p * 20));
-            pulse.setAttribute('fill', 'none');
-            pulse.setAttribute('stroke', '#a8d8ff');
-            pulse.setAttribute('stroke-width', '2');
-            pulse.setAttribute('opacity', String(1 - p));
-          } else {
-            pulse.setAttribute('r', String(28 + p * 18));
-            pulse.setAttribute('fill', '#d4a030');
-            pulse.setAttribute('opacity', String(0.18 * (1 - p)));
-          }
-          effectLayer.appendChild(pulse);
-        }
-
-        for (i = 0; i < travelBursts.length; i++) {
-          var travel = travelBursts[i];
-          var edge3 = edges[travel.edgeIndex];
-          var t = clamp((now - travel.start) / travel.duration, 0, 1);
-          var point = edgePoint(edge3, t);
-          var dot = el('circle');
-          dot.setAttribute('class', 'ch11-travel-dot');
-          dot.setAttribute('cx', point.x);
-          dot.setAttribute('cy', point.y);
-          dot.setAttribute('r', mode === 'neuron' ? '3' : '4.5');
-          dot.setAttribute('fill', mode === 'neuron' ? '#a8d8ff' : '#d4a030');
-          dot.setAttribute('opacity', String(1 - t * 0.15));
-          effectLayer.appendChild(dot);
-        }
-      }
-
-      function tick(now) {
-        var remaining = [];
-        while (queue.length) {
-          var pulse = queue.shift();
-          if (pulse.at <= now) {
-            applyPulse(pulse, now);
-          } else {
-            remaining.push(pulse);
-          }
-        }
-        queue = remaining;
-        for (var i = 0; i < nodes.length; i++) {
-          if (nodes[i].charge > 0.001) nodes[i].charge *= 0.992;
-        }
-        render(now);
-        requestAnimationFrame(tick);
-      }
-
-      modeBtn.onclick = function () {
-        setMode(mode === 'neuron' ? 'symbol' : 'neuron');
-      };
-
-      resetBtn.onclick = function () {
-        var i;
-        queue = [];
-        pulseBursts = [];
-        travelBursts = [];
-        for (i = 0; i < nodes.length; i++) {
-          nodes[i].charge = 0;
-          nodes[i].fireUntil = 0;
-          nodes[i].refractoryUntil = 0;
-        }
-        render(performance.now());
-      };
-
-      buildNetwork();
-      setMode('neuron');
-      render(performance.now());
-      requestAnimationFrame(tick);
-    })();
-  </script>
+  <script src="brains-thoughts.js"></script>
 </body>
 </html>
