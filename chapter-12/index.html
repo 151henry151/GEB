@@ -98,12 +98,14 @@
     </div>
   </div>
   <style>
+    /* Light theme: align with shared .companion-box and chapter companions */
     .two-minds-companion {
       position: relative;
-      background: #1a1f28;
-      color: #e2e8f0;
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 0.75rem;
+      padding: 1.15rem 1.25rem;
     }
     .two-minds-canvas-wrap {
       display: flex;
@@ -116,7 +118,7 @@
       min-width: 0;
       border-radius: 8px;
       padding: 0.5rem;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
     }
     .two-minds-panel.mind-a {
       background: #f5f9fd;
@@ -232,9 +234,9 @@
       z-index: 2;
       margin-top: 0.55rem;
       padding: 0.45rem 0.35rem;
-      background: rgba(255,255,255,0.55);
+      background: var(--panel);
       border-radius: 8px;
-      border: 1px solid rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
     }
     .two-minds-strip-title {
       margin: 0 0 0.35rem 0;
@@ -287,7 +289,7 @@
     }
     .two-minds-legend {
       font-size: 0.78rem;
-      color: #cbd5e1;
+      color: var(--muted);
       margin-top: 0.5rem;
       display: flex;
       gap: 1rem;
@@ -304,30 +306,20 @@
     .mind-a-dot { background: #3a8fd1; box-shadow: 0 0 6px rgba(58,143,209,0.5); }
     .mind-b-dot { background: #d1503a; box-shadow: 0 0 6px rgba(209,80,58,0.45); }
     .resonance-dot { background: #d4a030; box-shadow: 0 0 8px rgba(212,160,48,0.6); }
-    .two-minds-presets { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
-    .two-minds-presets .btn {
-      font-size: 0.8rem;
-      font-weight: 600;
-      background: #e2e8f0;
-      color: #0f172a;
-      border: 1px solid #94a3b8;
+    .two-minds-presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.5rem;
     }
-    .two-minds-presets .btn:hover {
-      background: #f8fafc;
-      color: #020617;
-      border-color: #64748b;
-    }
-    .two-minds-presets .btn:focus-visible {
-      outline: 2px solid #d4a030;
-      outline-offset: 2px;
-    }
+    .two-minds-presets .btn { font-size: 0.85rem; }
     .two-minds-message {
       margin: 0.5rem 0 0 0;
       font-size: 0.88rem;
       font-style: italic;
       min-height: 2.6em;
       line-height: 1.35;
-      color: #cbd5e1;
+      color: var(--muted);
     }
     .two-minds-node { cursor: pointer; }
     .two-minds-node.selected .tm-node-shape { stroke: #d4a030; stroke-width: 3px; }

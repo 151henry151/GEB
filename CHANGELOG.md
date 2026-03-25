@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.31] — 2026-03-24
+
+### Changed
+
+- Chapter 12 companion: use the shared light companion styling (white panel, `var(--text)` / `var(--border)` / `var(--panel)` / `var(--muted)`) instead of a dark outer shell; drop custom preset button colors so global secondary buttons match other chapters.
+
 ## [0.15.30] — 2026-03-24
 
 ### Changed
