@@ -8,9 +8,11 @@
   var FLOOP_DANGER_AFTER = 25;
   var FLOOP_CAP = 60;
   var DEFAULT_SLIDER = 50;
+  var BOUND_MIN = 3;
+  var BOUND_MAX = 30;
 
   var boundInput = document.getElementById('bloop-bound');
-  var problemSelect = document.getElementById('bloop-problem');
+  var predicateInput = document.getElementById('ch13-predicate');
   var resultDiv = document.getElementById('bloop-result');
   var speedSlider = document.getElementById('ch13-speed-slider');
   var stopBtn = document.getElementById('ch13-search-stop');
@@ -77,19 +79,19 @@
     if (logInner) logInner.innerHTML = '';
   }
 
+  function clampBound(raw) {
+    var n = parseInt(raw, 10);
+    if (n !== n) n = 10;
+    return Math.min(BOUND_MAX, Math.max(BOUND_MIN, n));
+  }
+
   function getPredicate() {
-    var preset = document.querySelector('input[name="ch13-src"]:checked');
-    if (preset && preset.value === 'custom') {
-      if (!ev) throw new Error('Predicate engine failed to load');
-      var src = (document.getElementById('ch13-predicate') || {}).value || '';
-      return function (n) {
-        return ev(src.trim(), n);
-      };
-    }
-    var v = problemSelect ? problemSelect.value : 'square';
-    if (v === 'square') return function (n) { return n * n === 25; };
-    if (v === 'even') return function (n) { return n > 2 && n % 2 === 0; };
-    return function (n) { return n > 0 && n < 0; };
+    if (!ev) throw new Error('Predicate engine failed to load');
+    var src = (predicateInput && predicateInput.value) ? predicateInput.value.trim() : '';
+    if (!src) throw new Error('Enter a predicate in n (or pick a quick fill)');
+    return function (n) {
+      return ev(src, n);
+    };
   }
 
   function resetMeters() {
@@ -137,7 +139,7 @@
       }
       return;
     }
-    var N = Math.min(200, Math.max(1, parseInt(boundInput.value, 10) || 10));
+    var N = clampBound(boundInput ? boundInput.value : 10);
     if (boundInput) boundInput.value = N;
     stopSearch();
     var myTok = ++searchToken;
@@ -415,26 +417,13 @@
   if (runFloopBtn) runFloopBtn.addEventListener('click', runFlooP);
   if (stopBtn) stopBtn.addEventListener('click', stopSearch);
 
-  document.querySelectorAll('input[name="ch13-src"]').forEach(function (r) {
-    r.addEventListener('change', function () {
-      var custom = r.value === 'custom';
-      var pw = document.getElementById('ch13-preset-wrap');
-      var cw = document.getElementById('ch13-custom-wrap');
-      if (pw) pw.style.display = custom ? 'none' : 'block';
-      if (cw) cw.style.display = custom ? 'block' : 'none';
-    });
-  });
-
   document.querySelectorAll('.ch13-predicate-chip').forEach(function (chip) {
     chip.addEventListener('click', function () {
       var expr = chip.getAttribute('data-expr');
-      var inp = document.getElementById('ch13-predicate');
-      var customRadio = document.querySelector('input[name="ch13-src"][value="custom"]');
-      if (customRadio) {
-        customRadio.checked = true;
-        customRadio.dispatchEvent(new Event('change', { bubbles: true }));
+      if (predicateInput && expr != null) {
+        predicateInput.value = expr;
+        predicateInput.focus();
       }
-      if (inp && expr != null) inp.value = expr;
     });
   });
 
@@ -584,7 +573,7 @@
   }
   function syncLidLabel() {
     if (!boundInput || !lidLabelB) return;
-    var n0 = Math.min(200, Math.max(1, parseInt(boundInput.value, 10) || 10));
+    var n0 = clampBound(boundInput.value);
     lidLabelB.textContent = 'LID = ' + n0;
   }
   syncLidLabel();

@@ -4,6 +4,15 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.35] — 2026-03-25
+
+### Changed
+
+- Chapter 13: remove preset/custom radio mode—predicate field is always visible; **Quick fill** chips set the input (classic demos plus example predicates).
+- Chapter 13: bound **N** constrained to **3–30** (default 10) with visible range hint and tip for `n * n == 144` vs BlooP’s lid.
+- Chapter 13: add meter subtitles (**primitive recursive** / **general recursive (μ-recursive)**) and a short **computability** paragraph tying BlooP/FlooP to those tiers.
+- Chapter 13: append `?v=0.15.35` to local script URLs so browsers fetch `predicate-eval.js` and `ch13-companion.js` instead of stale cached copies.
+
 ## [0.15.34] — 2026-03-25
 
 ### Changed

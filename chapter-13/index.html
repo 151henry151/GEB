@@ -81,7 +81,15 @@
       flex-wrap: wrap;
     }
     .ch13-meter-col { text-align: center; min-width: 88px; }
-    .ch13-meter-label { font-size: 0.75rem; font-weight: 600; color: var(--muted); margin-bottom: 0.35rem; letter-spacing: 0.04em; }
+    .ch13-meter-label { font-size: 0.75rem; font-weight: 600; color: var(--muted); margin-bottom: 0.15rem; letter-spacing: 0.04em; }
+    .ch13-meter-subtitle {
+      font-size: 0.58rem;
+      line-height: 1.25;
+      color: var(--muted);
+      font-weight: 500;
+      max-width: 8.5rem;
+      margin: 0 auto 0.35rem auto;
+    }
     .ch13-meter-track {
       height: 220px;
       width: 48px;
@@ -379,7 +387,13 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.35rem;
-      margin: 0.4rem 0 0.5rem 0;
+      margin: 0.35rem 0 0.5rem 0;
+    }
+    .ch13-chip-section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin: 0.5rem 0 0.25rem 0;
     }
     .ch13-predicate-chip {
       font-family: ui-monospace, monospace;
@@ -399,8 +413,6 @@
     .ch13-predicate-chip.ch13-chip-warn {
       border-color: rgba(180, 120, 40, 0.55);
     }
-    .ch13-mode-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; }
-    .ch13-mode-row label { font-size: 0.85rem; cursor: pointer; }
     .ch13-gloop-details { margin-top: 0.75rem; }
     .ch13-gloop-details summary {
       cursor: pointer;
@@ -486,37 +498,28 @@
 
       <div class="companion-box" id="bloop-companion">
         <div class="ch13-panel" style="margin-top:0;">
-          <p style="margin:0;"><strong>What you’re seeing.</strong> <em>Run the same search in both modes. BlooP must stop when it hits its bound—even if the answer lies beyond. FlooP keeps going. If there’s no answer, FlooP never stops. That’s the difference between “decidable” and “undecidable.”</em></p>
+          <p style="margin:0 0 0.5rem 0;"><strong>What you’re seeing.</strong> <em>Run the same search in both modes. BlooP must stop when it hits its bound—even if the answer lies beyond. FlooP keeps going. If there’s no answer, FlooP never stops. That’s the difference between “decidable” and “undecidable.”</em></p>
+          <p style="margin:0; font-size:0.84rem; color:var(--text);"><strong>Computability.</strong> Everything BlooP can compute fits the class of <strong>primitive recursive</strong> functions—guaranteed to halt. FlooP adds unbounded search and reaches the <strong>general recursive</strong> (μ-recursive) functions: strictly more expressive, but programs may run forever when there is no witness. That extra tier is exactly what incompleteness needs.</p>
         </div>
 
-        <div class="ch13-mode-row">
-          <label><input type="radio" name="ch13-src" value="preset" checked> Preset search</label>
-          <label><input type="radio" name="ch13-src" value="custom"> Write your own predicate</label>
+        <label for="ch13-predicate"><strong>Predicate P(n)</strong></label>
+        <input type="text" id="ch13-predicate" class="ch13-predicate-input" value="n * n == 25" maxlength="80" autocomplete="off" spellcheck="false" aria-describedby="ch13-predicate-hint">
+        <p class="ch13-chip-section-label">Quick fill</p>
+        <div class="ch13-predicate-chips" role="group" aria-label="Quick fill predicates">
+          <button type="button" class="ch13-predicate-chip" data-expr="n * n == 25" title="Answer n = 5">n×n = 25 → 5</button>
+          <button type="button" class="ch13-predicate-chip" data-expr="n &gt; 2 &amp;&amp; n % 2 == 0" title="Smallest even n &gt; 2">even, n &gt; 2 → 4</button>
+          <button type="button" class="ch13-predicate-chip ch13-chip-warn" data-expr="n &gt; 0 &amp;&amp; n &lt; 0" title="Unsatisfiable — FlooP never halts">impossible ⚠️</button>
+          <button type="button" class="ch13-predicate-chip" data-expr="n * n == 144" title="n = 12; try N=10 for BlooP vs FlooP">n×n = 144 → 12</button>
+          <button type="button" class="ch13-predicate-chip" data-expr="n % 7 == 0 &amp;&amp; n &gt; 40">n % 7 == 0 &amp;&amp; n &gt; 40</button>
+          <button type="button" class="ch13-predicate-chip" data-expr="n*n*n == 27">n³ = 27</button>
         </div>
-        <div id="ch13-preset-wrap">
-          <p style="margin-bottom:0.35rem;"><strong>Preset</strong></p>
-          <select id="bloop-problem" style="width:100%; max-width:24rem; padding:0.35rem; margin-bottom:0.5rem; font-size:0.9rem;" aria-label="Preset search">
-            <option value="square">Smallest n with n×n = 25 → answer 5</option>
-            <option value="even">Smallest even n &gt; 2 → answer 4</option>
-            <option value="impossible">Impossible: n &gt; 0 and n &lt; 0 (FlooP never halts)</option>
-          </select>
-        </div>
-        <div id="ch13-custom-wrap" style="display:none;">
-          <label for="ch13-predicate"><strong>Predicate P(n)</strong></label>
-          <input type="text" id="ch13-predicate" class="ch13-predicate-input" placeholder="n * n == 25" maxlength="80" autocomplete="off" spellcheck="false" aria-describedby="ch13-predicate-hint">
-          <div class="ch13-predicate-chips" role="group" aria-label="Example predicates">
-            <button type="button" class="ch13-predicate-chip" data-expr="n * n == 144">n * n == 144</button>
-            <button type="button" class="ch13-predicate-chip" data-expr="n % 7 == 0 &amp;&amp; n &gt; 40">n % 7 == 0 &amp;&amp; n &gt; 40</button>
-            <button type="button" class="ch13-predicate-chip" data-expr="n*n*n == 27">n*n*n == 27</button>
-            <button type="button" class="ch13-predicate-chip ch13-chip-warn" data-expr="n &gt; 0 &amp;&amp; n &lt; 0" title="Unsatisfiable — FlooP never halts">n &gt; 0 &amp;&amp; n &lt; 0 ⚠️</button>
-          </div>
-          <p id="ch13-predicate-hint" style="font-size:0.8rem; color:var(--muted); margin:0 0 0.5rem 0;">Write any condition using <code>n</code>. BlooP will check up to your bound N. FlooP will search until it finds a match—or run forever.</p>
-          <p style="font-size:0.78rem; color:var(--muted); margin:0 0 0.5rem 0;">Use <code>n</code>, numbers, <code>+ − * / %</code>, <code>( )</code>, <code>== != &lt; &gt; &lt;= &gt;=</code>, <code>&amp;&amp; ||</code>.</p>
-        </div>
-        <p style="margin-bottom:0.35rem;"><strong>Bound N</strong> (BlooP only checks 0…N)</p>
-        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+        <p id="ch13-predicate-hint" style="font-size:0.8rem; color:var(--muted); margin:0 0 0.35rem 0;">Write any condition using <code>n</code>. BlooP checks n = 0, 1, … up to <strong>N</strong> only. FlooP searches until it finds a match—or never stops. Use <strong>Search speed</strong> to watch step-by-step.</p>
+        <p style="font-size:0.78rem; color:var(--muted); margin:0 0 0.5rem 0;">Syntax: <code>n</code>, numbers, <code>+ − * / %</code>, <code>( )</code>, <code>== != &lt; &gt; &lt;= &gt;=</code>, <code>&amp;&amp; ||</code>.</p>
+        <p style="margin-bottom:0.35rem;"><strong>Bound N</strong> for BlooP (checks 0…N inclusive)</p>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
           <label for="bloop-bound">N =</label>
-          <input type="number" id="bloop-bound" value="10" min="1" max="200" style="width:4.5rem; padding:0.35rem;" aria-label="Bound N">
+          <input type="number" id="bloop-bound" value="10" min="3" max="30" style="width:4.5rem; padding:0.35rem;" aria-label="Bound N for BlooP" title="Allowed range 3–30">
+          <span style="font-size:0.78rem; color:var(--muted);">Allowed <strong>3–30</strong> (default 10). Example: predicate <code>n * n == 144</code> with N=10 — BlooP hits the lid without finding 12; FlooP keeps going.</span>
         </div>
         <div class="ch13-speed-row">
           <label for="ch13-speed-slider">Search speed</label>
@@ -532,6 +535,7 @@
         <div class="ch13-meters">
           <div class="ch13-meter-col">
             <div class="ch13-meter-label">BlooP depth</div>
+            <div class="ch13-meter-subtitle">Primitive recursive (BlooP)</div>
             <div class="ch13-meter ch13-meter--bloop" id="ch13-meter-bloop" aria-label="BlooP search depth">
               <div class="ch13-meter-lid" id="ch13-lid-bloop">
                 <span class="ch13-lid-bar" aria-hidden="true"></span>
@@ -547,6 +551,7 @@
           </div>
           <div class="ch13-meter-col">
             <div class="ch13-meter-label">FlooP depth</div>
+            <div class="ch13-meter-subtitle">General recursive / μ-recursive (FlooP)</div>
             <div class="ch13-meter ch13-meter--floop" id="ch13-meter-floop" aria-label="FlooP search depth">
               <div class="ch13-meter-infty" aria-hidden="true">∞</div>
               <div class="ch13-meter-track ch13-meter-track--floop">
@@ -629,8 +634,8 @@
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
-  <script src="predicate-eval.js"></script>
-  <script src="ch13-companion.js"></script>
+  <script src="predicate-eval.js?v=0.15.35"></script>
+  <script src="ch13-companion.js?v=0.15.35"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
 </body>
