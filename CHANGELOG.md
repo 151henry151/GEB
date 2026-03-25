@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.26] — 2026-03-15
+
+### Added
+
+- Chapter 13: `predicate-eval.js` and `predicate-eval.test.js` for safe evaluation of user predicates in `n` (run tests with `node chapter-13/predicate-eval.test.js`).
+
+### Changed
+
+- Chapter 13 companion: replace horizontal cell strips with vertical search-depth meters (BlooP vs FlooP), add preset and custom-predicate modes, add Gödel “why it matters” stepped panel and halting-predictor cards.
+
 ## [0.15.25] — 2026-03-15
 
 ### Changed

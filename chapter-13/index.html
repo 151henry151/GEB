@@ -8,6 +8,145 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    .ch13-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 0.9rem;
+      margin-bottom: 0.85rem;
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+    .ch13-panel h3, .ch13-h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .ch13-panel p { margin: 0 0 0.5rem 0; }
+    .ch13-panel p:last-child { margin-bottom: 0; }
+    .ch13-godel-step {
+      margin: 0.35rem 0;
+      padding: 0.4rem 0.5rem;
+      background: rgba(46, 107, 138, 0.08);
+      border-radius: 4px;
+      border-left: 3px solid var(--accent-secondary);
+      display: none;
+    }
+    .ch13-godel-step.on { display: block; }
+    .ch13-meters {
+      display: flex;
+      gap: 1.25rem;
+      justify-content: center;
+      align-items: flex-end;
+      margin: 0.75rem 0;
+      flex-wrap: wrap;
+    }
+    .ch13-meter-col { text-align: center; min-width: 72px; }
+    .ch13-meter-label { font-size: 0.75rem; font-weight: 600; color: var(--muted); margin-bottom: 0.35rem; letter-spacing: 0.04em; }
+    .ch13-meter {
+      height: 220px;
+      width: 48px;
+      margin: 0 auto;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.15);
+    }
+    .ch13-meter-zones {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg,
+        rgba(180, 55, 55, 0.42) 0%,
+        rgba(180, 55, 55, 0.18) 22%,
+        transparent 28%,
+        rgba(58, 125, 68, 0.06) 100%);
+    }
+    .ch13-meter-zone-label {
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-90deg);
+      transform-origin: center;
+      font-size: 0.5rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: rgba(200, 80, 80, 0.95);
+      white-space: nowrap;
+    }
+    .ch13-meter-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 0%;
+      background: linear-gradient(180deg, var(--accent-secondary), var(--accent));
+      opacity: 0.85;
+      transition: height 0.18s ease-out;
+    }
+    .ch13-meter.is-danger .ch13-meter-fill {
+      background: linear-gradient(180deg, #c44, #a33);
+      opacity: 0.9;
+    }
+    .ch13-meter.is-found .ch13-meter-fill {
+      background: linear-gradient(180deg, var(--true), #2d8a44);
+      opacity: 0.95;
+    }
+    .ch13-meter-depth {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+    .ch13-halting-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .ch13-halt-card {
+      text-align: left;
+      padding: 0.5rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: rgba(46, 107, 138, 0.06);
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .ch13-halt-card:hover, .ch13-halt-card:focus-visible {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+      outline: none;
+    }
+    .ch13-halt-card strong { display: block; margin-bottom: 0.2rem; color: var(--accent); }
+    .ch13-halt-reveal {
+      margin-top: 0.6rem;
+      padding: 0.55rem 0.65rem;
+      font-size: 0.84rem;
+      color: var(--text);
+      background: var(--panel);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      min-height: 2.5rem;
+    }
+    .ch13-predicate-input {
+      width: 100%;
+      max-width: 28rem;
+      font-family: ui-monospace, monospace;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+    .ch13-mode-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; }
+    .ch13-mode-row label { font-size: 0.85rem; cursor: pointer; }
+  </style>
 </head>
 <body>
   <div class="chapter-layout">
@@ -55,165 +194,285 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Same search, two modes: BlooP only looks up to a bound N (the “lid”); FlooP has no lid and keeps going until it finds. Watch the strip: BlooP stops at the bound or when it finds; FlooP keeps stepping until it finds.</p>
+      <p class="companion-caption">Search depth rises in the meters: BlooP stops at your bound N; FlooP keeps climbing until it finds an n or enters the red zone (no match in the demo—real FlooP would never halt).</p>
+
+      <div class="ch13-panel" id="ch13-godel-panel">
+        <h3>Why it matters (Gödel)</h3>
+        <p>Proof search is like FlooP: “Is there a proof of G?” means searching all possible proofs—no fixed lid on how long that search might run.</p>
+        <button type="button" class="btn btn-secondary" id="ch13-godel-walk" style="margin-bottom:0.5rem;">Walk through the chain</button>
+        <div class="ch13-godel-step" data-step="1">1. <strong>“Is there a proof of G?”</strong> → To decide, you must search all possible proofs.</div>
+        <div class="ch13-godel-step" data-step="2">2. That search is <strong>unbounded</strong>—there is no fixed maximum length of proof to check.</div>
+        <div class="ch13-godel-step" data-step="3">3. So “G is provable” is expressed by a kind of program that may need <strong>FlooP</strong>-style unbounded search.</div>
+        <div class="ch13-godel-step" data-step="4">4. FlooP programs <strong>might not halt</strong> when there is no witness.</div>
+        <div class="ch13-godel-step" data-step="5">5. So the formal system cannot always <strong>decide</strong> its own completeness from inside—this is part of the incompleteness story.</div>
+      </div>
+
       <div class="companion-box" id="bloop-companion">
-        <div style="padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.9rem; border-left:4px solid var(--accent);">
-          <p style="margin:0 0 0.35rem 0;"><strong>What you’re seeing</strong></p>
-          <p style="margin:0;">Pick a search below. <strong>BlooP</strong> checks n = 0, 1, 2, … only up to <strong>bound N</strong> (you set N)—then it must stop. <strong>FlooP</strong> has no bound: it keeps checking until it finds one, or in real FlooP would run forever if no match exists.</p>
+        <div class="ch13-panel" style="margin-top:0;">
+          <p style="margin:0;"><strong>What you’re seeing.</strong> <strong>BlooP</strong> checks n = 0, 1, 2, … only up to <strong>N</strong>, then stops. <strong>FlooP</strong> has no lid. Try a preset or write a predicate in <code>n</code> (e.g. <code>n * n == 25</code>, <code>n > 100</code>).</p>
         </div>
-        <p style="margin-bottom:0.35rem;"><strong>Choose search</strong></p>
-        <select id="bloop-problem" style="width:100%; max-width:24rem; padding:0.35rem; margin-bottom:0.5rem; font-size:0.9rem;" aria-label="Search problem">
-          <option value="has-solution">Has solution: smallest n &gt; 2 and n even (answer: 4)</option>
-          <option value="no-solution">No solution: smallest n with n &gt; 0 and n &lt; 0 (FlooP never halts)</option>
-        </select>
-        <p style="margin-bottom:0.35rem;"><strong>Bound N</strong> (BlooP only searches 0…N)</p>
-        <p style="margin:0 0 0.5rem 0; font-size:0.9rem;">Set N to control how far BlooP looks. With “no solution,” BlooP stops at N; FlooP would run forever (we stop the demo after 20 steps).</p>
+
+        <div class="ch13-mode-row">
+          <label><input type="radio" name="ch13-src" value="preset" checked> Preset search</label>
+          <label><input type="radio" name="ch13-src" value="custom"> Write your own predicate</label>
+        </div>
+        <div id="ch13-preset-wrap">
+          <p style="margin-bottom:0.35rem;"><strong>Preset</strong></p>
+          <select id="bloop-problem" style="width:100%; max-width:24rem; padding:0.35rem; margin-bottom:0.5rem; font-size:0.9rem;" aria-label="Preset search">
+            <option value="square">Smallest n with n×n = 25 → answer 5</option>
+            <option value="even">Smallest even n &gt; 2 → answer 4</option>
+            <option value="impossible">Impossible: n &gt; 0 and n &lt; 0 (FlooP never halts)</option>
+          </select>
+        </div>
+        <div id="ch13-custom-wrap" style="display:none;">
+          <label for="ch13-predicate"><strong>Predicate P(n)</strong></label>
+          <input type="text" id="ch13-predicate" class="ch13-predicate-input" placeholder="n * n == 25" maxlength="80" autocomplete="off" spellcheck="false" aria-describedby="ch13-predicate-hint">
+          <p id="ch13-predicate-hint" style="font-size:0.8rem; color:var(--muted); margin:0 0 0.5rem 0;">Use <code>n</code>, numbers, <code>+ − * / %</code>, <code>( )</code>, <code>== != &lt; &gt; &lt;= &gt;=</code>, <code>&amp;&amp; ||</code>.</p>
+        </div>
+        <p style="margin-bottom:0.35rem;"><strong>Bound N</strong> (BlooP only checks 0…N)</p>
         <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
           <label for="bloop-bound">N =</label>
-          <input type="number" id="bloop-bound" value="10" min="1" max="50" style="width:4.5rem; padding:0.35rem;" aria-label="Bound N">
+          <input type="number" id="bloop-bound" value="10" min="1" max="200" style="width:4.5rem; padding:0.35rem;" aria-label="Bound N">
         </div>
         <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.75rem;">
           <button type="button" class="btn btn-primary" id="bloop-run">Run BlooP</button>
           <button type="button" class="btn btn-secondary" id="floop-run">Run FlooP</button>
         </div>
-        <div id="bloop-vis" style="margin-bottom:0.5rem;"></div>
-        <div id="floop-vis" style="margin-bottom:0.5rem;"></div>
+
+        <div class="ch13-meters">
+          <div class="ch13-meter-col">
+            <div class="ch13-meter-label">BlooP depth</div>
+            <div class="ch13-meter" id="ch13-meter-bloop" aria-label="BlooP search depth">
+              <div class="ch13-meter-zones"><span class="ch13-meter-zone-label">NEVER HALTS</span></div>
+              <div class="ch13-meter-fill" id="ch13-fill-bloop"></div>
+            </div>
+            <div class="ch13-meter-depth" id="ch13-depth-bloop">—</div>
+          </div>
+          <div class="ch13-meter-col">
+            <div class="ch13-meter-label">FlooP depth</div>
+            <div class="ch13-meter" id="ch13-meter-floop" aria-label="FlooP search depth">
+              <div class="ch13-meter-zones"><span class="ch13-meter-zone-label">NEVER HALTS</span></div>
+              <div class="ch13-meter-fill" id="ch13-fill-floop"></div>
+            </div>
+            <div class="ch13-meter-depth" id="ch13-depth-floop">—</div>
+          </div>
+        </div>
+
         <div id="bloop-result" style="min-height:2rem; font-size:0.9rem;"></div>
+      </div>
+
+      <div class="ch13-panel">
+        <h3 class="ch13-h3">Can you always tell if a program halts?</h3>
+        <p style="margin-bottom:0.5rem;">Pick a program. Would a perfect predictor always know whether it stops?</p>
+        <div class="ch13-halting-grid">
+          <button type="button" class="ch13-halt-card" data-halt="ten">
+            <strong>Ten-count</strong>
+            Loop exactly 10 times, then stop.
+          </button>
+          <button type="button" class="ch13-halt-card" data-halt="forever">
+            <strong>Infinite loop</strong>
+            While true, do nothing—never exits.
+          </button>
+          <button type="button" class="ch13-halt-card" data-halt="collatz">
+            <strong>Collatz from 27</strong>
+            Famous sequence; halting for all positive start values is still unproved.
+          </button>
+        </div>
+        <div class="ch13-halt-reveal" id="ch13-halt-reveal" aria-live="polite">Click a program above.</div>
       </div>
     </div>
   </div>
-  <style>
-    .bloop-strip { display:flex; flex-wrap:wrap; gap:2px; align-items:center; margin-bottom:0.25rem; }
-    .bloop-cell { width:28px; height:28px; border:1px solid var(--border); border-radius:4px; display:inline-flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:600; background:var(--panel); transition:background 0.15s, border-color 0.15s; }
-    .bloop-cell.checked { background:rgba(92,92,106,0.2); border-color:var(--muted); }
-    .bloop-cell.found { background:rgba(58,125,68,0.35); border-color:var(--true); color:var(--true); }
-    .bloop-cell.bound { border-width:2px; border-color:var(--accent); position:relative; }
-    .bloop-cell.bound::after { content:'BOUND'; position:absolute; top:-14px; left:50%; transform:translateX(-50%); font-size:0.55rem; color:var(--accent); white-space:nowrap; }
-    .bloop-label { font-size:0.8rem; font-weight:600; margin-bottom:0.2rem; color:var(--muted); }
-  </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
+  <script src="predicate-eval.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
   <script>
-    (function(){
+    (function () {
       var boundInput = document.getElementById('bloop-bound');
       var problemSelect = document.getElementById('bloop-problem');
       var resultDiv = document.getElementById('bloop-result');
-      var bloopVis = document.getElementById('bloop-vis');
-      var floopVis = document.getElementById('floop-vis');
-      var delayMs = 280;
-      var floopMaxSteps = 20;
-      function makeStrip(label, maxCells) {
-        var wrap = document.createElement('div');
-        wrap.innerHTML = '<div class="bloop-label">' + label + '</div><div class="bloop-strip"></div>';
-        var strip = wrap.querySelector('.bloop-strip');
-        for (var i = 0; i <= maxCells; i++) {
-          var cell = document.createElement('div');
-          cell.className = 'bloop-cell';
-          cell.textContent = i;
-          cell.setAttribute('data-n', i);
-          strip.appendChild(cell);
+      var delayMs = 240;
+      var floopMaxSteps = 32;
+      var fillB = document.getElementById('ch13-fill-bloop');
+      var fillF = document.getElementById('ch13-fill-floop');
+      var meterB = document.getElementById('ch13-meter-bloop');
+      var meterF = document.getElementById('ch13-meter-floop');
+      var depthB = document.getElementById('ch13-depth-bloop');
+      var depthF = document.getElementById('ch13-depth-floop');
+      var ev = typeof ch13EvaluatePredicate === 'function' ? ch13EvaluatePredicate : null;
+
+      function getPredicate() {
+        var preset = document.querySelector('input[name="ch13-src"]:checked');
+        if (preset && preset.value === 'custom') {
+          if (!ev) throw new Error('Predicate engine failed to load');
+          var src = (document.getElementById('ch13-predicate') || {}).value || '';
+          return function (n) {
+            return ev(src.trim(), n);
+          };
         }
-        return { wrap: wrap, strip: strip, cells: strip.querySelectorAll('.bloop-cell') };
+        var v = problemSelect ? problemSelect.value : 'square';
+        if (v === 'square') return function (n) { return n * n === 25; };
+        if (v === 'even') return function (n) { return n > 2 && n % 2 === 0; };
+        return function (n) { return n > 0 && n < 0; };
       }
-      function clearStrip(strip) {
-        for (var i = 0; i < strip.cells.length; i++) {
-          strip.cells[i].classList.remove('checked', 'found', 'bound');
+
+      function resetMeters() {
+        fillB.style.height = '0%';
+        fillF.style.height = '0%';
+        meterB.classList.remove('is-danger', 'is-found');
+        meterF.classList.remove('is-danger', 'is-found');
+        depthB.textContent = '—';
+        depthF.textContent = '—';
+      }
+
+      function setFill(el, meterEl, pct, found, danger) {
+        el.style.height = Math.min(100, Math.max(0, pct)) + '%';
+        meterEl.classList.toggle('is-found', !!found);
+        meterEl.classList.toggle('is-danger', !!danger);
+      }
+
+      document.querySelectorAll('input[name="ch13-src"]').forEach(function (r) {
+        r.addEventListener('change', function () {
+          var custom = r.value === 'custom';
+          document.getElementById('ch13-preset-wrap').style.display = custom ? 'none' : 'block';
+          document.getElementById('ch13-custom-wrap').style.display = custom ? 'block' : 'none';
+        });
+      });
+
+      var godelStep = 0;
+      document.getElementById('ch13-godel-walk').addEventListener('click', function () {
+        if (godelStep >= 5) {
+          godelStep = 0;
+          document.querySelectorAll('.ch13-godel-step').forEach(function (el) { el.classList.remove('on'); });
+          return;
         }
-      }
-      function setBound(strip, N, maxCells) {
-        for (var i = 0; i < strip.cells.length; i++) {
-          var n = parseInt(strip.cells[i].getAttribute('data-n'), 10);
-          strip.cells[i].classList.remove('bound');
-          if (n === N) strip.cells[i].classList.add('bound');
-        }
-      }
-      function predicate(n) {
-        if (problemSelect && problemSelect.value === 'no-solution') return false;
-        return n > 2 && n % 2 === 0;
-      }
+        godelStep++;
+        document.querySelectorAll('.ch13-godel-step').forEach(function (el) {
+          var s = parseInt(el.getAttribute('data-step'), 10);
+          el.classList.toggle('on', s <= godelStep);
+        });
+      });
+
+      var haltTexts = {
+        ten: 'You can see it halts: the loop runs 10 times and exits. Easy case.',
+        forever: 'This never halts—there is no exit. Also an easy case for you (harder for a machine in general).',
+        collatz: 'Nobody knows a uniform proof that Collatz halts for every starting n. For 27 specifically, the sequence does eventually reach 1—but in general, “does this halt?” is exactly the kind of question no algorithm can answer for all programs.'
+      };
+      document.querySelectorAll('.ch13-halt-card').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var k = btn.getAttribute('data-halt');
+          document.getElementById('ch13-halt-reveal').textContent = haltTexts[k] || '';
+        });
+      });
+
       function runBlooP() {
-        var N = Math.min(50, Math.max(1, parseInt(boundInput.value, 10) || 10));
+        var pred;
+        try {
+          pred = getPredicate();
+          pred(0);
+        } catch (e) {
+          resultDiv.textContent = 'Predicate error: ' + (e.message || String(e));
+          resultDiv.className = 'truth-undefined';
+          return;
+        }
+        var N = Math.min(200, Math.max(1, parseInt(boundInput.value, 10) || 10));
         boundInput.value = N;
-        var maxCells = Math.max(N, 12);
-        bloopVis.innerHTML = '';
-        var bloopStrip = makeStrip('BlooP: search 0 … ' + N + ' (bounded)', maxCells);
-        bloopVis.appendChild(bloopStrip.wrap);
-        setBound(bloopStrip, N, maxCells);
+        resetMeters();
         resultDiv.textContent = 'BlooP: checking 0…' + N + ' …';
         resultDiv.className = '';
         var step = 0;
+        var total = N + 1;
         function next() {
           if (step > N) {
-            resultDiv.textContent = 'BlooP (bound ' + N + '): no match in range 0…' + N + '. Stopped.';
+            setFill(fillB, meterB, 100, false, false);
+            depthB.textContent = 'stopped at N=' + N;
+            resultDiv.textContent = 'BlooP (bound ' + N + '): no n in 0…' + N + ' satisfies P(n). Stopped.';
             resultDiv.className = 'truth-undefined';
             return;
           }
           var n = step;
-          if (n < bloopStrip.cells.length) {
-            bloopStrip.cells[n].classList.add('checked');
-            if (predicate(n)) {
-              bloopStrip.cells[n].classList.remove('checked');
-              bloopStrip.cells[n].classList.add('found');
-              resultDiv.textContent = 'BlooP (bound ' + N + '): found n = ' + n + '. Stopped.';
+          var pct = ((step + 1) / total) * 88;
+          setFill(fillB, meterB, pct, false, false);
+          depthB.textContent = 'n = ' + n;
+          try {
+            if (pred(n)) {
+              setFill(fillB, meterB, pct, true, false);
+              resultDiv.textContent = 'BlooP: found smallest n = ' + n + ' (within bound).';
               resultDiv.className = 'truth-true';
               return;
             }
+          } catch (err) {
+            resultDiv.textContent = 'Error at n=' + n + ': ' + err.message;
+            resultDiv.className = 'truth-undefined';
+            return;
           }
           step++;
           if (step <= N) {
-            resultDiv.textContent = 'BlooP: checked n = ' + n + ' … no. (bound ' + N + ')';
+            resultDiv.textContent = 'BlooP: tried n = ' + (step - 1) + ' … not yet.';
             setTimeout(next, delayMs);
           } else {
-            resultDiv.textContent = 'BlooP (bound ' + N + '): no match in range 0…' + N + '. Stopped.';
+            setFill(fillB, meterB, 100, false, false);
+            depthB.textContent = 'stopped at N=' + N;
+            resultDiv.textContent = 'BlooP (bound ' + N + '): no match. Stopped.';
             resultDiv.className = 'truth-undefined';
           }
         }
         next();
       }
+
       function runFlooP() {
-        floopVis.innerHTML = '';
-        var maxCells = Math.max(16, floopMaxSteps);
-        var floopStrip = makeStrip('FlooP: search 0, 1, 2, … (no bound)', maxCells);
-        floopVis.appendChild(floopStrip.wrap);
+        var pred;
+        try {
+          pred = getPredicate();
+        } catch (e) {
+          resultDiv.textContent = 'Predicate error: ' + (e.message || String(e));
+          resultDiv.className = 'truth-undefined';
+          return;
+        }
+        resetMeters();
         resultDiv.textContent = 'FlooP: searching (no bound) …';
         resultDiv.className = '';
         var n = 0;
         var steps = 0;
-        var noSolution = problemSelect && problemSelect.value === 'no-solution';
+        var srcEl = document.querySelector('input[name="ch13-src"]:checked');
+        var isPreset = srcEl && srcEl.value === 'preset';
+        var presetNever = isPreset && problemSelect && problemSelect.value === 'impossible';
+
         function next() {
-          if (n < floopStrip.cells.length) floopStrip.cells[n].classList.add('checked');
-          if (predicate(n)) {
-            if (n < floopStrip.cells.length) {
-              floopStrip.cells[n].classList.remove('checked');
-              floopStrip.cells[n].classList.add('found');
+          var pct = Math.min(94, ((steps + 1) / floopMaxSteps) * 90);
+          setFill(fillF, meterF, pct, false, false);
+          depthF.textContent = 'trying n = ' + n + ' (step ' + (steps + 1) + '/' + floopMaxSteps + ')';
+          try {
+            if (pred(n)) {
+              setFill(fillF, meterF, Math.max(pct, 20), true, false);
+              resultDiv.textContent = 'FlooP: found smallest n = ' + n + '.';
+              resultDiv.className = 'truth-true';
+              return;
             }
-            resultDiv.textContent = 'FlooP: found n = ' + n + '. Stopped (would run forever if no match).';
-            resultDiv.className = 'truth-true';
+          } catch (err) {
+            resultDiv.textContent = 'Error at n=' + n + ': ' + err.message;
+            resultDiv.className = 'truth-undefined';
             return;
           }
           steps++;
           n++;
-          if (noSolution && steps >= floopMaxSteps) {
-            resultDiv.textContent = 'FlooP: no match after ' + floopMaxSteps + ' steps. In real FlooP this would run forever (never halt).';
+          if (steps >= floopMaxSteps) {
+            setFill(fillF, meterF, 96, false, true);
+            depthF.textContent = 'red zone (demo cap)';
+            if (presetNever) {
+              resultDiv.textContent = 'FlooP: no witness exists—real FlooP would never halt. The meter reaches the “never halts” zone.';
+            } else {
+              resultDiv.textContent = 'FlooP demo: stopped after ' + floopMaxSteps + ' values. If P(n) is true for some n, real FlooP would keep searching; if none exists, it never halts—raise N in BlooP to check a wider range first.';
+            }
             resultDiv.className = 'truth-undefined';
             return;
           }
-          if (n <= maxCells && (!noSolution || steps < floopMaxSteps)) {
-            resultDiv.textContent = 'FlooP: checked n = ' + (n - 1) + ' … no. Next (no bound).';
-            setTimeout(next, delayMs);
-          } else {
-            if (noSolution) {
-              resultDiv.textContent = 'FlooP: no match. In real FlooP this would run forever (never halt).';
-              resultDiv.className = 'truth-undefined';
-            } else {
-              resultDiv.textContent = 'FlooP: found n = 4 (demo limited to ' + maxCells + ' cells).';
-              resultDiv.className = 'truth-true';
-            }
-          }
+          resultDiv.textContent = 'FlooP: P(' + (n - 1) + ') false … next n.';
+          setTimeout(next, delayMs);
         }
         next();
       }
+
       document.getElementById('bloop-run').addEventListener('click', runBlooP);
       document.getElementById('floop-run').addEventListener('click', runFlooP);
     })();
