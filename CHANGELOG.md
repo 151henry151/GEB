@@ -4,6 +4,18 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.48] — 2026-03-26
+
+### Changed
+
+- Chapter 20 companion: replace the tangled-hierarchy game with a full three-stage finale featuring sequential Bach/Escher/Gödel loop panels, a progress indicator, and gated reveal flow.
+- Chapter 20 companion: add Web Audio canon playback and animated staff marker for the Bach loop, with loop-closure callout and replay behavior.
+- Chapter 20 companion: add an original impossible-staircase SVG scene with continuously walking figure animation and delayed loop interpretation label.
+- Chapter 20 companion: add Gödel self-reference animation with computed `g`, loop-closing arrow draw, and two-path consequence panel.
+- Chapter 20 companion: add braid reveal sequence (separate loops → shared structure → animated three-strand braid) with chapter-synthesis caption.
+- Chapter 20 companion: add the delayed consciousness section with self-referential diagram, animated outer loop arrow, and final centered question.
+- Chapter 20 companion: add new `chapter-20/ch20-companion.js` and update chapter-20 styling/structure to support contemplative pacing and responsive layout.
+
 ## [0.15.47] — 2026-03-26
 
 ### Changed
