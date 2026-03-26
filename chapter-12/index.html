@@ -88,11 +88,11 @@
           <button type="button" class="btn btn-secondary" id="two-minds-reset">Reset</button>
         </div>
         <p class="two-minds-message" id="two-minds-message" aria-live="polite">Click any concept in either mind to think it. Watch how the same word ripples differently.</p>
-        <div class="two-minds-edge-editor" id="two-minds-edge-editor" hidden>
+        <div class="two-minds-edge-editor" id="two-minds-edge-editor" hidden aria-live="polite">
+          <p class="two-minds-edge-editor-title" id="two-minds-edge-editor-title">Editing link</p>
           <label for="two-minds-edge-weight">Link weight</label>
           <input type="range" id="two-minds-edge-weight" min="0.1" max="1" step="0.05" value="0.5">
           <span id="two-minds-edge-weight-val">0.50</span>
-          <button type="button" class="btn btn-secondary" id="two-minds-edge-close">Close</button>
         </div>
       </div>
     </div>
@@ -349,22 +349,26 @@
       100% { filter: drop-shadow(0 0 0 transparent); }
     }
     .two-minds-edge-editor {
-      position: absolute;
-      z-index: 10;
+      margin-top: 0.45rem;
       padding: 0.5rem 0.65rem;
-      background: #fff;
-      border: 1px solid #cbd5e1;
+      background: var(--panel);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      box-shadow: none;
       font-size: 0.82rem;
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
       align-items: center;
       gap: 0.45rem;
-      max-width: 220px;
+    }
+    .two-minds-edge-editor-title {
+      grid-column: 1 / -1;
+      margin: 0;
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-style: italic;
     }
     .two-minds-edge-editor label { font-weight: 600; color: #334155; }
-    .two-minds-edge-editor .btn { font-size: 0.75rem; padding: 0.25rem 0.5rem; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>

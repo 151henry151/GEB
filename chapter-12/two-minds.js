@@ -9,6 +9,8 @@
   var BASE_DELAY = 280;
   var DECAY = 0.76;
   var ACT_THR = 0.03;
+  var ACTIVE_VISUAL_THR = 0.08;
+  var BOTH_VISUAL_THR = ACTIVE_VISUAL_THR;
   var VIEWBOX = { w: 320, h: 340 };
   /** Shared layout (fractions of 320×340); same positions both minds — edges differ. */
   var COORD_FRAC = [
@@ -123,6 +125,7 @@
   var companionEl = document.getElementById('two-minds-companion');
   var pillsEl = document.getElementById('two-minds-pills');
   var edgeEditor = document.getElementById('two-minds-edge-editor');
+  var edgeEditorTitle = document.getElementById('two-minds-edge-editor-title');
   var edgeWeightInput = document.getElementById('two-minds-edge-weight');
   var edgeWeightVal = document.getElementById('two-minds-edge-weight-val');
   function clearTimeouts() {
@@ -242,7 +245,7 @@
       var a = activationA[pi] || 0;
       var b = activationB[pi] || 0;
       el.classList.remove('is-a', 'is-b', 'is-both');
-      if (a > 0.3 && b > 0.3) el.classList.add('is-both');
+      if (a > BOTH_VISUAL_THR && b > BOTH_VISUAL_THR) el.classList.add('is-both');
       else if (a > ACT_THR) el.classList.add('is-a');
       else if (b > ACT_THR) el.classList.add('is-b');
     }
@@ -326,27 +329,25 @@
       setMessage('You changed a triggering relationship. The ripple will be different now.');
     }
   }
-  function openEdgeEditor(mind, from, to, clientX, clientY) {
+  function openEdgeEditor(mind, from, to) {
     var edges = mind === 'a' ? edgesA : edgesB;
     var ix = findEdge(mind, from, to);
     if (ix < 0) return;
     var e = edges[ix];
     selectedEditorEdge = { mind: mind, from: e[0], to: e[1], w: e[2] };
-    if (edgeEditor && companionEl && edgeWeightInput && edgeWeightVal) {
+    if (edgeEditor && edgeWeightInput && edgeWeightVal) {
       edgeEditor.hidden = false;
       edgeWeightInput.value = String(e[2]);
       edgeWeightVal.textContent = e[2].toFixed(2);
-      var rect = companionEl.getBoundingClientRect();
-      var x = clientX - rect.left - 80;
-      var y = clientY - rect.top - 10;
-      x = Math.max(4, Math.min(x, rect.width - 200));
-      y = Math.max(4, Math.min(y, rect.height - 80));
-      edgeEditor.style.left = x + 'px';
-      edgeEditor.style.top = y + 'px';
+      if (edgeEditorTitle) {
+        edgeEditorTitle.textContent =
+          'Editing link: ' + LABELS[e[0]] + ' → ' + LABELS[e[1]] + ' (' + (mind === 'a' ? 'Mind A' : 'Mind B') + ')';
+      }
     }
   }
   function closeEdgeEditor() {
     if (edgeEditor) edgeEditor.hidden = true;
+    if (edgeEditorTitle) edgeEditorTitle.textContent = 'Editing link';
     selectedEditorEdge = null;
   }
   function hideOnboardingHint() {
@@ -477,29 +478,29 @@
       g.setAttribute('data-node', j);
       g.setAttribute('data-mind', mindId);
       var nodeClass = 'two-minds-node';
-      if (aA > 0.3 && aB > 0.3) nodeClass += ' tm-node-both';
-      else if (act > 0.08) nodeClass += ' tm-node-active';
+      if (aA > BOTH_VISUAL_THR && aB > BOTH_VISUAL_THR) nodeClass += ' tm-node-both';
+      else if (act > ACTIVE_VISUAL_THR) nodeClass += ' tm-node-active';
       else nodeClass += ' tm-node-rest';
       g.setAttribute('class', nodeClass);
       var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       circle.setAttribute('class', 'tm-node-shape');
       circle.setAttribute('cx', POS[j].x);
       circle.setAttribute('cy', POS[j].y);
-      circle.setAttribute('r', act > 0.08 ? 24 : 20);
+      circle.setAttribute('r', act > ACTIVE_VISUAL_THR ? 24 : 20);
       var fill = restFill;
       var stroke = restStroke;
       var filter = '';
-      if (aA > 0.3 && aB > 0.3) {
+      if (aA > BOTH_VISUAL_THR && aB > BOTH_VISUAL_THR) {
         fill = '#d4a030';
         stroke = '#b88920';
         filter = 'url(#ch12-gold-glow-' + mindId + ')';
-      } else if (act > 0.08) {
+      } else if (act > ACTIVE_VISUAL_THR) {
         fill = actFill;
         stroke = isA ? '#2a6aa8' : '#a63d2a';
       }
       circle.setAttribute('fill', fill);
       circle.setAttribute('stroke', stroke);
-      circle.setAttribute('stroke-width', act > 0.08 ? 2.2 : 1.4);
+      circle.setAttribute('stroke-width', act > ACTIVE_VISUAL_THR ? 2.2 : 1.4);
       if (filter) circle.setAttribute('filter', filter);
       g.appendChild(circle);
       var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -637,7 +638,7 @@
             removeEdge(mi, fr, t);
             return;
           }
-          openEdgeEditor(mi, fr, t, ev.clientX, ev.clientY);
+          openEdgeEditor(mi, fr, t);
         };
       }
     });
@@ -754,17 +755,6 @@
       setEdgeWeight(selectedEditorEdge.mind, selectedEditorEdge.from, selectedEditorEdge.to, w, { flash: true, notify: true });
     });
   }
-  var edgeClose = document.getElementById('two-minds-edge-close');
-  if (edgeClose) {
-    edgeClose.addEventListener('click', function () {
-      if (selectedEditorEdge) {
-        flashNodes(selectedEditorEdge.mind, selectedEditorEdge.from, selectedEditorEdge.to);
-        messageLock = null;
-        setMessage('You changed a triggering relationship. The ripple will be different now.');
-      }
-      closeEdgeEditor();
-    });
-  }
   function dismissUserHint() {
     var hadRing = hintOnCoffee;
     hideOnboardingHint();
@@ -773,9 +763,6 @@
   }
   if (companionEl) {
     companionEl.addEventListener('click', dismissUserHint, true);
-    companionEl.addEventListener('click', function (e) {
-      if (e.target === companionEl) closeEdgeEditor();
-    });
   }
   document.querySelectorAll('.two-minds-preset').forEach(function (btn) {
     btn.addEventListener('click', function () {

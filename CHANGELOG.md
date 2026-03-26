@@ -4,6 +4,13 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.51] — 2026-03-26
+
+### Changed
+
+- Chapter 12 two-minds companion: make link-weight tuning an inline panel control instead of an absolute popup editor and remove the close button from that control.
+- Chapter 12 two-minds companion: align shared-node gold highlighting with visual activation thresholds so nodes active in both minds color consistently with the legend.
+
 ## [0.15.50] — 2026-03-26
 
 ### Changed
