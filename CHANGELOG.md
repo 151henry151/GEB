@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.47] — 2026-03-26
+
+### Changed
+
+- Chapter 19 frame-competition section: remove the alternate “Time flies like an arrow” branch so the interaction focuses only on “She gave him a shot.” and its context-driven frame resolution.
+
 ## [0.15.46] — 2026-03-26
 
 ### Changed

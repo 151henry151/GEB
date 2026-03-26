@@ -419,12 +419,8 @@
   var compStatus = document.getElementById('ch19-comp-status');
   var compCaption = document.getElementById('ch19-comp-caption');
   var compSummary = document.getElementById('ch19-comp-summary');
-  var btnToggleSentence = document.getElementById('ch19-toggle-sentence');
-  var compContexts = document.getElementById('ch19-comp-contexts');
   var compShotCtx = document.getElementById('ch19-comp-contexts-shot');
-  var compFlyCtx = document.getElementById('ch19-comp-contexts-flies');
   var contextClickCount = 0;
-  var activeSentence = 'shot';
 
   function clearCompClasses() {
     [panelMed, panelBall, panelThird].forEach(function (p) {
@@ -462,54 +458,13 @@
   }
 
   function showShotSentence() {
-    activeSentence = 'shot';
     contextClickCount = 0;
     if (compSummary) compSummary.hidden = true;
     if (compSentence) compSentence.textContent = '“She gave him a shot.”';
     if (compShotCtx) compShotCtx.hidden = false;
-    if (compFlyCtx) compFlyCtx.hidden = true;
     if (panelMed) panelMed.hidden = false;
     if (panelBall) panelBall.hidden = false;
     setCompetitionState();
-  }
-
-  function showFliesSentence() {
-    activeSentence = 'flies';
-    if (compSentence) compSentence.textContent = '“Time flies like an arrow.”';
-    if (compShotCtx) compShotCtx.hidden = true;
-    if (compFlyCtx) compFlyCtx.hidden = false;
-    if (panelMed) panelMed.hidden = true;
-    if (panelBall) panelBall.hidden = true;
-    if (panelThird) {
-      panelThird.hidden = false;
-      panelThird.className = 'ch19-comp-panel ch19-comp-triple';
-      panelThird.innerHTML =
-        '<div class="ch19-comp-sub ch19-comp-both ch19-comp-pulse" data-fly="temporal">' +
-        '<strong>TEMPORAL OBSERVATION</strong><ul class="ch19-comp-slots">' +
-        '<li>time: passes quickly</li><li>flies: verb — “time flies”</li><li>like: simile marker</li><li>arrow: swift motion</li></ul></div>' +
-        '<div class="ch19-comp-sub ch19-comp-both ch19-comp-pulse" data-fly="bug">' +
-        '<strong>ENTOMOLOGY</strong><ul class="ch19-comp-slots">' +
-        '<li>time flies: species of insect</li><li>like: enjoy / prefer</li><li>an arrow: food or perch?</li></ul></div>' +
-        '<div class="ch19-comp-sub ch19-comp-both ch19-comp-pulse" data-fly="imp">' +
-        '<strong>IMPERATIVE</strong><ul class="ch19-comp-slots">' +
-        '<li>Time: verb — measure</li><li>flies: noun object</li><li>like an arrow: manner adverb</li></ul></div>';
-    }
-    if (compMid) {
-      compMid.hidden = false;
-      compMid.textContent = 'Structural ambiguity';
-    }
-    if (compStatus) compStatus.textContent = '';
-    if (compCaption) {
-      compCaption.textContent =
-        'Hofstadter’s favorite structural ambiguity: three parses coexist until context pins one down.';
-    }
-  }
-
-  if (btnToggleSentence) {
-    btnToggleSentence.addEventListener('click', function () {
-      if (activeSentence === 'shot') showFliesSentence();
-      else showShotSentence();
-    });
   }
 
   function resolveShot(ctx) {
@@ -594,46 +549,8 @@
     }
 
     contextClickCount++;
-    if (compSummary && contextClickCount >= 2 && activeSentence === 'shot') {
+    if (compSummary && contextClickCount >= 2) {
       compSummary.hidden = false;
-    }
-  }
-
-  function resolveFlies(ctx) {
-    if (panelThird) {
-      panelThird.querySelectorAll('.ch19-comp-sub').forEach(function (sub) {
-        sub.classList.remove('ch19-comp-win', 'ch19-comp-lose', 'ch19-comp-both', 'ch19-comp-pulse');
-      });
-    }
-    if (compMid) compMid.textContent = 'Resolved';
-
-    if (ctx === 'temporal') {
-      var t = panelThird && panelThird.querySelector('[data-fly="temporal"]');
-      var others = panelThird && panelThird.querySelectorAll('[data-fly="bug"], [data-fly="imp"]');
-      if (t) t.classList.add('ch19-comp-win');
-      if (others)
-        others.forEach(function (o) {
-          o.classList.add('ch19-comp-lose');
-        });
-      if (compStatus) compStatus.textContent = 'Temporal observation wins — “time passes quickly, like an arrow flies.”';
-    } else if (ctx === 'bug') {
-      var b = panelThird && panelThird.querySelector('[data-fly="bug"]');
-      if (b) b.classList.add('ch19-comp-win');
-      panelThird.querySelectorAll('[data-fly="temporal"], [data-fly="imp"]').forEach(function (o) {
-        o.classList.add('ch19-comp-lose');
-      });
-      if (compStatus) compStatus.textContent = 'Entomology wins — a playful reading: time-flies enjoy arrows.';
-    } else if (ctx === 'imp') {
-      var i = panelThird && panelThird.querySelector('[data-fly="imp"]');
-      if (i) i.classList.add('ch19-comp-win');
-      panelThird.querySelectorAll('[data-fly="temporal"], [data-fly="bug"]').forEach(function (o) {
-        o.classList.add('ch19-comp-lose');
-      });
-      if (compStatus) compStatus.textContent = 'Imperative wins — “Measure flies the way you would measure an arrow’s flight.”';
-    }
-    if (compCaption) {
-      compCaption.textContent =
-        'Same string, three grammars. Context picks which syntax-semantic package to deploy.';
     }
   }
 
@@ -644,14 +561,6 @@
       });
     });
   }
-  if (compFlyCtx) {
-    compFlyCtx.querySelectorAll('button[data-fly-ctx]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        resolveFlies(btn.getAttribute('data-fly-ctx'));
-      });
-    });
-  }
-
   showShotSentence();
 
   /* —— Section 3: limits —— */
