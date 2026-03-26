@@ -62,19 +62,32 @@
     .ch18-ok-label { font-size: 0.8rem; color: #15803d; font-weight: 600; margin: 0.45rem 0; }
     .ch18-fail-label { font-size: 0.8rem; color: var(--muted); margin: 0.45rem 0; line-height: 1.45; }
     .ch18-slider-row { margin: 0.75rem 0; padding: 0.55rem 0.65rem; background: var(--panel); border-radius: 8px; border: 1px solid var(--border); }
-    .ch18-slider-row input[type="range"] { width: 100%; max-width: 320px; margin: 0.35rem 0; }
     .ch18-slider-readout { font-size: 0.82rem; line-height: 1.45; margin-top: 0.35rem; }
+    .ch18-domain-btns { display: inline-flex; margin: 0.35rem 0 0.25rem 0; flex-wrap: wrap; }
+    .ch18-domain-btn {
+      font-size: 0.78rem; padding: 0.35rem 0.75rem; margin: 0; cursor: pointer; border: 1px solid var(--border);
+      background: var(--panel); color: var(--muted); font-weight: 600; transition: background 0.15s ease, color 0.15s ease;
+    }
+    .ch18-domain-btn:first-child { border-radius: 6px 0 0 6px; }
+    .ch18-domain-btn:nth-child(2) { border-left: none; border-right: none; border-radius: 0; }
+    .ch18-domain-btn:last-child { border-radius: 0 6px 6px 0; }
+    .ch18-domain-btn.ch18-domain-active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .ch18-acc-bar-wrap { margin-top: 0.45rem; }
+    .ch18-acc-label { font-size: 0.78rem; color: var(--muted); }
+    .ch18-acc-bar { height: 8px; background: var(--border); border-radius: 4px; margin-top: 0.25rem; overflow: hidden; max-width: 320px; }
+    .ch18-acc-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; }
     .ch18-tl { margin: 0.75rem 0; overflow-x: auto; padding-bottom: 0.35rem; }
-    .ch18-tl-track { display: flex; gap: 0.5rem; align-items: stretch; min-width: min-content; padding: 0.25rem 0; }
+    .ch18-tl-track { display: flex; gap: 0.5rem; align-items: flex-start; flex-wrap: nowrap; min-width: min-content; padding: 0.25rem 0; }
+    .ch18-tl-item { flex: 0 0 140px; display: flex; flex-direction: column; }
     .ch18-tl-card {
-      flex: 0 0 140px; border: 1px solid var(--border); border-radius: 8px; padding: 0.45rem 0.5rem; background: var(--bg); cursor: pointer;
+      flex: none; border: 1px solid var(--border); border-radius: 8px; padding: 0.45rem 0.5rem; background: var(--bg); cursor: pointer;
       transition: box-shadow 0.2s ease, border-color 0.2s ease; font-size: 0.72rem; line-height: 1.35;
     }
     .ch18-tl-card:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
     .ch18-tl-card.ch18-tl-open { border-color: #64748b; box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.25); }
     .ch18-tl-year { font-weight: 800; font-size: 0.78rem; color: var(--text); }
     .ch18-tl-blurb { color: var(--muted); margin-top: 0.25rem; font-size: 0.68rem; }
-    .ch18-tl-expand { margin: 0.5rem 0 0 0; padding: 0.5rem 0.55rem; font-size: 0.78rem; line-height: 1.45; background: var(--panel); border-radius: 6px; border: 1px solid var(--border); }
+    .ch18-tl-expand { margin-top: 0.35rem; width: 100%; padding: 0.5rem 0.55rem; font-size: 0.78rem; line-height: 1.45; background: var(--panel); border-radius: 6px; border: 1px solid var(--border); box-sizing: border-box; }
     .ch18-open-panel {
       margin: 1.75rem 0 1.25rem 0; padding: 1.25rem 1.1rem; text-align: center; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
       font-size: 0.88rem; line-height: 1.6; max-width: 36rem; margin-left: auto; margin-right: auto;
@@ -189,7 +202,7 @@
           </div>
 
           <div id="ch18-rule-count-wrap" class="ch18-rule-count-wrap" hidden>
-            Rules needed so far: <span id="ch18-rule-count" class="ch18-rule-num">14</span> and counting.
+            Rules needed so far: <span id="ch18-rule-count" class="ch18-rule-num">4</span> and counting.
           </div>
           <button type="button" class="btn btn-secondary" id="ch18-btn-keep-going" hidden>Keep going?</button>
           <div id="ch18-keep-going-panel" class="ch18-complicate-block" hidden style="border-left-color:#7c2d12;">
@@ -198,6 +211,10 @@
           <p class="ch18-caption" style="margin-top:0.65rem;">The frame problem is not solved by adding more rules. Every new rule creates new edge cases. Common sense — the thing humans handle effortlessly — requires knowing implicitly what matters and what doesn’t. Symbolic AI had no way to represent that implicitness.</p>
         </div>
 
+        <p class="ch18-caption" style="border-left:3px solid var(--border);padding-left:0.65rem;margin:0.85rem 0;">
+          The frame problem and brittleness are two faces of the same limitation: symbolic AI could encode what it knew, but had no way to represent what it <em>didn’t</em> know — or what mattered and what didn’t.
+        </p>
+
         <h2 class="ch18-h2">2. The expert system: brilliant inside, blind outside.</h2>
         <p class="ch18-lead">Symbolic AI’s greatest achievement was the expert system: a program encoding human expertise as explicit rules. Within its domain, it could match or exceed human performance. Outside it, it was helpless.</p>
 
@@ -205,7 +222,7 @@
           <div class="ch18-term-head">MED-DIAG v2.1 — Medical Diagnosis Expert System</div>
           <div class="ch18-term-body" id="ch18-term-body"></div>
         </div>
-        <p class="ch18-preset-box" id="ch18-term-preset">Select a case below.</p>
+        <p class="ch18-preset-box" id="ch18-term-preset" hidden>Select a case below.</p>
         <p style="margin:0.35rem 0;font-size:0.82rem;">
           <button type="button" class="btn btn-primary" id="ch18-start-lyme" style="font-size:0.78rem;">Case A: fever + rash (in-domain)</button>
           <button type="button" class="btn btn-secondary" id="ch18-start-rabies" style="font-size:0.78rem;margin-left:0.35rem;">Case B: breathing + fear of water</button>
@@ -214,8 +231,12 @@
         <p id="ch18-rabies-note" class="ch18-fail-label" hidden>The symptoms point toward <strong>rabies</strong> — outside this system’s rule set. A human doctor hearing “fear of water” would treat it as highly significant. The expert system has no notion of “this symptom is unusual and important”; it only walks its fixed rules.</p>
 
         <div class="ch18-slider-row">
-          <label for="ch18-domain-slider"><strong>Domain breadth</strong> (illustrative)</label>
-          <input type="range" id="ch18-domain-slider" min="0" max="2" value="0" step="1" aria-valuetext="narrow">
+          <strong>Domain breadth</strong> (illustrative)
+          <div class="ch18-domain-btns" role="group" aria-label="Domain breadth">
+            <button type="button" class="ch18-domain-btn ch18-domain-active" data-level="0">Narrow</button>
+            <button type="button" class="ch18-domain-btn" data-level="1">Medium</button>
+            <button type="button" class="ch18-domain-btn" data-level="2">General</button>
+          </div>
           <div id="ch18-slider-readout" class="ch18-slider-readout"></div>
         </div>
         <p class="ch18-caption">Symbolic AI systems were extraordinarily good at their narrow domain and nearly useless outside it. Expanding the domain required exponentially more rules — and each new rule interacted with all existing rules in unpredictable ways.</p>
@@ -224,33 +245,43 @@
         <p class="ch18-lead">A short arc — click a year to read more.</p>
         <div class="ch18-tl">
           <div class="ch18-tl-track">
-            <div class="ch18-tl-card" data-expand="ch18-tl-1956" tabindex="0" role="button">
-              <div class="ch18-tl-year">1956</div>
-              <div class="ch18-tl-blurb">Dartmouth — AI named; bold predictions.</div>
+            <div class="ch18-tl-item">
+              <div class="ch18-tl-card" data-expand="ch18-tl-1956" tabindex="0" role="button">
+                <div class="ch18-tl-year">1956</div>
+                <div class="ch18-tl-blurb">Dartmouth — AI named; bold predictions.</div>
+              </div>
+              <div id="ch18-tl-1956" class="ch18-tl-expand" hidden><strong>The Dartmouth Conference.</strong> Founding moment of AI. McCarthy, Minsky, Shannon, and others gather. Prediction: within a generation, machines will be able to do any work a human can do.</div>
             </div>
-            <div class="ch18-tl-card" data-expand="ch18-tl-1966" tabindex="0" role="button">
-              <div class="ch18-tl-year">1966</div>
-              <div class="ch18-tl-blurb">ELIZA — pattern rules, human-seeming talk.</div>
+            <div class="ch18-tl-item">
+              <div class="ch18-tl-card" data-expand="ch18-tl-1966" tabindex="0" role="button">
+                <div class="ch18-tl-year">1966</div>
+                <div class="ch18-tl-blurb">ELIZA — pattern rules, human-seeming talk.</div>
+              </div>
+              <div id="ch18-tl-1966" class="ch18-tl-expand" hidden><strong>ELIZA.</strong> Joseph Weizenbaum's chatbot. Simple pattern-matching rules produce surprisingly human-seeming responses. People confide in it. Weizenbaum is disturbed.</div>
             </div>
-            <div class="ch18-tl-card" data-expand="ch18-tl-1969" tabindex="0" role="button">
-              <div class="ch18-tl-year">1969</div>
-              <div class="ch18-tl-blurb">Frame problem named — common sense isn’t “more rules.”</div>
+            <div class="ch18-tl-item">
+              <div class="ch18-tl-card" data-expand="ch18-tl-1969" tabindex="0" role="button">
+                <div class="ch18-tl-year">1969</div>
+                <div class="ch18-tl-blurb">Frame problem named — common sense isn't "more rules."</div>
+              </div>
+              <div id="ch18-tl-1969" class="ch18-tl-expand" hidden><strong>The frame problem named.</strong> McCarthy and Hayes publish the paper. The AI community begins to realize common sense is not just "more rules."</div>
             </div>
-            <div class="ch18-tl-card" data-expand="ch18-tl-1972" tabindex="0" role="button">
-              <div class="ch18-tl-year">1972</div>
-              <div class="ch18-tl-blurb">MYCIN — 600 rules; excels in a narrow clinic.</div>
+            <div class="ch18-tl-item">
+              <div class="ch18-tl-card" data-expand="ch18-tl-1972" tabindex="0" role="button">
+                <div class="ch18-tl-year">1972</div>
+                <div class="ch18-tl-blurb">MYCIN — 600 rules; excels in a narrow clinic.</div>
+              </div>
+              <div id="ch18-tl-1972" class="ch18-tl-expand" hidden><strong>MYCIN.</strong> Medical expert system. Roughly 600 rules for diagnosing bacterial infections. Outperforms medical students and matches specialists — within its narrow domain.</div>
             </div>
-            <div class="ch18-tl-card" data-expand="ch18-tl-1979" tabindex="0" role="button">
-              <div class="ch18-tl-year">1979</div>
-              <div class="ch18-tl-blurb">GEB — can rules ever be understanding?</div>
+            <div class="ch18-tl-item">
+              <div class="ch18-tl-card" data-expand="ch18-tl-1979" tabindex="0" role="button">
+                <div class="ch18-tl-year">1979</div>
+                <div class="ch18-tl-blurb">GEB — can rules ever be understanding?</div>
+              </div>
+              <div id="ch18-tl-1979" class="ch18-tl-expand" hidden><strong>GEB published.</strong> Hofstadter asks: can formal rules, no matter how many or how clever, constitute understanding? He leaves the question open.</div>
             </div>
           </div>
         </div>
-        <div id="ch18-tl-1956" class="ch18-tl-expand" hidden><strong>The Dartmouth Conference.</strong> Founding moment of AI. McCarthy, Minsky, Shannon, and others gather. Prediction: within a generation, machines will be able to do any work a human can do.</div>
-        <div id="ch18-tl-1966" class="ch18-tl-expand" hidden><strong>ELIZA.</strong> Joseph Weizenbaum’s chatbot. Simple pattern-matching rules produce surprisingly human-seeming responses. People confide in it. Weizenbaum is disturbed.</div>
-        <div id="ch18-tl-1969" class="ch18-tl-expand" hidden><strong>The frame problem named.</strong> McCarthy and Hayes publish the paper. The AI community begins to realize common sense is not just “more rules.”</div>
-        <div id="ch18-tl-1972" class="ch18-tl-expand" hidden><strong>MYCIN.</strong> Medical expert system. Roughly 600 rules for diagnosing bacterial infections. Outperforms medical students and matches specialists — within its narrow domain.</div>
-        <div id="ch18-tl-1979" class="ch18-tl-expand" hidden><strong>GEB published.</strong> Hofstadter asks: can formal rules, no matter how many or how clever, constitute understanding? He leaves the question open.</div>
 
         <div class="ch18-open-panel">
           <p>Symbolic AI succeeded at tasks that seemed to require intelligence — game playing, theorem proving, diagnosis — and failed at tasks that seemed trivially easy for humans: understanding context, applying common sense, knowing what matters.</p>
@@ -263,6 +294,6 @@
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script src="ch18-companion.js?v=0.15.42"></script>
+  <script src="ch18-companion.js?v=0.15.43"></script>
 </body>
 </html>

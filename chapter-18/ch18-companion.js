@@ -17,7 +17,7 @@
   var keepGoingPanel = document.getElementById('ch18-keep-going-panel');
   var roomWrap = document.getElementById('ch18-room-wrap');
 
-  var RULE_TOTALS = [5, 8, 11, 14];
+  var RULE_TOTALS = [4, 9, 18, 34];
 
   if (btnMove) {
     btnMove.addEventListener('click', function () {
@@ -74,6 +74,18 @@
         ruleCountWrap.hidden = false;
         ruleCountEl.className = 'ch18-rule-num ch18-rule-n' + complicateN;
       }
+      if (
+        complicateN >= 4 &&
+        ruleCountWrap &&
+        !ruleCountWrap.querySelector('.ch18-rule-annotation')
+      ) {
+        var annotation = document.createElement('span');
+        annotation.className = 'ch18-rule-annotation';
+        annotation.style.cssText =
+          'font-size:0.72rem;color:var(--muted);margin-left:0.4rem;font-style:italic;';
+        annotation.textContent = 'and growing faster than linearly…';
+        ruleCountWrap.appendChild(annotation);
+      }
       if (complicateN >= 4) {
         btnComplicate.disabled = true;
         if (btnKeepGoing) btnKeepGoing.hidden = false;
@@ -90,8 +102,9 @@
 
   /* —— Section 2: Expert system —— */
   var termBody = document.getElementById('ch18-term-body');
-  var termPreset = document.getElementById('ch18-term-preset');
   var expertState = 'idle';
+  var LYME_OK_DEFAULT =
+    '✓ Within its domain: confident, specific, useful — when the rules fire.';
 
   function clearTerm() {
     if (termBody) termBody.innerHTML = '';
@@ -110,17 +123,23 @@
     var note = document.getElementById('ch18-rabies-note');
     if (note) note.hidden = true;
     var ok = document.getElementById('ch18-lyme-ok');
-    if (ok) ok.hidden = true;
+    if (ok) {
+      ok.hidden = true;
+      ok.textContent = LYME_OK_DEFAULT;
+    }
   }
 
   function startLyme() {
     resetExpertChrome();
     clearTerm();
     expertState = 'lyme';
-    if (termPreset) termPreset.textContent =
-      'Patient presents with fever, fatigue, and a rash on the torso. No recent travel. No known allergies.';
     termPrint('&gt; <strong>MED-DIAG v2.1</strong> — session start');
     termPrint('&gt; Loading rule base… OK');
+    termPrint('');
+    termPrint('&gt; CASE FILE:');
+    termPrint(
+      '&gt; <em>Patient presents with fever, fatigue, and a rash on the torso. No recent travel. No known allergies.</em>'
+    );
     termPrint('');
     termPrint('Q1: Is body temperature above 38°C?');
     addYn('lyme1');
@@ -130,10 +149,13 @@
     resetExpertChrome();
     clearTerm();
     expertState = 'rabies';
-    if (termPreset) termPreset.textContent =
-      'Patient presents with difficulty breathing, confusion, and a fear of water.';
     termPrint('&gt; <strong>MED-DIAG v2.1</strong> — session start');
     termPrint('&gt; Loading rule base… OK');
+    termPrint('');
+    termPrint('&gt; CASE FILE:');
+    termPrint(
+      '&gt; <em>Patient presents with difficulty breathing, confusion, and a fear of water.</em>'
+    );
     termPrint('');
     termPrint('Q1: Is body temperature above 38°C?');
     addYn('rabies1');
@@ -195,9 +217,24 @@
         }
       } else {
         termPrint('');
-        termPrint('(Path without exposure — demo skips to alternate branch.)');
-        termPrint('');
-        finishLyme();
+        termPrint('Q4: Has the patient recently used any new medications or detergents?');
+        addYn('lyme4');
+      }
+    } else if (step === 'lyme4') {
+      termPrint('');
+      termPrint(
+        '<span class="ch18-term-catch">No matching rule combination for current symptom set.</span>'
+      );
+      termPrint('Differential: viral exanthem, drug reaction, or other dermatological condition.');
+      termPrint('');
+      termPrint(
+        '<div class="ch18-diagnosis" style="border-color:#fbbf24;background:#1c1500;color:#fef9c3;"><strong>ASSESSMENT:</strong> No confident diagnosis. Recommend specialist referral and further investigation.</div>'
+      );
+      var okHedge = document.getElementById('ch18-lyme-ok');
+      if (okHedge) {
+        okHedge.textContent =
+          'Rule set exhausted without a single best match — the system admits limits.';
+        okHedge.hidden = false;
       }
     } else if (step === 'rabies1') {
       termPrint('');
@@ -221,7 +258,10 @@
       '<div class="ch18-diagnosis"><strong>DIAGNOSIS:</strong> Probable Lyme disease.<br>Recommend blood test and antibiotic course.</div>'
     );
     var ok = document.getElementById('ch18-lyme-ok');
-    if (ok) ok.hidden = false;
+    if (ok) {
+      ok.textContent = LYME_OK_DEFAULT;
+      ok.hidden = false;
+    }
   }
 
   var sl = document.getElementById('ch18-start-lyme');
@@ -229,21 +269,42 @@
   if (sl) sl.addEventListener('click', startLyme);
   if (sr) sr.addEventListener('click', startRabies);
 
-  var slider = document.getElementById('ch18-domain-slider');
+  var domainBtns = document.querySelectorAll('.ch18-domain-btn');
   var sliderOut = document.getElementById('ch18-slider-readout');
-  var SLIDER_TEXT = [
+  var DOMAIN_TEXT = [
     '<strong>Narrow domain:</strong> system answers ~9/10 in-domain questions correctly, with high confidence.',
     '<strong>Medium domain:</strong> ~6/10 correct as rules overlap; confidence drops; contradictions multiply.',
     '<strong>General intelligence:</strong> ~3/10 — no better than chance on open-world questions.'
   ];
-  if (slider && sliderOut) {
-    function syncSlider() {
-      var v = parseInt(slider.value, 10);
-      sliderOut.innerHTML = SLIDER_TEXT[v];
+  var ACCURACY = [90, 60, 30];
+
+  function syncDomainLevel(level) {
+    domainBtns.forEach(function (b) {
+      b.classList.toggle(
+        'ch18-domain-active',
+        parseInt(b.getAttribute('data-level'), 10) === level
+      );
+    });
+    if (sliderOut) {
+      sliderOut.innerHTML =
+        DOMAIN_TEXT[level] +
+        '<div class="ch18-acc-bar-wrap">' +
+        '<span class="ch18-acc-label">Accuracy: ~' +
+        Math.round(ACCURACY[level] / 10) +
+        '/10</span>' +
+        '<div class="ch18-acc-bar"><div class="ch18-acc-fill" style="width:' +
+        ACCURACY[level] +
+        '%"></div></div>' +
+        '</div>';
     }
-    slider.addEventListener('input', syncSlider);
-    syncSlider();
   }
+
+  domainBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      syncDomainLevel(parseInt(btn.getAttribute('data-level'), 10));
+    });
+  });
+  if (domainBtns.length) syncDomainLevel(0);
 
   /* —— Section 3: Timeline (accordion) —— */
   function openTimelineCard(card) {

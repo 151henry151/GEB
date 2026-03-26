@@ -4,6 +4,16 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.43] — 2026-03-25
+
+### Changed
+
+- Chapter 18 companion: replace domain-breadth range input with a three-button segmented control, accuracy readout bar, and `syncDomainLevel` wiring in `ch18-companion.js`.
+- Chapter 18: set rule-count progression to `[4, 9, 18, 34]`; append italic “and growing faster than linearly…” after the fourth complication when absent.
+- Chapter 18: hide `#ch18-term-preset`; print CASE FILE lines inside the terminal for Lyme and Rabies starts.
+- Chapter 18 expert flow: on Lyme Q3 NO, branch to Q4 and `lyme4` with hedged assessment instead of finishing Lyme diagnosis.
+- Chapter 18: add bridging caption between frame-problem and expert-system sections; wrap each timeline card with its expand panel in `.ch18-tl-item` and adjust track/card/expand CSS.
+
 ## [0.15.42] — 2026-03-25
 
 ### Changed
