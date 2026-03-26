@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.45] — 2026-03-25
+
+### Changed
+
+- Chapter 19 companion: expand into three sections — multi-frame slot widget (birthday, restaurant, doctor, job) with live cascading defaults, amber flash on default updates, lock badges, and `ch19-frames-logic.js` + `ch19-frames-logic.test.js`; frame competition (“She gave him a shot.” + optional “Time flies…”); three interactive “limits” cards with captions and closing panel; add `ch19-companion.js` and inline chapter-19 styles.
+
 ## [0.15.44] — 2026-03-25
 
 ### Changed

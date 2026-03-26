@@ -8,6 +8,112 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    .ch19-h2 { font-size: 1.02rem; margin: 1.25rem 0 0.45rem 0; color: var(--text); }
+    .ch19-h2:first-of-type { margin-top: 0; }
+    .ch19-lead { font-size: 0.86rem; line-height: 1.5; color: var(--muted); margin: 0 0 0.55rem 0; }
+    .ch19-s1-caption { font-size: 0.8rem; font-style: italic; color: var(--muted); margin: 0.65rem 0 0 0; line-height: 1.45; }
+    .ch19-frame-widget { margin: 0.5rem 0; padding: 0.65rem 0.75rem; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
+    .ch19-frame-tabs { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.65rem; }
+    .ch19-frame-tab {
+      font-size: 0.74rem; padding: 0.35rem 0.65rem; border: 1px solid var(--border); border-radius: 6px;
+      background: var(--bg); color: var(--muted); cursor: pointer; font-weight: 600;
+    }
+    .ch19-frame-tab-active { background: rgba(212, 160, 48, 0.22); color: var(--text); border-color: #d4a030; }
+    .ch19-slot-panel { display: flex; flex-direction: column; gap: 0.45rem; }
+    .ch19-slot-row {
+      display: grid; grid-template-columns: minmax(5rem, 7rem) 1fr minmax(7.5rem, 10rem) 1.5rem; gap: 0.35rem 0.5rem; align-items: center;
+      padding: 0.4rem 0.45rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg);
+      transition: background 1s ease;
+    }
+    @media (max-width: 520px) {
+      .ch19-slot-row { grid-template-columns: 1fr 1fr; }
+      .ch19-slot-name { grid-column: 1 / -1; }
+      .ch19-default-badge { grid-column: 1 / -1; }
+      .ch19-lock { justify-self: end; }
+    }
+    .ch19-slot-row.ch19-default-flash { background: rgba(212, 160, 48, 0.15); }
+    .ch19-slot-name { font-weight: 700; font-size: 0.8rem; }
+    .ch19-slot-field-wrap { min-width: 0; }
+    .ch19-slot-hint { display: block; font-size: 0.68rem; color: var(--muted); margin-bottom: 0.15rem; }
+    .ch19-slot-input { width: 100%; max-width: 100%; padding: 0.32rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.8rem; box-sizing: border-box; }
+    .ch19-default-badge { font-size: 0.72rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ch19-lock { font-size: 0.85rem; text-align: center; opacity: 0.85; }
+    .ch19-slot-row.ch19-tip-emph .ch19-default-badge { font-weight: 700; color: #b45309; }
+    .ch19-frame-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.55rem; }
+
+    .ch19-s2-intro { font-size: 0.82rem; font-style: italic; color: var(--muted); line-height: 1.45; margin: 0.35rem 0 0.65rem 0; }
+    .ch19-comp-sentence { font-size: 1.35rem; font-style: italic; text-align: center; margin: 0.5rem 0 0.75rem 0; color: var(--text); line-height: 1.35; }
+    .ch19-comp-row { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; gap: 0.65rem; margin: 0.5rem 0; }
+    .ch19-comp-panel {
+      flex: 1 1 200px; max-width: 280px; border: 2px solid #d4a030; border-radius: 8px; padding: 0.55rem 0.6rem; background: rgba(212, 160, 48, 0.08);
+      font-size: 0.76rem; line-height: 1.4; transition: opacity 0.35s ease, transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+    .ch19-comp-panel strong { display: block; margin-bottom: 0.35rem; font-size: 0.78rem; }
+    .ch19-comp-slots { margin: 0; padding-left: 1rem; }
+    .ch19-comp-slots li { margin: 0.2rem 0; }
+    .ch19-comp-mid {
+      flex: 0 0 auto; align-self: center; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em; color: #b45309;
+      padding: 0.35rem 0.5rem; border: 1px dashed #d4a030; border-radius: 6px; background: rgba(212, 160, 48, 0.12);
+    }
+    .ch19-comp-both { animation: ch19-pulse-border 2.2s ease-in-out infinite; }
+    @keyframes ch19-pulse-border {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212, 160, 48, 0.35); border-color: #d4a030; }
+      50% { box-shadow: 0 0 0 3px rgba(212, 160, 48, 0.2); border-color: #f59e0b; }
+    }
+    .ch19-comp-pulse-mid { animation: ch19-pulse-mid 1.8s ease-in-out infinite; }
+    @keyframes ch19-pulse-mid {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(1.03); }
+    }
+    .ch19-comp-win { opacity: 1 !important; transform: scale(1.02); border-color: #f59e0b !important; box-shadow: 0 4px 14px rgba(212, 160, 48, 0.35); animation: none; }
+    .ch19-comp-lose { opacity: 0.3 !important; animation: none; }
+    .ch19-comp-highlight { background: rgba(212, 160, 48, 0.28); border-radius: 4px; padding: 0.1rem 0.25rem; }
+    .ch19-comp-triple { flex: 1 1 100%; max-width: none; display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+    .ch19-comp-sub { flex: 1 1 160px; max-width: 220px; border: 2px solid #d4a030; border-radius: 8px; padding: 0.45rem; background: rgba(212, 160, 48, 0.08); font-size: 0.72rem; transition: opacity 0.35s ease, transform 0.35s ease; }
+    .ch19-comp-third { margin-top: 0.5rem; max-width: 100%; }
+    .ch19-comp-contexts { display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: center; margin: 0.65rem 0; }
+    .ch19-ctx-chip { font-size: 0.82rem !important; padding: 0.45rem 0.75rem !important; border-radius: 999px !important; }
+    .ch19-comp-status { font-size: 0.8rem; margin: 0.45rem 0; min-height: 1.5rem; text-align: center; }
+    .ch19-comp-caption { font-size: 0.78rem; color: var(--muted); line-height: 1.45; margin: 0.35rem 0; }
+    .ch19-comp-summary { font-size: 0.82rem; font-style: italic; padding: 0.55rem 0.65rem; border-left: 3px solid #d4a030; margin: 0.65rem 0; background: rgba(212, 160, 48, 0.08); border-radius: 0 6px 6px 0; }
+
+    .ch19-lim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.55rem; margin: 0.55rem 0; }
+    @media (max-width: 720px) { .ch19-lim-grid { grid-template-columns: 1fr; } }
+    .ch19-lim-card {
+      border: 1px solid var(--border); border-radius: 8px; padding: 0.55rem 0.6rem; background: var(--bg); cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease; min-height: 5rem;
+    }
+    .ch19-lim-card:hover { border-color: #d4a030; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+    .ch19-lim-card h3 { font-size: 0.82rem; margin: 0 0 0.35rem 0; }
+    .ch19-lim-scenario { font-size: 0.76rem; font-style: italic; color: var(--muted); line-height: 1.4; margin: 0; }
+    .ch19-lim-anim { margin-top: 0.45rem; font-size: 0.72rem; min-height: 3rem; }
+    .ch19-lim-fail-row { margin: 0.25rem 0; padding: 0.2rem 0; border-bottom: 1px dashed var(--border); }
+    .ch19-lim-x { color: #b91c1c; font-weight: 800; }
+    .ch19-lim-stall { margin-top: 0.45rem; color: var(--muted); }
+    .ch19-self-slot { font-size: 0.74rem; margin-bottom: 0.35rem; }
+    .ch19-lim-spin { font-size: 0.72rem; color: var(--muted); animation: ch19-spin-op 0.8s linear infinite; }
+    @keyframes ch19-spin-op { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .ch19-lim-infinity { font-size: 0.9rem; font-weight: 800; color: #d4a030; }
+    .ch19-lim-glitch { animation: ch19-glitch 0.4s ease 3; }
+    @keyframes ch19-glitch {
+      0%, 100% { filter: none; }
+      25% { filter: hue-rotate(90deg); }
+      50% { filter: hue-rotate(-40deg) saturate(1.3); }
+      75% { filter: hue-rotate(20deg); }
+    }
+    .ch19-lim-search { color: var(--muted); }
+    .ch19-lim-search-fail { margin-top: 0.45rem; color: var(--text); }
+    .ch19-lim-blend { margin-top: 0.55rem; padding: 0.45rem; border-radius: 6px; background: rgba(212, 160, 48, 0.12); border: 1px solid #d4a030; }
+    .ch19-blend-a, .ch19-blend-b, .ch19-blend-c { text-decoration: underline; text-decoration-color: #d4a030; }
+
+    .ch19-open-panel {
+      margin: 1.75rem 0 1rem 0; padding: 1.25rem 1.1rem; text-align: left; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      font-size: 0.86rem; line-height: 1.6; max-width: 36rem; margin-left: auto; margin-right: auto;
+    }
+    .ch19-open-panel p { margin: 0.65rem 0; }
+    .ch19-open-panel p:first-child { margin-top: 0; }
+  </style>
 </head>
 <body>
   <div class="chapter-layout">
@@ -55,73 +161,106 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">A “Birthday party” frame with slots (Minsky-style). Fill some slots; click <strong>Infer defaults</strong> to fill the rest with typical values. The frame shows how knowledge is structured by context and defaults.</p>
-      <div class="companion-box" id="frame-companion">
-        <p><strong>Frame: Birthday party</strong></p>
-        <div class="frame-slots">
-          <label>who <span class="frame-hint">(birthday person)</span><br><input type="text" id="frame-who" placeholder="e.g. Emma" class="frame-input"></label>
-          <label>when <span class="frame-hint">(date/time)</span><br><input type="text" id="frame-when" placeholder="e.g. Saturday 2pm" class="frame-input"></label>
-          <label>where <span class="frame-hint">(location)</span><br><input type="text" id="frame-where" placeholder="e.g. park" class="frame-input"></label>
-          <label>cake? <span class="frame-hint">(yes / no)</span><br><input type="text" id="frame-cake" placeholder="yes, no, or leave blank" class="frame-input"></label>
-          <label>presents? <span class="frame-hint">(expected)</span><br><input type="text" id="frame-presents" placeholder="yes or blank" class="frame-input"></label>
+      <p class="companion-caption">Minsky-style <strong>frames</strong>: schemas with slots and defaults. This companion walks through default reasoning, competing interpretations of the same words, and where frames still break down.</p>
+
+      <h2 class="ch19-h2">1. Frames and default reasoning</h2>
+      <p class="ch19-lead">A situation type activates a whole pattern of expectations. Filling one slot can reshape what is inferred about the others — live, not only after a separate “infer” step.</p>
+      <div class="companion-box ch19-frame-widget">
+        <div id="ch19-frame-tabs" class="ch19-frame-tabs" role="tablist" aria-label="Choose frame">
+          <button type="button" class="ch19-frame-tab ch19-frame-tab-active" role="tab" data-frame="birthday" aria-selected="true">Birthday party</button>
+          <button type="button" class="ch19-frame-tab" role="tab" data-frame="restaurant" aria-selected="false">Restaurant visit</button>
+          <button type="button" class="ch19-frame-tab" role="tab" data-frame="doctor" aria-selected="false">Doctor’s appointment</button>
+          <button type="button" class="ch19-frame-tab" role="tab" data-frame="job" aria-selected="false">Job interview</button>
         </div>
-        <div class="frame-actions">
-          <button type="button" class="btn btn-primary" id="frame-infer">Infer defaults</button>
-          <button type="button" class="btn btn-secondary" id="frame-reset">Reset</button>
+        <div id="ch19-slot-panel" class="ch19-slot-panel" aria-live="polite"></div>
+        <div class="ch19-frame-actions">
+          <button type="button" class="btn btn-primary" id="ch19-infer">Infer defaults</button>
+          <button type="button" class="btn btn-secondary" id="ch19-reset">Reset frame</button>
         </div>
-        <div id="frame-result" class="frame-result" aria-live="polite"></div>
+        <p class="ch19-s1-caption">Notice: filling one slot changes what’s inferred about others. Context doesn’t just fill gaps — it reshapes the whole structure.</p>
+      </div>
+
+      <h2 class="ch19-h2">2. The same input, two worlds</h2>
+      <p class="ch19-s2-intro">Frames don’t activate one at a time. Ambiguous language activates multiple frames simultaneously. Context resolves the competition — but the competition itself is where meaning lives.</p>
+      <p class="ch19-comp-sentence" id="ch19-comp-sentence">“She gave him a shot.”</p>
+      <div class="ch19-comp-row">
+        <div id="ch19-comp-panel-med" class="ch19-comp-panel">
+          <strong>Frame: MEDICAL ENCOUNTER</strong>
+          <ul class="ch19-comp-slots">
+            <li>agent: She (doctor / nurse)</li>
+            <li>recipient: him (patient)</li>
+            <li>instrument: needle / syringe</li>
+            <li data-slot-line="location">location: clinic / hospital</li>
+            <li>purpose: treatment / vaccination</li>
+          </ul>
+        </div>
+        <div id="ch19-comp-mid" class="ch19-comp-mid" aria-live="polite">Competition</div>
+        <div id="ch19-comp-panel-ball" class="ch19-comp-panel">
+          <strong>Frame: BASKETBALL GAME</strong>
+          <ul class="ch19-comp-slots">
+            <li>agent: She (player)</li>
+            <li>recipient: him (defender)</li>
+            <li>instrument: basketball</li>
+            <li>location: court</li>
+            <li>purpose: score / assist</li>
+          </ul>
+        </div>
+      </div>
+      <div id="ch19-comp-panel-third" class="ch19-comp-panel ch19-comp-third" hidden></div>
+      <div id="ch19-comp-contexts-shot" class="ch19-comp-contexts">
+        <button type="button" class="btn btn-secondary ch19-ctx-chip" data-ctx="hospital">…in the hospital.</button>
+        <button type="button" class="btn btn-secondary ch19-ctx-chip" data-ctx="freethrow">…at the free-throw line.</button>
+        <button type="button" class="btn btn-secondary ch19-ctx-chip" data-ctx="espresso">…of espresso.</button>
+        <button type="button" class="btn btn-secondary ch19-ctx-chip" data-ctx="confidence">…of confidence.</button>
+      </div>
+      <div id="ch19-comp-contexts-flies" class="ch19-comp-contexts" hidden>
+        <button type="button" class="btn btn-secondary ch19-ctx-chip" data-fly-ctx="temporal">Everyday reading — time passes quickly.</button>
+        <button type="button" class="btn btn-secondary ch19-ctx-chip" data-fly-ctx="bug">Playful — “time flies” as insects.</button>
+        <button type="button" class="btn btn-secondary ch19-ctx-chip" data-fly-ctx="imp">Imperative — measure flies like an arrow.</button>
+      </div>
+      <p class="ch19-comp-status" id="ch19-comp-status"></p>
+      <p class="ch19-comp-caption" id="ch19-comp-caption"></p>
+      <p class="ch19-comp-summary" id="ch19-comp-summary" hidden>The same three words. Four completely different meanings. The frames aren’t just templates — they’re lenses. Context chooses the lens.</p>
+      <p style="margin:0.5rem 0;">
+        <button type="button" class="btn btn-secondary" id="ch19-toggle-sentence" style="font-size:0.78rem;">Try another sentence</button>
+      </p>
+
+      <h2 class="ch19-h2">3. What frames still miss</h2>
+      <p class="ch19-lead">Frames handle typical situations beautifully. But Hofstadter is honest: frames still can’t handle genuine novelty, self-reference, or the kind of fluid understanding that lets humans recognize when a situation has no frame at all.</p>
+      <div class="ch19-lim-grid">
+        <div class="ch19-lim-card" id="ch19-lim-1" tabindex="0" role="button" aria-label="Play scenario: frame that does not exist">
+          <h3>The frame that doesn’t exist</h3>
+          <p class="ch19-lim-scenario">You arrive at what appears to be a restaurant. The menu lists only prime numbers. The waiter is made of fog. There are no chairs — only questions.</p>
+          <div class="ch19-lim-anim" id="ch19-lim-1-anim"></div>
+          <p class="ch19-lim-caption" style="font-size:0.72rem;color:var(--muted);margin:0.35rem 0 0 0;">Click the card to run the demo.</p>
+        </div>
+        <div class="ch19-lim-card" id="ch19-lim-2" tabindex="0" role="button" aria-label="Play scenario: self-reference">
+          <h3>The self-referential situation</h3>
+          <p class="ch19-lim-scenario">You are in a frame about frames. The current slot is: “what slot should this slot describe?”</p>
+          <div class="ch19-lim-anim" id="ch19-lim-2-anim"></div>
+          <p class="ch19-lim-caption" style="font-size:0.72rem;color:var(--muted);margin:0.35rem 0 0 0;">Click the card.</p>
+        </div>
+        <div class="ch19-lim-card" id="ch19-lim-3" tabindex="0" role="button" aria-label="Play scenario: novel blend">
+          <h3>The novel situation</h3>
+          <p class="ch19-lim-scenario">Your friend tells you she’s experiencing “a blue kind of Tuesday.” You immediately understand — though no frame in your library covers this combination.</p>
+          <div class="ch19-lim-anim" id="ch19-lim-3-anim"></div>
+          <p class="ch19-lim-caption" style="font-size:0.72rem;color:var(--muted);margin:0.35rem 0 0 0;">Click the card.</p>
+        </div>
+      </div>
+      <p class="ch19-lim-after" id="ch19-lim-1-note" style="font-size:0.76rem;color:var(--muted);line-height:1.45;margin:0.35rem 0;display:none;">The frame started activating — then couldn’t complete. Human readers laugh at this. They know it’s absurd. A frame-based system would either crash or pick the closest match and get everything wrong.</p>
+      <p class="ch19-lim-after" id="ch19-lim-2-note" style="font-size:0.76rem;color:var(--muted);line-height:1.45;margin:0.35rem 0;display:none;">Frames can represent most situations. They cannot represent themselves representing themselves. For that, you’d need — as Hofstadter suggests — a strange loop.</p>
+      <p class="ch19-lim-after" id="ch19-lim-3-note" style="font-size:0.76rem;color:var(--muted);line-height:1.45;margin:0.35rem 0;display:none;">Human understanding doesn’t fail here — it blends, metaphorizes, reaches for the nearest structure and adapts it. This fluid, on-the-fly frame construction is what symbolic AI — frames included — has never achieved.</p>
+
+      <div class="ch19-open-panel">
+        <p>Frames are a genuine advance over pure rule-following. They encode typicality, context, and inheritance. But they still fail at novelty, self-reference, and metaphor — the things that feel most distinctively human about thought.</p>
+        <p>Hofstadter’s prospect: perhaps the missing ingredient isn’t better frames, but the strange loop — a representational system that can turn its own representations into objects of representation.</p>
       </div>
     </div>
   </div>
-  <style>
-    .frame-slots { display:grid; gap:0.5rem; margin:0.5rem 0; }
-    .frame-hint { font-size:0.75rem; color:var(--muted); font-weight:400; }
-    .frame-input { width:100%; max-width:14rem; padding:0.35rem; border:1px solid var(--border); border-radius:4px; margin-top:0.15rem; }
-    .frame-actions { display:flex; gap:0.5rem; flex-wrap:wrap; margin:0.5rem 0; }
-    .frame-result { margin-top:0.75rem; font-size:0.88rem; min-height:1.5rem; }
-    .frame-result ul { margin:0; padding-left:1.25rem; }
-    .frame-result li { margin:0.2rem 0; }
-    .frame-default { color:var(--muted); font-style:italic; }
-  </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script>
-    (function(){
-      var who = document.getElementById('frame-who');
-      var when = document.getElementById('frame-when');
-      var where = document.getElementById('frame-where');
-      var cake = document.getElementById('frame-cake');
-      var presents = document.getElementById('frame-presents');
-      var result = document.getElementById('frame-result');
-      var defaults = { who: 'the birthday person', when: 'afternoon', where: 'home or party venue', cake: 'yes', presents: 'yes' };
-      function infer() {
-        var filled = [];
-        if (!who.value.trim()) { who.value = defaults.who; filled.push('who'); }
-        if (!when.value.trim()) { when.value = defaults.when; filled.push('when'); }
-        if (!where.value.trim()) { where.value = defaults.where; filled.push('where'); }
-        var c = cake.value.trim().toLowerCase();
-        if (!c || c === '?') { cake.value = defaults.cake; filled.push('cake?'); }
-        if (!presents.value.trim()) { presents.value = defaults.presents; filled.push('presents?'); }
-        var html = '<p><strong>Filled frame</strong> (defaults applied for empty slots):</p><ul>';
-        html += '<li>who: ' + who.value + (filled.indexOf('who') >= 0 ? ' <span class="frame-default">(default)</span>' : '') + '</li>';
-        html += '<li>when: ' + when.value + (filled.indexOf('when') >= 0 ? ' <span class="frame-default">(default)</span>' : '') + '</li>';
-        html += '<li>where: ' + where.value + (filled.indexOf('where') >= 0 ? ' <span class="frame-default">(default)</span>' : '') + '</li>';
-        html += '<li>cake?: ' + cake.value + (filled.indexOf('cake?') >= 0 ? ' <span class="frame-default">(default)</span>' : '') + '</li>';
-        html += '<li>presents?: ' + presents.value + (filled.indexOf('presents?') >= 0 ? ' <span class="frame-default">(default)</span>' : '') + '</li>';
-        html += '</ul>';
-        if (filled.length) {
-          html += '<p class="frame-default">Slots filled from defaults: ' + filled.join(', ') + '.</p>';
-        }
-        result.innerHTML = html;
-      }
-      function reset() {
-        who.value = when.value = where.value = cake.value = presents.value = '';
-        result.innerHTML = '';
-      }
-      document.getElementById('frame-infer').addEventListener('click', infer);
-      document.getElementById('frame-reset').addEventListener('click', reset);
-    })();
-  </script>
+  <script src="ch19-frames-logic.js?v=0.15.45"></script>
+  <script src="ch19-companion.js?v=0.15.45"></script>
 </body>
 </html>
