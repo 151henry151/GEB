@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.41] — 2026-03-25
+
+### Changed
+
+- Chapter 17 companion: remove the “I’ve read this section” control; show the capstone after Section 1 and Section 2 completion only.
+
 ## [0.15.40] — 2026-03-25
 
 ### Changed

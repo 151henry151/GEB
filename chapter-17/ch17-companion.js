@@ -20,7 +20,6 @@
     if (!root) return;
     if (root.getAttribute('data-done-s1') !== '1') return;
     if (root.getAttribute('data-done-s2') !== '1') return;
-    if (root.getAttribute('data-done-s3') !== '1') return;
     var cap = document.getElementById('ch17-capstone');
     if (cap && cap.hidden) {
       cap.hidden = false;
@@ -151,12 +150,4 @@
     });
   });
 
-  var churchAck = document.getElementById('ch17-church-ack');
-  if (churchAck) {
-    churchAck.addEventListener('click', function () {
-      markDone('s3');
-      churchAck.disabled = true;
-      churchAck.textContent = 'Marked read';
-    });
-  }
 })();
