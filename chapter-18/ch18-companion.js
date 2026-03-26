@@ -269,43 +269,6 @@
   if (sl) sl.addEventListener('click', startLyme);
   if (sr) sr.addEventListener('click', startRabies);
 
-  var domainBtns = document.querySelectorAll('.ch18-domain-btn');
-  var sliderOut = document.getElementById('ch18-slider-readout');
-  var DOMAIN_TEXT = [
-    '<strong>Narrow domain:</strong> system answers ~9/10 in-domain questions correctly, with high confidence.',
-    '<strong>Medium domain:</strong> ~6/10 correct as rules overlap; confidence drops; contradictions multiply.',
-    '<strong>General intelligence:</strong> ~3/10 — no better than chance on open-world questions.'
-  ];
-  var ACCURACY = [90, 60, 30];
-
-  function syncDomainLevel(level) {
-    domainBtns.forEach(function (b) {
-      b.classList.toggle(
-        'ch18-domain-active',
-        parseInt(b.getAttribute('data-level'), 10) === level
-      );
-    });
-    if (sliderOut) {
-      sliderOut.innerHTML =
-        DOMAIN_TEXT[level] +
-        '<div class="ch18-acc-bar-wrap">' +
-        '<span class="ch18-acc-label">Accuracy: ~' +
-        Math.round(ACCURACY[level] / 10) +
-        '/10</span>' +
-        '<div class="ch18-acc-bar"><div class="ch18-acc-fill" style="width:' +
-        ACCURACY[level] +
-        '%"></div></div>' +
-        '</div>';
-    }
-  }
-
-  domainBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      syncDomainLevel(parseInt(btn.getAttribute('data-level'), 10));
-    });
-  });
-  if (domainBtns.length) syncDomainLevel(0);
-
   /* —— Section 3: Timeline (accordion) —— */
   function openTimelineCard(card) {
     var id = card.getAttribute('data-expand');

@@ -61,21 +61,6 @@
     .ch18-preset-box { font-size: 0.8rem; padding: 0.45rem 0.55rem; background: var(--panel); border-radius: 6px; border: 1px solid var(--border); margin: 0.45rem 0; font-style: italic; }
     .ch18-ok-label { font-size: 0.8rem; color: #15803d; font-weight: 600; margin: 0.45rem 0; }
     .ch18-fail-label { font-size: 0.8rem; color: var(--muted); margin: 0.45rem 0; line-height: 1.45; }
-    .ch18-slider-row { margin: 0.75rem 0; padding: 0.55rem 0.65rem; background: var(--panel); border-radius: 8px; border: 1px solid var(--border); }
-    .ch18-slider-readout { font-size: 0.82rem; line-height: 1.45; margin-top: 0.35rem; }
-    .ch18-domain-btns { display: inline-flex; margin: 0.35rem 0 0.25rem 0; flex-wrap: wrap; }
-    .ch18-domain-btn {
-      font-size: 0.78rem; padding: 0.35rem 0.75rem; margin: 0; cursor: pointer; border: 1px solid var(--border);
-      background: var(--panel); color: var(--muted); font-weight: 600; transition: background 0.15s ease, color 0.15s ease;
-    }
-    .ch18-domain-btn:first-child { border-radius: 6px 0 0 6px; }
-    .ch18-domain-btn:nth-child(2) { border-left: none; border-right: none; border-radius: 0; }
-    .ch18-domain-btn:last-child { border-radius: 0 6px 6px 0; }
-    .ch18-domain-btn.ch18-domain-active { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .ch18-acc-bar-wrap { margin-top: 0.45rem; }
-    .ch18-acc-label { font-size: 0.78rem; color: var(--muted); }
-    .ch18-acc-bar { height: 8px; background: var(--border); border-radius: 4px; margin-top: 0.25rem; overflow: hidden; max-width: 320px; }
-    .ch18-acc-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; }
     .ch18-tl { margin: 0.75rem 0; overflow-x: auto; padding-bottom: 0.35rem; }
     .ch18-tl-track { display: flex; gap: 0.5rem; align-items: flex-start; flex-wrap: nowrap; min-width: min-content; padding: 0.25rem 0; }
     .ch18-tl-item { flex: 0 0 140px; display: flex; flex-direction: column; }
@@ -230,15 +215,6 @@
         <p id="ch18-lyme-ok" class="ch18-ok-label" hidden>✓ Within its domain: confident, specific, useful — when the rules fire.</p>
         <p id="ch18-rabies-note" class="ch18-fail-label" hidden>The symptoms point toward <strong>rabies</strong> — outside this system’s rule set. A human doctor hearing “fear of water” would treat it as highly significant. The expert system has no notion of “this symptom is unusual and important”; it only walks its fixed rules.</p>
 
-        <div class="ch18-slider-row">
-          <strong>Domain breadth</strong> (illustrative)
-          <div class="ch18-domain-btns" role="group" aria-label="Domain breadth">
-            <button type="button" class="ch18-domain-btn ch18-domain-active" data-level="0">Narrow</button>
-            <button type="button" class="ch18-domain-btn" data-level="1">Medium</button>
-            <button type="button" class="ch18-domain-btn" data-level="2">General</button>
-          </div>
-          <div id="ch18-slider-readout" class="ch18-slider-readout"></div>
-        </div>
         <p class="ch18-caption">Symbolic AI systems were extraordinarily good at their narrow domain and nearly useless outside it. Expanding the domain required exponentially more rules — and each new rule interacted with all existing rules in unpredictable ways.</p>
 
         <h2 class="ch18-h2">3. From rules to something more</h2>
@@ -294,6 +270,6 @@
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script src="ch18-companion.js?v=0.15.43"></script>
+  <script src="ch18-companion.js?v=0.15.44"></script>
 </body>
 </html>

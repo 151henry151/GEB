@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.44] — 2026-03-25
+
+### Changed
+
+- Chapter 18 companion: remove the domain-breadth illustrative control (segmented buttons, readout, and accuracy bar) and related script logic.
+
 ## [0.15.43] — 2026-03-25
 
 ### Changed
