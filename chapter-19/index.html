@@ -32,14 +32,42 @@
       .ch19-default-badge { grid-column: 1 / -1; }
       .ch19-lock { justify-self: end; }
     }
+    @keyframes ch19-slot-appear {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+        background: rgba(212, 160, 48, 0.2);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        background: transparent;
+      }
+    }
+    .ch19-slot-row.ch19-slot-new {
+      animation: ch19-slot-appear 0.5s ease forwards;
+    }
     .ch19-slot-row.ch19-default-flash { background: rgba(212, 160, 48, 0.15); }
     .ch19-slot-name { font-weight: 700; font-size: 0.8rem; }
     .ch19-slot-field-wrap { min-width: 0; }
     .ch19-slot-hint { display: block; font-size: 0.68rem; color: var(--muted); margin-bottom: 0.15rem; }
     .ch19-slot-input { width: 100%; max-width: 100%; padding: 0.32rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.8rem; box-sizing: border-box; }
-    .ch19-default-badge { font-size: 0.72rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ch19-default-badge { font-size: 0.78rem; color: var(--text); opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ch19-default-badge.ch19-badge-changed { color: #d4a030; font-weight: 700; }
     .ch19-lock { font-size: 0.85rem; text-align: center; opacity: 0.85; }
     .ch19-slot-row.ch19-tip-emph .ch19-default-badge { font-weight: 700; color: #b45309; }
+    .ch19-slot-chips { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.2rem; }
+    .ch19-chip {
+      font-size: 0.65rem; padding: 0.15rem 0.4rem; border: 1px solid var(--border); border-radius: 999px;
+      background: var(--bg); color: var(--muted); cursor: pointer; transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    .ch19-chip:hover { border-color: #d4a030; color: var(--text); }
+    .ch19-slot-input.ch19-inferred { color: var(--muted); font-style: italic; background: rgba(212, 160, 48, 0.06); }
+    .ch19-frame-narrative {
+      font-size: 0.84rem; font-style: italic; color: var(--text); padding: 0.45rem 0.55rem;
+      background: rgba(212, 160, 48, 0.07); border-radius: 6px; margin: 0.45rem 0 0 0; border-left: 3px solid #d4a030;
+      line-height: 1.5; min-height: 2.4rem; transition: background 0.4s ease;
+    }
     .ch19-frame-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.55rem; }
 
     .ch19-s2-intro { font-size: 0.82rem; font-style: italic; color: var(--muted); line-height: 1.45; margin: 0.35rem 0 0.65rem 0; }
@@ -173,11 +201,12 @@
           <button type="button" class="ch19-frame-tab" role="tab" data-frame="job" aria-selected="false">Job interview</button>
         </div>
         <div id="ch19-slot-panel" class="ch19-slot-panel" aria-live="polite"></div>
+        <p id="ch19-frame-narrative" class="ch19-frame-narrative"></p>
         <div class="ch19-frame-actions">
           <button type="button" class="btn btn-primary" id="ch19-infer">Infer defaults</button>
           <button type="button" class="btn btn-secondary" id="ch19-reset">Reset frame</button>
         </div>
-        <p class="ch19-s1-caption">Notice: filling one slot changes what’s inferred about others. Context doesn’t just fill gaps — it reshapes the whole structure.</p>
+        <p class="ch19-s1-caption"></p>
       </div>
 
       <h2 class="ch19-h2">2. The same input, two worlds</h2>

@@ -4,6 +4,17 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.46] — 2026-03-26
+
+### Changed
+
+- Chapter 19 section 1 frame widget: animate newly appearing slots (`catering`, `party games`) to make cascade-driven structure changes visible.
+- Chapter 19 section 1 frame widget: add “Try” chips for key trigger values (`park`, `restaurant`, `8`, `25`, `lunch`, `dinner`, `anniversary`) and apply chip values directly to slot inputs.
+- Chapter 19 section 1 frame widget: increase default-badge prominence and flash changed defaults in gold when context-driven defaults update.
+- Chapter 19 section 1 frame widget: style inferred values distinctly (`ch19-inferred`) so frame-filled inputs remain visually separate from user-entered values.
+- Chapter 19 section 1 frame widget: add a live narrative sentence that updates from current values/defaults and reflects cascade updates in real time.
+- Chapter 19 section 1 frame widget: replace static guidance text with a dynamic caption that starts with a specific prompt, resets per frame tab, and confirms the cascade principle after the first observed default change.
+
 ## [0.15.45] — 2026-03-25
 
 ### Changed

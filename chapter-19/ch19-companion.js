@@ -13,6 +13,16 @@
     doctor: ['patient', 'appointmentType', 'waitTime', 'paperwork', 'prescription', 'followUp'],
     job: ['candidate', 'format', 'duration', 'dressCode', 'thankYou']
   };
+  var SLOT_CHIPS = {
+    birthday: {
+      where: ['park', 'restaurant'],
+      age: ['8', '25']
+    },
+    restaurant: {
+      time: ['lunch', 'dinner'],
+      occasion: ['anniversary']
+    }
+  };
 
   var SLOT_HINTS = {
     who: 'birthday person',
@@ -81,6 +91,70 @@
       thankYou: 'Thank-you note'
     }
   };
+  function narrativeFor(frameKey, values, defMap) {
+    function get(id) {
+      var v = values[id] && values[id].trim();
+      return v ? v : (defMap[id] || '…');
+    }
+    if (frameKey === 'birthday') {
+      return (
+        'A birthday party for ' +
+        get('who') +
+        ', ' +
+        get('when') +
+        ', at ' +
+        get('where') +
+        '. Cake: ' +
+        get('cake') +
+        '. Presents: ' +
+        get('presents') +
+        '.'
+      );
+    }
+    if (frameKey === 'restaurant') {
+      var occ = values.occasion && values.occasion.trim();
+      var occStr = occ ? 'a ' + occ + ' meal' : 'a meal';
+      return (
+        occStr +
+        ' at ' +
+        get('time') +
+        '. Dress: ' +
+        get('dressCode') +
+        '. Bill: ' +
+        get('bill') +
+        '. Reservation: ' +
+        get('reservation') +
+        '.'
+      );
+    }
+    if (frameKey === 'doctor') {
+      return (
+        'A ' +
+        get('appointmentType') +
+        ' for ' +
+        get('patient') +
+        '. Wait time: ' +
+        get('waitTime') +
+        '. Follow-up: ' +
+        get('followUp') +
+        '.'
+      );
+    }
+    if (frameKey === 'job') {
+      return (
+        'An interview for ' +
+        get('candidate') +
+        ', ' +
+        get('format') +
+        ', lasting ' +
+        get('duration') +
+        '. Dress code: ' +
+        get('dressCode') +
+        '.'
+      );
+    }
+    return '';
+  }
 
   function hintFor(frame, sid) {
     if (frame === 'job' && sid === 'dressCode') return SLOT_HINTS.dressCodeJob || '';
@@ -101,6 +175,8 @@
   var slotPanel = document.getElementById('ch19-slot-panel');
   var btnInfer = document.getElementById('ch19-infer');
   var btnReset = document.getElementById('ch19-reset');
+  var hasShownCascade = false;
+  var s1Caption = document.querySelector('.ch19-s1-caption');
 
   function getSt() {
     return state[currentFrame];
@@ -151,7 +227,22 @@
       var row = slotPanel && slotPanel.querySelector('.ch19-slot-row[data-slot="' + sid + '"]');
       if (!row) return;
       var show = visible.indexOf(sid) >= 0;
+      var wasHidden = row.hidden;
       row.hidden = !show;
+      if (wasHidden && show) {
+        row.classList.add('ch19-slot-new');
+        (function (rowEl) {
+          window.setTimeout(function () {
+            rowEl.classList.remove('ch19-slot-new');
+          }, 500);
+        })(row);
+        if (s1Caption && sid === 'catering') {
+          s1Caption.textContent = 'A park party changes things — catering becomes relevant.';
+        } else if (s1Caption && sid === 'partyGames') {
+          s1Caption.textContent =
+            'Young guests change expectations — party games become the default.';
+        }
+      }
       if (!show) return;
 
       var badge = row.querySelector('.ch19-default-badge');
@@ -175,10 +266,29 @@
         (!inp || !inp.value.trim())
       ) {
         flashRow(row, true);
+        if (badge) {
+          badge.classList.add('ch19-badge-changed');
+          (function (badgeEl) {
+            window.setTimeout(function () {
+              badgeEl.classList.remove('ch19-badge-changed');
+            }, 1200);
+          })(badge);
+        }
+        if (!hasShownCascade) {
+          hasShownCascade = true;
+          if (s1Caption) {
+            s1Caption.textContent =
+              "Notice: filling one slot changes what's inferred about others. Context doesn't just fill gaps — it reshapes the whole structure.";
+          }
+        }
       }
       nextPrev[key] = dText;
     });
     prevDefaultStrings = nextPrev;
+    var narrativeEl = document.getElementById('ch19-frame-narrative');
+    if (narrativeEl) {
+      narrativeEl.textContent = narrativeFor(currentFrame, getSt().values, defMap);
+    }
   }
 
   function buildSlotPanel() {
@@ -190,6 +300,8 @@
     var st = getSt();
 
     order.forEach(function (sid) {
+      var chips = (SLOT_CHIPS[currentFrame] || {})[sid];
+      var hintText = chips && chips.length ? '' : hintFor(currentFrame, sid);
       var row = document.createElement('div');
       row.className = 'ch19-slot-row';
       row.setAttribute('data-slot', sid);
@@ -199,7 +311,7 @@
         '</div>' +
         '<div class="ch19-slot-field-wrap">' +
         '<span class="ch19-slot-hint">' +
-        hintFor(currentFrame, sid) +
+        hintText +
         '</span>' +
         '<input type="text" class="ch19-slot-input frame-input" autocomplete="off" aria-label="' +
         (titles[sid] || sid) +
@@ -208,12 +320,33 @@
         '<span class="ch19-default-badge"></span>' +
         '<span class="ch19-lock" hidden title="Manually filled" aria-label="Locked">🔒</span>';
       var inp = row.querySelector('.ch19-slot-input');
+      var fieldWrap = row.querySelector('.ch19-slot-field-wrap');
       if (inp) {
         inp.value = st.values[sid] || '';
         inp.addEventListener('input', function () {
+          inp.classList.remove('ch19-inferred');
           updateLocksFromDom();
           recomputeUI();
         });
+      }
+      if (chips && chips.length && fieldWrap) {
+        var chipWrap = document.createElement('div');
+        chipWrap.className = 'ch19-slot-chips';
+        chips.forEach(function (val) {
+          var chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'ch19-chip';
+          chip.textContent = 'Try: "' + val + '"';
+          chip.setAttribute('data-fill', val);
+          chip.addEventListener('click', function () {
+            if (inp) {
+              inp.value = val;
+              inp.dispatchEvent(new Event('input'));
+            }
+          });
+          chipWrap.appendChild(chip);
+        });
+        fieldWrap.appendChild(chipWrap);
       }
       slotPanel.appendChild(row);
     });
@@ -222,6 +355,10 @@
 
   function setActiveTab(key) {
     currentFrame = key;
+    hasShownCascade = false;
+    if (s1Caption) {
+      s1Caption.textContent = 'Try typing "park" in the Where slot, or enter an age under 12. Watch what changes.';
+    }
     if (tabRoot) {
       tabRoot.querySelectorAll('.ch19-frame-tab').forEach(function (b) {
         var on = b.getAttribute('data-frame') === key;
@@ -256,6 +393,7 @@
         var d = defMap[sid];
         if (d != null && d !== '') {
           inp.value = d;
+          inp.classList.add('ch19-inferred');
           delete getSt().locks[sid];
         }
       });
