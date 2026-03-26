@@ -4,6 +4,14 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.37] — 2026-03-25
+
+### Changed
+
+- Chapter 14 companion: replace MIU proof-pair UI and two-button G demo with a three-act flow — **Act 1** TNT symbol builder with code table, **Encode** step animation (highlight → badges → prime product → large Gödel number) and **Decode** (after first encode) reversing losslessly; **Act 2** `Proof(m, n)` definition card and example table (third row updates after Act 3); **Act 3** six-step **Next →** reveal (fixed point, SVG golden self-loop with draw animation, branching SVG diagram, consistency capstone) plus delayed capstone lines.
+- Chapter 14: add progress dots, act separators (“Step 2 of 3” / “Step 3 of 3”), palette per act, new companion caption, and `ch14-companion.js` loaded with a version query string.
+- Chapter 14 Act 3 step 5: redraw the branching SVG with a **G** node, stem, fork dot, **L-shaped** paths to the midpoints of each case box, and **horizontal** connectors into the red and gold terminal boxes (aligned layout, consistent markers).
+
 ## [0.15.35] — 2026-03-25
 
 ### Changed

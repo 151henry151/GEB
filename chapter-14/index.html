@@ -8,6 +8,275 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    .ch14-progress {
+      display: flex;
+      justify-content: center;
+      gap: 0.65rem;
+      margin: 0 0 0.85rem 0;
+    }
+    .ch14-progress-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background 0.25s ease, box-shadow 0.25s ease;
+    }
+    .ch14-progress-dot.is-on {
+      background: var(--accent);
+      box-shadow: 0 0 0 2px rgba(46, 107, 138, 0.25);
+    }
+    .ch14-act-sep {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1.25rem 0;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+    .ch14-act-sep::before, .ch14-act-sep::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .ch14-act1 {
+      background: #f5f9fd;
+      border: 1px solid rgba(58, 143, 209, 0.35);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .ch14-act1 h3 { color: #1e5a8a; margin: 0 0 0.5rem 0; font-size: 1rem; }
+    .ch14-symbol-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin: 0.5rem 0;
+    }
+    .ch14-symbol-btn {
+      font-family: ui-serif, 'Times New Roman', serif;
+      min-width: 2.1rem;
+      padding: 0.35rem 0.45rem;
+      border: 1px solid rgba(58, 143, 209, 0.5);
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #0f172a;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .ch14-symbol-btn:hover { background: rgba(58, 143, 209, 0.12); border-color: #3a8fd1; }
+    .ch14-formula-row {
+      min-height: 2.75rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 8px;
+      border: 2px solid rgba(58, 143, 209, 0.45);
+      background: #fff;
+      font-family: ui-serif, 'Times New Roman', Georgia, serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.04em;
+      margin: 0.5rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.05rem;
+    }
+    .ch14-formula-char {
+      position: relative;
+      display: inline-block;
+      padding: 0.1rem 0.02rem;
+      border-radius: 4px;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    .ch14-formula-char.is-highlight {
+      background: rgba(58, 143, 209, 0.35);
+      box-shadow: 0 0 0 2px #3a8fd1;
+    }
+    .ch14-code-badge {
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 2px);
+      transform: translateX(-50%);
+      font-size: 0.62rem;
+      font-weight: 700;
+      font-family: ui-monospace, monospace;
+      background: #3a8fd1;
+      color: #fff;
+      padding: 0.12rem 0.35rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .ch14-code-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      margin: 0.65rem 0;
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(58, 143, 209, 0.25);
+    }
+    .ch14-code-table th, .ch14-code-table td {
+      border: 1px solid rgba(58, 143, 209, 0.2);
+      padding: 0.35rem 0.5rem;
+      text-align: center;
+    }
+    .ch14-code-table th { background: rgba(58, 143, 209, 0.12); }
+    .ch14-factor-build {
+      font-family: ui-monospace, monospace;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      min-height: 2.5rem;
+      margin: 0.5rem 0;
+      color: #0f172a;
+    }
+    .ch14-prime-base { color: #1e5a8a; font-weight: 700; }
+    .ch14-times { color: var(--muted); padding: 0 0.15rem; }
+    .ch14-gn-result {
+      font-size: clamp(1.1rem, 3.5vw, 1.65rem);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+      padding: 0.65rem;
+      margin: 0.5rem 0;
+      border-radius: 10px;
+      background: #fff;
+      border: 2px solid rgba(58, 143, 209, 0.35);
+      color: #0f172a;
+      transition: box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+    .ch14-gn-result.is-lit {
+      box-shadow: 0 0 24px rgba(58, 143, 209, 0.45), 0 0 48px rgba(58, 143, 209, 0.2);
+      border-color: #3a8fd1;
+    }
+    .ch14-act1-caption { font-size: 0.86rem; line-height: 1.5; margin: 0.65rem 0 0 0; color: #334155; }
+    .ch14-act2 {
+      background: #f6f6f6;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .ch14-act2 h3 { margin: 0 0 0.5rem 0; font-size: 1rem; color: #333; }
+    .ch14-proof-card {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+      font-family: ui-monospace, monospace;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      margin: 0.5rem 0;
+      white-space: pre-wrap;
+    }
+    .ch14-proof-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.76rem;
+      margin: 0.65rem 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .ch14-proof-table th, .ch14-proof-table td {
+      border: 1px solid #e5e5e5;
+      padding: 0.4rem 0.45rem;
+      text-align: left;
+    }
+    .ch14-proof-table th { background: #eee; }
+    .ch14-proof-result.is-pending { color: #888; font-style: italic; }
+    .ch14-act3 {
+      background: #fdf6e8;
+      border: 1px solid rgba(212, 160, 48, 0.45);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .ch14-act3 h3 { margin: 0 0 0.5rem 0; font-size: 1rem; color: #6b4a0a; }
+    .ch14-act3-step {
+      opacity: 0;
+      max-height: 0;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      pointer-events: none;
+      transition: opacity 0.2s ease, max-height 0.35s ease, margin 0.2s ease, padding 0.2s ease;
+    }
+    .ch14-act3-step.ch14-act3-revealed {
+      opacity: 1;
+      max-height: 2000px;
+      margin: 0.65rem 0;
+      padding: 0.5rem 0;
+      pointer-events: auto;
+    }
+    .ch14-act3-formula {
+      font-family: ui-serif, 'Times New Roman', Georgia, serif;
+      font-size: 1.2rem;
+      padding: 0.45rem 0.65rem;
+      background: rgba(255,255,255,0.85);
+      border-radius: 8px;
+      border: 1px solid rgba(212, 160, 48, 0.4);
+      display: inline-block;
+      margin: 0.35rem 0;
+    }
+    .ch14-act3-formula .ch14-glow-n {
+      color: #b45309;
+      font-weight: 700;
+      text-shadow: 0 0 8px rgba(212, 160, 48, 0.7);
+    }
+    .ch14-act3-caption { font-size: 0.86rem; line-height: 1.5; color: #444; margin: 0.35rem 0 0 0; }
+    .ch14-arrow-to-n {
+      display: inline-block;
+      font-size: 2rem;
+      color: #d4a030;
+      margin: 0.25rem 0;
+      animation: ch14-nudge 1.2s ease-in-out infinite;
+    }
+    @keyframes ch14-nudge {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(6px); }
+    }
+    .ch14-loop-wrap {
+      margin: 1rem 0;
+      padding: 0.75rem;
+      background: rgba(255,255,255,0.7);
+      border-radius: 12px;
+      border: 2px solid rgba(212, 160, 48, 0.35);
+    }
+    .ch14-loop-formula-box {
+      font-family: ui-serif, Georgia, serif;
+      font-size: 1.15rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      border: 2px solid rgba(212, 160, 48, 0.55);
+      box-shadow: 0 0 12px rgba(212, 160, 48, 0.2);
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    @keyframes ch14-draw-loop {
+      to { stroke-dashoffset: 0; }
+    }
+    .ch14-branch-svg { width: 100%; max-width: 440px; height: auto; display: block; margin: 0.75rem auto; }
+    .ch14-capstone {
+      background: #1a1a2e;
+      color: #e8e8f0;
+      border-radius: 10px;
+      padding: 1.15rem 1.25rem;
+      margin-top: 1rem;
+    }
+    .ch14-capstone-line {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin: 0.5rem 0;
+      opacity: 0;
+    }
+    .ch14-capstone-line:first-child { margin-top: 0; }
+    .ch14-mini-row { font-size: 0.82rem; margin: 0.35rem 0; padding: 0.35rem 0.5rem; background: rgba(255,255,255,0.6); border-radius: 6px; border-left: 3px solid #d4a030; }
+  </style>
 </head>
 <body>
   <div class="chapter-layout">
@@ -55,107 +324,200 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Two ideas from the chapter: (1) <strong>Proof-pairs</strong> — a derivation gets a Gödel number; “m is a proof of n” becomes a number fact. (2) <strong>The Gödel sentence G</strong> — “I am not a theorem”; try to prove it, then see from outside that it’s true.</p>
-      <div class="companion-box" id="godel-companion">
-        <h3 class="godel-heading">1. MIU proof-pair (from the chapter)</h3>
-        <p class="godel-hint">A derivation is a list of lines. Each line has a Gödel number (M→3, I→1, U→0). Two numbers m, n form a <strong>proof-pair</strong> if m codes a valid derivation whose last line has number n.</p>
-        <p class="godel-label">Enter a 4-line MIU derivation (one line per box). Axiom: MI. Rules: I→II after M; Mx→Mxx; III→U; UU→remove.</p>
-        <div class="miu-inputs">
-          <input type="text" id="miu-l1" placeholder="MI" value="MI" class="miu-in" maxlength="20">
-          <input type="text" id="miu-l2" placeholder="MII" value="MII" class="miu-in" maxlength="20">
-          <input type="text" id="miu-l3" placeholder="MIIII" value="MIIII" class="miu-in" maxlength="20">
-          <input type="text" id="miu-l4" placeholder="MUI" value="MUI" class="miu-in" maxlength="20">
-        </div>
-        <button type="button" class="btn btn-primary" id="miu-check">Check proof-pair</button>
-        <div id="miu-result" class="godel-result" aria-live="polite"></div>
+      <p class="companion-caption"><em>Three steps: a formula becomes a number, arithmetic discusses proofs, and one sentence names itself.</em></p>
 
-        <h3 class="godel-heading">2. The Gödel sentence G</h3>
-        <p class="godel-hint">G is built by “arithmoquining”: a formula that talks about proofs and its own number. G says: <strong>“I am not a theorem of TNT.”</strong></p>
-        <div class="godel-g-box">
-          <p id="godel-sentence" class="godel-sentence">G: “There is no proof (in TNT) of the formula with Gödel number g.” — and that formula is G itself. So G says “I am not provable.”</p>
+      <div class="companion-box" id="godel-companion">
+        <div class="ch14-progress" aria-hidden="true">
+          <span class="ch14-progress-dot is-on"></span>
+          <span class="ch14-progress-dot"></span>
+          <span class="ch14-progress-dot"></span>
         </div>
-        <div class="godel-actions">
-          <button type="button" class="btn btn-primary" id="godel-try-prove">Try to prove G</button>
-          <button type="button" class="btn btn-secondary" id="godel-see-true">So G is true (from outside)</button>
+
+        <section class="ch14-act1" id="ch14-act1">
+          <h3>Act 1 — The encoding</h3>
+          <p style="margin:0 0 0.5rem 0; font-size:0.86rem; color:#334155;">Build a TNT formula from symbols. Each symbol has a code; primes carry those codes as exponents. The product is the formula’s Gödel number.</p>
+          <p style="margin:0 0 0.35rem 0; font-size:0.78rem; font-weight:600; color:#1e5a8a;">Insert symbol</p>
+          <div class="ch14-symbol-row">
+            <button type="button" class="ch14-symbol-btn" data-sym="0">0</button>
+            <button type="button" class="ch14-symbol-btn" data-sym="S">S</button>
+            <button type="button" class="ch14-symbol-btn" data-sym="+">+</button>
+            <button type="button" class="ch14-symbol-btn" data-sym="·">·</button>
+            <button type="button" class="ch14-symbol-btn" data-sym="=">=</button>
+            <button type="button" class="ch14-symbol-btn" data-sym="(">(</button>
+            <button type="button" class="ch14-symbol-btn" data-sym=")">)</button>
+            <button type="button" class="ch14-symbol-btn" data-sym="∀">∀</button>
+            <button type="button" class="ch14-symbol-btn" data-sym="∃">∃</button>
+            <button type="button" class="ch14-symbol-btn" data-sym="¬">¬</button>
+            <button type="button" class="ch14-symbol-btn" data-sym="∧">∧</button>
+            <button type="button" class="btn btn-secondary" id="ch14-back-btn" style="margin-left:0.25rem;">Back</button>
+            <button type="button" class="btn btn-secondary" id="ch14-clear-btn">Clear</button>
+          </div>
+          <div class="ch14-formula-row" id="ch14-formula-display" aria-label="Formula being built"></div>
+          <table class="ch14-code-table">
+            <thead><tr><th>Symbol</th><th>Code</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td>1</td></tr>
+              <tr><td>S</td><td>2</td></tr>
+              <tr><td>+</td><td>3</td></tr>
+              <tr><td>·</td><td>4</td></tr>
+              <tr><td>=</td><td>5</td></tr>
+              <tr><td>(</td><td>6</td></tr>
+              <tr><td>)</td><td>7</td></tr>
+              <tr><td>∀</td><td>8</td></tr>
+              <tr><td>∃</td><td>9</td></tr>
+              <tr><td>¬</td><td>10</td></tr>
+              <tr><td>∧</td><td>11</td></tr>
+            </tbody>
+          </table>
+          <div style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center;">
+            <button type="button" class="btn btn-primary" id="ch14-encode-btn">Encode</button>
+            <button type="button" class="btn btn-secondary" id="ch14-decode-btn" hidden>Decode</button>
+          </div>
+          <div class="ch14-factor-build" id="ch14-factor-build" aria-live="polite"></div>
+          <div class="ch14-gn-result" id="ch14-gn-result" aria-live="polite"></div>
+          <p class="ch14-act1-caption" id="ch14-act1-caption"></p>
+        </section>
+
+        <div class="ch14-act-sep"><span>▼ Step 2 of 3</span></div>
+
+        <section class="ch14-act2" id="ch14-act2">
+          <h3>Act 2 — Arithmetic can discuss proofs</h3>
+          <div class="ch14-proof-card">Proof(m, n)  means:
+  "m is the Gödel number of a valid proof
+   whose last line has Gödel number n"</div>
+          <table class="ch14-proof-table">
+            <thead>
+              <tr><th>m</th><th>n</th><th>Proof(m, n)?</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>4,104,669</td>
+                <td>20,212,500 <span style="font-size:0.7rem; color:#666;">(⌜S0=S0⌝)</span></td>
+                <td>✓ Yes — <em>m</em> encodes a valid proof of “1 = 1”</td>
+              </tr>
+              <tr>
+                <td>999</td>
+                <td>20,212,500</td>
+                <td>✗ No — <em>m</em> is not a proof of that formula</td>
+              </tr>
+              <tr id="ch14-proof-row-g">
+                <td>…</td>
+                <td><em>g</em> (Gödel # of G)</td>
+                <td class="ch14-proof-result is-pending">?</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin:0.5rem 0; font-size:0.86rem; line-height:1.5;"><em>Proof(m, n)</em> is a purely arithmetic relation — only numbers and their properties. TNT can express it as a formula. So TNT can say “formula <em>n</em> has a proof” or “formula <em>n</em> has no proof” — in the language of arithmetic, about numbers.</p>
+          <p style="margin:0; font-size:0.86rem; line-height:1.5;"><strong>Bridge.</strong> <em>TNT is now equipped to talk about its own theorems. The only question is: can it build a sentence that talks about itself specifically?</em></p>
+        </section>
+
+        <div class="ch14-act-sep"><span>▼ Step 3 of 3</span></div>
+
+        <section class="ch14-act3" id="ch14-act3">
+          <h3>Act 3 — The sentence that says its own name</h3>
+
+          <div class="ch14-act3-step ch14-act3-revealed" data-step="1">
+            <div class="ch14-act3-formula">¬∃m: Proof(m, n)</div>
+            <p class="ch14-act3-caption"><em>This formula says: “There is no proof of the formula with Gödel number <strong>n</strong>.” For any specific value of <strong>n</strong> we plug in, it makes a claim about that formula.</em></p>
+          </div>
+
+          <div class="ch14-act3-step" data-step="2">
+            <div class="ch14-act3-formula">¬∃m: Proof(m, <span class="ch14-glow-n">n</span>)</div>
+            <div class="ch14-arrow-to-n" aria-hidden="true">→</div>
+            <p class="ch14-act3-caption"><em>Now — what if <strong>n</strong> is the Gödel number of <strong>this formula itself</strong>?</em></p>
+          </div>
+
+          <div class="ch14-act3-step" data-step="3">
+            <div class="ch14-act3-formula">¬∃m: Proof(m, <span class="ch14-glow-n">g</span>)</div>
+            <p class="ch14-mini-row" style="margin-top:0.5rem;"><strong>g</strong> = Gödel number of [¬∃m: Proof(m, g)]</p>
+            <p class="ch14-act3-caption"><em>We need a number <strong>g</strong> such that when <strong>g</strong> is plugged into the formula, the resulting formula has Gödel number <strong>g</strong>. This is the <strong>fixed point</strong> — the formula that names itself. The diagonal lemma guarantees such a <strong>g</strong> exists.</em></p>
+          </div>
+
+          <div class="ch14-act3-step" data-step="4">
+            <div class="ch14-loop-wrap">
+              <div class="ch14-loop-formula-box" id="ch14-loop-formula-target">¬∃m: Proof(m, g)</div>
+              <svg viewBox="0 0 420 200" width="420" height="200" style="max-width:100%; height:auto; filter:drop-shadow(0 0 6px rgba(212,160,48,0.45));" aria-hidden="true">
+                <defs>
+                  <marker id="ch14-arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#d4a030"/>
+                  </marker>
+                </defs>
+                <path id="ch14-loop-path" d="M 200 168 C 60 168, 20 100, 120 52" fill="none" stroke="#d4a030" stroke-width="3.5" stroke-linecap="round" marker-end="url(#ch14-arr)"/>
+                <text x="210" y="188" text-anchor="middle" font-size="15" font-weight="700" fill="#92400e">g</text>
+                <text x="210" y="178" text-anchor="middle" font-size="9" fill="#78716c">(Gödel number)</text>
+                <text x="125" y="42" text-anchor="middle" font-size="8" fill="#78716c">has Gödel number</text>
+              </svg>
+            </div>
+            <p class="ch14-act3-caption"><em>This is <strong>G</strong>. It says: “The formula with Gödel number <strong>g</strong> has no proof.” And that formula <strong>is</strong> G itself. So G says: <strong>“I have no proof.”</strong></em></p>
+          </div>
+
+          <div class="ch14-act3-step" data-step="5">
+            <svg class="ch14-branch-svg" viewBox="0 0 468 278" xmlns="http://www.w3.org/2000/svg" aria-label="Branching argument if TNT proves G or not">
+              <defs>
+                <marker id="ch14-br-arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                  <polygon points="0 0, 8 4, 0 8" fill="#475569"/>
+                </marker>
+                <marker id="ch14-br-arr-sm" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <polygon points="0 0, 6 3, 0 6" fill="#64748b"/>
+                </marker>
+              </defs>
+              <!-- G + stem + fork -->
+              <circle cx="28" cy="139" r="17" fill="#fffbeb" stroke="#334155" stroke-width="2"/>
+              <text x="28" y="145" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">G</text>
+              <line x1="45" y1="139" x2="66" y2="139" stroke="#334155" stroke-width="2.2" stroke-linecap="round" marker-end="url(#ch14-br-arr-sm)"/>
+              <circle cx="72" cy="139" r="5" fill="#475569"/>
+              <!-- Upper branch: fork → top box (left edge midpoint) -->
+              <path d="M 72 139 L 72 59 L 112 59" fill="none" stroke="#64748b" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ch14-br-arr)"/>
+              <!-- Lower branch: fork → bottom box -->
+              <path d="M 72 139 L 72 219 L 112 219" fill="none" stroke="#64748b" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ch14-br-arr)"/>
+              <!-- Top case box -->
+              <rect x="112" y="14" width="218" height="90" rx="10" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+              <text x="126" y="36" font-size="11" font-weight="700" fill="#1e293b">IF TNT proves G →</text>
+              <text x="126" y="54" font-size="10" fill="#334155">G says “I have no proof”</text>
+              <text x="126" y="70" font-size="10" fill="#334155">But TNT just proved it</text>
+              <text x="126" y="86" font-size="10" fill="#334155">TNT proved something false</text>
+              <!-- Connector to red terminal -->
+              <line x1="330" y1="59" x2="338" y2="59" stroke="#64748b" stroke-width="2" marker-end="url(#ch14-br-arr)"/>
+              <rect x="340" y="34" width="118" height="50" rx="8" fill="#c0392b"/>
+              <text x="399" y="56" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">INCONSISTENCY</text>
+              <text x="399" y="72" text-anchor="middle" font-size="7.5" fill="#fecaca">system breaks</text>
+              <!-- Bottom case box -->
+              <rect x="112" y="174" width="218" height="90" rx="10" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+              <text x="126" y="196" font-size="11" font-weight="700" fill="#1e293b">IF TNT does NOT prove G →</text>
+              <text x="126" y="214" font-size="10" fill="#334155">G says “I have no proof”</text>
+              <text x="126" y="230" font-size="10" fill="#334155">That is exactly correct</text>
+              <text x="126" y="246" font-size="10" fill="#334155">G is true</text>
+              <!-- Connector to gold terminal -->
+              <line x1="330" y1="219" x2="338" y2="219" stroke="#64748b" stroke-width="2" marker-end="url(#ch14-br-arr)"/>
+              <rect x="340" y="194" width="118" height="50" rx="8" fill="#d4a030"/>
+              <text x="399" y="216" text-anchor="middle" font-size="9" font-weight="700" fill="#1a1204">TRUE BUT UNPROVABLE</text>
+              <text x="399" y="232" text-anchor="middle" font-size="7.5" fill="#422006">in TNT</text>
+            </svg>
+            <p class="ch14-act3-caption"><em>Both paths have been explored. One leads to contradiction. One leads to incompleteness.</em></p>
+          </div>
+
+          <div class="ch14-act3-step" data-step="6">
+            <div class="ch14-mini-row" style="border-left-color:#c0392b;">
+              <strong>Assuming TNT is consistent</strong> → the left branch is impossible.<br>
+              So: <strong>G is true and unprovable</strong> — TNT is <strong>INCOMPLETE</strong>.
+            </div>
+            <p class="ch14-act3-caption"><em>Truth and provability are not the same thing. There are true sentences that no proof will ever reach. This is Gödel’s first incompleteness theorem.</em></p>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="ch14-act3-next" style="margin-top:0.5rem;">Next →</button>
+        </section>
+
+        <div class="ch14-capstone" id="ch14-capstone" hidden>
+          <p class="ch14-capstone-line"><em>Every sufficiently powerful formal system contains a sentence it cannot prove.</em></p>
+          <p class="ch14-capstone-line"><em>Adding G as an axiom creates a new system — with its own unprovable sentence.</em></p>
+          <p class="ch14-capstone-line"><em>Incompleteness is not a bug. It is a theorem.</em></p>
         </div>
-        <div id="godel-verdict" class="godel-result" aria-live="polite"></div>
       </div>
     </div>
   </div>
-  <style>
-    .godel-heading { font-size:1rem; margin:1rem 0 0.35rem 0; color:var(--text); }
-    .godel-heading:first-child { margin-top:0; }
-    .godel-hint, .godel-label { font-size:0.82rem; color:var(--muted); margin:0 0 0.35rem 0; }
-    .miu-inputs { display:grid; grid-template-columns:1fr 1fr; gap:0.35rem; margin:0.5rem 0; max-width:16rem; }
-    .miu-in { padding:0.35rem; border:1px solid var(--border); border-radius:4px; font-family:ui-monospace,monospace; }
-    .godel-result { margin-top:0.5rem; padding:0.5rem; border-radius:4px; background:var(--panel); border:1px solid var(--border); font-size:0.88rem; min-height:1rem; }
-    .godel-g-box { margin:0.5rem 0; padding:0.5rem; background:var(--bg); border-left:4px solid var(--accent); border-radius:4px; }
-    .godel-sentence { margin:0; font-size:0.9rem; }
-    .godel-actions { display:flex; gap:0.5rem; flex-wrap:wrap; margin:0.5rem 0; }
-    .godel-result.truth-true { border-color:var(--true); background:rgba(58,125,68,0.1); }
-    .godel-result.truth-false { border-color:var(--false); background:rgba(139,58,58,0.1); }
-  </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script>
-    (function(){
-      function gn(line) {
-        var s = (line || '').toUpperCase().replace(/[^MIU]/g, '');
-        var n = '';
-        for (var i = 0; i < s.length; i++) { n += (s[i] === 'M' ? '3' : s[i] === 'I' ? '1' : '0'); }
-        return n ? parseInt(n, 10) : 0;
-      }
-      function validMiuStep(prev, next) {
-        if (!prev || !next) return false;
-        if (prev !== 'MI' && prev.indexOf('M') !== 0) return false;
-        if (next.indexOf('M') !== 0) return false;
-        var p = prev, n = next;
-        if (next === prev + 'I') return true;
-        if (prev.length >= 2 && prev[0] === 'M' && next === 'M' + prev.slice(1) + prev.slice(1)) return true;
-        if (prev.indexOf('III') >= 0) { var q = prev.replace('III', 'U'); if (q === next) return true; }
-        if (prev.indexOf('UU') >= 0) { var r = prev.replace('UU', ''); if (r === next) return true; }
-        return false;
-      }
-      var l1 = document.getElementById('miu-l1');
-      var l2 = document.getElementById('miu-l2');
-      var l3 = document.getElementById('miu-l3');
-      var l4 = document.getElementById('miu-l4');
-      var miuResult = document.getElementById('miu-result');
-      document.getElementById('miu-check').addEventListener('click', function(){
-        var lines = [l1.value.trim(), l2.value.trim(), l3.value.trim(), l4.value.trim()];
-        if (lines[0] !== 'MI') { miuResult.innerHTML = 'Line 1 must be the axiom <strong>MI</strong>.'; miuResult.className = 'godel-result truth-false'; return; }
-        var err = '';
-        if (!validMiuStep(lines[0], lines[1])) err = 'Line 2 does not follow from line 1 by any MIU rule.';
-        else if (!validMiuStep(lines[1], lines[2])) err = 'Line 3 does not follow from line 2 by any MIU rule.';
-        else if (!validMiuStep(lines[2], lines[3])) err = 'Line 4 does not follow from line 3 by any MIU rule.';
-        if (err) { miuResult.innerHTML = err; miuResult.className = 'godel-result truth-false'; return; }
-        var n4 = gn(lines[3]);
-        var mStr = String(gn(lines[0])) + '3' + String(gn(lines[1])) + '3' + String(gn(lines[2])) + '3' + String(n4);
-        var m = parseInt(mStr, 10);
-        miuResult.innerHTML = 'Valid derivation. <strong>m</strong> = ' + m + ' (Gödel number of the derivation), <strong>n</strong> = ' + n4 + ' (last line). So <em>m</em> and <em>n</em> form a <strong>MIU-proof-pair</strong>: the system can “speak about” proofs using numbers.';
-        miuResult.className = 'godel-result truth-true';
-      });
-    })();
-  </script>
-  <script>
-    (function(){
-      var verdictEl = document.getElementById('godel-verdict');
-      var tryBtn = document.getElementById('godel-try-prove');
-      var seeBtn = document.getElementById('godel-see-true');
-      tryBtn.addEventListener('click', function(){
-        verdictEl.innerHTML = 'Searching for a proof of G in TNT…';
-        verdictEl.className = 'godel-result';
-        setTimeout(function(){
-          verdictEl.innerHTML = 'No proof exists. If TNT could prove G, then G would be a theorem—but G says “I am not a theorem.” So we would have proved that G has no proof: contradiction. So TNT cannot prove G.';
-          verdictEl.className = 'godel-result truth-false';
-        }, 1200);
-      });
-      seeBtn.addEventListener('click', function(){
-        verdictEl.innerHTML = 'From outside the system: we just saw that G has no proof. And G says “I am not a theorem.” So what G says is <strong>true</strong>. Hence G is <strong>TRUE but not PROVABLE</strong> in TNT. So TNT is incomplete—there is a true sentence it cannot prove.';
-        verdictEl.className = 'godel-result truth-true';
-      });
-    })();
-  </script>
+  <script src="ch14-companion.js?v=0.15.37"></script>
 </body>
 </html>
