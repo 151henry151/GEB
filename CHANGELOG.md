@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.56] — 2026-03-26
+
+### Changed
+
+- Chapter 12 two-minds companion: tighten resonance scoring by switching activation and structural agreement to weighted-overlap (Jaccard-style) calculations and increasing emphasis on activation overlap, reducing over-reported high resonance for `Strangers` and `Lost in Translation`.
+
 ## [0.15.55] — 2026-03-26
 
 ### Changed

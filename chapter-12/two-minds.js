@@ -147,14 +147,17 @@
     Object.keys(mapB).forEach(function (k) { keys[k] = true; });
     var list = Object.keys(keys);
     if (list.length === 0) return 0;
-    var sum = 0;
+    var minSum = 0;
+    var maxSum = 0;
     var j;
     for (j = 0; j < list.length; j++) {
       var wa = mapA[list[j]] != null ? mapA[list[j]] : 0;
       var wb = mapB[list[j]] != null ? mapB[list[j]] : 0;
-      sum += 1 - Math.abs(wa - wb);
+      minSum += Math.min(wa, wb);
+      maxSum += Math.max(wa, wb);
     }
-    return sum / list.length;
+    if (maxSum <= 0.00001) return 0;
+    return minSum / maxSum;
   }
   function computeResonance() {
     var activeIdx = [];
@@ -165,16 +168,18 @@
       if (a > ACT_THR || b > ACT_THR) activeIdx.push(i);
     }
     if (activeIdx.length === 0) return 0;
-    var activeSum = 0;
+    var minAct = 0;
+    var maxAct = 0;
     for (i = 0; i < activeIdx.length; i++) {
       var idx = activeIdx[i];
       var actA = Math.min(1, activationA[idx] || 0);
       var actB = Math.min(1, activationB[idx] || 0);
-      activeSum += 1 - Math.abs(actA - actB);
+      minAct += Math.min(actA, actB);
+      maxAct += Math.max(actA, actB);
     }
-    var activationAgreement = activeSum / activeIdx.length;
+    var activationAgreement = maxAct > 0.00001 ? minAct / maxAct : 0;
     var structuralAgreement = edgeStructuralResonance();
-    return activationAgreement * 0.65 + structuralAgreement * 0.35;
+    return activationAgreement * 0.75 + structuralAgreement * 0.25;
   }
   function tierLabelFromUnit(u) {
     if (u < 0.2) return 'Distant minds';
