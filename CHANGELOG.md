@@ -4,6 +4,13 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.49] — 2026-03-26
+
+### Changed
+
+- Chapter 20 companion: remove the interactive finale implementation and replace the right-panel companion with a plain text supplement explaining the chapter’s synthesis, strange loops, tangled hierarchies, and the Eternal Golden Braid conclusion.
+- Chapter 20: remove `chapter-20/ch20-companion.js` and associated script wiring/styles that were specific to the interactive app.
+
 ## [0.15.48] — 2026-03-26
 
 ### Changed

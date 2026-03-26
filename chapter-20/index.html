@@ -54,176 +54,22 @@
       <div id="geb-prev-next" class="chapter-nav"></div>
       <div id="geb-footer-root"></div>
     </div>
-    <div class="chapter-right ch20-bg">
-      <p class="companion-caption">The final companion: three loops, one braid, one question.</p>
-      <div class="companion-box" id="ch20-companion">
-        <p class="ch20-breath">The MIU puzzle showed that meaning requires stepping outside the system. TNT's Gödel number showed that a formula can be a number. The quine showed that a program can contain itself. The neuron network showed that thoughts are patterns. Each was a glimpse of the same structure. Now the structure has a name.</p>
-
-        <h3 class="ch20-h3">1. The Three Loops</h3>
-        <div class="ch20-progress" aria-label="Three-loop progress">
-          <span id="ch20-dot-1" class="ch20-dot ch20-dot-on">●</span>
-          <span id="ch20-dot-2" class="ch20-dot">○</span>
-          <span id="ch20-dot-3" class="ch20-dot">○</span>
-        </div>
-
-        <div class="ch20-panels">
-          <section class="ch20-panel" id="ch20-panel-bach">
-            <h4>Bach: the melody that climbs forever and comes home.</h4>
-            <svg viewBox="0 0 360 120" class="ch20-bach-staff" aria-hidden="true">
-              <line x1="20" y1="30" x2="340" y2="30"></line>
-              <line x1="20" y1="42" x2="340" y2="42"></line>
-              <line x1="20" y1="54" x2="340" y2="54"></line>
-              <line x1="20" y1="66" x2="340" y2="66"></line>
-              <line x1="20" y1="78" x2="340" y2="78"></line>
-              <circle id="ch20-bach-dot" cx="36" cy="78" r="6"></circle>
-            </svg>
-            <p id="ch20-bach-msg" class="ch20-msg">Play the canon and watch the melody rise.</p>
-            <button type="button" class="btn btn-primary" id="ch20-bach-play">Play canon</button>
-            <button type="button" class="btn btn-secondary" id="ch20-bach-replay" hidden>Play again</button>
-            <div id="ch20-bach-loop-note" class="ch20-loop-note" hidden>↺ same pitch class</div>
-            <p id="ch20-bach-caption" class="ch20-caption" hidden>You went up six steps. You're back where you started. Rising through levels — and arriving at the beginning. This is the strange loop.</p>
-            <button type="button" class="btn btn-secondary" id="ch20-unlock-escher" hidden>See it in space →</button>
-          </section>
-
-          <section class="ch20-panel" id="ch20-panel-escher" hidden>
-            <h4>Escher: the stairs that only go up.</h4>
-            <svg viewBox="0 0 320 240" class="ch20-stairs" aria-hidden="true">
-              <path d="M40 170 L120 130 L200 150 L120 190 Z" class="ch20-stair-face"></path>
-              <path d="M120 130 L200 90 L280 110 L200 150 Z" class="ch20-stair-face"></path>
-              <path d="M200 150 L280 110 L240 170 L160 210 Z" class="ch20-stair-face"></path>
-              <path d="M120 190 L200 150 L160 210 L80 230 Z" class="ch20-stair-face"></path>
-              <g id="ch20-walker">
-                <circle cx="0" cy="0" r="3"></circle>
-                <rect x="-2" y="3" width="4" height="6" rx="1"></rect>
-                <line x1="-1" y1="9" x2="-3" y2="13"></line>
-                <line x1="1" y1="9" x2="3" y2="13"></line>
-                <animateMotion dur="8s" repeatCount="indefinite" rotate="auto">
-                  <mpath href="#ch20-walker-path"></mpath>
-                </animateMotion>
-              </g>
-              <path id="ch20-walker-path" d="M76 198 L150 161 L232 127 L191 102 L118 138 L76 198" fill="none"></path>
-            </svg>
-            <p class="ch20-caption">The figure is always going up. It never arrives anywhere new. The stairs have no top — and no bottom.</p>
-            <p id="ch20-escher-label" class="ch20-msg" hidden>This is the strange loop in space.</p>
-            <button type="button" class="btn btn-secondary" id="ch20-unlock-godel" hidden>See it in logic →</button>
-          </section>
-
-          <section class="ch20-panel" id="ch20-panel-godel" hidden>
-            <h4>Gödel: the formula that talks about itself.</h4>
-            <p class="ch20-godel-line"><strong>G:</strong> "The formula with Gödel number <em>g</em> has no proof."</p>
-            <p class="ch20-msg">What is g?</p>
-            <button type="button" class="btn btn-primary" id="ch20-godel-compute">Compute g</button>
-            <p id="ch20-godel-number" class="ch20-g-number" hidden></p>
-            <svg viewBox="0 0 320 120" class="ch20-godel-loop" id="ch20-godel-loop" hidden>
-              <text x="20" y="36">G</text>
-              <text x="220" y="36">g</text>
-              <path id="ch20-godel-arrow" d="M236 40 C286 60 286 96 156 102 C70 106 42 82 44 52" fill="none"></path>
-            </svg>
-            <div id="ch20-godel-branches" class="ch20-branches" hidden>
-              <div>if G is provable → contradiction → ⊥</div>
-              <div>if G is not provable → G is true → ✓ true but unprovable</div>
-            </div>
-            <p id="ch20-godel-caption" class="ch20-caption" hidden>G rises through the levels of arithmetic — and refers back to itself. The top is the bottom. This is the strange loop in logic.</p>
-          </section>
-        </div>
-
-        <p style="text-align:center;margin:0.75rem 0 0.25rem 0;">
-          <button type="button" class="btn btn-primary" id="ch20-reveal-braid" hidden>Reveal the braid</button>
-        </p>
-
-        <section id="ch20-braid-section" hidden>
-          <h3 class="ch20-braid-title">The Eternal Golden Braid</h3>
-          <svg viewBox="0 0 520 300" class="ch20-braid-svg">
-            <g id="ch20-braid-phase1">
-              <text x="76" y="65" class="ch20-icon ch20-bach-c">𝄞</text>
-              <text x="248" y="65" class="ch20-icon ch20-escher-c">▱</text>
-              <text x="416" y="65" class="ch20-icon ch20-godel-c">G↺</text>
-              <text x="70" y="93" class="ch20-loop-word">loop</text>
-              <text x="244" y="93" class="ch20-loop-word">loop</text>
-              <text x="412" y="93" class="ch20-loop-word">loop</text>
-            </g>
-            <g id="ch20-braid-phase2" opacity="0">
-              <circle cx="260" cy="148" r="62" fill="none" stroke="#b8a588" stroke-width="2"></circle>
-              <path d="M260 86 C316 104 318 190 260 210 C202 190 204 104 260 86 Z" fill="none" stroke="#d4a030" stroke-width="2"></path>
-            </g>
-            <g id="ch20-braid-live">
-              <path id="ch20-strand-a" class="ch20-strand ch20-bach-c" fill="none"></path>
-              <path id="ch20-strand-b" class="ch20-strand ch20-escher-c" fill="none"></path>
-              <path id="ch20-strand-c" class="ch20-strand ch20-godel-c" fill="none"></path>
-            </g>
-          </svg>
-          <p id="ch20-braid-caption" class="ch20-caption">Bach's canon, Escher's staircase, Gödel's sentence. Three strands of one braid — the same self-referential structure, appearing in music, space, and logic.</p>
-        </section>
-
-        <section id="ch20-i-section" class="ch20-i-section" hidden>
-          <p>Hofstadter's suggestion: the strange loop is not just found in formal systems and impossible art. It may be the structure of consciousness itself.</p>
-          <p>Your brain is a hierarchy of neurons, symbols, and thoughts. But the symbols refer back to the neurons. The thoughts change the symbols. The "I" that is aware of itself is a level that refers to all the levels below it — and is constituted by them. The hierarchy is tangled. There is no top.</p>
-          <svg viewBox="0 0 340 180" class="ch20-i-diagram">
-            <text x="144" y="26">"I"</text>
-            <text x="40" y="80">Thoughts</text>
-            <text x="220" y="80">Symbols</text>
-            <text x="120" y="138">Neurons</text>
-            <path d="M160 34 L160 56 M120 84 L148 92 M228 84 L176 94 M150 142 L92 100 M188 142 L246 100" />
-            <path class="ch20-i-arrow" d="M300 92 C300 160 40 160 40 92 C40 24 300 24 300 92 Z" />
-          </svg>
-          <p class="ch20-i-label">The "I" is not above the neurons. It is a pattern in them — that refers to itself.</p>
-          <p id="ch20-final-q" class="ch20-final-q" hidden>Is this what you are?</p>
-          <p id="ch20-final-src" class="ch20-final-src" hidden>— Douglas Hofstadter, Gödel, Escher, Bach: An Eternal Golden Braid, 1979</p>
-        </section>
+    <div class="chapter-right">
+      <p class="companion-caption">Text supplement for Chapter 20.</p>
+      <div class="companion-box">
+        <p><strong>What Chapter 20 is actually about:</strong></p>
+        <p>Chapter 20 is the synthesis. Everything in the book — the MIU system, the pq-system, Gödel numbering, TNT, the ant colony, neural symbols, quines, BlooP/FlooP, frames — has been building to one claim: that strange loops are the source of meaning, consciousness, and the sense of "I."</p>
+        <p>The chapter defines strange loops precisely: a hierarchy of levels where ascending through the levels brings you back to where you started, so the "top" and "bottom" are the same place. The hierarchy is tangled — there is no clear top or bottom. Hofstadter argues this tangling is not a defect or paradox to be resolved — it is the thing itself. The strange loop is what makes Gödel's sentence meaningful rather than just a logical curiosity. It is what makes a brain's symbol system give rise to the experience of being a self. It is why Bach's endless rising canon feels both like rising and like arriving home.</p>
+        <p>The chapter also introduces tangled hierarchies more formally — the difference between a strict hierarchy (levels 0, 1, 2, each clearly above the previous) and a tangled hierarchy (where some level bends back and refers to a lower level). TNT is supposed to be a strict hierarchy (rules about numbers) but Gödel made it tangled (TNT talking about TNT). The brain is supposed to be neurons (low) supporting symbols (high) but the symbols feed back and change the neuron patterns (it's tangled). The self is supposed to be something above neurons and symbols but it turns out to be constituted by them — tangled.</p>
+        <p>And then the Eternal Golden Braid: the three strands — Bach, Escher, Gödel — are revealed to be one braid, one structure, one loop. The book's title arrives as the conclusion.</p>
       </div>
     </div>
   </div>
   <style>
-    .ch20-bg { background: #fdfaf5; }
-    .ch20-breath { font-size: 0.83rem; color: var(--muted); line-height: 1.5; margin: 0 0 0.75rem 0; }
-    .ch20-h3 { margin: 0.3rem 0 0.4rem 0; }
-    .ch20-progress { text-align: center; letter-spacing: 0.35rem; color: #b8a588; margin-bottom: 0.65rem; }
-    .ch20-dot-on { color: #d4a030; }
-    .ch20-panels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.55rem; }
-    .ch20-panel { border: 1px solid var(--border); border-radius: 8px; background: #fffdf9; padding: 0.55rem; min-height: 12.4rem; transition: opacity 0.6s ease; }
-    .ch20-panel h4 { margin: 0 0 0.35rem 0; font-size: 0.82rem; }
-    .ch20-msg { font-size: 0.76rem; color: var(--muted); margin: 0.35rem 0; }
-    .ch20-caption { font-size: 0.76rem; font-style: italic; color: var(--muted); line-height: 1.45; margin-top: 0.35rem; }
-    .ch20-bach-staff { width: 100%; height: 96px; }
-    .ch20-bach-staff line { stroke: #c7b9a3; stroke-width: 1; }
-    #ch20-bach-dot { fill: #3a8fd1; filter: drop-shadow(0 0 6px rgba(58, 143, 209, 0.55)); transition: transform 0.6s ease; }
-    .ch20-loop-note { font-size: 0.73rem; color: #d4a030; margin-top: 0.3rem; }
-    .ch20-stairs { width: 100%; max-width: 310px; height: 170px; }
-    .ch20-stair-face { fill: #d8dde3; stroke: #7a8796; stroke-width: 1.2; }
-    #ch20-walker { fill: #d4a030; stroke: #d4a030; stroke-width: 1; animation: ch20-walk-bob 0.4s ease-in-out infinite alternate; transform-origin: center; }
-    @keyframes ch20-walk-bob { from { transform: translateY(0); } to { transform: translateY(1px); } }
-    .ch20-godel-line { font-size: 0.8rem; line-height: 1.4; margin: 0.3rem 0; }
-    .ch20-g-number { font-family: ui-monospace, monospace; color: #d4a030; font-weight: 700; margin: 0.4rem 0; }
-    .ch20-godel-loop { width: 100%; height: 96px; }
-    #ch20-godel-arrow { stroke: #d4a030; stroke-width: 2; stroke-dasharray: 380; stroke-dashoffset: 380; fill: none; }
-    #ch20-godel-loop.ch20-loop-draw #ch20-godel-arrow { transition: stroke-dashoffset 1s ease; stroke-dashoffset: 0; }
-    .ch20-branches { margin-top: 0.35rem; font-size: 0.73rem; display: grid; gap: 0.25rem; }
-    #ch20-reveal-braid { margin-top: 0.4rem; }
-    #ch20-braid-section { margin-top: 0.7rem; border-top: 1px solid var(--border); padding-top: 0.7rem; }
-    .ch20-braid-title { text-align: center; font-size: 1.28rem; margin: 0 0 0.45rem 0; }
-    .ch20-braid-svg { width: 100%; height: 290px; }
-    .ch20-icon { font-size: 1.55rem; font-weight: 700; opacity: 0.95; }
-    .ch20-loop-word { font-size: 0.7rem; fill: #8c7f6d; }
-    .ch20-strand { stroke-width: 4; stroke-linecap: round; opacity: 0; transition: opacity 0.6s ease; }
-    .ch20-bach-c { stroke: #3a8fd1; fill: #3a8fd1; color: #3a8fd1; }
-    .ch20-escher-c { stroke: #4ab87a; fill: #4ab87a; color: #4ab87a; }
-    .ch20-godel-c { stroke: #d4a030; fill: #d4a030; color: #d4a030; }
-    #ch20-i-section { margin-top: 0.85rem; opacity: 0; transition: opacity 0.6s ease; }
-    #ch20-i-section.ch20-show { opacity: 1; }
-    .ch20-i-diagram { width: 100%; max-width: 330px; height: 170px; display: block; margin: 0.4rem auto; }
-    .ch20-i-diagram path { stroke: #8f7f68; stroke-width: 1.6; fill: none; }
-    .ch20-i-arrow { stroke: #d4a030 !important; stroke-width: 2.2 !important; stroke-dasharray: 390; animation: ch20-i-loop 3.6s linear infinite; }
-    @keyframes ch20-i-loop { from { stroke-dashoffset: 390; } to { stroke-dashoffset: 0; } }
-    .ch20-i-label { text-align: center; font-size: 0.76rem; color: var(--muted); }
-    .ch20-final-q { text-align: center; font-family: "EB Garamond", serif; font-style: italic; font-size: 1.3rem; margin: 1.3rem 0 0.8rem 0; opacity: 0; transition: opacity 1.5s ease; }
-    .ch20-final-q.ch20-show { opacity: 1; }
-    .ch20-final-src { text-align: center; font-size: 0.68rem; color: var(--muted); opacity: 0; transition: opacity 1.2s ease; }
-    .ch20-final-src.ch20-show { opacity: 1; }
-    @media (max-width: 760px) { .ch20-panels { grid-template-columns: 1fr; } .ch20-panel { min-height: auto; } .ch20-braid-svg { height: 250px; } }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script src="ch20-companion.js?v=0.15.48"></script>
 </body>
 </html>
