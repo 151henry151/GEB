@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.42] — 2026-03-25
+
+### Changed
+
+- Chapter 18 companion: replace three-level sort demo with **frame problem** (top-down SVG room, cup-to-floor animation, cascading YES/NO, frame axiom, four “complication” steps with growing rule counter and overlays, “Keep going?” coda), **expert-system brittleness** (retro terminal MED-DIAG: Lyme in-domain flow with travel-history catch, rabies out-of-domain failure, domain-breadth slider), and **historical arc** (1956–1979 accordion timeline + open-ended closing question); add `ch18-companion.js`.
+
 ## [0.15.41] — 2026-03-25
 
 ### Changed

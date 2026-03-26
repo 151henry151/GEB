@@ -8,6 +8,79 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    .ch18-h2 { font-size: 1.02rem; margin: 1.15rem 0 0.4rem 0; color: var(--text); }
+    .ch18-h2:first-child { margin-top: 0; }
+    .ch18-lead { font-size: 0.86rem; line-height: 1.5; color: var(--muted); margin: 0 0 0.55rem 0; }
+    .ch18-caption { font-size: 0.82rem; font-style: italic; color: var(--muted); margin: 0.5rem 0; line-height: 1.45; }
+    .ch18-room-wrap { position: relative; width: 100%; max-width: 400px; margin: 0.5rem auto; border-radius: 10px; overflow: hidden; border: 2px solid #8b7355; background: #faf6f0; }
+    .ch18-room-svg { display: block; width: 100%; height: auto; vertical-align: middle; }
+    .ch18-cup { transition: transform 0.8s ease-in-out; transform: translate(0, 0); }
+    .ch18-cup.ch18-cup-on-floor { transform: translate(0px, 78px); }
+    .ch18-book { transform-origin: 200px 188px; transition: transform 0.5s ease; }
+    .ch18-room-wrap.ch18-complicate-4 .ch18-book { transform: rotate(28deg) translate(6px, 14px); }
+    .ch18-room-fx { position: absolute; pointer-events: none; inset: 0; opacity: 0; transition: opacity 0.4s ease; }
+    .ch18-room-wrap.ch18-complicate-1 .ch18-fx-vibe { opacity: 1; }
+    .ch18-room-wrap.ch18-complicate-2 .ch18-fx-shadow { opacity: 1; }
+    .ch18-room-wrap.ch18-complicate-3 .ch18-fx-memory { opacity: 1; }
+    .ch18-fx-vibe { background: repeating-linear-gradient(-8deg, transparent, transparent 4px, rgba(180, 83, 9, 0.12) 4px, rgba(180, 83, 9, 0.12) 5px); top: 42%; height: 35%; left: 15%; right: 15%; border-radius: 8px; }
+    .ch18-fx-shadow { box-shadow: inset 60px 120px 40px rgba(30, 20, 10, 0.18); }
+    .ch18-fx-memory {
+      position: absolute; right: 10%; bottom: 18%; width: 36px; height: 28px; border: 2px dashed #6366f1; border-radius: 6px;
+      background: rgba(99, 102, 241, 0.12); font-size: 0.55rem; font-weight: 800; color: #4338ca; display: flex; align-items: center; justify-content: center;
+    }
+    .ch18-frame-questions { margin-top: 0.65rem; min-height: 1rem; }
+    .ch18-q-row { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; padding: 0.35rem 0.45rem; margin: 0.25rem 0; border-radius: 6px; background: var(--panel); font-size: 0.82rem; border: 1px solid var(--border); flex-wrap: wrap; }
+    .ch18-q-ans { font-weight: 800; font-family: ui-monospace, monospace; font-size: 0.78rem; }
+    .ch18-ans-yes { color: #15803d; }
+    .ch18-ans-no { color: #b45309; }
+    .ch18-rule-card {
+      font-family: ui-monospace, monospace; font-size: 0.72rem; line-height: 1.45; padding: 0.55rem 0.65rem; background: #fffbeb; border: 1px solid #fbbf24; border-radius: 8px; margin: 0.5rem 0; white-space: pre-wrap;
+    }
+    .ch18-complicate-block { margin: 0.5rem 0; padding: 0.45rem 0.55rem; border-left: 4px solid #b45309; background: rgba(180, 83, 9, 0.08); border-radius: 0 6px 6px 0; font-size: 0.82rem; line-height: 1.45; }
+    .ch18-rule-count-wrap { margin: 0.65rem 0; text-align: center; }
+    .ch18-rule-num { font-weight: 800; font-variant-numeric: tabular-nums; transition: font-size 0.25s ease, color 0.25s ease; }
+    .ch18-rule-n1 { font-size: 1.05rem; color: #92400e; }
+    .ch18-rule-n2 { font-size: 1.12rem; color: #b45309; }
+    .ch18-rule-n3 { font-size: 1.22rem; color: #c2410c; }
+    .ch18-rule-n4 { font-size: 1.32rem; color: #9a3412; }
+    .ch18-term-wrap {
+      border: 5px solid #3d3d2a; border-radius: 4px; background: #0d120d; color: #c8dcb0; font-family: ui-monospace, "Courier New", monospace;
+      font-size: 0.74rem; line-height: 1.4; margin: 0.55rem 0; box-shadow: inset 0 0 24px rgba(0, 40, 0, 0.35);
+    }
+    .ch18-term-head { padding: 0.35rem 0.5rem; background: #1a221a; color: #86efac; font-size: 0.68rem; border-bottom: 1px solid #2d3b2d; }
+    .ch18-term-body { min-height: 12rem; max-height: 18rem; overflow-y: auto; padding: 0.5rem 0.55rem; }
+    .ch18-term-line { margin: 0.25rem 0; }
+    .ch18-term-yn { margin: 0.45rem 0 0.65rem 0; }
+    .ch18-btn-yes, .ch18-btn-no { font-size: 0.72rem; padding: 0.2rem 0.55rem; margin-right: 0.35rem; border-radius: 3px; }
+    .ch18-btn-yes { background: #14532d; color: #dcfce7; border: 1px solid #22c55e; }
+    .ch18-btn-no { background: #450a0a; color: #fecaca; border: 1px solid #ef4444; }
+    .ch18-term-catch { color: #fde047; }
+    .ch18-term-fail { color: #f87171; font-weight: 700; }
+    .ch18-diagnosis { margin-top: 0.5rem; padding: 0.55rem 0.65rem; background: #052e16; border: 2px solid #22c55e; color: #ecfdf5; font-size: 0.8rem; border-radius: 4px; }
+    .ch18-preset-box { font-size: 0.8rem; padding: 0.45rem 0.55rem; background: var(--panel); border-radius: 6px; border: 1px solid var(--border); margin: 0.45rem 0; font-style: italic; }
+    .ch18-ok-label { font-size: 0.8rem; color: #15803d; font-weight: 600; margin: 0.45rem 0; }
+    .ch18-fail-label { font-size: 0.8rem; color: var(--muted); margin: 0.45rem 0; line-height: 1.45; }
+    .ch18-slider-row { margin: 0.75rem 0; padding: 0.55rem 0.65rem; background: var(--panel); border-radius: 8px; border: 1px solid var(--border); }
+    .ch18-slider-row input[type="range"] { width: 100%; max-width: 320px; margin: 0.35rem 0; }
+    .ch18-slider-readout { font-size: 0.82rem; line-height: 1.45; margin-top: 0.35rem; }
+    .ch18-tl { margin: 0.75rem 0; overflow-x: auto; padding-bottom: 0.35rem; }
+    .ch18-tl-track { display: flex; gap: 0.5rem; align-items: stretch; min-width: min-content; padding: 0.25rem 0; }
+    .ch18-tl-card {
+      flex: 0 0 140px; border: 1px solid var(--border); border-radius: 8px; padding: 0.45rem 0.5rem; background: var(--bg); cursor: pointer;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease; font-size: 0.72rem; line-height: 1.35;
+    }
+    .ch18-tl-card:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .ch18-tl-card.ch18-tl-open { border-color: #64748b; box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.25); }
+    .ch18-tl-year { font-weight: 800; font-size: 0.78rem; color: var(--text); }
+    .ch18-tl-blurb { color: var(--muted); margin-top: 0.25rem; font-size: 0.68rem; }
+    .ch18-tl-expand { margin: 0.5rem 0 0 0; padding: 0.5rem 0.55rem; font-size: 0.78rem; line-height: 1.45; background: var(--panel); border-radius: 6px; border: 1px solid var(--border); }
+    .ch18-open-panel {
+      margin: 1.75rem 0 1.25rem 0; padding: 1.25rem 1.1rem; text-align: center; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      font-size: 0.88rem; line-height: 1.6; max-width: 36rem; margin-left: auto; margin-right: auto;
+    }
+    .ch18-open-panel blockquote { margin: 1.1rem 0 0 0; padding: 0; font-size: 1.05rem; font-style: italic; color: var(--text); line-height: 1.55; border: none; }
+  </style>
 </head>
 <body>
   <div class="chapter-layout">
@@ -55,35 +128,141 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">One task (sort three numbers) described at three levels: human instructions, a rule list, and code. Same outcome; different description. Enter three numbers and run to see the result at every level.</p>
-      <div class="companion-box" id="ai-levels-companion">
-        <p><strong>Task:</strong> Sort three numbers from smallest to largest.</p>
-        <p style="font-size:0.85rem; margin:0.5rem 0 0.25rem 0;"><strong>Level 0 (human):</strong> "Put the smallest first, then the middle one, then the biggest."</p>
-        <p style="font-size:0.85rem; margin:0 0 0.25rem 0;"><strong>Level 1 (rules):</strong> "Compare A,B; if A&gt;B swap. Compare B,C; if B&gt;C swap. Compare A,B again; if A&gt;B swap."</p>
-        <p style="font-size:0.85rem; margin:0 0 0.5rem 0;"><strong>Level 2 (code):</strong> Sort the list in place with comparisons and swaps.</p>
-        <label>Three numbers: <input type="text" id="ai-nums" value="3, 1, 2" style="width:6rem; padding:0.3rem;"></label>
-        <button type="button" class="btn btn-primary" id="ai-run" style="margin-left:0.5rem;">Run</button>
-        <p id="ai-result" style="margin-top:0.75rem; font-weight:600;"></p>
+      <p class="companion-caption">Feel the frame problem in a toy room, watch a vintage expert system shine then fail, then walk a short arc from Dartmouth to GEB — ending where the book leaves the question open.</p>
+      <div class="companion-box" id="ch18-root">
+        <h2 class="ch18-h2">1. The frame problem: what stays the same?</h2>
+        <p class="ch18-lead">In 1969, AI researchers John McCarthy and Patrick Hayes identified a problem that would haunt symbolic AI for decades. When something changes in the world, how does a reasoning system know what <em>didn’t</em> change?</p>
+
+        <div class="ch18-room-wrap" id="ch18-room-wrap">
+          <svg class="ch18-room-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-label="Top-down room: table, cup, book, lamp, robot, window">
+            <rect width="400" height="300" fill="#ede4d6"/>
+            <rect x="0" y="0" width="400" height="28" fill="#cbd5e1"/>
+            <rect x="120" y="4" width="160" height="20" rx="2" fill="#93c5fd" stroke="#64748b" stroke-width="1"/>
+            <text x="200" y="17" text-anchor="middle" font-size="8" fill="#1e3a5a">window</text>
+            <rect x="0" y="0" width="12" height="300" fill="#d6cec0"/>
+            <rect x="388" y="0" width="12" height="300" fill="#d6cec0"/>
+            <rect x="12" y="268" width="376" height="32" fill="#cfc4b0"/>
+            <rect x="110" y="165" width="180" height="14" rx="2" fill="#a67c52" stroke="#6b4f2f" stroke-width="1"/>
+            <rect x="110" y="150" width="180" height="18" rx="3" fill="#8b5a2b" stroke="#5c3d1f" stroke-width="1.5"/>
+            <rect x="165" y="178" width="38" height="10" rx="1" fill="#b91c1c" stroke="#7f1d1d" class="ch18-book"/>
+            <text x="184" y="186" text-anchor="middle" font-size="6" fill="#fecaca">book</text>
+            <g id="ch18-cup" class="ch18-cup">
+              <ellipse cx="200" cy="192" rx="14" ry="8" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/>
+              <rect x="194" y="182" width="12" height="10" fill="#bae6fd" stroke="#0369a1" stroke-width="1"/>
+            </g>
+            <line x1="48" y1="255" x2="48" y2="200" stroke="#57534e" stroke-width="3"/>
+            <circle cx="48" cy="195" r="14" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+            <rect x="255" y="210" width="36" height="44" rx="4" fill="#94a3b8" stroke="#475569" stroke-width="1.5"/>
+            <rect x="262" y="198" width="22" height="18" rx="6" fill="#cbd5e1" stroke="#475569"/>
+            <circle cx="273" cy="205" r="4" fill="#1e293b"/>
+            <circle cx="279" cy="205" r="4" fill="#1e293b"/>
+            <text x="273" y="248" text-anchor="middle" font-size="7" fill="#334155">bot</text>
+          </svg>
+          <div class="ch18-room-fx ch18-fx-vibe" aria-hidden="true"></div>
+          <div class="ch18-room-fx ch18-fx-shadow" aria-hidden="true"></div>
+          <div class="ch18-room-fx ch18-fx-memory" aria-hidden="true">MEM</div>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="ch18-btn-move-cup">Robot moves the cup to the floor.</button>
+
+        <div id="ch18-frame-questions" class="ch18-frame-questions" hidden></div>
+
+        <div id="ch18-frame-after-qs" hidden>
+          <p class="ch18-caption"><strong>How did the system answer questions 2–5?</strong></p>
+          <div class="ch18-rule-card">FRAME AXIOM: "If an action A does not directly affect object X,
+              then X's properties are unchanged after A."</div>
+          <p class="ch18-caption">Simple enough. But how does the system know whether A “directly affects” X? That requires more rules…</p>
+
+          <button type="button" class="btn btn-secondary" id="ch18-btn-complicate">Add a complication.</button>
+
+          <div class="ch18-complicate-block" id="ch18-complicate-1" hidden>
+            <strong>Vibration.</strong> The robot moving the cup vibrates the table. Does the book move? <em>New rule needed:</em> vibration propagation.
+          </div>
+          <div class="ch18-complicate-block" id="ch18-complicate-2" hidden>
+            <strong>Shadows.</strong> The lamp casts a shadow. When the cup moved, did the shadow change? <em>New rule needed:</em> lighting and shadows.
+          </div>
+          <div class="ch18-complicate-block" id="ch18-complicate-3" hidden>
+            <strong>The robot’s memory.</strong> The robot remembers where the cup was. Has its memory changed? <em>New rule needed:</em> mental-state updates.
+          </div>
+          <div class="ch18-complicate-block" id="ch18-complicate-4" hidden>
+            <strong>Causation.</strong> The book was leaning against the cup. Does it fall? <em>New rule needed:</em> support and stability.
+          </div>
+
+          <div id="ch18-rule-count-wrap" class="ch18-rule-count-wrap" hidden>
+            Rules needed so far: <span id="ch18-rule-count" class="ch18-rule-num">14</span> and counting.
+          </div>
+          <button type="button" class="btn btn-secondary" id="ch18-btn-keep-going" hidden>Keep going?</button>
+          <div id="ch18-keep-going-panel" class="ch18-complicate-block" hidden style="border-left-color:#7c2d12;">
+            For a realistic world model, the rules needed to handle all possible interactions are <strong>effectively infinite</strong>. This is the frame problem.
+          </div>
+          <p class="ch18-caption" style="margin-top:0.65rem;">The frame problem is not solved by adding more rules. Every new rule creates new edge cases. Common sense — the thing humans handle effortlessly — requires knowing implicitly what matters and what doesn’t. Symbolic AI had no way to represent that implicitness.</p>
+        </div>
+
+        <h2 class="ch18-h2">2. The expert system: brilliant inside, blind outside.</h2>
+        <p class="ch18-lead">Symbolic AI’s greatest achievement was the expert system: a program encoding human expertise as explicit rules. Within its domain, it could match or exceed human performance. Outside it, it was helpless.</p>
+
+        <div class="ch18-term-wrap">
+          <div class="ch18-term-head">MED-DIAG v2.1 — Medical Diagnosis Expert System</div>
+          <div class="ch18-term-body" id="ch18-term-body"></div>
+        </div>
+        <p class="ch18-preset-box" id="ch18-term-preset">Select a case below.</p>
+        <p style="margin:0.35rem 0;font-size:0.82rem;">
+          <button type="button" class="btn btn-primary" id="ch18-start-lyme" style="font-size:0.78rem;">Case A: fever + rash (in-domain)</button>
+          <button type="button" class="btn btn-secondary" id="ch18-start-rabies" style="font-size:0.78rem;margin-left:0.35rem;">Case B: breathing + fear of water</button>
+        </p>
+        <p id="ch18-lyme-ok" class="ch18-ok-label" hidden>✓ Within its domain: confident, specific, useful — when the rules fire.</p>
+        <p id="ch18-rabies-note" class="ch18-fail-label" hidden>The symptoms point toward <strong>rabies</strong> — outside this system’s rule set. A human doctor hearing “fear of water” would treat it as highly significant. The expert system has no notion of “this symptom is unusual and important”; it only walks its fixed rules.</p>
+
+        <div class="ch18-slider-row">
+          <label for="ch18-domain-slider"><strong>Domain breadth</strong> (illustrative)</label>
+          <input type="range" id="ch18-domain-slider" min="0" max="2" value="0" step="1" aria-valuetext="narrow">
+          <div id="ch18-slider-readout" class="ch18-slider-readout"></div>
+        </div>
+        <p class="ch18-caption">Symbolic AI systems were extraordinarily good at their narrow domain and nearly useless outside it. Expanding the domain required exponentially more rules — and each new rule interacted with all existing rules in unpredictable ways.</p>
+
+        <h2 class="ch18-h2">3. From rules to something more</h2>
+        <p class="ch18-lead">A short arc — click a year to read more.</p>
+        <div class="ch18-tl">
+          <div class="ch18-tl-track">
+            <div class="ch18-tl-card" data-expand="ch18-tl-1956" tabindex="0" role="button">
+              <div class="ch18-tl-year">1956</div>
+              <div class="ch18-tl-blurb">Dartmouth — AI named; bold predictions.</div>
+            </div>
+            <div class="ch18-tl-card" data-expand="ch18-tl-1966" tabindex="0" role="button">
+              <div class="ch18-tl-year">1966</div>
+              <div class="ch18-tl-blurb">ELIZA — pattern rules, human-seeming talk.</div>
+            </div>
+            <div class="ch18-tl-card" data-expand="ch18-tl-1969" tabindex="0" role="button">
+              <div class="ch18-tl-year">1969</div>
+              <div class="ch18-tl-blurb">Frame problem named — common sense isn’t “more rules.”</div>
+            </div>
+            <div class="ch18-tl-card" data-expand="ch18-tl-1972" tabindex="0" role="button">
+              <div class="ch18-tl-year">1972</div>
+              <div class="ch18-tl-blurb">MYCIN — 600 rules; excels in a narrow clinic.</div>
+            </div>
+            <div class="ch18-tl-card" data-expand="ch18-tl-1979" tabindex="0" role="button">
+              <div class="ch18-tl-year">1979</div>
+              <div class="ch18-tl-blurb">GEB — can rules ever be understanding?</div>
+            </div>
+          </div>
+        </div>
+        <div id="ch18-tl-1956" class="ch18-tl-expand" hidden><strong>The Dartmouth Conference.</strong> Founding moment of AI. McCarthy, Minsky, Shannon, and others gather. Prediction: within a generation, machines will be able to do any work a human can do.</div>
+        <div id="ch18-tl-1966" class="ch18-tl-expand" hidden><strong>ELIZA.</strong> Joseph Weizenbaum’s chatbot. Simple pattern-matching rules produce surprisingly human-seeming responses. People confide in it. Weizenbaum is disturbed.</div>
+        <div id="ch18-tl-1969" class="ch18-tl-expand" hidden><strong>The frame problem named.</strong> McCarthy and Hayes publish the paper. The AI community begins to realize common sense is not just “more rules.”</div>
+        <div id="ch18-tl-1972" class="ch18-tl-expand" hidden><strong>MYCIN.</strong> Medical expert system. Roughly 600 rules for diagnosing bacterial infections. Outperforms medical students and matches specialists — within its narrow domain.</div>
+        <div id="ch18-tl-1979" class="ch18-tl-expand" hidden><strong>GEB published.</strong> Hofstadter asks: can formal rules, no matter how many or how clever, constitute understanding? He leaves the question open.</div>
+
+        <div class="ch18-open-panel">
+          <p>Symbolic AI succeeded at tasks that seemed to require intelligence — game playing, theorem proving, diagnosis — and failed at tasks that seemed trivially easy for humans: understanding context, applying common sense, knowing what matters.</p>
+          <p>Hofstadter’s suggestion: what’s missing is not more rules, but the right kind of structure — multi-level, self-referential, able to represent itself. The strange loop in Gödel’s sentence, in quines, in brains — perhaps that structure is what turns rule-following into understanding.</p>
+          <blockquote>Can enough rules, organized in the right way, add up to mind? Or is there something that rules — however many, however cleverly arranged — fundamentally cannot do?</blockquote>
+        </div>
       </div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script>
-    (function(){
-      document.getElementById('ai-run').addEventListener('click', function(){
-        var raw = document.getElementById('ai-nums').value;
-        var parts = raw.split(/[,\s]+/).map(function(s){ return parseInt(s, 10); }).filter(function(n){ return !isNaN(n); });
-        if (parts.length < 3) { document.getElementById('ai-result').textContent = 'Enter at least 3 numbers (e.g. 3, 1, 2).'; return; }
-        var a = parts[0], b = parts[1], c = parts[2];
-        if (a > b) { var t = a; a = b; b = t; }
-        if (b > c) { var t = b; b = c; c = t; }
-        if (a > b) { var t = a; a = b; b = t; }
-        document.getElementById('ai-result').textContent = 'Result (same at every level): ' + a + ', ' + b + ', ' + c;
-        document.getElementById('ai-result').className = 'truth-true';
-      });
-    })();
-  </script>
+  <script src="ch18-companion.js?v=0.15.42"></script>
 </body>
 </html>
