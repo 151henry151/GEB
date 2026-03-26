@@ -8,6 +8,271 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    #ch15-root { font-size: 0.88rem; line-height: 1.45; }
+    .ch15-h2 { font-size: 1.02rem; margin: 1.25rem 0 0.5rem 0; color: var(--text); }
+    .ch15-h2:first-child { margin-top: 0; }
+    .ch15-lead { color: var(--muted); margin: 0 0 0.65rem 0; font-size: 0.86rem; }
+    /* —— Section 1 —— */
+    .ch15-s1-wrap { max-width: 520px; margin: 0 auto; }
+    .ch15-s1-stage {
+      width: 100%;
+      max-width: 480px;
+      height: 300px;
+      margin: 0 auto;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #e8f0f8;
+      transition: box-shadow 0.5s ease;
+    }
+    .ch15-s1-camera {
+      width: 100%;
+      height: 100%;
+      transform-origin: 34% 58%;
+      transition: transform 0.62s ease-in-out;
+    }
+    .ch15-s1-inside .ch15-s1-camera {
+      transform: scale(2.35) translate(-12%, -6%);
+    }
+    .ch15-s1-svg { width: 100%; height: 100%; display: block; }
+    .ch15-s1-outside-only { transition: opacity 0.45s ease; }
+    .ch15-s1-inside .ch15-s1-outside-only { opacity: 0; pointer-events: none; }
+    .ch15-s1-overlay {
+      position: absolute;
+      left: 5%;
+      top: 14%;
+      width: 64%;
+      height: 72%;
+      background: #0f1520;
+      border: 4px solid #2a3a4a;
+      border-radius: 6px;
+      box-sizing: border-box;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      padding: 0.35rem 0.45rem;
+    }
+    .ch15-s1-inside .ch15-s1-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .ch15-tnt-tag {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: rgba(148, 163, 184, 0.85);
+      margin-bottom: 0.2rem;
+    }
+    .ch15-proof-scroll {
+      flex: 1;
+      overflow: hidden;
+      font-family: ui-monospace, monospace;
+      font-size: 0.58rem;
+      line-height: 1.35;
+      color: #94a3b8;
+    }
+    .ch15-proof-line {
+      padding: 0.12rem 0;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      animation: ch15-line-in 0.35s ease;
+    }
+    @keyframes ch15-line-in {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .ch15-proof-meta {
+      font-size: 0.65rem;
+      color: #cbd5e1;
+      margin-top: 0.25rem;
+      padding-top: 0.25rem;
+      border-top: 1px solid #334155;
+    }
+    .ch15-s1-caption {
+      text-align: center;
+      margin: 0.55rem 0 0.45rem 0;
+      min-height: 2.6rem;
+      font-size: 0.86rem;
+    }
+    .ch15-s1-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: center; margin-bottom: 0.5rem; }
+    .ch15-s1-callouts { margin-top: 0.5rem; min-height: 0; }
+    .ch15-s1-callouts.is-visible { min-height: 4rem; }
+    .ch15-callout-row {
+      margin: 0.45rem 0;
+      padding: 0.45rem 0.55rem;
+      border-radius: 8px;
+      background: #f0f6ff;
+      border: 1px solid rgba(58, 143, 209, 0.35);
+    }
+    .ch15-callout-g-gold {
+      border-color: rgba(212, 160, 48, 0.65);
+      box-shadow: 0 0 16px rgba(212, 160, 48, 0.25);
+    }
+    .ch15-callout-q { font-weight: 600; color: #1e3a5f; margin-bottom: 0.25rem; }
+    .ch15-callout-a { font-size: 0.84rem; color: #334155; }
+    .ch15-dual-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      margin-top: 0.65rem;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .ch15-dual-table th, .ch15-dual-table td {
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.5rem;
+      vertical-align: top;
+      width: 50%;
+    }
+    .ch15-dual-table th { background: var(--panel); font-weight: 600; }
+    /* —— Tower —— */
+    .ch15-tower-wrap {
+      max-width: 220px;
+      margin: 0 auto;
+    }
+    .ch15-tower-viewport {
+      height: 400px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 40%, #1e293b 100%);
+      padding: 0.5rem 0.35rem;
+    }
+    .ch15-tower-stack-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.35rem;
+      min-height: 120px;
+    }
+    .ch15-tower-band {
+      text-align: center;
+      padding: 0.45rem 0.35rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.72rem;
+      font-family: ui-monospace, monospace;
+      color: #f8fafc;
+      background: linear-gradient(90deg, #334155, #475569);
+      border: 1px solid #64748b;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .ch15-tower-stack-inner > .ch15-tower-band:last-of-type {
+      background: linear-gradient(90deg, #0f172a, #1e293b);
+      font-size: 0.8rem;
+    }
+    .ch15-tower-g {
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #d4a030;
+      text-shadow: 0 0 10px rgba(212, 160, 48, 0.5);
+      padding: 0.2rem;
+      animation: ch15-g-pop 0.45s ease;
+    }
+    @keyframes ch15-g-pop {
+      from { opacity: 0; transform: scale(0.85); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .ch15-tower-inf {
+      text-align: center;
+      padding: 0.5rem;
+      font-size: 1.4rem;
+      color: #64748b;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+    }
+    .ch15-tower-actions { text-align: center; margin-top: 0.65rem; }
+    .ch15-tower-note { font-size: 0.82rem; color: var(--muted); margin-top: 0.45rem; text-align: center; min-height: 2.5rem; }
+    /* —— Lucas —— */
+    .ch15-lucas {
+      background: #f4f4f5;
+      border: 1px solid #e4e4e7;
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin-top: 0.5rem;
+    }
+    .ch15-lucas h3 { margin: 0 0 0.45rem 0; font-size: 0.98rem; }
+    .ch15-lucas-step-block {
+      opacity: 0;
+      animation: ch15-fade-step 0.22s ease forwards;
+      margin: 0.45rem 0;
+      padding: 0.5rem 0.6rem;
+      background: #fff;
+      border-left: 4px solid #71717a;
+      border-radius: 4px;
+      font-size: 0.88rem;
+    }
+    @keyframes ch15-fade-step {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .ch15-reb-block {
+      margin: 0.55rem 0;
+      padding: 0.55rem 0.65rem;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #d4d4d8;
+      font-size: 0.85rem;
+    }
+    .ch15-machine-svg { width: 100%; max-width: 280px; display: block; margin: 0.5rem auto; }
+    .ch15-lucas-loop {
+      text-align: center;
+      font-family: ui-monospace, monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #d4a030;
+      min-height: 1.8rem;
+      margin: 0.45rem 0;
+    }
+    .ch15-loop-running {
+      animation: ch15-loop-cycle 2.4s ease-in-out 3;
+    }
+    @keyframes ch15-loop-cycle {
+      0%, 100% { opacity: 1; }
+      15% { opacity: 0.4; }
+      30% { opacity: 1; }
+      45% { opacity: 0.4; }
+      60% { opacity: 1; }
+      75% { opacity: 0.4; }
+    }
+    .ch15-lucas-final-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; margin-top: 0.5rem; }
+    .ch15-lucas-final-table th, .ch15-lucas-final-table td {
+      border: 1px solid #d4d4d8;
+      padding: 0.4rem 0.45rem;
+      vertical-align: top;
+      width: 50%;
+    }
+    .ch15-lucas-final-table th { background: #e4e4e7; }
+    .ch15-capstone {
+      margin-top: 1rem;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .ch15-capstone-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .ch15-proof-tree path {
+      animation: ch15-tree-pulse 2.8s ease-in-out infinite;
+    }
+    .ch15-proof-tree path:nth-child(2) { animation-delay: 0.4s; }
+    @keyframes ch15-tree-pulse {
+      0%, 100% { stroke-opacity: 0.55; }
+      50% { stroke-opacity: 1; }
+    }
+  </style>
 </head>
 <body>
   <div class="chapter-layout">
@@ -55,46 +320,152 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">Inside TNT there is no proof of G. From outside we can see that G is true. Click "Jump out" to switch to the outside view.</p>
-      <div class="companion-box" id="jump-companion">
-        <p><strong>G:</strong> "This sentence is not provable in TNT."</p>
-        <p id="jump-view-label" style="font-size:0.9rem; margin:0.5rem 0;">View: <strong>Inside TNT</strong> — we only have proofs; G has no proof.</p>
-        <p id="jump-status" style="padding:0.5rem; border-radius:6px; background:var(--panel); margin:0.5rem 0;">Status: ? (no proof of G inside the system)</p>
-        <button type="button" class="btn btn-primary" id="jump-btn">Jump out of the system</button>
+      <p class="companion-caption">Climb from inside TNT to the view above it, watch incompleteness repeat forever, then walk through Lucas’s argument — and why it doesn’t settle whether minds are machines.</p>
+
+      <div class="companion-box" id="ch15-root">
+        <h2 class="ch15-h2">1. Inside and outside</h2>
+        <p class="ch15-lead">The box is formal proof search. The field is where you stand when you treat TNT as an object.</p>
+        <div class="ch15-s1-wrap">
+          <div class="ch15-s1-stage" id="ch15-s1-stage">
+            <div class="ch15-s1-camera" id="ch15-s1-camera">
+              <svg class="ch15-s1-svg" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="0" y="0" width="480" height="300" fill="#f0f6ff"/>
+                <rect class="ch15-s1-outside-only" x="318" y="0" width="162" height="300" fill="#e8f0f8"/>
+                <g class="ch15-s1-outside-only">
+                  <rect x="24" y="88" width="292" height="198" fill="#0f1520" stroke="#2a3a4a" stroke-width="6" rx="6"/>
+                  <text x="38" y="112" fill="#64748b" font-size="11" font-weight="800" letter-spacing="0.15em">TNT</text>
+                  <g class="ch15-proof-tree" opacity="0.9">
+                    <path d="M 170 210 L 130 175 L 100 195 M 170 210 L 210 175 L 245 195 M 170 210 L 170 155 L 140 130 M 170 210 L 200 130 L 230 145" stroke="#475569" stroke-width="1.2" fill="none"/>
+                    <path d="M 130 175 L 95 150 M 210 175 L 248 155 M 100 195 L 70 210 M 245 195 L 275 215" stroke="#64748b" stroke-width="0.9" fill="none"/>
+                    <text x="88" y="148" fill="#64748b" font-size="7">Ax</text>
+                    <text x="238" y="152" fill="#64748b" font-size="7">MP</text>
+                    <text x="62" y="208" fill="#64748b" font-size="7">∀</text>
+                    <text x="268" y="218" fill="#64748b" font-size="7">¬G</text>
+                  </g>
+                </g>
+                <g class="ch15-s1-outside-only">
+                  <rect x="72" y="18" width="220" height="44" rx="8" fill="rgba(15,23,42,0.92)" stroke="#d4a030" stroke-width="2" filter="url(#ch15-g-glow)"/>
+                  <text x="182" y="38" text-anchor="middle" fill="#fef3c7" font-size="10" font-style="italic">“I am not provable in TNT.”</text>
+                  <text x="182" y="52" text-anchor="middle" fill="#d4a030" font-size="8">G</text>
+                </g>
+                <defs>
+                  <filter id="ch15-g-glow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="2" result="b"/>
+                    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                  </filter>
+                </defs>
+              </svg>
+            </div>
+            <div class="ch15-s1-overlay" aria-hidden="false">
+              <div class="ch15-tnt-tag">TNT</div>
+              <div class="ch15-proof-scroll" id="ch15-proof-list"></div>
+              <div class="ch15-proof-meta">
+                Proofs checked: <span id="ch15-proof-count">1,247</span><br>
+                Status of G: <span style="color:#fbbf24;">unknown</span> (no proof found yet)
+              </div>
+            </div>
+          </div>
+          <p class="ch15-s1-caption" id="ch15-s1-caption"><em>You are outside TNT. You can see everything.</em></p>
+          <div class="ch15-s1-actions">
+            <button type="button" class="btn btn-primary" id="ch15-enter-btn">Enter the system</button>
+            <button type="button" class="btn btn-secondary" id="ch15-jump-btn" hidden>Jump out of the system</button>
+          </div>
+          <div class="ch15-s1-callouts" id="ch15-s1-callouts"></div>
+        </div>
+        <table class="ch15-dual-table">
+          <thead><tr><th>Inside TNT</th><th>Outside TNT</th></tr></thead>
+          <tbody>
+            <tr><td>Only formal derivations</td><td>Can describe TNT as an object</td></tr>
+            <tr><td>G has no proof</td><td>G is recognizably true</td></tr>
+            <tr><td>“Undecidable”</td><td>“True but unprovable”</td></tr>
+            <tr><td>Bounded by its own rules</td><td>Can see the rules from above</td></tr>
+          </tbody>
+        </table>
+
+        <h2 class="ch15-h2">2. The infinite tower</h2>
+        <p class="ch15-lead">Each patch leaves a new tear higher up.</p>
+        <div class="ch15-tower-wrap">
+          <div class="ch15-tower-viewport">
+            <div class="ch15-tower-stack-inner" id="ch15-tower-stack">
+              <div class="ch15-tower-inf" id="ch15-tower-inf" hidden>TNT+G+G′+G″+G‴+ ··· ∞</div>
+              <div class="ch15-tower-band" id="ch15-tower-base">TNT</div>
+            </div>
+          </div>
+          <div class="ch15-tower-actions">
+            <button type="button" class="btn btn-primary" id="ch15-tower-btn">Add G as axiom</button>
+          </div>
+          <p class="ch15-tower-note" id="ch15-tower-btn-note" hidden></p>
+        </div>
+        <p style="margin:0.35rem 0 0 0; font-size:0.84rem; text-align:center;"><em>Each fix creates a new hole. Incompleteness is not a defect to be repaired — it is a structural feature of any system powerful enough to describe arithmetic.</em></p>
+
+        <div class="ch15-lucas">
+          <h3>3. Does Gödel prove that minds aren’t machines?</h3>
+          <p style="margin:0 0 0.55rem 0; font-size:0.86rem;">In 1961, philosopher J.R. Lucas made a striking argument. Read it, then decide if it works.</p>
+          <div id="ch15-lucas-steps"></div>
+          <button type="button" class="btn btn-primary" id="ch15-lucas-next">Next step →</button>
+          <button type="button" class="btn btn-secondary" id="ch15-lucas-compel" hidden>This argument is compelling. Does it work?</button>
+
+          <div id="ch15-lucas-rebuttal" hidden style="margin-top:0.75rem;">
+            <div class="ch15-reb-block" id="ch15-reb-s1" hidden>
+              <p style="margin:0 0 0.45rem 0;"><strong>Can a machine also output “G_M is true”?</strong></p>
+              <svg class="ch15-machine-svg" viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="25" width="100" height="50" rx="6" fill="#fafafa" stroke="#71717a" stroke-width="2"/>
+                <text x="70" y="55" text-anchor="middle" font-size="10" fill="#3f3f46">Machine</text>
+                <polygon points="0,48 18,40 18,56" fill="#71717a"/>
+                <text x="4" y="38" font-size="8" fill="#52525b">in</text>
+                <line x1="130" y1="50" x2="155" y2="50" stroke="#71717a" stroke-width="2" marker-end="url(#ch15-marr)"/>
+                <rect x="160" y="28" width="95" height="44" rx="5" fill="#ecfdf5" stroke="#22c55e" stroke-width="1.5"/>
+                <text x="207" y="52" text-anchor="middle" font-size="8" fill="#14532d">“G_TNT is true”</text>
+                <defs><marker id="ch15-marr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0 0,8 4,0 8" fill="#71717a"/></marker></defs>
+              </svg>
+              <p style="margin:0; font-size:0.82rem;">Yes — we can program a machine to output its own Gödel sentence as true. We just add that as a rule.</p>
+            </div>
+            <div class="ch15-reb-block" id="ch15-reb-s2" hidden>
+              <p style="margin:0 0 0.35rem 0;"><strong>But then that machine has a NEW Gödel sentence — one it can’t prove.</strong></p>
+              <svg class="ch15-machine-svg" viewBox="0 0 260 120" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="45" width="100" height="50" rx="6" fill="#fafafa" stroke="#71717a" stroke-width="2"/>
+                <text x="70" y="75" text-anchor="middle" font-size="10" fill="#3f3f46">Machine′</text>
+                <text x="135" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="#d4a030">G′</text>
+                <text x="135" y="42" text-anchor="middle" font-size="7" fill="#78716c">unreachable inside</text>
+                <path d="M 70 45 Q 70 15 135 15" stroke="#d4a030" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+              </svg>
+              <div class="ch15-lucas-loop" id="ch15-lucas-loop">upgrade → new G → upgrade → new G → …</div>
+              <p style="margin:0; font-size:0.82rem;">True. And Lucas can see G′ is true. But can’t we also program the machine to output G′ as true? Then G″ appears…</p>
+              <p style="margin:0.45rem 0 0 0; font-size:0.82rem;"><em>Lucas and the machine are in the same position: each can handle the current G, but a new one always appears. The argument doesn’t separate them.</em></p>
+            </div>
+            <div class="ch15-reb-block" id="ch15-reb-s3" hidden>
+              <p style="margin:0 0 0.35rem 0;"><strong>The deeper problem: Lucas assumes he can always see the truth of G. But can he?</strong></p>
+              <ul style="margin:0.35rem 0; padding-left:1.1rem; font-size:0.84rem;">
+                <li><em>If you were a formal system — could you know it?</em></li>
+                <li><em>If you can’t know whether you’re a formal system, how do you know Gödel applies to you?</em></li>
+              </ul>
+              <p style="margin:0.35rem 0 0 0; font-size:0.82rem;"><em>Gödel’s theorem applies to formal systems. Whether human minds are formal systems is precisely the question Lucas is trying to answer. He can’t use Gödel to answer it without first assuming the answer.</em></p>
+            </div>
+            <button type="button" class="btn btn-primary" id="ch15-lucas-reb-advance" hidden>Continue</button>
+
+            <div id="ch15-lucas-final" hidden style="margin-top:0.65rem;">
+              <table class="ch15-lucas-final-table">
+                <thead><tr><th>Lucas’s argument</th><th>The rebuttal</th></tr></thead>
+                <tbody>
+                  <tr><td>“I can see G is true”</td><td>So can a suitably programmed machine</td></tr>
+                  <tr><td>“The machine can’t see G is true”</td><td>It can, once G-recognition is added as a rule</td></tr>
+                  <tr><td>“Therefore I’m not a machine”</td><td>The argument is circular — it assumes what it tries to prove</td></tr>
+                </tbody>
+              </table>
+              <p style="margin:0.5rem 0 0 0; font-size:0.84rem;"><strong>Hofstadter’s conclusion:</strong> Gödel’s theorem does not prove that minds are not machines. The question remains open — and fascinating.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ch15-capstone" id="ch15-capstone" hidden>
+          <em>Jumping out of the system is real — we do it every time we reason about formal systems from outside. Whether that jumping-out is itself mechanical is the question GEB spends its final chapters exploring.</em>
+        </div>
       </div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script>
-    (function(){
-      var label = document.getElementById('jump-view-label');
-      var status = document.getElementById('jump-status');
-      var btn = document.getElementById('jump-btn');
-      var outside = false;
-      function update(){
-        if (outside) {
-          label.innerHTML = 'View: <strong>Outside</strong> — we see that G says "I am not provable" and TNT does not prove G, so G is true.';
-          status.textContent = 'Status: G is TRUE. (We see it from outside; TNT cannot prove it.)';
-          status.className = 'truth-true';
-          status.style.background = 'rgba(58, 125, 68, 0.15)';
-          status.style.border = '1px solid var(--true)';
-          btn.textContent = 'Back inside';
-        } else {
-          label.innerHTML = 'View: <strong>Inside TNT</strong> — we only have proofs; G has no proof.';
-          status.textContent = 'Status: ? (no proof of G inside the system)';
-          status.className = '';
-          status.style.background = '';
-          status.style.border = '';
-          btn.textContent = 'Jump out of the system';
-        }
-      }
-      btn.addEventListener('click', function(){
-        outside = !outside;
-        update();
-      });
-    })();
-  </script>
+  <script src="ch15-companion.js?v=0.15.38"></script>
 </body>
 </html>

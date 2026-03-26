@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.38] — 2026-03-25
+
+### Changed
+
+- Chapter 15 companion: replace the single “Jump out” toggle with a three-part experience — **Inside and outside** (480×300 SVG box/field, proof-search tree, glowing G, Enter / Jump out with camera transform, staggered callouts, inside/outside table), **Infinite tower** (Add G as axiom up to G‴ with ellipsis and ∞), and **Lucas trap** (stepped argument, rebuttal stages, machine diagram, upgrade loop animation, verdict table); add capstone reveal after all three sections complete; add `ch15-companion.js` and wire it with a version query string.
+
 ## [0.15.37] — 2026-03-25
 
 ### Changed
