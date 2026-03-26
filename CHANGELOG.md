@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.50] — 2026-03-26
+
+### Changed
+
+- Prompts: add markdown prompt files from `claude_prompts.zip` into `prompts/` for local prompt/spec references.
+
 ## [0.15.49] — 2026-03-26
 
 ### Changed
