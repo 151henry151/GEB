@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.54] — 2026-03-26
+
+### Changed
+
+- Chapter 12 two-minds companion: make the resonance meter/readout respond only to active node propagation, so selecting `Becoming Similar` no longer fills resonance by itself without any fired concepts.
+
 ## [0.15.53] — 2026-03-26
 
 ### Changed

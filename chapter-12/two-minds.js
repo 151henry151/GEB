@@ -157,9 +157,6 @@
     return sum / list.length;
   }
   function computeResonance() {
-    if (becomingActive) {
-      return edgeStructuralResonance();
-    }
     var total = 0;
     var i;
     for (i = 0; i < N; i++) {
@@ -189,7 +186,7 @@
   }
   function updateResonanceDOM() {
     var raw = computeResonance();
-    if (!anyMindActivity() && !becomingActive) {
+    if (!anyMindActivity()) {
       displayedResonance = 0;
       if (resonanceEl) {
         resonanceEl.textContent = '\u2014';
