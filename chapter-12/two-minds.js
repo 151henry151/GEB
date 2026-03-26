@@ -157,14 +157,24 @@
     return sum / list.length;
   }
   function computeResonance() {
-    var total = 0;
+    var activeIdx = [];
     var i;
     for (i = 0; i < N; i++) {
-      var actA = Math.min(1, activationA[i] || 0);
-      var actB = Math.min(1, activationB[i] || 0);
-      total += 1 - Math.abs(actA - actB);
+      var a = activationA[i] || 0;
+      var b = activationB[i] || 0;
+      if (a > ACT_THR || b > ACT_THR) activeIdx.push(i);
     }
-    return total / N;
+    if (activeIdx.length === 0) return 0;
+    var activeSum = 0;
+    for (i = 0; i < activeIdx.length; i++) {
+      var idx = activeIdx[i];
+      var actA = Math.min(1, activationA[idx] || 0);
+      var actB = Math.min(1, activationB[idx] || 0);
+      activeSum += 1 - Math.abs(actA - actB);
+    }
+    var activationAgreement = activeSum / activeIdx.length;
+    var structuralAgreement = edgeStructuralResonance();
+    return activationAgreement * 0.65 + structuralAgreement * 0.35;
   }
   function tierLabelFromUnit(u) {
     if (u < 0.2) return 'Distant minds';

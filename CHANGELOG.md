@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.55] — 2026-03-26
+
+### Changed
+
+- Chapter 12 two-minds companion: recalculate resonance from active-node overlap (fired nodes only) blended with structural edge similarity, so `Strangers` and `Lost in Translation` produce lower resonance than high-overlap presets.
+
 ## [0.15.54] — 2026-03-26
 
 ### Changed
