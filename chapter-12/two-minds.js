@@ -670,18 +670,8 @@
     if (name === 'default') {
       edgesA = copyEdgeList(DEFAULT_EDGES_A);
       edgesB = copyEdgeList(DEFAULT_EDGES_B);
-      for (var d = 0; d < N; d++) {
-        activationA[d] = 0;
-        activationB[d] = 0;
-      }
-      lastFiredNode = 0;
-      displayedResonance = 0;
-      renderBoth();
-      setTimeout(function () {
-        runSpreading(0);
-        messageLock = 'def';
-        setMessage('Default mapping: same word starts aligned, then diverges by web structure.');
-      }, 350);
+      resetActivations();
+      setMessage('Default connections loaded.');
       return;
     }
     if (name === 'strangers') {
@@ -691,14 +681,11 @@
         activationA[s] = 0;
         activationB[s] = 0;
       }
-      lastFiredNode = 3;
+      lastFiredNode = null;
       displayedResonance = 0;
       renderBoth();
-      setTimeout(function () {
-        runSpreading(3);
-        messageLock = 'str';
-        setMessage('Same word. Two different worlds.');
-      }, 500);
+      messageLock = null;
+      setMessage('Strangers loaded: same concepts, contrasting connection structures.');
       return;
     }
     if (name === 'oldfriends') {
@@ -708,14 +695,11 @@
         activationA[o] = 0;
         activationB[o] = 0;
       }
-      lastFiredNode = 3;
+      lastFiredNode = null;
       displayedResonance = 0;
       renderBoth();
-      setTimeout(function () {
-        runSpreading(3);
-        messageLock = 'of';
-        setMessage('Almost the same mind — years of shared experience.');
-      }, 500);
+      messageLock = null;
+      setMessage('Old Friends loaded: overlapping connection structures.');
       return;
     }
     if (name === 'translation') {
@@ -725,14 +709,11 @@
         activationA[t] = 0;
         activationB[t] = 0;
       }
-      lastFiredNode = 6;
+      lastFiredNode = null;
       displayedResonance = 0;
       renderBoth();
-      setTimeout(function () {
-        runSpreading(6);
-        messageLock = 'tr';
-        setMessage('"Music" — one word, two completely different constellations.');
-      }, 500);
+      messageLock = null;
+      setMessage('Lost in Translation loaded: the same labels map through different webs.');
       return;
     }
     if (name === 'becoming') {
@@ -742,16 +723,13 @@
         activationA[b] = 0;
         activationB[b] = 0;
       }
-      lastFiredNode = 0;
+      lastFiredNode = null;
       displayedResonance = 0;
       becomingActive = true;
       becomingStart = performance.now();
       messageLock = 'be';
       renderBoth();
       setMessage('As their connections align, understanding grows.');
-      setTimeout(function () {
-        runSpreading(0);
-      }, 350);
       return;
     }
     resetActivations();

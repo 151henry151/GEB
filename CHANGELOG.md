@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.53] — 2026-03-26
+
+### Changed
+
+- Chapter 12 two-minds companion: update preset buttons (`Default`, `Strangers`, `Old Friends`, `Lost in Translation`, `Becoming Similar`) to modify graph connections only, without auto-firing any concept nodes.
+
 ## [0.15.52] — 2026-03-26
 
 ### Changed
