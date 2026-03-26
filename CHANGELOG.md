@@ -4,6 +4,14 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.52] — 2026-03-26
+
+### Changed
+
+- Chapter 12 two-minds companion: make preset behavior consistent by triggering node propagation on Default and Becoming Similar, while keeping structural convergence behavior for the Becoming Similar resonance meter.
+- Chapter 12 two-minds companion: use a shared activation threshold for active/both coloring so nodes active in both minds render gold consistently with the legend.
+- Landing page: add a direct GitHub link to the GEB project source repository.
+
 ## [0.15.51] — 2026-03-26
 
 ### Changed

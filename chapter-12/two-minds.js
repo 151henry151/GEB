@@ -9,7 +9,7 @@
   var BASE_DELAY = 280;
   var DECAY = 0.76;
   var ACT_THR = 0.03;
-  var ACTIVE_VISUAL_THR = 0.08;
+  var ACTIVE_VISUAL_THR = ACT_THR;
   var BOTH_VISUAL_THR = ACTIVE_VISUAL_THR;
   var VIEWBOX = { w: 320, h: 340 };
   /** Shared layout (fractions of 320×340); same positions both minds — edges differ. */
@@ -157,7 +157,7 @@
     return sum / list.length;
   }
   function computeResonance() {
-    if (becomingActive && !anyMindActivity()) {
+    if (becomingActive) {
       return edgeStructuralResonance();
     }
     var total = 0;
@@ -670,7 +670,18 @@
     if (name === 'default') {
       edgesA = copyEdgeList(DEFAULT_EDGES_A);
       edgesB = copyEdgeList(DEFAULT_EDGES_B);
-      resetActivations();
+      for (var d = 0; d < N; d++) {
+        activationA[d] = 0;
+        activationB[d] = 0;
+      }
+      lastFiredNode = 0;
+      displayedResonance = 0;
+      renderBoth();
+      setTimeout(function () {
+        runSpreading(0);
+        messageLock = 'def';
+        setMessage('Default mapping: same word starts aligned, then diverges by web structure.');
+      }, 350);
       return;
     }
     if (name === 'strangers') {
@@ -731,13 +742,16 @@
         activationA[b] = 0;
         activationB[b] = 0;
       }
-      lastFiredNode = null;
+      lastFiredNode = 0;
       displayedResonance = 0;
       becomingActive = true;
       becomingStart = performance.now();
       messageLock = 'be';
       renderBoth();
       setMessage('As their connections align, understanding grows.');
+      setTimeout(function () {
+        runSpreading(0);
+      }, 350);
       return;
     }
     resetActivations();
