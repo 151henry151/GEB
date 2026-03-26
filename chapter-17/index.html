@@ -8,6 +8,122 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    .ch17-h2 { font-size: 1.02rem; margin: 1.1rem 0 0.4rem 0; color: var(--text); }
+    .ch17-h2:first-child { margin-top: 0; }
+    .ch17-lead { color: var(--muted); font-size: 0.86rem; margin: 0 0 0.55rem 0; line-height: 1.45; }
+    .ch17-caption { font-size: 0.84rem; font-style: italic; color: var(--muted); margin: 0.5rem 0; line-height: 1.45; }
+    .ch17-s1-layout { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; }
+    .ch17-s1-main { flex: 1 1 320px; min-width: 280px; }
+    .ch17-collatz-sidebar {
+      flex: 0 1 220px; min-width: 200px; padding: 0.55rem 0.65rem; border: 1px dashed var(--border);
+      border-radius: 8px; background: rgba(0,0,0,0.02); font-size: 0.8rem;
+    }
+    .ch17-collatz-sidebar .ch17-collatz-label { font-size: 0.72rem; font-weight: 600; margin: 0 0 0.35rem 0; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .ch17-oracle-box {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: flex-start; margin: 0.5rem 0;
+    }
+    .ch17-oracle-machine {
+      flex: 0 0 auto; width: 160px; padding: 0.5rem; border: 2px solid #2c5282; border-radius: 8px;
+      background: linear-gradient(180deg, #ebf4ff 0%, #dbeafe 100%); text-align: center; font-size: 0.72rem;
+    }
+    .ch17-oracle-machine strong { display: block; font-size: 0.78rem; margin-bottom: 0.35rem; }
+    .ch17-oracle-io { font-size: 0.65rem; color: #334155; line-height: 1.35; }
+    .ch17-oracle-examples { flex: 1 1 200px; font-size: 0.8rem; }
+    .ch17-oracle-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .ch17-oracle-row:last-child { border-bottom: none; }
+    .ch17-tag { font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.4rem; border-radius: 4px; }
+    .ch17-tag--halt { background: #d4edda; color: #1e5f2f; }
+    .ch17-tag--loop { background: #fde8e8; color: #8b2c2c; }
+    .ch17-proof-panel { margin: 0.65rem 0; padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
+    .ch17-proof-panel h3 { margin: 0 0 0.35rem 0; font-size: 0.88rem; }
+    .ch17-prog-list {
+      max-height: 180px; overflow-y: auto; font-family: ui-monospace, monospace; font-size: 0.68rem;
+      line-height: 1.5; padding: 0.35rem 0.5rem; background: var(--bg); border-radius: 6px; border: 1px solid var(--border);
+      mask-image: linear-gradient(180deg, #000 85%, transparent 100%);
+      -webkit-mask-image: linear-gradient(180deg, #000 85%, transparent 100%);
+    }
+    .ch17-prog-list div { padding: 0.12rem 0; color: #475569; }
+    .ch17-diag-table-wrap { position: relative; margin: 0.5rem 0; min-height: 9.5rem; }
+    .ch17-halt-table { width: 100%; border-collapse: collapse; font-size: 0.74rem; position: relative; z-index: 1; }
+    .ch17-halt-table th, .ch17-halt-table td { border: 1px solid var(--border); padding: 0.35rem 0.45rem; text-align: left; }
+    .ch17-halt-table th { background: var(--bg); font-weight: 600; }
+    .ch17-row-d-highlight { background: rgba(212, 160, 48, 0.22) !important; outline: 2px solid #d4a030; }
+    .ch17-diagonal-svg {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2;
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    .ch17-diag-table-wrap.ch17-diagonal-on .ch17-diagonal-svg { opacity: 1; }
+    .ch17-diagonal-svg line {
+      stroke: #c0392b; stroke-width: 2.5; stroke-linecap: round; fill: none;
+      stroke-dasharray: 200; stroke-dashoffset: 200;
+    }
+    .ch17-diagonal-svg.ch17-diagonal-draw line { stroke-dashoffset: 0; transition: stroke-dashoffset 1s ease-out; }
+    .ch17-d-pseudo {
+      font-family: ui-monospace, monospace; font-size: 0.72rem; background: var(--bg); padding: 0.45rem 0.55rem;
+      border-radius: 6px; border-left: 3px solid #2c5282; margin: 0.45rem 0; white-space: pre-wrap; line-height: 1.4;
+    }
+    .ch17-branch-wrap { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0.55rem 0; justify-content: center; }
+    .ch17-branch-col { flex: 1 1 200px; max-width: 260px; font-size: 0.78rem; line-height: 1.4; }
+    .ch17-branch-col p { margin: 0 0 0.35rem 0; }
+    .ch17-branch-arrow { text-align: center; color: var(--muted); font-size: 1.2rem; line-height: 1; }
+    .ch17-oracle-wrong {
+      margin-top: 0.35rem; padding: 0.45rem 0.55rem; border-radius: 6px; background: #c0392b; color: #fff;
+      font-weight: 700; font-size: 0.78rem; text-align: center;
+    }
+    .ch17-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.65rem; margin: 0.65rem 0; }
+    .ch17-card {
+      border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0.55rem; font-size: 0.72rem; line-height: 1.4;
+      background: var(--bg);
+    }
+    .ch17-card header { font-weight: 700; font-size: 0.8rem; margin-bottom: 0.4rem; padding-bottom: 0.3rem; border-bottom: 2px solid var(--accent-border, var(--border)); }
+    .ch17-card--cantor header { border-bottom-color: #7c3aed; color: #5b21b6; }
+    .ch17-card--godel header { border-bottom-color: #d4a030; color: #92400e; }
+    .ch17-card--turing header { border-bottom-color: #2563eb; color: #1e3a8a; }
+    .ch17-card--tarski header { border-bottom-color: #16a34a; color: #14532d; }
+    .ch17-card dl { margin: 0; }
+    .ch17-card dt { font-weight: 600; color: var(--muted); font-size: 0.65rem; margin-top: 0.35rem; text-transform: uppercase; letter-spacing: 0.03em; }
+    .ch17-card dt:first-child { margin-top: 0; }
+    .ch17-card dd { margin: 0.15rem 0 0 0; }
+    .ch17-template {
+      font-family: ui-monospace, monospace; font-size: 0.7rem; line-height: 1.45; margin: 0.55rem 0; padding: 0.55rem 0.65rem;
+      background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; border-left: 4px solid #64748b;
+    }
+    .ch17-template ol { margin: 0; padding-left: 1.2rem; }
+    .ch17-template li { margin: 0.2rem 0; }
+    .ch17-trace { margin: 0.65rem 0; }
+    .ch17-trace-grid { display: grid; grid-template-columns: auto repeat(5, 1fr); gap: 2px; font-size: 0.65rem; font-family: ui-monospace, monospace; max-width: 420px; }
+    .ch17-trace-grid .ch17-trace-h { font-weight: 700; padding: 0.25rem; text-align: center; background: var(--panel); border: 1px solid var(--border); }
+    .ch17-trace-grid .ch17-trace-rh { font-weight: 600; padding: 0.25rem; background: var(--panel); border: 1px solid var(--border); }
+    .ch17-trace-cell {
+      padding: 0.3rem; text-align: center; border: 1px solid var(--border); cursor: default; background: var(--bg);
+      min-height: 1.8rem; display: flex; align-items: center; justify-content: center;
+    }
+    .ch17-trace-cell.ch17-trace-diag {
+      cursor: pointer; background: rgba(192, 57, 43, 0.08); border-color: rgba(192, 57, 43, 0.35);
+    }
+    .ch17-trace-cell.ch17-trace-diag:hover { background: rgba(192, 57, 43, 0.15); }
+    .ch17-trace-cell.ch17-trace-flipped { background: rgba(212, 160, 48, 0.25); font-weight: 700; }
+    .ch17-church-callout {
+      margin: 0.55rem 0; padding: 0.65rem 0.85rem; border-radius: 8px; border: 2px solid var(--accent); background: rgba(46, 107, 138, 0.08);
+      font-size: 0.9rem; line-height: 1.5;
+    }
+    .ch17-church-panels { font-size: 0.82rem; line-height: 1.5; margin: 0.55rem 0; }
+    .ch17-church-panels p { margin: 0.45rem 0; }
+    .ch17-pentagon-wrap { max-width: 280px; margin: 0.65rem auto; }
+    .ch17-philosophy {
+      font-size: 0.92rem; line-height: 1.55; margin: 1rem 0; padding: 0.75rem 0.65rem; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .ch17-philosophy .ch17-big-q { margin-top: 0.65rem; font-style: italic; color: var(--text); }
+    .ch17-capstone {
+      margin-top: 1rem; padding: 0.85rem 1rem; border-radius: 10px; background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #e2e8f0; font-size: 0.88rem; line-height: 1.55; opacity: 0; transform: translateY(8px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .ch17-capstone-visible { opacity: 1; transform: translateY(0); }
+    .ch17-collatz-verdict { margin-top: 0.35rem; font-weight: 600; font-size: 0.78rem; }
+  </style>
 </head>
 <body>
   <div class="chapter-layout">
@@ -55,48 +171,261 @@
       <div id="geb-footer-root"></div>
     </div>
     <div class="chapter-right">
-      <p class="companion-caption">A simple "program": if n is even, halve it; if odd, do 3n+1. Repeat until n = 1. Will it always stop? Pick a starting n and run (we cap at 500 steps). No one has found an n that runs forever, but no one has proved they all stop.</p>
-      <div class="companion-box" id="halting-companion">
-        <p><strong>Rule:</strong> while n ≠ 1: if n is even then n = n/2, else n = 3n+1.</p>
-        <label>Start n: <input type="number" id="halting-n" value="7" min="1" max="999999" style="width:5rem; padding:0.3rem;"></label>
-        <button type="button" class="btn btn-primary" id="halting-run" style="margin-left:0.5rem;">Run</button>
-        <p style="font-size:0.85rem; margin-top:0.5rem;"><strong>Sequence (last 15 values):</strong></p>
-        <p id="halting-seq" class="logic" style="font-size:0.85rem; word-break:break-all; margin:0.25rem 0;"></p>
-        <p id="halting-verdict" style="margin-top:0.5rem; font-weight:600;"></p>
+      <p class="companion-caption">Walk through the halting proof by diagonalization, see Cantor–Gödel–Turing–Tarski as one family, then Church’s thesis — with Collatz only as a small taste of “we don’t always know.”</p>
+      <div class="companion-box" id="ch17-root">
+        <h2 class="ch17-h2">1. The halting oracle</h2>
+        <p class="ch17-lead">Assume a perfect halting oracle exists. Build a program that defeats it. The contradiction is the proof.</p>
+
+        <div class="ch17-s1-layout">
+          <div class="ch17-s1-main">
+            <div id="ch17-oracle-phase">
+              <p class="ch17-caption"><strong>Phase 1.</strong> The oracle seems possible.</p>
+              <div class="ch17-oracle-box">
+                <div class="ch17-oracle-machine" aria-hidden="true">
+                  <strong>Halting Oracle</strong>
+                  <div class="ch17-oracle-io">IN: program + input<br>OUT: HALTS or<br>RUNS FOREVER</div>
+                </div>
+                <div class="ch17-oracle-examples">
+                  <div class="ch17-oracle-row"><span>Count to 100</span> <span class="ch17-tag ch17-tag--halt">HALTS ✓</span></div>
+                  <div class="ch17-oracle-row"><span>Print all even numbers</span> <span class="ch17-tag ch17-tag--loop">RUNS FOREVER ✓</span></div>
+                  <div class="ch17-oracle-row"><span>Find first prime &gt; 1000</span> <span class="ch17-tag ch17-tag--halt">HALTS ✓</span></div>
+                </div>
+              </div>
+              <p class="ch17-caption">An oracle like this would be incredibly useful. Can we build one?</p>
+              <button type="button" class="btn btn-primary" id="ch17-oracle-continue">Continue to the proof →</button>
+            </div>
+
+            <div id="ch17-proof-phase" hidden>
+              <p class="ch17-caption"><strong>Phase 2.</strong> Diagonalization — use <strong>Next →</strong> after each step.</p>
+
+              <div class="ch17-proof-panel" id="ch17-proof-panel-1" hidden>
+                <h3>Step 1</h3>
+                <p>Imagine we have a complete list of all programs: P₁, P₂, P₃, …</p>
+                <div class="ch17-prog-list" aria-label="Program list">
+                  <div>P₁ — count to 100 and halt</div>
+                  <div>P₂ — print evens forever</div>
+                  <div>P₃ — search for prime &gt; 1000</div>
+                  <div>P₄ — simulate P₁ on empty input</div>
+                  <div>P₅ — nested loop scanner</div>
+                  <div>P₆ — parse and eval (bounded)</div>
+                  <div>P₇ — …</div>
+                  <div>P₈ — …</div>
+                  <div>P₉ — …</div>
+                  <div>P₁₀ — …</div>
+                  <div style="color:#94a3b8;">⋮</div>
+                </div>
+              </div>
+
+              <div class="ch17-proof-panel" id="ch17-proof-panel-2" hidden>
+                <h3>Step 2</h3>
+                <p>The oracle answers, for each program Pᵢ: does Pᵢ halt when run on its own index i (think of i as the program’s description code)?</p>
+                <div class="ch17-diag-table-wrap" id="ch17-diag-table-wrap">
+                  <table class="ch17-halt-table">
+                    <thead><tr><th>Program</th><th>Halts on its own description?</th></tr></thead>
+                    <tbody>
+                      <tr><td>P₁</td><td>HALTS</td></tr>
+                      <tr><td>P₂</td><td>RUNS FOREVER</td></tr>
+                      <tr><td>P₃</td><td>HALTS</td></tr>
+                      <tr id="ch17-table-row-d"><td>P₄</td><td>HALTS</td></tr>
+                      <tr><td>P₅</td><td>RUNS FOREVER</td></tr>
+                      <tr><td>…</td><td>…</td></tr>
+                    </tbody>
+                  </table>
+                  <svg class="ch17-diagonal-svg" id="ch17-diagonal-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                    <line x1="8" y1="18" x2="92" y2="82" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="ch17-proof-panel" id="ch17-proof-panel-3" hidden>
+                <h3>Step 3</h3>
+                <p>Build the <strong>Diagonal program D</strong>: on input i, D does the <em>opposite</em> of what the oracle says about Pᵢ on i.</p>
+                <p class="ch17-caption">D looks at P₁’s answer and does the opposite. Then P₂’s. And so on — along the diagonal.</p>
+                <div class="ch17-d-pseudo">D(i):
+  if oracle says Pᵢ halts on i: run forever
+  if oracle says Pᵢ runs forever on i: halt</div>
+              </div>
+
+              <div class="ch17-proof-panel" id="ch17-proof-panel-4" hidden>
+                <h3>Step 4</h3>
+                <p><strong>D</strong> is a program, so it appears somewhere in the list — say <strong>D = P₄</strong> (row highlighted in the table).</p>
+                <p class="ch17-caption">D is on the list. The oracle already committed to an answer for P₄ on input 4.</p>
+              </div>
+
+              <div class="ch17-proof-panel" id="ch17-proof-panel-5" hidden>
+                <h3>Step 5</h3>
+                <p>What does the oracle say about P₄ (= D) running on input 4?</p>
+                <div class="ch17-branch-wrap">
+                  <div class="ch17-branch-col">
+                    <p><strong>Oracle says D halts on 4</strong></p>
+                    <p>→ D does the opposite → D runs forever on 4.</p>
+                    <div class="ch17-branch-arrow">↓</div>
+                    <div class="ch17-oracle-wrong">Oracle was wrong</div>
+                  </div>
+                  <div class="ch17-branch-col">
+                    <p><strong>Oracle says D runs forever on 4</strong></p>
+                    <p>→ D does the opposite → D halts on 4.</p>
+                    <div class="ch17-branch-arrow">↓</div>
+                    <div class="ch17-oracle-wrong">Oracle was wrong</div>
+                  </div>
+                </div>
+                <p class="ch17-caption" style="margin-top:0.65rem;">Both branches end in contradiction. <strong>No oracle can exist.</strong> The halting problem is not just unsolved — it is provably unsolvable.</p>
+              </div>
+              <div style="margin-top:0.65rem;">
+                <button type="button" class="btn btn-primary" id="ch17-proof-next">Next →</button>
+              </div>
+            </div>
+          </div>
+
+          <aside id="ch17-collatz-wrap" class="ch17-collatz-sidebar" hidden>
+            <p class="ch17-collatz-label">An unsolved instance — not a proof of undecidability, but a taste of it</p>
+            <p>The Collatz sequence is a concrete example of this uncertainty. For every n tried, it eventually reaches 1. But no one has proved it always does. This is not the halting problem — but it has the same flavor: a simple rule, and we cannot always predict what it will do.</p>
+            <p><strong>Rule:</strong> while n ≠ 1: if n even then n = n/2, else n = 3n+1.</p>
+            <label>Start n: <input type="number" id="ch17-collatz-n" value="7" min="1" max="999999" style="width:4.5rem;padding:0.25rem;"></label>
+            <button type="button" class="btn btn-primary" id="ch17-collatz-run" style="margin-left:0.35rem;font-size:0.78rem;padding:0.2rem 0.45rem;">Run</button>
+            <p style="margin:0.4rem 0 0.15rem 0;font-size:0.72rem;"><strong>Last 15 values:</strong></p>
+            <p id="ch17-collatz-seq" class="logic" style="font-size:0.72rem;word-break:break-all;margin:0;"></p>
+            <p id="ch17-collatz-verdict" class="ch17-collatz-verdict"></p>
+          </aside>
+        </div>
+
+        <h2 class="ch17-h2">2. The diagonalization family</h2>
+        <p class="ch17-lead">Cantor, Gödel, Turing, and Tarski all built an object that disagrees with its own row in a complete table. Same spine, different costumes.</p>
+        <div class="ch17-card-grid">
+          <article class="ch17-card ch17-card--cantor">
+            <header>Cantor (1891)</header>
+            <dl>
+              <dt>Oracle assumption</dt>
+              <dd>All reals can be listed in one sequence.</dd>
+              <dt>Diagonal move</dt>
+              <dd>Build a digit that differs from entry n in the n-th decimal place.</dd>
+              <dt>Contradiction</dt>
+              <dd>That number is not on the list — yet the list was complete.</dd>
+              <dt>Result</dt>
+              <dd>No complete list of real numbers exists.</dd>
+            </dl>
+          </article>
+          <article class="ch17-card ch17-card--godel">
+            <header>Gödel (1931)</header>
+            <dl>
+              <dt>Oracle assumption</dt>
+              <dd>A formal system proves every arithmetic truth.</dd>
+              <dt>Diagonal move</dt>
+              <dd>Sentence G: “I am not provable” (fixed point / arithmoquining).</dd>
+              <dt>Contradiction</dt>
+              <dd>If provable → falsehood; if not provable → true but unprovable.</dd>
+              <dt>Result</dt>
+              <dd>No complete consistent formal system for arithmetic.</dd>
+            </dl>
+          </article>
+          <article class="ch17-card ch17-card--turing">
+            <header>Turing (1936)</header>
+            <dl>
+              <dt>Oracle assumption</dt>
+              <dd>Program H decides halting for every program and input.</dd>
+              <dt>Diagonal move</dt>
+              <dd>Program D does the opposite of H on diagonal inputs.</dd>
+              <dt>Contradiction</dt>
+              <dd>H cannot describe D correctly on D’s own index.</dd>
+              <dt>Result</dt>
+              <dd>No general halting algorithm exists.</dd>
+            </dl>
+          </article>
+          <article class="ch17-card ch17-card--tarski">
+            <header>Tarski (1933)</header>
+            <dl>
+              <dt>Oracle assumption</dt>
+              <dd>Truth predicate True(x) definable in the language.</dd>
+              <dt>Diagonal move</dt>
+              <dd>“True(⌈this sentence⌉) is false” — liar, formalized.</dd>
+              <dt>Contradiction</dt>
+              <dd>The sentence is true iff it is false.</dd>
+              <dt>Result</dt>
+              <dd>Truth for a language cannot be defined inside that language.</dd>
+            </dl>
+          </article>
+        </div>
+        <div class="ch17-template">
+          <strong>Unifying template</strong>
+          <ol>
+            <li>Assume a complete self-describing mechanism M exists.</li>
+            <li>Use M to construct D that “disagrees with” M’s answers (diagonal).</li>
+            <li>Ask: what does M say about D?</li>
+            <li>Both answers lead to contradiction.</li>
+            <li>Therefore M cannot exist.</li>
+          </ol>
+        </div>
+        <p class="ch17-caption">Cantor, Gödel, Turing, and Tarski all proved the same theorem. The subject changed — sets, formulas, programs, truth — but the proof never did.</p>
+
+        <div class="ch17-trace">
+          <h3 style="font-size:0.9rem;margin:0 0 0.35rem 0;">Trace the diagonal</h3>
+          <p class="ch17-lead" style="margin-bottom:0.45rem;">5×5 grid: rows P₁–P₅, inputs 1–5. Click each <strong>diagonal</strong> cell to flip HALTS ↔ LOOPS — what D would do. After all five, the idea clicks.</p>
+          <div class="ch17-trace-grid" role="grid" aria-label="Diagonal trace">
+            <div class="ch17-trace-h"></div>
+            <div class="ch17-trace-h">1</div><div class="ch17-trace-h">2</div><div class="ch17-trace-h">3</div><div class="ch17-trace-h">4</div><div class="ch17-trace-h">5</div>
+            <div class="ch17-trace-rh">P₁</div>
+            <div class="ch17-trace-cell ch17-trace-diag" data-ch17-trace="0" data-raw="HALTS" role="button" tabindex="0" aria-label="Diagonal cell P1,1">HALTS</div>
+            <div class="ch17-trace-cell">LOOPS</div><div class="ch17-trace-cell">HALTS</div><div class="ch17-trace-cell">HALTS</div><div class="ch17-trace-cell">LOOPS</div>
+            <div class="ch17-trace-rh">P₂</div>
+            <div class="ch17-trace-cell">HALTS</div>
+            <div class="ch17-trace-cell ch17-trace-diag" data-ch17-trace="1" data-raw="LOOPS" role="button" tabindex="0" aria-label="Diagonal cell P2,2">LOOPS</div>
+            <div class="ch17-trace-cell">HALTS</div><div class="ch17-trace-cell">LOOPS</div><div class="ch17-trace-cell">HALTS</div>
+            <div class="ch17-trace-rh">P₃</div>
+            <div class="ch17-trace-cell">LOOPS</div><div class="ch17-trace-cell">HALTS</div>
+            <div class="ch17-trace-cell ch17-trace-diag" data-ch17-trace="2" data-raw="HALTS" role="button" tabindex="0" aria-label="Diagonal cell P3,3">HALTS</div>
+            <div class="ch17-trace-cell">LOOPS</div><div class="ch17-trace-cell">HALTS</div>
+            <div class="ch17-trace-rh">P₄</div>
+            <div class="ch17-trace-cell">HALTS</div><div class="ch17-trace-cell">LOOPS</div><div class="ch17-trace-cell">HALTS</div>
+            <div class="ch17-trace-cell ch17-trace-diag" data-ch17-trace="3" data-raw="HALTS" role="button" tabindex="0" aria-label="Diagonal cell P4,4">HALTS</div>
+            <div class="ch17-trace-cell">LOOPS</div>
+            <div class="ch17-trace-rh">P₅</div>
+            <div class="ch17-trace-cell">LOOPS</div><div class="ch17-trace-cell">HALTS</div><div class="ch17-trace-cell">LOOPS</div><div class="ch17-trace-cell">HALTS</div>
+            <div class="ch17-trace-cell ch17-trace-diag" data-ch17-trace="4" data-raw="LOOPS" role="button" tabindex="0" aria-label="Diagonal cell P5,5">LOOPS</div>
+          </div>
+          <p id="ch17-trace-caption" class="ch17-caption" hidden><strong>This is all diagonalization:</strong> read the table on the diagonal and do the opposite. That defines D.</p>
+        </div>
+
+        <h2 class="ch17-h2">3. Church’s thesis</h2>
+        <div class="ch17-church-callout">
+          <em>Any function that can be computed by an effective procedure can be computed by a Turing machine.</em>
+        </div>
+        <div class="ch17-church-panels">
+          <p><strong>Why it’s a thesis, not a theorem.</strong> Church’s thesis cannot be proved — because “effective procedure” is informal. We cannot formally prove that our formal definition of computation captures everything we intuitively mean by computation.</p>
+          <p><strong>What we can prove:</strong> many formal models — Turing machines, lambda calculus, recursive functions, register machines, ordinary programming languages — all compute the same class of functions. They are equivalent to each other.</p>
+        </div>
+        <div class="ch17-pentagon-wrap">
+          <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-label="Equivalent models of computation form a cycle; each step computes the same class of functions" role="img">
+            <defs>
+              <marker id="ch17-ar2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><polygon points="0 0,8 4,0 8" fill="#475569"/></marker>
+            </defs>
+            <g fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" marker-end="url(#ch17-ar2)">
+              <path d="M 120 28 L 194 82 L 166 174 L 74 174 L 46 82 Z"/>
+            </g>
+            <text x="120" y="22" text-anchor="middle" font-size="9" fill="#1e3a5a" font-weight="600">Turing machines</text>
+            <text x="204" y="88" text-anchor="middle" font-size="8.5" fill="#1e3a5a" font-weight="600">λ calculus (Church)</text>
+            <text x="120" y="228" text-anchor="middle" font-size="8" fill="#1e3a5a" font-weight="600">General recursive (Gödel / Kleene)</text>
+            <text x="22" y="88" text-anchor="middle" font-size="8" fill="#1e3a5a" font-weight="600">Register machines</text>
+            <text x="120" y="118" text-anchor="middle" font-size="7.5" fill="#334155" font-weight="600">Python, C, …</text>
+            <text x="120" y="132" text-anchor="middle" font-size="7" fill="#64748b" font-style="italic">computes same functions (each link)</text>
+          </svg>
+        </div>
+        <p class="ch17-caption">Every reasonable model of computation turns out to be equivalent. This is evidence — though not proof — that Church’s thesis is correct.</p>
+        <div class="ch17-philosophy">
+          <p>If Church’s thesis is true, then Turing’s result is not just about Turing machines — it is about <strong>all</strong> computation, including human computation. The halting problem is undecidable not only for Turing machines but for any computational process whatsoever — including, if the thesis holds, the human brain.</p>
+          <p class="ch17-big-q">Is human reasoning subject to these limits? Or does jumping out of the system — reasoning about formal systems from outside — escape them?</p>
+        </div>
+        <button type="button" class="btn btn-secondary" id="ch17-church-ack">I’ve read this section →</button>
+
+        <div class="ch17-capstone" id="ch17-capstone" hidden>
+          <em>Three mathematicians. Three problems. Three domains — sets, programs, truth. One proof. The diagonal argument is the most powerful tool in the foundations of mathematics. It marks the edge of what any formal system, any computer, any language can do from inside itself.</em>
+        </div>
       </div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script>
-    (function(){
-      var maxSteps = 500;
-      function run(){
-        var n = parseInt(document.getElementById('halting-n').value, 10) || 7;
-        if (n < 1) n = 7;
-        var seq = [];
-        var x = n;
-        var steps = 0;
-        while (x !== 1 && steps < maxSteps) {
-          seq.push(x);
-          x = (x % 2 === 0) ? x / 2 : 3 * x + 1;
-          steps++;
-        }
-        if (x === 1) seq.push(1);
-        var last = seq.slice(-15);
-        document.getElementById('halting-seq').textContent = last.join(' → ');
-        var v = document.getElementById('halting-verdict');
-        if (x === 1) {
-          v.textContent = 'Halted at 1 after ' + steps + ' steps.';
-          v.className = 'truth-true';
-        } else {
-          v.textContent = 'Stopped after ' + maxSteps + ' steps (limit). We do not know if it would eventually reach 1.';
-          v.className = 'truth-undefined';
-        }
-      }
-      document.getElementById('halting-run').addEventListener('click', run);
-    })();
-  </script>
+  <script src="ch17-logic.js?v=0.15.40"></script>
+  <script src="ch17-companion.js?v=0.15.40"></script>
 </body>
 </html>

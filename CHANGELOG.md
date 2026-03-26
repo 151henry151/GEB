@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.40] — 2026-03-25
+
+### Changed
+
+- Chapter 17 companion: replace Collatz-only widget with a three-part flow — **Halting oracle** (phase 1 examples, phase 2 stepped diagonalization proof with table, animated diagonal line, P₄ = D highlight, red `#c0392b` contradiction branches, Collatz sidebar after Section 1), **Diagonalization family** (2×2 cards for Cantor / Gödel / Turing / Tarski, unifying template, interactive 5×5 “trace the diagonal” flips), **Church’s thesis** (callout, why-it’s-a-thesis text, pentagon equivalence SVG, philosophical question, acknowledge button); add **capstone** after all three sections complete; add `ch17-logic.js`, `ch17-logic.test.js`, and `ch17-companion.js` with versioned script URLs.
+
 ## [0.15.39] — 2026-03-25
 
 ### Changed
