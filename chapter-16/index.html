@@ -8,6 +8,73 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../shared/style.css">
+  <style>
+    .quine-explainer { padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.88rem; border-left:4px solid var(--accent); }
+    .quine-explainer code { font-size:0.85em; }
+    .quine-label { font-size:0.85rem; margin:0.5rem 0 0.25rem 0; }
+    .quine-source { width:100%; padding:0.5rem; border:1px solid var(--border); border-radius:4px; font-family:ui-monospace, monospace; font-size:0.75rem; line-height:1.4; background:var(--bg); resize:vertical; }
+    .quine-template { width:100%; padding:0.4rem; border:1px solid var(--border); border-radius:4px; font-family:ui-monospace, monospace; font-size:0.8rem; resize:vertical; }
+    .quine-hint { font-size:0.8rem; color:var(--muted); margin:0.25rem 0 0 0; }
+    .quine-output { font-family:ui-monospace, monospace; font-size:0.8rem; padding:0.5rem; background:var(--bg); border:1px solid var(--border); border-radius:4px; margin:0.25rem 0 0.5rem 0; white-space:pre-wrap; word-break:break-all; min-height:2.5rem; }
+    .quine-verdict { font-size:0.88rem; margin-top:0.35rem; min-height:0; }
+    .quine-verdict.truth-true { color:var(--true); }
+    .quine-verdict.truth-undefined { color:var(--undefined); }
+    .quine-fold-root { position:relative; }
+    .quine-panel-output { position:relative; z-index:1; }
+    .quine-fold-root.ch16-fold-play .quine-panel-output {
+      z-index:4;
+      animation: ch16-fold-overlap 0.4s ease-in-out;
+    }
+    @keyframes ch16-fold-overlap {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(calc(-1 * min(9.5rem, 28vh))); }
+      100% { transform: translateY(0); }
+    }
+    .quine-match-row { font-size:0.82rem; margin:0.5rem 0 0.35rem 0; color:var(--muted); }
+    .quine-match-row strong { color:var(--text); font-variant-numeric: tabular-nums; }
+    .quine-diff-wrap { margin-top:0.35rem; border:1px solid var(--border); border-radius:6px; overflow:hidden; background:var(--bg); }
+    .quine-diff-title { font-size:0.78rem; font-weight:600; padding:0.35rem 0.5rem; background:var(--panel); border-bottom:1px solid var(--border); }
+    .quine-diff-scroll { max-height:14rem; overflow:auto; }
+    .quine-diff-grid { display:grid; grid-template-columns:1fr 1fr; font-family:ui-monospace, monospace; font-size:0.68rem; line-height:1.35; }
+    .quine-diff-cell { padding:0.25rem 0.4rem; border-bottom:1px solid rgba(0,0,0,0.06); white-space:pre-wrap; word-break:break-all; }
+    .quine-diff-left { border-right:1px solid rgba(0,0,0,0.08); }
+    .quine-diff-mismatch { background:#f6c94e; }
+    .quine-diff-placeholder { color:#b91c1c; font-weight:700; }
+    .quine-success-panel {
+      margin-top:0.45rem; padding:0.65rem 0.85rem; background:#d4edda; border:2px solid #4cae4c; border-radius:8px;
+      font-size:0.88rem; line-height:1.45;
+    }
+    .quine-success-panel .ch16-success-lead { font-weight:700; margin-bottom:0.35rem; }
+    .quine-preset-note { font-size:0.82rem; margin:0.45rem 0 0 0; padding:0.45rem 0.55rem; background:var(--panel); border-radius:6px; border-left:3px solid var(--accent); line-height:1.45; }
+    .quine-preset-note code { font-size:0.85em; }
+    .ch16-godel-callout {
+      margin:0.85rem 0 0 0; padding:0.6rem 0.75rem; border-radius:8px;
+      border-left:4px solid #d4a030; background:rgba(212, 160, 48, 0.06);
+      font-size:0.86rem; line-height:1.5;
+    }
+    .ch16-godel-callout h3 { margin:0 0 0.35rem 0; font-size:0.92rem; font-style:italic; color:#1e293b; }
+    .ch16-godel-callout p { margin:0; }
+    .ch16-details { margin-top:0.85rem; border:1px solid var(--border); border-radius:8px; padding:0.35rem 0.55rem; background:var(--panel); }
+    .ch16-details summary { font-weight:600; cursor:pointer; font-size:0.9rem; padding:0.25rem 0.15rem; }
+    .ch16-details .ch16-details-inner { padding:0.45rem 0.15rem 0.55rem 0.15rem; font-size:0.84rem; line-height:1.5; }
+    .ch16-step-block { margin:0.65rem 0; padding:0.5rem 0.55rem; background:var(--bg); border-radius:6px; border:1px solid var(--border); }
+    .ch16-step-block h4 { margin:0 0 0.35rem 0; font-size:0.82rem; }
+    .ch16-step-block pre { margin:0.35rem 0 0 0; font-size:0.72rem; line-height:1.35; white-space:pre-wrap; font-family:ui-monospace,monospace; color:var(--muted); }
+    .ch16-mechanism-svg { width:100%; max-width:420px; display:block; margin:0.5rem auto; height:auto; }
+    .ch16-mechanism-caption { font-size:0.82rem; font-style:italic; margin:0.5rem 0 0 0; color:var(--muted); }
+    .ch16-bio { margin-top:0.85rem; }
+    .ch16-bio h3 { font-size:0.95rem; margin:0 0 0.45rem 0; }
+    .ch16-bio-table { width:100%; border-collapse:collapse; font-size:0.76rem; line-height:1.4; }
+    .ch16-bio-table th, .ch16-bio-table td { padding:0.4rem 0.45rem; border-bottom:1px solid rgba(0,0,0,0.08); vertical-align:top; text-align:left; }
+    .ch16-bio-table thead th { font-weight:600; color:var(--text); }
+    .ch16-bio-table tbody th { font-weight:600; color:var(--muted); width:22%; }
+    .ch16-bio-table td { border-left:1px solid rgba(0,0,0,0.06); }
+    .quine-diff-header { background:var(--panel); font-weight:600; font-size:0.7rem; color:var(--text); border-bottom:1px solid var(--border) !important; }
+    .ch16-bio-table tr:last-child th, .ch16-bio-table tr:last-child td { border-bottom:none; }
+    .ch16-bio-note { font-size:0.82rem; margin:0.55rem 0 0 0; line-height:1.5; }
+    .ch16-dual-svg { width:100%; max-width:340px; display:block; margin:0.65rem auto; }
+    .ch16-closing summary { font-style:italic; }
+  </style>
 </head>
 <body>
   <div class="chapter-layout">
@@ -56,91 +123,160 @@
       <p class="companion-caption">The chapter’s ENIUQ: one string acts as both <em>program</em> (instructions) and <em>data</em> (template). ENIUQ prints the template twice—plain, then in brackets—so when the template is chosen to be the full program, output equals source. That is self-reproduction.</p>
       <div class="companion-box" id="quine-companion">
         <div class="quine-explainer">
-          <p><strong>Two parts</strong>: (1) <strong>Instructions</strong> — ENIUQ prints: template, then <code> ['</code>, template again, <code>'].</code> So output = template + <code> " ['"</code> + template + <code> "]."</code>. (2) <strong>Template</strong> — the data in brackets. For self-reproduction the template is chosen so that this output equals the whole program (instructions + <code>['</code> + template + <code>'].</code>). One string then acts as both program and data.</p>
+          <p><strong>Two parts</strong>: (1) <strong>Instructions</strong> — ENIUQ prints: the template, then a newline and <code>['</code>, then the template again, then <code>'].</code> So output = template + <code>"\n['"</code> + template + <code>"'].'"</code>. (2) <strong>Template</strong> — the data in brackets. For self-reproduction the template is chosen so that this output equals the whole program (instructions + <code>['</code> + template + <code>'].</code>). One string then acts as both program and data.</p>
         </div>
-        <div class="quine-program-wrap">
-          <p class="quine-label"><strong>Program (source)</strong> — editable</p>
-          <textarea id="quine-source" class="quine-source" rows="6" placeholder="Full program source…"></textarea>
+        <div class="quine-fold-root" id="quine-fold-root">
+          <div class="quine-panel-source">
+            <p class="quine-label"><strong>Program (source)</strong> — editable</p>
+            <textarea id="quine-source" class="quine-source" rows="6" placeholder="Full program source…"></textarea>
+          </div>
+          <p class="quine-label"><strong>Template (the data passed to ENIUQ)</strong></p>
+          <textarea id="quine-template" class="quine-template" rows="4" placeholder="Edit to break the quine…"></textarea>
+          <p class="quine-hint">Edit either program source or template; <strong>Run ENIUQ</strong> prints output and plays the fold animation when output equals source.</p>
+          <div style="display:flex; gap:0.35rem; flex-wrap:wrap; align-items:center; margin:0.35rem 0 0.5rem 0;">
+            <span style="font-size:0.8rem; color:var(--muted);">Try:</span>
+            <button type="button" class="btn btn-secondary" id="quine-double" style="font-size:0.85rem; padding:0.25rem 0.5rem;">DOUBLE-BUBBLE</button>
+            <button type="button" class="btn btn-secondary" id="quine-one-step" style="font-size:0.85rem; padding:0.25rem 0.5rem;">ONE-STEP FAILURE</button>
+          </div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin:0.75rem 0;">
+            <button type="button" class="btn btn-primary" id="quine-run">Run ENIUQ</button>
+            <button type="button" class="btn btn-secondary" id="quine-reset">Reset to quine</button>
+          </div>
+          <div class="quine-panel-output">
+            <p class="quine-label"><strong>Output (what ENIUQ prints)</strong></p>
+            <pre id="quine-output" class="quine-output">—</pre>
+          </div>
         </div>
-        <p class="quine-label"><strong>Template (the data passed to ENIUQ)</strong></p>
-        <textarea id="quine-template" class="quine-template" rows="4" placeholder="Edit to break the quine…"></textarea>
-        <p class="quine-hint">Edit either program source or template; Run uses the template and compares output to the program source.</p>
-        <div style="display:flex; gap:0.35rem; flex-wrap:wrap; align-items:center; margin:0.35rem 0 0.5rem 0;">
-          <span style="font-size:0.8rem; color:var(--muted);">Try:</span>
-          <button type="button" class="btn btn-secondary" id="quine-double" style="font-size:0.85rem; padding:0.25rem 0.5rem;">DOUBLE-BUBBLE</button>
+        <p class="quine-match-row" id="quine-match-row">Match: <strong id="quine-match-pct">100</strong>%</p>
+        <div id="quine-diff-wrap" class="quine-diff-wrap" hidden>
+          <div class="quine-diff-title" id="quine-diff-title"></div>
+          <div class="quine-diff-scroll"><div id="quine-diff-body"></div></div>
         </div>
-        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin:0.75rem 0;">
-          <button type="button" class="btn btn-primary" id="quine-run">Run ENIUQ</button>
-          <button type="button" class="btn btn-secondary" id="quine-reset">Reset to quine</button>
+        <div id="quine-success-panel" class="quine-success-panel" hidden>
+          <div class="ch16-success-lead">✓ OUTPUT = SOURCE</div>
+          <div>This program reproduces itself exactly.</div>
+          <div><strong>It is a quine.</strong></div>
         </div>
-        <p class="quine-label"><strong>Output (what ENIUQ prints)</strong></p>
-        <pre id="quine-output" class="quine-output">—</pre>
         <p id="quine-verdict" class="quine-verdict"></p>
+        <p id="quine-preset-note" class="quine-preset-note" hidden></p>
+
+        <aside class="ch16-godel-callout" aria-label="Connection to Gödel">
+          <h3>Sound familiar?</h3>
+          <p>The Gödel sentence G from Chapter 14 has exactly this structure. G’s Gödel number <em>g</em> plays the role of the template: it is the data that G carries about itself. G says “the formula with number <em>g</em> has no proof” — and that formula is G. One number, two roles: data about the formula, and the formula’s own identifier. <strong>G is a quine of logic.</strong></p>
+        </aside>
+
+        <details class="ch16-details">
+          <summary>How does this work without being circular?</summary>
+          <div class="ch16-details-inner">
+            <div class="ch16-step-block">
+              <h4>Step 1 — The naive (circular) approach</h4>
+              <pre>Program: "Print my own source code."
+Problem: To print the source, I need to know the source,
+         which includes this instruction... infinite regress.</pre>
+            </div>
+            <div class="ch16-step-block">
+              <h4>Step 2 — The ENIUQ trick</h4>
+              <pre>Program: "I have a template T stored in me.
+          Print T, then print T again in brackets."
+No circularity: the template is just data I carry.
+                I don't need to 'know myself' — I just print my data.</pre>
+            </div>
+            <div class="ch16-step-block">
+              <h4>Step 3 — The fixed point</h4>
+              <pre>The magic: choose T so that T + "[T]" equals the whole program.
+Then printing T + "[T]" prints the whole program.
+T acts as both: the data I carry AND the instructions for printing.</pre>
+              <svg class="ch16-mechanism-svg" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="20" y="18" width="150" height="44" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+                <text x="95" y="44" text-anchor="middle" font-size="11" fill="#334155">Instructions</text>
+                <text x="95" y="56" text-anchor="middle" font-size="8" fill="#64748b">(ENIUQ printing logic)</text>
+                <rect x="20" y="72" width="150" height="40" rx="6" fill="#fef3c7" stroke="#d4a030" stroke-width="1.5"/>
+                <text x="95" y="94" text-anchor="middle" font-size="11" fill="#78350f">Template / Data</text>
+                <text x="95" y="106" text-anchor="middle" font-size="8" fill="#a16207">(the string T)</text>
+                <path d="M 190 50 L 260 50 L 260 92 L 195 92" fill="none" stroke="#d4a030" stroke-width="2" marker-end="url(#ch16-m-arr)"/>
+                <text x="268" y="72" font-size="9" fill="#64748b" font-style="italic">When T is chosen</text>
+                <text x="268" y="84" font-size="9" fill="#64748b" font-style="italic">correctly, this closes</text>
+                <text x="268" y="96" font-size="9" fill="#64748b" font-style="italic">the loop</text>
+                <defs>
+                  <marker id="ch16-m-arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><polygon points="0 0,8 4,0 8" fill="#d4a030"/></marker>
+                </defs>
+              </svg>
+            </div>
+            <p class="ch16-mechanism-caption">The template is the program’s description of itself. No magic, no circularity — just a fixed point.</p>
+          </div>
+        </details>
+
+        <section class="ch16-bio" aria-labelledby="ch16-bio-title">
+          <h3 id="ch16-bio-title">The same structure in biology</h3>
+          <table class="ch16-bio-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>ENIUQ (quine)</th>
+                <th>Gödel sentence</th>
+                <th>DNA replication</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Instructions</th>
+                <td>The ENIUQ printing logic</td>
+                <td>The proof predicate</td>
+                <td>Ribosomes, enzymes</td>
+              </tr>
+              <tr>
+                <th>Data / Template</th>
+                <td>The string <em>T</em></td>
+                <td>The Gödel number <em>g</em></td>
+                <td>The DNA sequence</td>
+              </tr>
+              <tr>
+                <th>Self-reference</th>
+                <td><em>T</em> describes the whole program</td>
+                <td><em>g</em> is the formula’s own number</td>
+                <td>DNA encodes its own copier</td>
+              </tr>
+              <tr>
+                <th>Output</th>
+                <td>A copy of the program</td>
+                <td>A true-but-unprovable statement</td>
+                <td>A new cell</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="ch16-bio-note">In each case: one thing plays two roles. The same string, the same number, the same molecule acts as both the description and the thing being described. <strong>This dual role is the engine of self-reference.</strong></p>
+          <svg class="ch16-dual-svg" viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dual role: data and instructions produce a copy that loops back">
+            <rect x="40" y="16" width="240" height="118" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+            <text x="160" y="38" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">The thing itself</text>
+            <rect x="68" y="52" width="88" height="36" rx="5" fill="#e0f2fe" stroke="#38bdf8" stroke-width="1.2"/>
+            <text x="112" y="74" text-anchor="middle" font-size="10" fill="#0c4a6e">Data</text>
+            <rect x="164" y="52" width="88" height="36" rx="5" fill="#fef9c3" stroke="#d4a030" stroke-width="1.2"/>
+            <text x="208" y="74" text-anchor="middle" font-size="10" fill="#713f12">Instr.</text>
+            <path d="M 112 88 L 112 98 L 208 98 L 208 88" fill="none" stroke="#64748b" stroke-width="1.2"/>
+            <text x="160" y="108" text-anchor="middle" font-size="8" fill="#64748b">one system</text>
+            <text x="160" y="152" text-anchor="middle" font-size="10" fill="#475569">produces a copy</text>
+            <text x="160" y="172" text-anchor="middle" font-size="9" font-style="italic" fill="#64748b">identical copy</text>
+            <path d="M 160 178 C 280 178, 300 100, 160 8" fill="none" stroke="#d4a030" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="154,10 168,14 154,18" fill="#d4a030"/>
+            <circle r="4" fill="#d4a030">
+              <animateMotion dur="3.2s" repeatCount="indefinite" rotate="auto" path="M 160 178 C 280 178, 300 100, 160 8"/>
+            </circle>
+          </svg>
+        </section>
+
+        <details class="ch16-details ch16-closing" open>
+          <summary>One string, two roles — the strange loop of self-reference</summary>
+          <div class="ch16-details-inner">
+            <p>Every self-reproducing system — every quine, every self-referential sentence, every living cell — works by the same trick: a single thing acts as both description and the thing being described. This is not a coincidence or a curiosity. Hofstadter argues it may be the core mechanism of consciousness itself: the “I” that refers to itself, that has thoughts about its own thoughts, is a strange loop of exactly this kind. The quine is not just a programming trick. It is a window into the structure of mind.</p>
+          </div>
+        </details>
       </div>
     </div>
   </div>
-  <style>
-    .quine-explainer { padding:0.5rem 0.6rem; background:var(--panel); border-radius:4px; margin-bottom:0.75rem; font-size:0.88rem; border-left:4px solid var(--accent); }
-    .quine-explainer code { font-size:0.85em; }
-    .quine-label { font-size:0.85rem; margin:0.5rem 0 0.25rem 0; }
-    .quine-source { width:100%; padding:0.5rem; border:1px solid var(--border); border-radius:4px; font-family:ui-monospace, monospace; font-size:0.75rem; line-height:1.4; background:var(--bg); resize:vertical; }
-    .quine-template { width:100%; padding:0.4rem; border:1px solid var(--border); border-radius:4px; font-family:ui-monospace, monospace; font-size:0.8rem; resize:vertical; }
-    .quine-hint { font-size:0.8rem; color:var(--muted); margin:0.25rem 0 0 0; }
-    .quine-output { font-family:ui-monospace, monospace; font-size:0.8rem; padding:0.5rem; background:var(--bg); border:1px solid var(--border); border-radius:4px; margin:0.25rem 0 0.5rem 0; white-space:pre-wrap; word-break:break-all; min-height:2.5rem; }
-    .quine-verdict { font-size:0.9rem; margin-top:0.35rem; }
-    .quine-verdict.truth-true { color:var(--true); }
-    .quine-verdict.truth-undefined { color:var(--undefined); }
-  </style>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
   <script src="../shared/pdf-viewer.js"></script>
-  <script>
-    (function(){
-      var DEF = 'DEFINE PROCEDURE "ENIUQ" [TEMPLATE]: PRINT [TEMPLATE, " [", QUOTE, TEMPLATE, QUOTE, "]."].';
-      var QUINE_TEMPLATE = DEF + '\n\nENIUQ';
-      function programSource(template) { return DEF + '\n\nENIUQ\n[\'' + template + '\'].'; }
-      function eniuqOutput(template) { return template + " ['" + template + "']."; }
-
-      var sourceInput = document.getElementById('quine-source');
-      var templateInput = document.getElementById('quine-template');
-      var outputEl = document.getElementById('quine-output');
-      var verdictEl = document.getElementById('quine-verdict');
-
-      function run() {
-        var template = templateInput.value;
-        var source = sourceInput.value;
-        var out = eniuqOutput(template);
-        outputEl.textContent = out;
-        if (out === source) {
-          verdictEl.textContent = 'Output equals program source. Self-reproduction: the same string is both instructions and data.';
-          verdictEl.className = 'quine-verdict truth-true';
-        } else if (template.trim() === '') {
-          verdictEl.textContent = 'Template is empty; output is just " [\'\']."';
-          verdictEl.className = 'quine-verdict truth-undefined';
-        } else {
-          verdictEl.textContent = 'Output ≠ program source. Edit template or source so they match for self-reproduction.';
-          verdictEl.className = 'quine-verdict truth-undefined';
-        }
-      }
-
-      function reset() {
-        templateInput.value = QUINE_TEMPLATE;
-        sourceInput.value = programSource(QUINE_TEMPLATE);
-        outputEl.textContent = '—';
-        verdictEl.textContent = '';
-        verdictEl.className = 'quine-verdict';
-      }
-
-      sourceInput.value = programSource(QUINE_TEMPLATE);
-      templateInput.value = QUINE_TEMPLATE;
-
-      document.getElementById('quine-run').addEventListener('click', run);
-      document.getElementById('quine-reset').addEventListener('click', reset);
-      document.getElementById('quine-double').addEventListener('click', function(){
-        templateInput.value = 'DOUBLE-BUBBLE';
-        sourceInput.value = programSource('DOUBLE-BUBBLE');
-      });
-    })();
-  </script>
+  <script src="quine-logic.js?v=0.15.39"></script>
+  <script src="ch16-companion.js?v=0.15.39"></script>
 </body>
 </html>

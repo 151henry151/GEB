@@ -4,6 +4,12 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.39] — 2026-03-25
+
+### Changed
+
+- Chapter 16 companion: add live **Match %** and side-by-side **Source / Output** diff (amber mismatches, red dash placeholders) with title “Output ≠ Source — not a quine”; green **OUTPUT = SOURCE** panel when equal; **fold-back** animation on **Run** when the quine matches; **Sound familiar?** Gödel callout (gold border); collapsible **How does this work without being circular?** with three steps and SVG; **The same structure in biology** comparison table plus dual-role SVG with golden loop and **animateMotion** dot; collapsible **Why this matters** closing panel; **DOUBLE-BUBBLE** and **ONE-STEP FAILURE** presets (auto-run + explanatory notes); extract **`quine-logic.js`** / **`ch16-companion.js`** with `quine-logic.test.js`; align **ENIUQ** simulated output with program source using `\n['` between template copies so the default quine matches.
+
 ## [0.15.38] — 2026-03-25
 
 ### Changed
