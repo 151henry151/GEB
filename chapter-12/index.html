@@ -15,12 +15,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter XII: Minds and Thoughts</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>The same mark can mean different things. An arrow ↑ might mean "go up" in one game and "the number five" in another. Meaning depends on who's reading it and what game they're in.</p>
         </div>
@@ -37,12 +36,6 @@
         <div class="content-inner">
           <h2>Minds and thoughts</h2>
           <p>Hofstadter explores whether minds can be understood in the same multilevel, symbolic framework as computers and brains. Intentionality—the "aboutness" of mental states—might be explained by the role symbols play in a larger system: what they're connected to, how they're used in inference and action. The "grounding" of symbols in context (symbol grounding) is the idea that meaning comes from use and connection, not from a single internal label. The chapter connects this to the location-of-meaning theme (message, decoder, receiver) and to the possibility that minds are multi-level systems where "thought" is a high-level description of lower-level processes. It sets up the later discussion of whether machines could think: the question turns on whether symbol manipulation with the right structure could constitute understanding.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-12.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -370,9 +363,7 @@
     }
     .two-minds-edge-editor label { font-weight: 600; color: #334155; }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script src="two-minds.js"></script>
 </body>
 </html>

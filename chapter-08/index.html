@@ -15,12 +15,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter VIII: Typographical Number Theory</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>We can do number math with just a few shapes: zero, “one more,” plus, and times. “One more one more zero” is two. The whole game is shapes; the shapes turn out to be number facts. That’s TNT.</p>
         </div>
@@ -39,12 +38,6 @@
           <p>Hofstadter presents TNT: a formal system whose language includes 0, S (successor), +, ·, =, variables (a, b, c, …), logical connectives (and, or, not, if–then), and quantifiers (for all, there exists). Terms are built from 0 and S and + and · and represent natural numbers (S…S0 = n). Formulas are equations or logical combinations of equations and represent statements about numbers. Axioms include basic arithmetic (e.g. commutativity of addition) and an induction schema. Rules of inference allow derivation of new formulas. Every theorem, when interpreted, is a true statement of arithmetic; the system is sound. And every true statement of a certain kind is derivable—the system is complete for that fragment. So TNT is a formal game that exactly mirrors number theory.</p>
           <h2>Arithmetization of syntax</h2>
           <p>The stage is set for Gödel numbering: assign a unique number to each symbol, then to each formula (as a sequence of symbols), then to each proof (as a sequence of formulas). Then “n is the Gödel number of a proof of the formula with number m” becomes a relation between natural numbers. That relation can be expressed inside TNT. So TNT can encode “formula X is provable” and “formula X is not provable” as number-theoretic statements. That is the precondition for self-reference: a formula that talks about its own number and says “I am not provable.”</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-08.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -153,9 +146,7 @@
     .tnt-derivation-line[data-line] { cursor:pointer; }
     .btn-sm { padding:0.25rem 0.5rem; font-size:0.82rem; }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script src="tnt.js"></script>
 </body>
 </html>

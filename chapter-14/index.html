@@ -284,12 +284,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter XIV: On Formally Undecidable Propositions of TNT</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>We gave every formula a secret number. Then we built one sentence that talks about its own number. It says: “The sentence with my number cannot be proved.” The rules can’t prove it (or they’d be broken), so what it says is true—and the rules never get there. So some true things are left out.</p>
         </div>
@@ -312,12 +311,6 @@
           <p>If TNT is consistent and proves G, then (by the construction) there is no proof of G, contradiction. So TNT does not prove G. So the statement "there is no proof of G" holds; but that statement is what G expresses (under the interpretation). So G is true in the standard model. Hence TNT is incomplete: there is a true sentence it does not prove. Similarly, if TNT is consistent, it does not prove not-G either; so G is undecidable.</p>
           <h2>Significance</h2>
           <p>Any consistent formal system that contains enough arithmetic has such an undecidable sentence. Truth and provability do not coincide. This is Gödel's first incompleteness theorem.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-14.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -515,9 +508,7 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script src="ch14-companion.js?v=0.15.37"></script>
 </body>
 </html>

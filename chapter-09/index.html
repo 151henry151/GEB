@@ -15,12 +15,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter IX: Mumon and Gödel</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>A sentence says: “You cannot prove this sentence with the rules.” If the rules could prove it, they’d be broken. So they can’t prove it. But then what the sentence says is true. So something is true even though the rules never prove it.</p>
         </div>
@@ -37,12 +36,6 @@
         <div class="content-inner">
           <h2>Self-reference and incompleteness</h2>
           <p>Hofstadter presents Gödel’s construction in detail. By Gödel numbering, every formula of TNT has a number. We can build a formula that (under the numbering) says “the formula with number n is not provable.” By a clever trick, we choose n to be the number of that very formula. So we get a formula G that says “I am not provable in TNT.” If TNT is consistent, G cannot be proved (otherwise we’d have proved something that says it has no proof—inconsistency). So G is not provable. So the claim G makes is correct. So G is true. So there is a true sentence that TNT does not prove. Truth and provability come apart. The chapter connects this to the liar paradox and to Zen (Mumon), and stresses that the “loop” is not vicious because we distinguish levels: proof-in-the-system vs. truth seen from outside.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-09.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -239,9 +232,7 @@
     @keyframes mu-pulse { 0%,100% { opacity:1; } 50% { opacity:0.85; } }
     .mu-caption { text-align:center; font-size:0.95rem; max-width:22rem; margin:0 auto; line-height:1.55; color:var(--text); }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
       var STEP_MS = 750;

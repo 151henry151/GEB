@@ -15,12 +15,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter IV: Consistency, Completeness, and Geometry</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>Good rules never say something and the opposite. That’s consistency. Completeness means every true thing can be proved with the rules. People once thought there was only one geometry; then they found other “worlds” where the same words (line, point) mean something different and the rules still don’t fight. So the same rules can live in different worlds.</p>
         </div>
@@ -43,12 +42,6 @@
           <p>Euclidean geometry takes “point,” “line,” “plane” as undefined; their meaning is fixed by the axioms and the intended model (e.g. the Euclidean plane). Non-Euclidean geometry uses the same axiomatic style but different interpretations—e.g. “line” as geodesic on a sphere or in a hyperbolic plane. Those systems are consistent and have models; so “geometry” is not uniquely determined by the form of the axioms. Multiple interpretations can satisfy the same or similar axioms. That illustrates that truth is relative to an interpretation, and that the same formal system can describe different “worlds.”</p>
           <h2>Setting up incompleteness</h2>
           <p>This prepares the reader for Gödel: in any consistent formal system that is strong enough to express arithmetic, there will be true statements that are not provable. So truth and provability come apart. Consistency we can keep; completeness we must give up. The geometry example shows that “same axioms, different worlds” is already familiar; Gödel’s result will show that in the world of arithmetic, no single formal system can prove all arithmetic truths.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-04.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -104,9 +97,7 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
       // --- Part 1: Consistency/Completeness Machine ---

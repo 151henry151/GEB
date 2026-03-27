@@ -20,12 +20,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Introduction: A Musico-Logical Offering</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>A strange loop is when you go “up” or “forward” but end up back where you started. Bach’s music does it, Escher’s pictures do it, and Gödel found one in math. This book is about that same twist in music, art, and numbers—and how it might be part of thinking and saying “I.”</p>
         </div>
@@ -50,12 +49,6 @@
           <p>The introduction sketches the background of logic and paradox (including the liar paradox) and connects it to mechanical reasoning and the idea of formal systems. It raises the question of whether machines can think and suggests that strange loops—including rules that refer to or modify other rules—may lie at the core of intelligence and the sense of self. The Dialogues (Achilles, the Tortoise, and other characters, drawn from Zeno and Lewis Carroll) are explained as a device to present ideas first in concrete, metaphorical form, so that when the same ideas appear later in formal dress (e.g. the MIU-system, TNT, Gödel’s construction), the reader already has an intuitive handle on them.</p>
         </div>
       </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full introduction appears in the book. You can read it in the PDF below (starting at the first page of the introduction).</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/intro.pdf" role="application" aria-label="Chapter PDF viewer"></div>
-        </div>
-      </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
       <div id="geb-footer-root"></div>
     </div>
@@ -71,9 +64,7 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
   <script>
     (function () {

@@ -280,12 +280,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter XV: Jumping out of the System</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>Inside the game the rules never prove G. But we’re outside the game. We see that G says “you can’t prove me” and we already know the rules don’t prove it—so G is right. We know G is true even though the game never gets there. That’s “jumping out.”</p>
         </div>
@@ -308,12 +307,6 @@
           <p>If we add G as an axiom to TNT, we get TNT+G. That system is still consistent and strong enough for arithmetic, so it has its own Gödel sentence G′. So incompleteness is not fixed by adding one axiom; it is essential. No consistent, sufficiently strong formal system of arithmetic can prove all arithmetic truths. There is no “complete” formal system for arithmetic.</p>
           <h2>Lucas and the anti-mechanist argument</h2>
           <p>The chapter presents and criticizes J. R. Lucas’s argument that Gödel’s theorem shows the mind cannot be a machine: we can always “see” the truth of the Gödel sentence, while the machine cannot. Hofstadter (and many others) point out that the machine could be equipped to output its own Gödel sentence as true (we could add that as a rule), or that the comparison between “what we see” and “what the machine does” is not straightforward—the machine’s state might mirror our reasoning in a different format. So Gödel’s theorem does not refute mechanism.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-15.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -463,9 +456,7 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script src="ch15-companion.js?v=0.15.38"></script>
 </body>
 </html>

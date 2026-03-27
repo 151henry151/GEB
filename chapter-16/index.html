@@ -82,12 +82,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter XVI: Self-Ref and Self-Rep</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>Some things can make a copy of themselves. A program can print the very instructions it’s made of—so the output and the program are the same. That’s self-copying. DNA and cells do it too. Self-reference and self-copying are two sides of the same twist.</p>
         </div>
@@ -108,12 +107,6 @@
           <p>Hofstadter discusses programs that output their own source code (quines), fixed-point constructions in logic, and biological self-reproduction (DNA, viruses). In each case, the system contains a representation of itself and can produce or refer to that representation. Quines are possible in any Turing-complete language; the construction typically uses a function that takes a string and embeds it in a larger string that, when executed, prints the original.</p>
           <h2>Connection to Gödel and the book's themes</h2>
           <p>The Gödel sentence is a form of self-reference: it "says" something about its own proof-theoretic status. Quines are a form of self-reproduction. Both rely on a system's ability to encode and manipulate descriptions of its own structure. Hofstadter links this to the emergence of meaning and the possibility of self-aware systems.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-16.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -273,9 +266,7 @@ T acts as both: the data I carry AND the instructions for printing.</pre>
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script src="quine-logic.js?v=0.15.39"></script>
   <script src="ch16-companion.js?v=0.15.39"></script>
 </body>

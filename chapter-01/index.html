@@ -15,12 +15,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter I: The MU-puzzle</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>You start with <strong>MI</strong> and follow a few rules to change the letters. Your goal is to get <strong>MU</strong>. No matter how many times you use the rules, you never can. Some things are impossible even with simple rules.</p>
         </div>
@@ -43,12 +42,6 @@
           <p>The central puzzle is whether MU is a theorem. Experimentation suggests it is not. The key is to step outside the system and reason about it. The axiom has one I after the M. Rule I doubles the number of I’s after M. Rules II and III replace I’s with U’s in ways that preserve the fact that the I-count (mod 3) is never 0 when you start from 1. Rule IV removes UU and doesn’t add I’s. So the number of I’s after M is never divisible by 3. MU has zero I’s; zero is divisible by 3. So no sequence of rule applications can take you from MI to MU. Proving that requires meta-reasoning about the system, not just rule application inside it.</p>
           <h2>Decision procedures and implicit characterization</h2>
           <p>The chapter distinguishes two ways to characterize the set of theorems. Implicitly: the rules generate exactly that set (every theorem is derivable, and every derivable string is a theorem). A decision procedure is stronger: an algorithm that, given any string, decides in finite time whether it is a theorem. For the MIU-system, a decision procedure exists (e.g. based on the I-count and the position of M). So theoremhood is not only well-defined but testable. That contrast—between generating theorems and deciding whether a given string is a theorem—will matter later for more powerful systems where no decision procedure exists.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-01.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -86,9 +79,7 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
       var current = document.getElementById('miu-current');

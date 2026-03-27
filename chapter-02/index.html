@@ -15,12 +15,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter II: Meaning and Form in Mathematics</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>There’s a game with p, q, and dashes. The rules only care about shapes. When you look at which shapes “win,” they match adding numbers. So meaning can come from the shape of the game, not from someone telling you what the symbols mean.</p>
         </div>
@@ -43,12 +42,6 @@
           <p>Only when we map theorem-strings to arithmetic do we see that every theorem “says” a true addition fact. So meaning is not stipulated; it emerges from an isomorphism between the formal structure (the set of derivable strings) and a familiar domain (natural numbers and addition). The rules only care about shape; the interpretation fits the shape. This supports the idea that meaning can be tied to form—that formal manipulation and semantic content can align—and sets up the later theme that in richer systems (TNT) they can also come apart.</p>
           <h2>Truth, proof, and the elusive concept of form</h2>
           <p>The chapter discusses truth, proof, and what “form” means. It prepares the reader for the idea that formal systems can carry meaning by virtue of their structure, and that “working inside” (symbol manipulation) can correspond to “working outside” (reasoning about numbers). When we move to systems strong enough for arithmetic, we will see that truth and provability can diverge: some true statements will not be derivable. The pq-system is a first, clean example where form and meaning line up perfectly.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-02.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -109,9 +102,7 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
       var beforeCount = 2, betweenCount = 3, afterCount = 5;

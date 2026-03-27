@@ -15,12 +15,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter III: Figure and Ground</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>In some pictures you can look at the “thing” in the middle—that’s the figure. Or you can look at the “stuff around it”—that’s the ground. Same picture, two ways to see it.</p>
           <p>In the game of theorems, the “figure” is the list of strings we can make with the rules. The “ground” is everything else. Sometimes the figure is easy to list, but the ground is hard to pin down—you can’t always tell in a simple way what’s “not a theorem.” So the ground can hide information the figure doesn’t show.</p>
@@ -44,12 +43,6 @@
           <p>The set of theorems of a formal system is recursively enumerable: there is a procedure that lists exactly the theorems (e.g. enumerate all proofs). The set of non-theorems is the complement. If there is a procedure that decides, for any string, whether it is a theorem, then both the set of theorems and the set of non-theorems are “recursive” (decidable). But if there is no decision procedure for theoremhood, then the set of non-theorems is not recursively enumerable in the same simple way. So “figure” (theorems) and “ground” (non-theorems) can have different computational structure.</p>
           <h2>Setting up incompleteness</h2>
           <p>This prepares the reader for the idea that in rich systems like TNT, the “ground” (true but unprovable sentences) may not be listable by the system’s own means—so the figure (theorems) does not fully determine the ground.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-03.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -88,9 +81,7 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
       var svg = document.getElementById('fg-svg');

@@ -15,12 +15,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter VII: The Propositional Calculus</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>There’s a game with “and,” “or,” and “not.” “A and B” is true only when both are true. “A or B” when at least one is true. “Not A” when A is false. People wrote strict rules for this game so truth follows from the shapes. That’s the propositional calculus.</p>
         </div>
@@ -41,12 +40,6 @@
           <p>Hofstadter presents the propositional calculus: a formal language with proposition letters (P, Q, …), connectives (and, or, not, if–then), axioms (e.g. formulas that are tautologies), and rules of inference such as modus ponens (from A and A⊃B infer B). Theorems are exactly the tautologies—formulas that are true under every assignment of truth values to the proposition letters. So the system is sound (every theorem is true) and complete (every tautology is a theorem).</p>
           <h2>Isomorphism with truth values</h2>
           <p>Under the standard interpretation—proposition letters as statements, connectives as and, or, not, if–then—the theorems correspond to logical truths. So once again, meaningless symbols acquire meaning by virtue of the form of what is derivable. The formal manipulation and the semantic content align. This reinforces the pq-system lesson and prepares for TNT, where we will have a richer language (including quantifiers) and where truth and provability will eventually come apart.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-07.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -123,9 +116,7 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script>
     (function () {
       var formulaSelect = document.getElementById('prop-formula');

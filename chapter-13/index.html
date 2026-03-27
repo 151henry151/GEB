@@ -442,12 +442,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter XIII: BlooP and FlooP and GlooP</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>Some searches have a lid: you only look up to a number, then stop, so you always finish. Other searches have no lid: you look until you find it, and if it’s never there you never stop. BlooP has lids; FlooP doesn’t. So some problems need the risky, no-lid kind.</p>
         </div>
@@ -470,12 +469,6 @@
           <p>FlooP adds a single unbounded search operation: find the smallest n such that some (BlooP-computable) predicate holds. If no such n exists, the program does not halt. FlooP captures the general recursive (mu-recursive) functions. There are number-theoretic functions that are FlooP-computable but not BlooP-computable.</p>
           <h2>GlooP and the link to incompleteness</h2>
           <p>GlooP is the "universal" language that can simulate any FlooP program. The key point is that the property "n is the Gödel number of a proof in TNT" is primitive recursive (BlooP); but "there exists a proof of the formula with Gödel number x" requires unbounded search. So the incompleteness argument hinges on predicates that go beyond BlooP.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-13.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -633,10 +626,8 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="predicate-eval.js?v=0.15.35"></script>
   <script src="ch13-companion.js?v=0.15.35"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
 </body>
 </html>

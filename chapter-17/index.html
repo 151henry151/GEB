@@ -131,12 +131,11 @@
       <p><a href="../index.html">← All chapters</a></p>
       <h1>Chapter XVII: Church, Turing, Tarski, and Others</h1>
       <div id="reading-switcher" class="reading-switcher" role="tablist" aria-label="Reading level">
-        <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli5">ELI5</button>
+        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="eli5">ELI5</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli10">ELI10</button>
         <button type="button" class="reading-tab" role="tab" aria-selected="false" data-reading="eli20">ELI20</button>
-        <button type="button" class="reading-tab active" role="tab" aria-selected="true" data-reading="full">Full Text</button>
       </div>
-      <div data-reading-panel="eli5" class="reading-content">
+      <div data-reading-panel="eli5" class="reading-content on">
         <div class="content-inner">
           <p>Some programs stop; some run forever. Can we always tell which? No. There’s no perfect recipe that, for every program, says “it will stop” or “it won’t.” So some questions about programs have no answer we can get by one fixed rule. Logic and computers both have limits.</p>
         </div>
@@ -159,12 +158,6 @@
           <p>Tarski showed that a sufficiently rich formal language cannot contain its own truth predicate: if we could define "true" in the language, we could construct a liar sentence. So truth (for that language) is definable only in a richer meta-language. This parallels Gödel's incompleteness: provability can be expressed inside the system, but truth (for all sentences) cannot.</p>
           <h2>Connections</h2>
           <p>Gödel's theorem, the undecidability of the halting problem, and Tarski's indefinability result are all linked by diagonalization and self-reference. They mark fundamental limits on formal systems and computation.</p>
-        </div>
-      </div>
-      <div data-reading-panel="full" class="reading-content on">
-        <div class="content-inner">
-          <p>The full chapter appears in the book. Read it in the PDF below.</p>
-          <div class="fulltext-embed pdf-viewer-container" data-pdf-src="../pdfs/chapter-17.pdf" role="application" aria-label="Chapter PDF viewer"></div>
         </div>
       </div>
       <div id="geb-prev-next" class="chapter-nav"></div>
@@ -420,9 +413,7 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
   <script src="../shared/nav.js"></script>
-  <script src="../shared/pdf-viewer.js"></script>
   <script src="ch17-logic.js?v=0.15.41"></script>
   <script src="ch17-companion.js?v=0.15.41"></script>
 </body>

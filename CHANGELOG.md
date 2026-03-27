@@ -4,6 +4,14 @@ All notable changes to the GEB Interactive Companion project are documented here
 
 ## [Unreleased]
 
+## [0.15.57] — 2026-03-26
+
+### Changed
+
+- Reading pages (`intro` and chapters 1–20): remove the `Full Text` tab and embedded chapter-PDF sections, leaving ELI5/ELI10/ELI20 reading levels only.
+- Reading pages: remove per-page PDF viewer script includes tied to the removed Full Text panel.
+- Landing page: replace the full-book PDF link area with a note that Hofstadter prefers reading from a physical copy due to the book’s complex typography and layout.
+
 ## [0.15.56] — 2026-03-26
 
 ### Changed
